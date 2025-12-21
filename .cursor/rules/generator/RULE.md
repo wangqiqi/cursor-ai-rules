@@ -6,7 +6,7 @@ alwaysApply: false
 
 # 🎯 项目规则生成器 (Project Rules Generator)
 
-*版本: v1.1.0 | 最后更新: 2025-12-21 12:06:50 CST | 作者: jwzhou <zhou24388@163.com>*
+*版本: v1.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 ## 启动对话模板 (Initialization Dialog Template)
 
@@ -157,8 +157,8 @@ alwaysApply: false
 - `{{SECURITY_LEVEL}}`: 安全等级
 - `{{RULES_VERSION}}`: 规则版本
 - `2025-12-21 12:06:50 CST`: 生成时间（本地时区）
-- `jwzhou`: Git用户姓名
-- `zhou24388@163.com`: Git用户邮箱
+- `{{AUTHOR_NAME}}`: Git用户姓名
+- `{{AUTHOR_EMAIL}}`: Git用户邮箱
 
 ### 动态变量替换 (Dynamic Variable Replacement)
 这些变量在规则应用时会被自动替换为当前用户的环境信息：
@@ -169,8 +169,8 @@ alwaysApply: false
 2025-12-21T12:06:50+08:00 → $(date '+%Y-%m-%dT%H:%M:%S+08:00')
 
 # 获取Git用户信息
-jwzhou → $(git config --get user.name)
-zhou24388@163.com → $(git config --get user.email)
+{{AUTHOR_NAME}} → $(git config --get user.name)
+{{AUTHOR_EMAIL}} → $(git config --get user.email)
 ```
 
 **自动适配机制**：
@@ -201,7 +201,7 @@ zhou24388@163.com → $(git config --get user.email)
 - **Git用户信息**: 必须使用用户的git配置信息
   - 使用 `git config --get user.name` 获取用户姓名
   - 使用 `git config --get user.email` 获取用户邮箱
-  - 示例: `jwzhou <zhou24388@163.com>`
+  - 示例: `{{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>`
 
 ### 输入验证 (Input Validation)
 - **必填检查**: 确保关键信息都已提供
@@ -232,18 +232,18 @@ zhou24388@163.com → $(git config --get user.email)
 - **使用Git配置**: 必须从 `git config` 获取用户信息
 - **姓名获取**: `git config --get user.name`
 - **邮箱获取**: `git config --get user.email`
-- **格式规范**: `姓名 <邮箱>` (如: jwzhou <zhou24388@163.com>)
+- **格式规范**: `姓名 <邮箱>` (如: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>)
 - **禁止使用**: AI团队、机器人、通用标识
 
 ### 文档元数据 (Document Metadata)
 ```markdown
-*版本: v1.0.0 | 最后更新: 2025-12-21 12:06:50 CST | 作者: jwzhou <zhou24388@163.com>*
+*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 ```
 
 ### 代码注释标准 (Code Comment Standards)
 ```javascript
 // Created: 2025-12-21 12:06:50 CST
-// Author: jwzhou <zhou24388@163.com>
+// Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>
 // Description: 功能描述
 ```
 

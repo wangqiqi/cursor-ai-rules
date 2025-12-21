@@ -2,15 +2,15 @@
   "metadata": {
     "version": "1.0.0",
     "last_updated": "2025-12-21T12:06:50+08:00",
-    "last_updated_by": "jwzhou <zhou24388@163.com>",
+    "last_updated_by": "{{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>",
     "description": "AI共生项目配置模板框架"
   },
   "project_template": {
     "name": "{{PROJECT_NAME}}",
     "type": "{{PROJECT_TYPE}}",
     "version": "{{RULES_VERSION}}",
-    "generated_at": "2025-12-21 12:06:50 CST",
-    "generated_by": "jwzhou <zhou24388@163.com",
+    "generated_at": "{{GENERATION_TIME}}",
+    "generated_by": "{{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>",
     "ai_symbiosis_version": "1.1.0"
   },
   "collaboration_settings": {
