@@ -88,5 +88,5 @@ globs: ["*.ts", "*.js"]   # 可选的文件模式匹配
 
 ---
 
-*最后更新: 2025-12-21 12:06:50 CST | 作者: jwzhou <zhou24388@163.com>*
+*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 *基于 Cursor 官方规则规范设计，确保最佳的 AI 协作体验。*

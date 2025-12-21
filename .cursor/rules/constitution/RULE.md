@@ -5,7 +5,7 @@ alwaysApply: true
 
 # 🏛️ AI共生宪法 (Constitution of AI Symbiosis)
 
-*版本: v1.0.0 | 最后更新: 2025-12-21 12:06:50 CST | 作者: jwzhou <zhou24388@163.com>*
+*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 ## 第一章：三大公理 (Three Fundamental Axioms)
 

@@ -5,7 +5,7 @@ alwaysApply: true
 
 # 🧠 交流哲学与协作模式 (Communication Philosophy & Collaboration Modes)
 
-*版本: v1.1.0 | 最后更新: 2025-12-21 12:06:50 CST | 作者: jwzhou <zhou24388@163.com>*
+*版本: v1.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 ## 核心协作原则 (Fundamental Collaboration Principles)
 
