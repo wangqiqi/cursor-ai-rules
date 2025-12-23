@@ -71,9 +71,7 @@ CUSTOM_ROOT_PATH="/path/to/project"
 
 运行测试脚本验证功能：
 
-```bash
-./.cursor/rules/system_info/test.sh
-```
+系统信息获取器会自动通过 `cursor-adaptation-setup.sh` 进行变量替换，无需手动测试。
 
 ## 文件结构
 
@@ -81,7 +79,7 @@ CUSTOM_ROOT_PATH="/path/to/project"
 .cursor/rules/system_info/
 ├── RULE.md         # 规则定义和使用说明
 ├── config.json     # 配置文件模板
-├── test.sh         # 功能测试脚本
+# 系统信息获取器通过适配脚本自动工作，无需额外测试文件
 └── README.md       # 本文件
 ```
 

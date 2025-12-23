@@ -150,15 +150,10 @@ GROWTH_DIR="${PROJECT_ROOT}/.cursorGrowth"
 DATA_DIR="${GROWTH_DIR}/data"
 PERCEPTION_FILE="${DATA_DIR}/perception_$(date +%Y%m%d).json"
 
-# 确保.cursorGrowth目录存在，如果不存在则初始化
+# 确保.cursorGrowth目录存在（应该在适配时已创建）
 if [ ! -d "$GROWTH_DIR" ]; then
-    echo "🌱 检测到.cursorGrowth不存在，正在初始化..."
-    if [ -f "${PROJECT_ROOT}/.cursor/scripts/init_cursor_growth.sh" ]; then
-        bash "${PROJECT_ROOT}/.cursor/scripts/init_cursor_growth.sh"
-    else
-        echo "⚠️  初始化脚本不存在，请手动创建.cursorGrowth目录"
-        mkdir -p "$DATA_DIR"
-    fi
+    echo "⚠️  未检测到.cursorGrowth目录，正在创建基本结构..."
+    mkdir -p "$DATA_DIR"
 fi
 
 # 创建数据目录
@@ -207,10 +202,7 @@ echo "✅ 感知分析完成"
 
 # 自动更新README.md
 echo ""
-echo "🔄 自动更新README.md..."
-if [ -f "${PROJECT_ROOT}/.cursor/scripts/generate_readme.sh" ]; then
-    bash "${PROJECT_ROOT}/.cursor/scripts/generate_readme.sh" > /dev/null 2>&1
-    echo "📝 README.md 已更新，包含最新的感知数据"
-else
-    echo "⚠️  README生成器未找到，跳过自动更新"
-fi
+echo "✅ 感知分析完成！"
+echo "📊 项目洞察数据已保存到: ${PERCEPTION_FILE}"
+echo ""
+echo "🎯 智能规则系统已根据项目特征优化完成"

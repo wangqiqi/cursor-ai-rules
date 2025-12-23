@@ -1,6 +1,6 @@
 ---
 description: "智能演进系统 - 结合指导性框架和自动化实现的项目规则演进"
-globs: ["*.md", "*.mdc", "*.json", "*.yaml", "*.yml", "*.git/logs/*"]
+globs: ["*.json", "*.yaml", "*.yml", "*.git/logs/*"]
 alwaysApply: false
 ---
 
@@ -182,52 +182,16 @@ alwaysApply: false
 系统自动监控项目状态变化，支持以下感知维度：
 
 ###### 技术栈感知 (Technology Stack Awareness)
-```bash
-# 检测技术栈变化
-TECH_STACK_CHANGE=$(git diff HEAD~10..HEAD --name-only | grep -E "(package\.json|requirements\.txt|go\.mod|Cargo\.toml)" | wc -l)
-
-# 分析技术栈复杂度
-FRAMEWORK_COUNT=$(find . -name "package.json" -exec grep -l "react\|vue\|angular\|svelte" {} \; | wc -l)
-```
+技术栈变化触发智能演进，包括框架升级、依赖更新等。
 
 ###### 团队动态感知 (Team Dynamics Awareness)
-```bash
-# 分析贡献者变化
-CONTRIBUTOR_COUNT=$(git log --format='%ae' | sort | uniq | wc -l)
-
-# 检测新成员加入
-NEW_CONTRIBUTORS=$(git log --since="30 days ago" --format='%ae' | sort | uniq | wc -l)
-
-# 分析提交频率变化
-COMMIT_FREQUENCY=$(git log --since="30 days ago" --oneline | wc -l)
-```
+团队规模变化触发协作模式调整，包括新成员加入、人员流动等。
 
 ###### 项目规模感知 (Project Scale Awareness)
-```bash
-# 代码库规模分析
-CODE_LINES=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" | xargs wc -l | tail -1 | awk '{print $1}')
-
-# 文件数量变化
-FILE_COUNT=$(find . -type f -name "*.md" -o -name "*.js" -o -name "*.py" | wc -l)
-
-# 项目结构复杂度
-DIRECTORY_DEPTH=$(find . -type d | sed 's|[^/]||g' | sort | tail -1 | wc -c)
-```
+项目规模变化触发流程优化，包括代码量增长、文件组织调整等。
 
 ###### 开发阶段感知 (Development Stage Awareness)
-```bash
-# 分析开发活跃度
-RECENT_COMMITS=$(git log --since="7 days ago" --oneline | wc -l)
-
-# 检测发布频率
-TAG_COUNT=$(git tag | wc -l)
-
-# 分析分支策略
-BRANCH_COUNT=$(git branch | wc -l)
-
-# 检测CI/CD配置
-CI_CONFIG=$(ls -1 .github/workflows/*.yml 2>/dev/null | wc -l || echo "0")
-```
+开发阶段变化触发管理策略调整，包括从原型到生产化的转变等。
 
 ##### 用户沟通模式感知 (User Communication Pattern Analysis)
 

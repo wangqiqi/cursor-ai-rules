@@ -86,6 +86,34 @@ globs: ["*.ts", "*.js"]   # 可选的文件模式匹配
 - ✅ 自动创建备份文件
 - ✅ 支持一键恢复到原始状态
 
+## 📋 环境要求
+
+- **Cursor 编辑器** (推荐最新版本)
+- **Git** (用于获取用户信息)
+- **Bash** (用于运行适配脚本)
+
+## 🆘 故障排除
+
+### 脚本无法运行
+```bash
+# 确保脚本有执行权限
+chmod +x .cursor/cursor-adaptation-setup.sh
+```
+
+### Git 信息获取失败
+```bash
+# 检查 Git 配置
+git config --get user.name
+git config --get user.email
+
+# 如果为空，请设置：
+git config --global user.name "您的姓名"
+git config --global user.email "您的邮箱"
+```
+
+### 时间戳不正确
+脚本会自动使用系统本地时间。如果时区不正确，请检查系统设置。
+
 ---
 
 *最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
