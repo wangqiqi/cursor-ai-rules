@@ -10,19 +10,38 @@
 ## 📁 包内容
 
 ```
-ai-symbiosis-cursor-rules-v1.0.0/
+ai-symbiosis-cursor-rules-v2.0.0/
 ├── README.md                          # 规则总览
 ├── USAGE.md                           # 详细使用指南
 ├── cursor-adaptation-setup.sh         # 自动适配脚本
+├── scripts/                           # 维护工具脚本
+│   ├── generate_readme.sh            # 动态README生成器
+│   ├── update_readme.sh              # README更新工具
+│   └── init_cursor_growth.sh         # .cursorGrowth初始化
 ├── rules/                             # 规则文件目录
 │   ├── constitution/RULE.md          # AI共生宪法
 │   ├── philosophy/RULE.md            # 协作哲学
-│   ├── evolution/RULE.md             # 规则演进指南
-│   ├── generator/RULE.md             # 规则生成器
+│   ├── generator/RULE.md             # 系统信息获取器
+│   ├── intelligent_evolution/        # 智能演进系统
+│   │   ├── RULE.md                   # 演进规则定义
+│   │   ├── config.json               # 感知配置
+│   │   ├── perception.sh             # 感知分析脚本
+│   │   └── README.md                 # 演进系统说明
+│   ├── system_info/                  # 系统信息工具
+│   │   ├── RULE.md                   # 信息获取规则
+│   │   ├── README.md                 # 工具说明
+│   │   └── test.sh                   # 测试脚本
 │   └── templates/                     # 配置模板
 │       ├── RULE.md
 │       └── templates.json
-└── PUBLISH.md                        # 本文件
+├── PUBLISH.md                        # 本文件
+└── .cursorGrowth/                    # 项目特定数据（运行时生成）
+    ├── growth_meta.json              # 成长元数据
+    ├── data/                         # 感知数据存储
+    ├── evolution_history/            # 规则进化历史
+    ├── user_profile/                 # 用户偏好学习
+    ├── project_metrics/              # 项目指标历史
+    └── adaptations/                  # 规则适配记录
 ```
 
 ## 🎯 核心特性

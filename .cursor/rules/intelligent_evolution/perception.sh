@@ -115,6 +115,28 @@ save_perception_data() {
 EOF
 
     echo "📁 感知数据已保存到: $PERCEPTION_FILE"
+
+    # 更新成长元数据
+    update_growth_meta "perception"
+}
+
+update_growth_meta() {
+    local event_type="$1"
+    local meta_file="${GROWTH_DIR}/growth_meta.json"
+
+    if [ -f "$meta_file" ]; then
+        # 简单的统计更新（实际项目中建议使用jq进行精确JSON操作）
+        local current_count=$(grep -o '"perception_runs": [0-9]*' "$meta_file" | cut -d' ' -f2 || echo "0")
+
+        # 更新感知运行次数
+        sed -i "s/\"perception_runs\": [0-9]*/\"perception_runs\": $((current_count + 1))/" "$meta_file"
+
+        # 如果是第一次感知，更新时间戳
+        if [ "$event_type" = "perception" ] && grep -q '"first_perception": null' "$meta_file"; then
+            local timestamp="$(date '+%Y-%m-%d %H:%M:%S %Z')"
+            sed -i "s/\"first_perception\": null/\"first_perception\": \"$timestamp\"/" "$meta_file"
+        fi
+    fi
 }
 
 # 主程序开始
@@ -124,8 +146,20 @@ echo "================================="
 
 # 配置变量
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-DATA_DIR="${PROJECT_ROOT}/.cursor/data"
+GROWTH_DIR="${PROJECT_ROOT}/.cursorGrowth"
+DATA_DIR="${GROWTH_DIR}/data"
 PERCEPTION_FILE="${DATA_DIR}/perception_$(date +%Y%m%d).json"
+
+# 确保.cursorGrowth目录存在，如果不存在则初始化
+if [ ! -d "$GROWTH_DIR" ]; then
+    echo "🌱 检测到.cursorGrowth不存在，正在初始化..."
+    if [ -f "${PROJECT_ROOT}/.cursor/scripts/init_cursor_growth.sh" ]; then
+        bash "${PROJECT_ROOT}/.cursor/scripts/init_cursor_growth.sh"
+    else
+        echo "⚠️  初始化脚本不存在，请手动创建.cursorGrowth目录"
+        mkdir -p "$DATA_DIR"
+    fi
+fi
 
 # 创建数据目录
 mkdir -p "$DATA_DIR"

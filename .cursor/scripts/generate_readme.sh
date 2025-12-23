@@ -20,9 +20,10 @@ SCRIPT_COUNT="$(find "$RULES_DIR" -name "*.sh" | wc -l)"
 TEMPLATE_COUNT="$(find "$RULES_DIR" -name "*.json" | wc -l)"
 
 # 获取最新感知数据
+GROWTH_DIR="${PROJECT_ROOT}/.cursorGrowth"
 LATEST_PERCEPTION=""
-if [ -d "$DATA_DIR" ]; then
-    LATEST_PERCEPTION_FILE="$(find "$DATA_DIR" -name "perception_*.json" -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -d' ' -f2-)"
+if [ -d "$GROWTH_DIR/data" ]; then
+    LATEST_PERCEPTION_FILE="$(find "$GROWTH_DIR/data" -name "perception_*.json" -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -d' ' -f2-)"
     if [ -f "$LATEST_PERCEPTION_FILE" ]; then
         # 提取关键信息
         TECH_STACK="$(grep -o '"tech_stack": "[^"]*"' "$LATEST_PERCEPTION_FILE" 2>/dev/null | head -1 | sed 's/.*"tech_stack": "\(.*\)".*/\1/' || echo '未检测')"

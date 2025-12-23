@@ -75,7 +75,7 @@ cd /path/to/your/project
 
 感知数据保存在：
 ```
-.cursor/data/perception_YYYYMMDD.json
+.cursorGrowth/data/perception_YYYYMMDD.json
 ```
 
 ### 3. 自定义配置
@@ -169,7 +169,7 @@ cd /path/to/your/project
 git status
 
 # 验证数据文件权限
-ls -la .cursor/data/
+ls -la .cursorGrowth/data/
 
 # 手动运行感知分析
 ./.cursor/rules/auto_evolution/perception.sh
@@ -190,7 +190,7 @@ cp .cursor/rules/auto_evolution/config.json.backup .cursor/rules/auto_evolution/
 # 编辑 config.json 中的 scan_interval 值
 
 # 清理旧数据
-find .cursor/data -name "perception_*.json" -mtime +90 -delete
+find .cursorGrowth/data -name "perception_*.json" -mtime +90 -delete
 ```
 
 ## 架构优势
