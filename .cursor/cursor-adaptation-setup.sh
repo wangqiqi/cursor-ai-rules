@@ -80,10 +80,8 @@ for file in "${FILES_TO_UPDATE[@]}"; do
         sed -i "s/{{AUTHOR_NAME}}/$AUTHOR_NAME/g" "$file"
         sed -i "s/{{AUTHOR_EMAIL}}/$AUTHOR_EMAIL/g" "$file"
 
-        # 替换硬编码的作者信息 (向后兼容)
-        sed -i "s/jwzhou <zhou24388@163.com>/$AUTHOR_NAME <$AUTHOR_EMAIL>/g" "$file"
-        sed -i "s/jwzhou/$AUTHOR_NAME/g" "$file"
-        sed -i "s/zhou24388@163.com/$AUTHOR_EMAIL/g" "$file"
+        # 注意: 此脚本已移除硬编码的个人隐私信息
+        # 如需向后兼容特定格式，请在.env.cursor文件中自定义配置
     fi
 done
 
