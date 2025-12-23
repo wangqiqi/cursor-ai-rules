@@ -1,30 +1,11 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
-<div align="center">
-
-<img src="https://img.shields.io/badge/AI-协作-FF6B6B?style=for-the-badge&logo=robot&logoColor=white" alt="AI协作" />
-<img src="https://img.shields.io/badge/Cursor-编辑器-00D4FF?style=for-the-badge&logo=cursor&logoColor=white" alt="Cursor" />
-<img src="https://img.shields.io/badge/智能-进化-4ECDC4?style=for-the-badge&logo=brain&logoColor=white" alt="智能进化" />
-
-<br>
-
-```
-🤖 ──── 🔄 ──── 👥 ──── 📈 ──── 🚀
-   AI     感知    协作    进化    协作
-   助手    项目    模式    系统    提升
-```
-
-</div>
-
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
 [![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/wangqiqi/cursor-ai-rules?style=for-the-badge&color=yellow)](https://github.com/wangqiqi/cursor-ai-rules/stargazers)
-[![Contributors](https://img.shields.io/github/contributors/wangqiqi/cursor-ai-rules?style=for-the-badge&color=blue)](https://github.com/wangqiqi/cursor-ai-rules/graphs/contributors)
 
 [![Rules](https://img.shields.io/badge/rules-6-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-3-orange?style=flat-square)]()
-[![Downloads](https://img.shields.io/github/downloads/wangqiqi/cursor-ai-rules/total?style=flat-square&color=green)]()
+[![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
 
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
@@ -254,18 +235,6 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 </div>
 
-## 🤝 加入我们，共同进化！
-
-<div align="center">
-
-### 🌟 为什么值得贡献？
-
-- 🚀 **影响数千开发者** - 你的贡献将帮助全球的AI编程协作体验
-- 🧠 **前沿技术探索** - 参与AI协作模式和智能感知算法的创新
-- 👥 **优秀社区** - 与志同道合的开发者交流学习
-- 📈 **快速成长** - 项目正在快速发展，贡献者将获得显著影响力
-
-</div>
 
 ### 💻 贡献方式
 
@@ -291,12 +260,6 @@ git commit -m "✨ Add amazing AI collaboration feature"
 - 💬 **经验分享** - 在Discussions中分享使用心得
 - 🌍 **翻译支持** - 帮助翻译成其他语言
 - 🎨 **设计建议** - 提出UI/UX改进意见
-
-### 🏆 贡献者荣誉墙
-
-<a href="https://github.com/wangqiqi/cursor-ai-rules/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=wangqiqi/cursor-ai-rules" />
-</a>
 
 ---
 
@@ -331,20 +294,6 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 
 ---
 
-## 🎯 路线图
-
-### 🚀 v2.1.0 (即将到来)
-- [ ] 多语言规则模板
-- [ ] 团队协作模式优化
-- [ ] 性能监控仪表板
-
-### 🚀 v3.0.0 (远期规划)
-- [ ] 云端协作同步
-- [ ] AI模型集成优化
-- [ ] 企业级安全增强
-
----
-
 ## 📞 联系我们
 
 - 🐛 **Bug报告**: [Issues](https://github.com/wangqiqi/cursor-ai-rules/issues)
@@ -355,60 +304,3 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 ## 📄 许可证
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
-
-## 🙏 致谢与支持
-
-<div align="center">
-
-### 💝 感谢我们的支持者
-
-特别感谢以下开源项目和社区：
-
-- **[Cursor](https://cursor.com)** - 提供优秀的AI编程环境基础
-- **开源社区贡献者** - 为AI协作规范贡献智慧和经验
-- **早期采用者** - 提供宝贵的使用反馈和建议
-
-### ⭐ 支持我们
-
-如果这个项目对你有帮助，请给我们一个 ⭐ Star！
-
-### 🤝 成为贡献者
-
-**你的贡献很重要！** 无论大小，我们都欢迎各种形式的贡献。
-
-[立即开始贡献 🚀](#-加入我们共同进化)
-
----
-
-## 📈 项目统计
-
-<div align="center">
-
-![GitHub Repo stars](https://img.shields.io/github/stars/wangqiqi/cursor-ai-rules?style=social)
-![GitHub forks](https://img.shields.io/github/forks/wangqiqi/cursor-ai-rules?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/wangqiqi/cursor-ai-rules?style=social)
-
-[![GitHub license](https://img.shields.io/github/license/wangqiqi/cursor-ai-rules)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/wangqiqi/cursor-ai-rules)](https://github.com/wangqiqi/cursor-ai-rules/commits/main)
-[![GitHub issues](https://img.shields.io/github/issues/wangqiqi/cursor-ai-rules)](https://github.com/wangqiqi/cursor-ai-rules/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/wangqiqi/cursor-ai-rules)](https://github.com/wangqiqi/cursor-ai-rules/pulls)
-
-</div>
-
----
-
-<div align="center">
-
-# 🎉 **准备好让AI成为你的超级编程伙伴了吗？**
-
-## 🚀 **现在就开始你的AI协作进化之旅！**
-
-### ⭐ 如果这个项目对你有帮助，请给我们一个Star！
-
-[![Star History](https://api.star-history.com/svg?repos=wangqiqi/cursor-ai-rules&type=Date)](https://star-history.com/#wangqiqi/cursor-ai-rules&Date)
-
----
-
-*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} | 规则版本: 2.0.0*
-
-</div>
