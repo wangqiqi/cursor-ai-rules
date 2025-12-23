@@ -1,0 +1,28 @@
+{
+  "name": "cursor-ai-rules",
+  "version": "2.0.0",
+  "description": "智能、自适应的AI协作规则系统",
+  "main": "index.js",
+  "scripts": {
+    "setup": "./.cursor/cursor-adaptation-setup.sh",
+    "perceive": "./.cursor/rules/intelligent_evolution/perception.sh",
+    "update-readme": "./.cursor/scripts/update_readme.sh",
+    "test-system": "./.cursor/rules/system_info/test.sh",
+    "analyze": "npm run perceive && npm run update-readme"
+  },
+  "keywords": [
+    "cursor",
+    "ai",
+    "collaboration",
+    "rules",
+    "intelligent",
+    "adaptive"
+  ],
+  "author": "AI协作社区",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangqiqi/cursor-ai-rules.git"
+  },
+  "homepage": "https://github.com/wangqiqi/cursor-ai-rules#readme"
+}

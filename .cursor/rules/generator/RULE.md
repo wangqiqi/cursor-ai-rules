@@ -156,9 +156,11 @@ alwaysApply: false
 - `{{QUALITY_LEVEL}}`: 质量标准
 - `{{SECURITY_LEVEL}}`: 安全等级
 - `{{RULES_VERSION}}`: 规则版本
-- `2025-12-21 12:06:50 CST`: 生成时间（本地时区）
+- `{{GENERATION_TIME}}`: 生成时间（本地时区）
 - `{{AUTHOR_NAME}}`: Git用户姓名
 - `{{AUTHOR_EMAIL}}`: Git用户邮箱
+- `{{PROJECT_ROOT}}`: 项目根目录路径
+- `{{WORK_DIR}}`: 当前工作目录
 
 ### 动态变量替换 (Dynamic Variable Replacement)
 这些变量在规则应用时会被自动替换为当前用户的环境信息：
@@ -171,6 +173,10 @@ alwaysApply: false
 # 获取Git用户信息
 {{AUTHOR_NAME}} → $(git config --get user.name)
 {{AUTHOR_EMAIL}} → $(git config --get user.email)
+
+# 获取项目路径信息
+{{PROJECT_ROOT}} → $(git rev-parse --show-toplevel 2>/dev/null || pwd)
+{{WORK_DIR}} → $(pwd)
 ```
 
 **自动适配机制**：

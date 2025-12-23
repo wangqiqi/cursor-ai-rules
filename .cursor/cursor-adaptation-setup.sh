@@ -80,10 +80,8 @@ for file in "${FILES_TO_UPDATE[@]}"; do
         sed -i "s/{{AUTHOR_NAME}}/$AUTHOR_NAME/g" "$file"
         sed -i "s/{{AUTHOR_EMAIL}}/$AUTHOR_EMAIL/g" "$file"
 
-        # 替换硬编码的作者信息 (向后兼容)
-        sed -i "s/jwzhou <zhou24388@163.com>/$AUTHOR_NAME <$AUTHOR_EMAIL>/g" "$file"
-        sed -i "s/jwzhou/$AUTHOR_NAME/g" "$file"
-        sed -i "s/zhou24388@163.com/$AUTHOR_EMAIL/g" "$file"
+        # 注意: 此脚本已移除硬编码的个人隐私信息
+        # 如需向后兼容特定格式，请在.env.cursor文件中自定义配置
     fi
 done
 
@@ -92,8 +90,108 @@ echo "✅ 适配完成！"
 echo ""
 echo "📁 备份文件保存在: $BACKUP_DIR"
 echo ""
-echo "🎯 规则已适配到您的环境："
+
+# 初始化智能进化数据存储结构
+echo "🌱 初始化智能进化数据存储..."
+GROWTH_DIR=".cursorGrowth"
+
+# 检查是否已存在
+if [ -d "$GROWTH_DIR" ]; then
+    echo "ℹ️  .cursorGrowth 目录已存在，跳过初始化"
+else
+    # 创建目录结构
+    echo "📁 创建目录结构..."
+    mkdir -p "${GROWTH_DIR}/data"
+    mkdir -p "${GROWTH_DIR}/evolution_history"
+    mkdir -p "${GROWTH_DIR}/user_profile"
+    mkdir -p "${GROWTH_DIR}/project_metrics"
+    mkdir -p "${GROWTH_DIR}/adaptations"
+
+    # 获取项目基本信息
+    TECH_STACK="unknown"
+    if [ -f "package.json" ]; then
+        TECH_STACK="Node.js/React"
+    elif [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
+        TECH_STACK="Python"
+    elif [ -f "go.mod" ]; then
+        TECH_STACK="Go"
+    elif [ -f "Cargo.toml" ]; then
+        TECH_STACK="Rust"
+    fi
+
+    TEAM_SIZE="personal"
+    COMMIT_COUNT=$(git log --oneline 2>/dev/null | wc -l || echo "0")
+    if [ "$COMMIT_COUNT" -gt 50 ]; then
+        TEAM_SIZE="team"
+    elif [ "$COMMIT_COUNT" -gt 10 ]; then
+        TEAM_SIZE="small_team"
+    fi
+
+    # 创建初始元数据文件
+    echo "📝 创建成长元数据..."
+    cat > "${GROWTH_DIR}/growth_meta.json" << EOF
+{
+  "version": "1.0.0",
+  "created_at": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
+  "project_root": "$(pwd)",
+  "cursor_rules_version": "2.0.0",
+  "growth_phases": {
+    "initialization": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
+    "first_perception": null,
+    "first_adaptation": null
+  },
+  "statistics": {
+    "perception_runs": 0,
+    "evolution_events": 0,
+    "user_interactions": 0,
+    "total_adaptations": 0
+  },
+  "project_characteristics": {
+    "tech_stack": "${TECH_STACK}",
+    "team_size": "${TEAM_SIZE}",
+    "development_stage": "early",
+    "complexity_level": "low"
+  }
+}
+EOF
+
+    # 创建初始用户配置文件
+    cat > "${GROWTH_DIR}/user_profile/profile.json" << EOF
+{
+  "created_at": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
+  "communication_preferences": {
+    "language": "auto",
+    "verbosity": "balanced",
+    "technical_detail_level": "intermediate"
+  },
+  "interaction_patterns": {
+    "preferred_response_style": "helpful",
+    "feedback_frequency": "adaptive",
+    "learning_rate": "medium"
+  },
+  "technical_focus": {
+    "primary_concerns": ["reliability", "maintainability"],
+    "avoided_topics": [],
+    "preferred_solutions": []
+  },
+  "collaboration_style": {
+    "decision_making": "consultative",
+    "autonomy_level": "guided",
+    "feedback_style": "constructive"
+  }
+}
+EOF
+
+    echo "📊 检测到项目特征:"
+    echo "   🛠️  技术栈: ${TECH_STACK}"
+    echo "   👥 团队规模: ${TEAM_SIZE}"
+    echo "   📈 提交数量: ${COMMIT_COUNT}"
+fi
+
+echo ""
+echo "🎯 规则已完全适配到您的环境："
 echo "   - 时间戳: $CURRENT_TIME"
 echo "   - 作者信息: $AUTHOR_NAME <$AUTHOR_EMAIL>"
+echo "   - 数据存储: $GROWTH_DIR"
 echo ""
 echo "💡 现在您可以开始使用这些个性化的AI协作规则了！"
