@@ -170,3 +170,13 @@ save_perception_data "$TECH_STACK" "$TEAM_INFO" "$PROJECT_SCALE" "$DEV_STAGE" "$
 
 echo ""
 echo "✅ 感知分析完成"
+
+# 自动更新README.md
+echo ""
+echo "🔄 自动更新README.md..."
+if [ -f "${PROJECT_ROOT}/.cursor/scripts/generate_readme.sh" ]; then
+    bash "${PROJECT_ROOT}/.cursor/scripts/generate_readme.sh" > /dev/null 2>&1
+    echo "📝 README.md 已更新，包含最新的感知数据"
+else
+    echo "⚠️  README生成器未找到，跳过自动更新"
+fi
