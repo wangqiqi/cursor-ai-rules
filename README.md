@@ -294,13 +294,6 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 
 ---
 
-## 📞 联系我们
-
-- 🐛 **Bug报告**: [Issues](https://github.com/wangqiqi/cursor-ai-rules/issues)
-- 💡 **功能建议**: [Discussions](https://github.com/wangqiqi/cursor-ai-rules/discussions)
-- 💬 **交流群组**: 加入我们的Discord社区
-- 📧 **邮件联系**: cursor-ai-rules@outlook.com
-
 ## 📄 许可证
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
