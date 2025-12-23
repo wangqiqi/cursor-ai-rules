@@ -372,8 +372,6 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 
 如果这个项目对你有帮助，请给我们一个 ⭐ Star！
 
-[![Star History Chart](https://api.star-history.com/svg?repos=wangqiqi/cursor-ai-rules&type=Date)](https://star-history.com/#wangqiqi/cursor-ai-rules&Date)
-
 ### 🤝 成为贡献者
 
 **你的贡献很重要！** 无论大小，我们都欢迎各种形式的贡献。
@@ -400,8 +398,6 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 ---
 
 <div align="center">
-
----
 
 # 🎉 **准备好让AI成为你的超级编程伙伴了吗？**
 
