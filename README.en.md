@@ -260,8 +260,8 @@ After running `./.cursor/rules/intelligent_evolution/perception.sh`, AI immediat
 
 #### 🚀 Code Contributions
 ```bash
-# 1. Fork and clone (assuming repo URL is https://github.com/username/cursor-ai-rules.git)
-git clone https://github.com/username/cursor-ai-rules.git
+# 1. Fork and clone (repo URL: https://github.com/wangqiqi/cursor-ai-rules)
+git clone https://github.com/wangqiqi/cursor-ai-rules.git
 cd cursor-ai-rules
 
 # 2. Create feature branch
