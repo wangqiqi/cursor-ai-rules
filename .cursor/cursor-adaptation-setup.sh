@@ -1,23 +1,119 @@
 #!/bin/bash
 
-# AI共生项目规则自动适配脚本
-# 用于将下载的规则自动适配到当前用户的环境
+# 🚀 Cursor AI Rules - 智能环境适配器 v2.0
+# 高性能一键初始化和环境适配
 
 set -e
 
-echo "🚀 AI共生项目规则自动适配工具"
-echo "================================="
-
-# 获取当前用户信息
-CURRENT_TIME=$(date '+%Y-%m-%d %H:%M:%S %Z')
-CURRENT_TIME_ISO=$(date '+%Y-%m-%dT%H:%M:%S+08:00')
-AUTHOR_NAME=$(git config --get user.name 2>/dev/null || echo "Unknown")
-AUTHOR_EMAIL=$(git config --get user.email 2>/dev/null || echo "unknown@example.com")
-
-echo "📋 当前环境信息："
-echo "   时间: $CURRENT_TIME"
-echo "   用户: $AUTHOR_NAME <$AUTHOR_EMAIL>"
+echo "🚀 Cursor AI Rules - 智能环境适配器 v2.0"
+echo "============================================="
+echo "⚡ 特性: 一键初始化 | 环境检测 | 智能适配"
 echo ""
+
+# 🎯 获取环境信息（带降级处理）
+get_env_info() {
+    echo "📋 正在检测环境信息..."
+
+    # 时间信息
+    CURRENT_TIME=$(date '+%Y-%m-%d %H:%M:%S %Z')
+    CURRENT_TIME_ISO=$(date '+%Y-%m-%dT%H:%M:%S+08:00')
+
+    # Git用户信息（优雅降级）
+    if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+        AUTHOR_NAME=$(git config --get user.name 2>/dev/null || echo "本地用户")
+        AUTHOR_EMAIL=$(git config --get user.email 2>/dev/null || echo "local@example.com")
+        PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+    else
+        AUTHOR_NAME="本地用户"
+        AUTHOR_EMAIL="local@example.com"
+        PROJECT_ROOT=$(pwd)
+        echo "⚠️  未检测到Git环境，使用默认配置"
+    fi
+
+    echo "   ✅ 时间: $CURRENT_TIME"
+    echo "   ✅ 用户: $AUTHOR_NAME <$AUTHOR_EMAIL>"
+    echo "   ✅ 项目: $PROJECT_ROOT"
+    echo ""
+}
+
+# 🔍 环境完整性检查
+check_environment() {
+    echo "🔍 正在检查环境完整性..."
+
+    local issues=0
+
+    # 检查jq依赖
+    if ! command -v jq >/dev/null 2>&1; then
+        echo "   ⚠️  缺少jq工具，智能感知功能将受限"
+        echo "      建议安装: apt-get install jq 或 brew install jq"
+        issues=$((issues + 1))
+    else
+        echo "   ✅ jq工具已安装"
+    fi
+
+    # 检查基本命令
+    for cmd in find grep sed; do
+        if ! command -v $cmd >/dev/null 2>&1; then
+            echo "   ❌ 缺少必要命令: $cmd"
+            issues=$((issues + 1))
+        fi
+    done
+
+    if [ $issues -eq 0 ]; then
+        echo "   ✅ 环境完整性检查通过"
+    fi
+
+    echo ""
+    return $issues
+}
+
+# 🏗️ 初始化.cursorGrowth目录结构
+init_growth_structure() {
+    echo "🏗️ 正在初始化智能进化存储结构..."
+
+    local GROWTH_DIR="${PROJECT_ROOT}/.cursorGrowth"
+
+    if [ ! -d "$GROWTH_DIR" ]; then
+        mkdir -p "${GROWTH_DIR}/data"
+        mkdir -p "${GROWTH_DIR}/cache"
+        mkdir -p "${GROWTH_DIR}/evolution_history"
+        mkdir -p "${GROWTH_DIR}/user_profile"
+        mkdir -p "${GROWTH_DIR}/project_metrics"
+        mkdir -p "${GROWTH_DIR}/adaptations"
+
+        # 创建初始元数据文件
+        cat > "${GROWTH_DIR}/growth_meta.json" << EOF
+{
+  "version": "2.0.0",
+  "created_at": "$CURRENT_TIME",
+  "project_root": "$PROJECT_ROOT",
+  "cursor_rules_version": "2.0.0",
+  "performance_mode": "high_efficiency",
+  "growth_phases": {
+    "initialization": "$CURRENT_TIME",
+    "first_perception": null,
+    "first_adaptation": null
+  },
+  "statistics": {
+    "perception_runs": 0,
+    "evolution_events": 0,
+    "user_interactions": 0,
+    "token_savings": 0
+  },
+  "features": {
+    "single_step_perception": true,
+    "smart_cache": true,
+    "graceful_degradation": true
+  }
+}
+EOF
+        echo "   ✅ .cursorGrowth目录结构创建完成"
+    else
+        echo "   ℹ️  .cursorGrowth目录已存在，跳过初始化"
+    fi
+
+    echo ""
+}
 
 # 设置环境变量
 # 确保在项目根目录运行
@@ -25,9 +121,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 检查脚本是否在 .cursor 目录中运行
 if [[ "$(basename "$SCRIPT_DIR")" != ".cursor" ]]; then
-    echo "❌ 错误: 请从项目根目录运行此脚本: ./cursor/cursor-adaptation-setup.sh"
+    echo "❌ 错误: 请从项目根目录运行此脚本"
+    echo "   正确用法: ./cursor/cursor-adaptation-setup.sh"
     exit 1
 fi
+
+# 执行初始化流程
+get_env_info
+check_environment
+init_growth_structure
 
 # 切换到项目根目录（.cursor 的父目录）
 cd "$(dirname "$SCRIPT_DIR")"

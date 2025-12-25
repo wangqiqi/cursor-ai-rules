@@ -1,0 +1,38 @@
+{
+  "name": "eslint-integration",
+  "version": "1.0.0",
+  "description": "ESLint代码质量检查集成，提供自动代码检查和修复建议",
+  "type": "integration",
+  "triggers": [
+    "file_save",
+    "pre_commit",
+    "manual"
+  ],
+  "dependencies": [
+    "eslint",
+    "node",
+    "npm"
+  ],
+  "config": {
+    "rules": {
+      "semi": [
+        "error",
+        "always"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "no-unused-vars": "warn",
+      "no-console": "off"
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "auto_fix": true,
+    "check_on_save": true
+  },
+  "enabled": true,
+  "author": "Cursor AI Rules",
+  "homepage": "https://github.com/wangqiqi/cursor-ai-rules"
+}
