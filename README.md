@@ -56,6 +56,7 @@
 - ✅ **自适应调整** - 基于感知数据自动优化规则
 - ✅ **渐进进化** - 小步快跑，确保平滑过渡
 - ✅ **感知分析** - 运行 `./.cursor/rules/intelligent_evolution/perception.sh` 获取项目洞察
+- ✅ **开箱即用** - 无需配置，复制即用，支持任何项目、任何语言
 
 ### 🔧 自适应环境
 - 🔍 **自动环境检测** - 获取本地时间、Git信息和项目状态
@@ -137,9 +138,9 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 
 | 📊 指标 | 🎯 状态 | 📈 趋势 |
 |--------|--------|--------|
-| **技术栈感知** | Node.js/React | ✅ 已识别 |
-| **团队协作** | 个人开发 | 🎯 优化中 |
-| **项目规模** | 轻量级项目 | 📏 12个文件 |
+| **通用性** | 任何项目 | ✅ 开箱即用 |
+| **语言支持** | 多语言 | 🔍 自动检测 |
+| **部署时间** | <5秒 | ⚡ 即插即用 |
 | **规则覆盖** | 6个规则模块 | 🛡️ 全方位保护 |
 | **智能感知** | 已激活 | 🧠 持续学习 |
 
@@ -152,12 +153,15 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 ### ⚡ 三步安装，立即体验
 
 ```bash
-# 1⃣ 获取规则包
-git clone https://github.com/wangqiqi/cursor-ai-rules.git
-cp -r cursor-ai-rules/.cursor ~/your-project/
+# 1⃣ 获取规则包（复制.cursor目录到项目根目录）
+cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
+
+# 或者从Git仓库克隆：
+# git clone <your-repo-url> cursor-ai-rules
+# cp -r cursor-ai-rules/.cursor your-project/
 
 # 2⃣ 进入项目并运行适配
-cd ~/your-project
+cd your-project
 ./.cursor/cursor-adaptation-setup.sh
 
 # 3⃣ 🎉 完成！AI现在真正理解你的项目了
@@ -208,7 +212,7 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 | **环境适配** | 手动配置 | 🔄 自动感知项目环境 |
 | **协作模式** | 固定规则 | 🎯 基于团队规模智能调整 |
 | **学习能力** | 无记忆 | 🧠 持续学习用户偏好 |
-| **部署复杂度** | 高 | ⚡ 3分钟一键安装 |
+| **部署复杂度** | 高 | ⚡ 60秒复制即用 |
 
 </div>
 
@@ -240,8 +244,8 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 #### 🚀 代码贡献
 ```bash
-# 1. Fork 并克隆
-git clone https://github.com/wangqiqi/cursor-ai-rules.git
+# 1. Fork 并克隆（假设仓库URL为 https://github.com/username/cursor-ai-rules.git）
+git clone https://github.com/username/cursor-ai-rules.git
 cd cursor-ai-rules
 
 # 2. 创建特性分支
@@ -271,7 +275,7 @@ git commit -m "✨ Add amazing AI collaboration feature"
 A: 不会！规则系统设计为非侵入式的，只会增强AI的协作能力。
 
 **Q: 支持哪些编程语言？**
-A: 支持所有主流语言！系统会自动检测你的技术栈并调整规则。
+A: 支持所有主流语言！系统自动检测技术栈，包括JavaScript/TypeScript, Python, Go, Rust, Java等。
 
 **Q: 需要付费吗？**
 A: 完全免费！采用MIT许可证，永远免费使用。
