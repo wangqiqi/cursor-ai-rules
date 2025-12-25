@@ -12,106 +12,74 @@ alwaysApply: false
 
 自动化演进系统通过持续感知项目状态和用户行为，实现规则的智能优化和自动调整。
 
-## 📊 感知维度 (Perception Dimensions)
+## 📊 自动化感知接口 (Automated Perception Interface)
 
-### 项目变化感知 (Project Change Detection)
+自动化演进系统基于 `@intelligent_evolution` 的感知数据，实现规则的自动优化。
 
-#### 技术栈感知 (Technology Stack Awareness)
-系统自动检测技术栈变化，包括：
-- 框架版本升级
-- 新依赖引入
-- 构建工具变更
-- 语言特性更新
+### 数据源 (Data Sources)
+- **项目状态**: 引用 intelligent_evolution 的项目变化感知
+- **用户行为**: 使用 intelligent_evolution 的用户行为分析
+- **系统指标**: 集成 evolution-governance 的监控数据
 
-#### 团队动态感知 (Team Dynamics Awareness)
-监控团队协作模式变化：
-- 成员数量变化
-- 角色结构调整
-- 协作习惯演变
-- 沟通模式转变
+### 感知触发 (Perception Triggers)
+系统通过以下方式获取感知数据：
+- 定时调用 `perception.sh` 脚本
+- 订阅 `@intelligent_evolution` 的数据更新事件
+- 集成 `@evolution-governance` 的监控指标
 
-#### 项目规模感知 (Project Scale Awareness)
-跟踪项目复杂度指标：
-- 代码行数增长趋势
-- 文件和目录结构变化
-- 模块化程度评估
-- 技术债务积累
+## 🤖 自动化优化算法 (Automated Optimization Algorithms)
 
-#### 开发阶段感知 (Development Stage Awareness)
-识别项目生命周期阶段：
-- 从概念验证到产品化
-- 从单人开发到团队协作
-- 从快速原型到稳定维护
+### 核心算法 (Core Algorithms)
 
-### 用户行为感知 (User Behavior Analysis)
+#### 强化学习优化 (Reinforcement Learning)
+```python
+# 基于历史数据训练规则参数优化模型
+class RuleOptimizer:
+    def __init__(self, perception_data, governance_metrics):
+        self.perception = perception_data
+        self.metrics = governance_metrics
 
-#### 沟通模式学习 (Communication Pattern Learning)
-```json
-{
-  "communication_style": {
-    "preferred_language": "zh-CN",
-    "detail_level": "balanced",
-    "confirmation_frequency": "medium"
-  },
-  "technical_focus": {
-    "testing_emphasis": 0.8,
-    "security_concern": 0.7,
-    "performance_priority": 0.6
-  }
-}
+    def optimize_rules(self):
+        # 分析感知数据变化趋势
+        trends = self.analyze_trends()
+
+        # 计算最优参数组合
+        optimal_params = self.calculate_optimal(trends)
+
+        # 生成优化建议
+        suggestions = self.generate_suggestions(optimal_params)
+
+        return suggestions
 ```
 
-#### 偏好模式识别 (Preference Pattern Recognition)
-系统学习用户的协作偏好：
-- 自主执行 vs 逐步指导
-- 简洁响应 vs 详细解释
-- 主动建议 vs 被动响应
+#### 模式识别引擎 (Pattern Recognition Engine)
+- **聚类分析**: 识别用户群体和行为模式
+- **趋势预测**: 基于历史数据预测未来需求
+- **异常检测**: 识别异常行为和潜在问题
 
-## 🔄 自动优化流程 (Automatic Optimization Process)
-
-### 触发条件 (Trigger Conditions)
-
-#### 阈值触发 (Threshold-Based Triggers)
+#### 决策树优化 (Decision Tree Optimization)
 ```yaml
-evolution_triggers:
-  project_scale_change:
-    threshold: 0.25
-    cooldown_days: 7
-  team_change:
-    threshold: 1
-    cooldown_days: 14
-  user_preference_accumulation:
-    threshold: 10
-    cooldown_days: 3
+optimization_decision_tree:
+  root: "perception_data_changed"
+  branches:
+    - condition: "project_scale > 25%"
+      action: "relax_code_quality_rules"
+      reason: "大项目需要平衡效率与质量"
+    - condition: "team_size > 10"
+      action: "enable_collaboration_gates"
+      reason: "大团队需要更严格的协作控制"
+    - condition: "user_satisfaction < 70%"
+      action: "adjust_interaction_mode"
+      reason: "提升用户体验优先级"
 ```
 
-#### 模式触发 (Pattern-Based Triggers)
-```yaml
-pattern_triggers:
-  repeated_issues:
-    threshold: 3
-    time_window_days: 14
-  efficiency_patterns:
-    threshold: 5
-    success_rate_threshold: 0.8
-```
+### 执行机制 (Execution Mechanisms)
 
-### 优化策略 (Optimization Strategies)
-
-#### 规则参数调整 (Rule Parameter Tuning)
-- 根据项目规模调整规则严格程度
-- 根据团队成熟度优化协作流程
-- 根据用户偏好定制交互模式
-
-#### 新规则生成 (New Rule Generation)
-- 基于常见问题模式创建预防性规则
-- 根据最佳实践识别生成指导性规则
-- 基于用户反馈创建改进性规则
-
-#### 规则冲突解决 (Rule Conflict Resolution)
-- 自动检测规则间矛盾
-- 基于优先级和上下文选择适用规则
-- 生成冲突解决建议
+#### 渐进式应用 (Gradual Application)
+1. **评估阶段**: 计算优化影响和风险
+2. **试点阶段**: 小范围测试优化效果
+3. **扩展阶段**: 逐步扩大应用范围
+4. **验证阶段**: 确认优化效果并固化改进
 
 ## 📈 学习算法 (Learning Algorithms)
 
@@ -141,36 +109,29 @@ pattern_triggers:
 - 用户满意度调查和分析
 - 性能指标监控和趋势分析
 
-## 🛡️ 安全保障 (Safety Safeguards)
+## 🛡️ 安全集成 (Safety Integration)
 
-### 渐进式部署 (Gradual Rollout)
-- 新规则从低风险环境开始测试
-- 逐步扩大应用范围
-- 实时监控异常情况
+自动化演进系统与 `@evolution-governance` 深度集成，确保所有自动化操作符合安全标准：
 
-### 回滚机制 (Rollback Mechanisms)
-- 自动检测性能下降
-- 一键回滚到上一版本
-- 保留完整的变更历史
+### 治理集成 (Governance Integration)
+- **风险评估**: 调用 governance 的风险控制机制
+- **质量验证**: 使用 governance 的质量控制流程
+- **合规检查**: 遵循 governance 的合规性要求
 
-### 人工监督 (Human Oversight)
-- 重要变更需要人工审核
-- 定期人工评估自动化效果
-- 紧急情况下可手动干预
+### 安全执行 (Safe Execution)
+- **渐进部署**: 遵循 governance 的灰度发布策略
+- **监控告警**: 集成 governance 的监控体系
+- **应急响应**: 使用 governance 的应急响应流程
 
-## 📊 性能监控 (Performance Monitoring)
+## 📊 效果追踪 (Effectiveness Tracking)
 
-### 效率指标 (Efficiency Metrics)
-- 规则执行时间
-- 系统响应延迟
-- 资源使用情况
+自动化系统通过 `@evolution-governance` 的监控体系追踪优化效果：
 
-### 准确性指标 (Accuracy Metrics)
-- 规则触发准确率
-- 用户偏好预测准确度
-- 自动化优化成功率
+### 关键指标 (Key Metrics)
+- **自动化效率**: 规则优化响应时间和成功率
+- **用户影响**: 自动化调整对用户体验的影响
+- **系统稳定性**: 自动化操作的可靠性和异常率
 
-### 稳定性指标 (Stability Metrics)
-- 系统可用性百分比
-- 异常情况发生率
-- 恢复时间指标
+### 数据集成 (Data Integration)
+所有性能数据通过 governance 的监控系统统一收集和分析，确保数据一致性和可追溯性。
+

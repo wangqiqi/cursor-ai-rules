@@ -4,6 +4,8 @@
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
+📚 **[使用指南](docs/usage-guide.md)** | **[智能进化指南](docs/intelligent-evolution-guide.md)** | **[系统信息指南](docs/system-info-guide.md)** | **[团队规则示例](docs/team-rules-example.md)** | **[远程规则导入](docs/remote-rules-guide.md)**
+
 采用 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules) 定义的 AI 协作规范，结合单步多任务感知、智能缓存和插件化架构，实现高效、安全的人机协作。
 
 ## ⚡ 核心特性
