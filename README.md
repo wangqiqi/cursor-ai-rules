@@ -1,19 +1,17 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-16-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
-[📖 文档](#-cursor-ai-rules---让ai成为你的超级编程伙伴) • [🚀 快速开始](#-快速开始-60秒完成) • [💡 特性](#-核心特性) • [🤝 贡献](#-加入我们共同进化)
-
-</div>
+[📖 文档](#-cursor-ai-rules---让ai成为你的超级编程伙伴) • [🚀 快速开始](#-快速开始-60秒完成) • [💡 特性](#-核心特性) • [🤝 贡献](#-贡献方式)
 
 ---
 
@@ -152,7 +150,7 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 | **通用性** | 任何项目 | ✅ 开箱即用 |
 | **语言支持** | 多语言 | 🔍 自动检测 |
 | **部署时间** | <5秒 | ⚡ 即插即用 |
-| **规则覆盖** | 11个规则模块 | 🛡️ 全方位保护 |
+| **规则覆盖** | 14个规则模块 | 🛡️ 全方位保护 |
 | **智能感知** | 已激活 | 🧠 持续学习 |
 
 </div>

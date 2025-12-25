@@ -1,19 +1,17 @@
 # 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-16-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
 **🌟 Revolutionary AI Programming Collaboration Experience - Let AI Truly Understand Your Project and Needs**
 
-[📖 Documentation](#-cursor-ai-rules---make-ai-your-super-programming-partner) • [🚀 Quick Start](#-quick-start-60-seconds-setup) • [💡 Features](#-core-features) • [🤝 Contribute](#-join-us-for-co-evolution)
-
-</div>
+[📖 Documentation](#-cursor-ai-rules---make-ai-your-super-programming-partner) • [🚀 Quick Start](#-quick-start-60-seconds-setup) • [💡 Features](#-core-features) • [🤝 Contribute](#-contribution-methods)
 
 ---
 
@@ -149,7 +147,7 @@ AI: 🧠 Perceived your project uses Node.js + MongoDB...
 | **Universality** | Any Project | ✅ Out-of-the-box |
 | **Language Support** | Multi-language | 🔍 Auto-detection |
 | **Deployment Time** | <5 seconds | ⚡ Plug-and-play |
-| **Rule Coverage** | 11 Rule Modules | 🛡️ Comprehensive Protection |
+| **Rule Coverage** | 14 Rule Modules | 🛡️ Comprehensive Protection |
 | **Intelligent Perception** | Activated | 🧠 Continuous Learning |
 
 </div>
