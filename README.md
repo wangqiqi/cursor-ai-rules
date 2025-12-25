@@ -263,8 +263,8 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 #### 🚀 代码贡献
 ```bash
-# 1. Fork 并克隆（假设仓库URL为 https://github.com/username/cursor-ai-rules.git）
-git clone https://github.com/username/cursor-ai-rules.git
+# 1. Fork 并克隆（仓库URL: https://github.com/wangqiqi/cursor-ai-rules）
+git clone https://github.com/wangqiqi/cursor-ai-rules.git
 cd cursor-ai-rules
 
 # 2. 创建特性分支
