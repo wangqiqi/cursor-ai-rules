@@ -1,12 +1,12 @@
-# 🚫 DEPRECATED - Content Merged
+# 🚫 DEPRECATED - Content Merged and Synchronized
 
-This file has been deprecated and its content has been merged into `README.en.md`.
+This file has been **completely deprecated** and its content has been merged into both README files.
 
 For project documentation, please refer to:
-- `README.md` (Chinese)
-- `README.en.md` (English)
+- `README.md` (Chinese) - 完整同步
+- `README.en.md` (English) - 完整同步
 - `docs/` directory for guides and examples
 
 ---
 
-*This file is kept for backward compatibility but should not be used.*
+*This file is kept only for backward compatibility and should not be used. All content has been synchronized between Chinese and English versions.*
