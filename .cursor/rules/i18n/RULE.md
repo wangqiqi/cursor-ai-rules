@@ -5,7 +5,7 @@ alwaysApply: true
 
 # 🌍 国际化支持系统 (Internationalization Support System)
 
-*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 ## 🎯 核心理念 (Core Philosophy)
 

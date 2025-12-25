@@ -5,7 +5,7 @@ alwaysApply: false
 
 # 🛡️ 演进治理机制 (Evolution Governance)
 
-*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 ## 🎯 治理原则 (Governance Principles)
 

@@ -1,4 +1,4 @@
-# 🚀 Cursor AI Rules - Intelligent AI Collaboration System v2.0
+# 🚀 Cursor AI Rules - Intelligent AI Collaboration System v3.0.0
 
 **High Performance · Intelligent Evolution · Plugin Extensibility**
 
@@ -326,7 +326,7 @@ npm install -g eslint  # Example
 
 ## 📊 Technical Metrics
 
-| Metric | v1.0 | v2.0 | Improvement |
+| Metric | v1.0 | v3.0.0 | Improvement |
 |--------|------|------|-------------|
 | Initialization Time | ~30s | ~5s | **83%↑** |
 | Perception Time | ~10s | ~1s | **90%↑** |
@@ -372,6 +372,6 @@ npm install -g eslint  # Example
 
 ---
 
-*🚀 Cursor AI Rules v2.0 - Making AI collaboration simple and powerful*
+*🚀 Cursor AI Rules v3.0.0 - Making AI collaboration simple and powerful*
 *Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 *Based on Cursor official specifications, integrated with intelligent evolution technology and plugin ecosystem*

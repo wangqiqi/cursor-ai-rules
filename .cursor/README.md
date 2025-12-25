@@ -1,4 +1,4 @@
-# 🚀 Cursor AI Rules - 智能AI协作系统 v2.0
+# 🚀 Cursor AI Rules - 智能AI协作系统 v3.0.0
 
 **高性能 · 智能进化 · 插件化扩展**
 
@@ -325,7 +325,7 @@ npm install -g eslint  # 示例
 
 ## 📊 技术指标
 
-| 指标 | v1.0 | v2.0 | 提升 |
+| 指标 | v1.0 | v3.0.0 | 提升 |
 |------|------|------|------|
 | 初始化时间 | ~30s | ~5s | **83%↑** |
 | 感知耗时 | ~10s | ~1s | **90%↑** |
@@ -371,6 +371,6 @@ npm install -g eslint  # 示例
 
 ---
 
-*🚀 Cursor AI Rules v2.0 - 让AI协作变得简单而强大*
+*🚀 Cursor AI Rules v3.0.0 - 让AI协作变得简单而强大*
 *最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 *基于 Cursor 官方规范，集成智能进化技术和插件生态系统*

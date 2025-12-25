@@ -32,7 +32,7 @@ cp RULE.md .cursor/rules/system_info/
 
 ```markdown
 # 文档模板
-*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 项目根目录: {{PROJECT_ROOT}}
 工作目录: {{WORK_DIR}}

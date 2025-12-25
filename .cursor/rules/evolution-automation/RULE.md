@@ -6,7 +6,7 @@ alwaysApply: false
 
 # 🤖 自动化演进系统 (Automated Evolution System)
 
-*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 
 ## 🎯 核心机制 (Core Mechanisms)
 

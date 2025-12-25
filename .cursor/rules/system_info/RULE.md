@@ -6,7 +6,7 @@ alwaysApply: true
 
 # 🔧 系统信息获取器 (System Information Manager)
 
-*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
 
 ## 核心功能概述 (Core Functions)
 
