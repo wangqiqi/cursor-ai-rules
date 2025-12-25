@@ -1,6 +1,6 @@
 # 🚀 Cursor AI Rules - Intelligent AI Collaboration System v3.0.0
 
-**High Performance · Intelligent Evolution · Plugin Extensibility**
+**High Performance · Intelligent Evolution · Rule Extensibility**
 
 [![GitHub](https://img.shields.io/badge/GitHub-wangqiqi/cursor--ai--rules-blue?logo=github)](https://github.com/wangqiqi/cursor-ai-rules)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -9,7 +9,7 @@
 
 📚 **[Usage Guide](docs/usage-guide.md)** | **[Intelligent Evolution Guide](docs/intelligent-evolution-guide.md)** | **[System Info Guide](docs/system-info-guide.md)** | **[Team Rules Example](docs/team-rules-example.md)** | **[Remote Rules Import](docs/remote-rules-guide.md)**
 
-Adopting the AI collaboration specifications defined by the [Cursor Rules System](https://cursor.com/docs/context/rules), combined with single-step multi-task perception, intelligent caching, and plugin architecture to achieve efficient and secure human-AI collaboration.
+Adopting the AI collaboration specifications defined by the [Cursor Rules System](https://cursor.com/docs/context/rules), combined with single-step multi-task perception, intelligent caching, and rule system to achieve efficient and secure human-AI collaboration.
 
 ## 🤝 Core Collaboration Principles
 
@@ -84,7 +84,7 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 |---------|-------------|--------|
 | 🧠 **Single-Step Multi-Task Perception** | Complete all project analysis in one go | **60% Token Savings** |
 | 💾 **Intelligent Caching System** | Cache mechanism based on file changes | **5x Response Speed Improvement** |
-| 🔌 **Plugin Architecture** | Support ESLint, Prettier extensions | Infinite Feature Expansion |
+| 🔌 **Extensible Rules** | ESLint integration and rule system | Code Quality Assurance |
 | 🛡️ **Graceful Degradation** | Environment detection and error handling | **99.9% Stability** |
 | 🎯 **One-Click Initialization** | Smart guidance and auto-configuration | **90% Reduced Onboarding Time** |
 | 🔓 **Out-of-the-Box** | No configuration needed, copy and use | Support for any project, any language |
@@ -98,7 +98,7 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 | **intelligent_evolution** | Intelligent Evolution System - Unified coordination of perception and evolution | Smart application | ✅ |
 | **generator** | Project Rules Generator - Automated personalized rule configuration | Code files | ✅ |
 | **system_info** | System Information Manager - Auto-acquire time, path, author information | Always applied | ✅ |
-| **templates** | Configuration Templates Framework - Project initialization configuration | Config files | ✅ |
+| **templates** | Configuration Templates - Project initialization configuration | Config files | ✅ |
 | **i18n** | Internationalization Support - Auto-detect language preferences | Always applied | ✅ |
 | **platform_adapter** | Cross-platform Adapter - Unified command, path, environment management | Always applied | ✅ |
 | **module_manager** | Rule Management System - Dependencies, activation, extensions | Always applied | ✅ |
@@ -153,14 +153,12 @@ cd your-project
 - **Intelligent Caching**: Auto-refresh when files change
 - **Token Savings**: 60%+ savings compared to traditional methods
 
-### Plugin Ecosystem
+### Quality Tools
 ```bash
-# Plugin management
+# Code quality checks
 ./.cursor/scripts/plugin_manager.sh list      # View available tools
-# Supported rules
+# Integrated tools
 ✅ ESLint code quality checks (integrated into rules system)
-🚧 Prettier code formatting (in development)
-🚧 Security vulnerability scanning (in development)
 ```
 
 ## 📊 System Monitoring
@@ -169,11 +167,8 @@ cd your-project
 # Intelligent help system
 ./.cursor/cursor-adaptation-setup.sh help
 
-# View perception data
-cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
-
-# System status monitoring
-cat .cursorGrowth/growth_meta.json
+# Environment integrity check
+./.cursor/scripts/env_check.sh
 ```
 
 ## 💡 Usage Examples
@@ -216,23 +211,13 @@ simple architecture recommended, avoid over-engineering.
 2. Follow frontmatter format
 3. Update version number
 
-### Plugin Development
-```bash
-# Create new plugin
-mkdir -p .cursor/plugins/custom/my-plugin
-# Add plugin.json, RULE.md, related scripts
-# Enable plugin
-./.cursor/scripts/plugin_manager.sh enable my-tool
-```
-
 ### Performance Tuning
 ```bash
-# Manually refresh cache
-rm .cursorGrowth/cache/project_hash
+# Re-run perception analysis
 ./.cursor/rules/intelligent_evolution/perception.sh
 
-# View performance metrics
-jq .performance_metrics .cursorGrowth/data/perception_*.json
+# Check environment
+./.cursor/scripts/env_check.sh
 ```
 
 ## 📦 Distribution & Deployment
@@ -292,27 +277,15 @@ ls -la .cursor/cursor-adaptation-setup.sh
 ./.cursor/scripts/env_check.sh
 ```
 
-**Q: Perception data abnormal?**
+**Q: Setup issues?**
 ```bash
-# Reset intelligent evolution data
-rm -rf .cursorGrowth
+# Re-run environment check
+./.cursor/scripts/env_check.sh
+# Re-run setup
 ./.cursor/cursor-adaptation-setup.sh
 ```
 
-**Q: Plugin cannot be enabled?**
-```bash
-# Check dependencies and install manually
-./.cursor/scripts/plugin_manager.sh list
-npm install -g eslint  # Example
-```
-
 ## 🤝 Contribution Guidelines
-
-### Plugin Contributions
-1. Fork this project
-2. Create plugin: `.cursor/plugins/community/your-plugin/`
-3. Write `plugin.json` and related scripts
-4. Submit Pull Request
 
 ### Rule Optimization
 1. Test new rules across different projects
@@ -322,7 +295,7 @@ npm install -g eslint  # Example
 ### Performance Improvements
 - Focus on Token consumption optimization
 - Test cache mechanism effectiveness
-- Verify plugin loading performance
+- Verify rule execution performance
 
 ## 📊 Technical Metrics
 
@@ -332,7 +305,7 @@ npm install -g eslint  # Example
 | Perception Time | ~10s | ~1s | **90%↑** |
 | Token Savings | Baseline | 60%↓ | **60%↑** |
 | Error Tolerance | Medium | High | **Significant Improvement** |
-| Extensibility | Limited | Infinite | **Plugin-based** |
+| Extensibility | Limited | Infinite | **Rule-based** |
 | Universality | None | Complete | **Out-of-the-box** |
 
 ## 📋 Environment Requirements
@@ -374,4 +347,4 @@ npm install -g eslint  # Example
 
 *🚀 Cursor AI Rules v3.0.0 - Making AI collaboration simple and powerful*
 *Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
-*Based on Cursor official specifications, integrated with intelligent evolution technology and plugin ecosystem*
+*Based on Cursor official specifications, integrated with intelligent evolution technology and rule system*

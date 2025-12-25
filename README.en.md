@@ -52,7 +52,7 @@
 - **🛡️ Evolution Governance** - Security assurance and quality control for rule evolution
 - **⚙️ Project Rules Generator** - Automated personalized rule configuration generation
 - **🔧 System Information Retriever** - Auto-acquire time, path and author information
-- **🎨 Configuration Templates Framework** - Automated project initialization configuration
+- **🎨 Configuration Templates** - Automated project initialization configuration
 - **🔍 ESLint Code Quality Check** - Auto-detect and fix JavaScript code issues
 
 ### 🧠 Intelligent Features
@@ -192,8 +192,8 @@ AI will immediately respond:
 # Run intelligent perception to understand the full project picture
 ./.cursor/rules/intelligent_evolution/perception.sh
 
-# View AI's analysis of your project
-cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
+# Check environment integrity
+./.cursor/scripts/env_check.sh
 ```
 
 </div>
@@ -211,7 +211,7 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 | **evolution-governance** | 🛡️ Evolution Governance | Security assurance and quality control for rule evolution | ✅ Active |
 | **generator** | ⚙️ Project Rules Generator | Automated personalized rule configuration generation | ✅ Active |
 | **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Always Active |
-| **templates** | 🎨 Configuration Templates Framework | Automated project initialization configuration | ✅ Active |
+| **templates** | 🎨 Configuration Templates | Automated project initialization configuration | ✅ Active |
 | **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Always Active |
 | **i18n** | 🌍 Internationalization Support | Auto-detect language preferences and switch communication | ✅ Always Active |
 | **platform_adapter** | 🔧 Cross-platform Adapter | Unified management of commands, paths and environments | ✅ Always Active |

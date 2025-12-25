@@ -52,7 +52,7 @@
 - **🛡️ 演进治理机制** - 规则演进的安全保障和质量控制
 - **⚙️ 项目规则生成器** - 自动化生成个性化规则配置
 - **🔧 系统信息获取器** - 自动获取时间、路径和作者信息
-- **🎨 配置模板框架** - 自动化生成项目初始化配置
+- **🎨 配置模板** - 自动化生成项目初始化配置
 - **🔍 ESLint代码质量检查** - 自动检测和修复JavaScript代码问题
 |- **🌍 国际化支持系统** - 自动检测语言偏好并切换沟通
 |- **🔧 跨平台适配器** - 统一管理不同OS间的命令、路径和环境
@@ -195,8 +195,8 @@ AI会立即响应：
 # 运行智能感知，了解项目全貌
 ./.cursor/rules/intelligent_evolution/perception.sh
 
-# 查看AI对你的项目分析
-cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
+# 检查环境完整性
+./.cursor/scripts/env_check.sh
 ```
 
 </div>
@@ -214,7 +214,7 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 | **evolution-governance** | 🛡️ 演进治理机制 | 规则演进的安全保障和质量控制 | ✅ 活跃 |
 | **generator** | ⚙️ 项目规则生成器 | 自动化生成个性化规则配置 | ✅ 活跃 |
 | **system_info** | 🔧 系统信息获取器 | 自动获取时间、路径和作者信息 | ✅ 始终激活 |
-| **templates** | 🎨 配置模板框架 | 自动化生成项目初始化配置 | ✅ 活跃 |
+| **templates** | 🎨 配置模板 | 自动化生成项目初始化配置 | ✅ 活跃 |
 | **eslint** | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题 | ✅ 始终激活 |
 | **i18n** | 🌍 国际化支持系统 | 自动检测语言偏好并切换沟通 | ✅ 始终激活 |
 | **platform_adapter** | 🔧 跨平台适配器 | 统一管理不同OS间的命令、路径和环境 | ✅ 始终激活 |
