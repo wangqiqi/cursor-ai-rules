@@ -290,5 +290,5 @@ npm install -g eslint  # 示例
 ---
 
 *🚀 Cursor AI Rules v2.0 - 让AI协作变得简单而强大*
-*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_NAME}}}*
+*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 *基于 Cursor 官方规范，集成智能进化技术和插件生态系统*
