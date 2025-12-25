@@ -56,11 +56,12 @@ EOF
 fi
 
 # 设置脚本执行权限
-chmod +x ".cursor/scripts/check.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+chmod +x "${SCRIPT_DIR}/check.sh"
 
 echo "✅ ESLint 插件启用完成！"
 echo ""
 echo "💡 现在您可以："
 echo "   • 文件保存时自动检查代码质量"
-echo "   • 运行: ./cursor/scripts/check.sh 进行手动检查"
+echo "   • 运行: ./.cursor/scripts/check.sh 进行手动检查"
 echo "   • 提交前自动运行代码质量检查"

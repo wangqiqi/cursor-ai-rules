@@ -19,10 +19,5 @@
     "adaptive"
   ],
   "author": "AI协作社区",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wangqiqi/cursor-ai-rules.git"
-  },
-  "homepage": "https://github.com/wangqiqi/cursor-ai-rules#readme"
+  "license": "MIT"
 }

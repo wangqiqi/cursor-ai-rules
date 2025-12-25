@@ -5,8 +5,15 @@
 
 set -e
 
-PLUGIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CONFIG_FILE="$PLUGIN_DIR/plugin.json"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 尝试从插件目录读取配置，如果不存在则使用默认配置
+PLUGIN_DIR="$(dirname "$SCRIPT_DIR")"
+CONFIG_FILE="$PLUGIN_DIR/plugins/eslint-integration/plugin.json"
+
+# 如果配置文件不存在，使用默认配置
+if [ ! -f "$CONFIG_FILE" ]; then
+    CONFIG_FILE=""
+fi
 
 echo "🔍 ESLint 代码质量检查"
 echo "========================"
@@ -20,7 +27,11 @@ if ! command -v eslint >/dev/null 2>&1; then
 fi
 
 # 获取配置
-AUTO_FIX=$(jq -r '.config.auto_fix // true' "$CONFIG_FILE" 2>/dev/null || echo "true")
+if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
+    AUTO_FIX=$(jq -r '.config.auto_fix // true' "$CONFIG_FILE" 2>/dev/null || echo "true")
+else
+    AUTO_FIX="true"
+fi
 
 # 确定检查文件
 if [ $# -gt 0 ]; then
@@ -39,17 +50,24 @@ echo "📁 待检查文件:"
 echo "$FILES" | tr ' ' '\n' | sed 's/^/   • /'
 echo ""
 
-# 创建临时ESLint配置
-TEMP_CONFIG=$(mktemp)
-jq -r '.config' "$CONFIG_FILE" > "$TEMP_CONFIG"
-
 echo "🔍 正在检查代码质量..."
 
 # 运行ESLint检查
-ESLINT_OUTPUT=$(eslint --config "$TEMP_CONFIG" $FILES 2>&1 || true)
-
-# 清理临时文件
-rm -f "$TEMP_CONFIG"
+if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
+    # 使用插件配置
+    TEMP_CONFIG=$(mktemp)
+    jq -r '.config' "$CONFIG_FILE" > "$TEMP_CONFIG" 2>/dev/null || true
+    if [ -s "$TEMP_CONFIG" ]; then
+        ESLINT_OUTPUT=$(eslint --config "$TEMP_CONFIG" $FILES 2>&1 || true)
+        rm -f "$TEMP_CONFIG"
+    else
+        ESLINT_OUTPUT=$(eslint $FILES 2>&1 || true)
+        rm -f "$TEMP_CONFIG"
+    fi
+else
+    # 使用项目默认配置或ESLint默认配置
+    ESLINT_OUTPUT=$(eslint $FILES 2>&1 || true)
+fi
 
 # 分析结果
 ERROR_COUNT=$(echo "$ESLINT_OUTPUT" | grep -c "error" || echo "0")
@@ -73,10 +91,17 @@ else
 
     if [ "$AUTO_FIX" = "true" ]; then
         echo "🔧 正在尝试自动修复..."
-        if eslint --config <(jq -r '.config' "$CONFIG_FILE") --fix $FILES 2>/dev/null; then
-            echo "✅ 自动修复完成"
+        if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
+            TEMP_CONFIG=$(mktemp)
+            jq -r '.config' "$CONFIG_FILE" > "$TEMP_CONFIG" 2>/dev/null || true
+            if [ -s "$TEMP_CONFIG" ]; then
+                eslint --config "$TEMP_CONFIG" --fix $FILES 2>/dev/null && echo "✅ 自动修复完成" || echo "⚠️  部分问题需要手动修复"
+                rm -f "$TEMP_CONFIG"
+            else
+                eslint --fix $FILES 2>/dev/null && echo "✅ 自动修复完成" || echo "⚠️  部分问题需要手动修复"
+            fi
         else
-            echo "⚠️  部分问题需要手动修复"
+            eslint --fix $FILES 2>/dev/null && echo "✅ 自动修复完成" || echo "⚠️  部分问题需要手动修复"
         fi
     fi
 

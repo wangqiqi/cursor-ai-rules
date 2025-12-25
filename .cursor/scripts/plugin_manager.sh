@@ -13,6 +13,11 @@ echo ""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_ROOT="$(dirname "$SCRIPT_DIR")/plugins"
 
+# 如果plugins目录不存在，创建它
+if [ ! -d "$PLUGIN_ROOT" ]; then
+    mkdir -p "$PLUGIN_ROOT"
+fi
+
 # 🎯 插件元数据结构
 # {
 #   "name": "plugin_name",
@@ -104,9 +109,10 @@ enable_plugin() {
     echo "✅ 插件 '$plugin_name' 已启用"
 
     # 执行插件的启用钩子
-    if [ -f ".cursor/scripts/enable.sh" ]; then
+    local enable_script="$plugin_path/enable.sh"
+    if [ -f "$enable_script" ]; then
         echo "🔧 执行插件启用脚本..."
-        bash ".cursor/scripts/enable.sh" "$plugin_name"
+        bash "$enable_script"
     fi
 }
 

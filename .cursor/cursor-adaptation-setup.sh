@@ -116,9 +116,9 @@ case "${1:-}" in
         echo "   • 创建备份确保安全"
         echo ""
         echo "📋 相关命令:"
-        echo "   ./cursor/rules/intelligent_evolution/perception.sh  # 智能感知分析"
-        echo "   cat .cursorGrowth/data/perception_*.json           # 查看感知结果"
-        echo "   cat .cursorGrowth/growth_meta.json                 # 查看系统状态"
+        echo "   ./.cursor/rules/intelligent_evolution/perception.sh  # 智能感知分析"
+        echo "   cat .cursorGrowth/data/perception_*.json              # 查看感知结果"
+        echo "   cat .cursorGrowth/growth_meta.json                    # 查看系统状态"
         exit 0
         ;;
     "interactive"|"-i"|"--interactive")
@@ -180,6 +180,6 @@ echo "📁 备份文件: $BACKUP_DIR"
 echo ""
 echo "🎯 AI协作规则已成功适配到您的项目环境！"
 echo ""
-echo "💡 接下来您可以："
-echo "   • 运行智能感知: ./cursor/rules/intelligent_evolution/perception.sh"
-echo "   • 查看项目分析: cat .cursorGrowth/growth_meta.json"
+        echo "💡 接下来您可以："
+        echo "   • 运行智能感知: ./.cursor/rules/intelligent_evolution/perception.sh"
+        echo "   • 查看项目分析: cat .cursorGrowth/growth_meta.json"

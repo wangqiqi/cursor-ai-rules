@@ -154,15 +154,15 @@ jq .performance_metrics .cursorGrowth/data/perception_*.json
 
 ### 快速部署
 ```bash
-# 方法1：一键部署
-git clone https://github.com/wangqiqi/cursor-ai-rules.git
-cp -r cursor-ai-rules/.cursor .
+# 方法1：复制.cursor目录到项目根目录
+cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
+cd /path/to/your-project
 ./.cursor/cursor-adaptation-setup.sh
 
-# 方法2：直接下载
-wget https://github.com/wangqiqi/cursor-ai-rules/releases/download/v2.0.0/cursor-ai-rules-v2.0.0.tar.gz
-tar -xzf cursor-ai-rules-v2.0.0.tar.gz -C your-project && mv your-project/cursor-ai-rules-v2.0.0 your-project/.cursor
-./your-project/.cursor/cursor-adaptation-setup.sh
+# 方法2：从Git仓库克隆（如果已发布）
+# git clone <your-repo-url> cursor-ai-rules
+# cp -r cursor-ai-rules/.cursor your-project/
+# cd your-project && ./.cursor/cursor-adaptation-setup.sh
 ```
 
 ### 企业部署
