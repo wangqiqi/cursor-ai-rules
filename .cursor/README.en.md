@@ -2,6 +2,9 @@
 
 **High Performance · Intelligent Evolution · Plugin Extensibility**
 
+[![GitHub](https://img.shields.io/badge/GitHub-wangqiqi/cursor--ai--rules-blue?logo=github)](https://github.com/wangqiqi/cursor-ai-rules)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 🌍 **[English](README.en.md) | [中文](README.md)**
 
 📚 **[Usage Guide](docs/usage-guide.md)** | **[Intelligent Evolution Guide](docs/intelligent-evolution-guide.md)** | **[System Info Guide](docs/system-info-guide.md)** | **[Team Rules Example](docs/team-rules-example.md)** | **[Remote Rules Import](docs/remote-rules-guide.md)**

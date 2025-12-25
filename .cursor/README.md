@@ -2,6 +2,9 @@
 
 **高性能 · 智能进化 · 插件化扩展**
 
+[![GitHub](https://img.shields.io/badge/GitHub-wangqiqi/cursor--ai--rules-blue?logo=github)](https://github.com/wangqiqi/cursor-ai-rules)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 🌍 **[English](README.en.md) | [中文](README.md)**
 
 📚 **[使用指南](docs/usage-guide.md)** | **[智能进化指南](docs/intelligent-evolution-guide.md)** | **[系统信息指南](docs/system-info-guide.md)** | **[团队规则示例](docs/team-rules-example.md)** | **[远程规则导入](docs/remote-rules-guide.md)**
