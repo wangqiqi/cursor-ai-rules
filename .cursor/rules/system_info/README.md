@@ -24,7 +24,6 @@ cp -r /path/to/rules-repo/.cursor/rules/system_info .cursor/rules/
 # 方法2: 手动创建
 mkdir -p .cursor/rules/system_info
 cp RULE.md .cursor/rules/system_info/
-cp config.json .cursor/rules/system_info/
 ```
 
 ### 2. 立即开始使用
@@ -78,8 +77,7 @@ CUSTOM_ROOT_PATH="/path/to/project"
 ```
 .cursor/rules/system_info/
 ├── RULE.md         # 规则定义和使用说明
-├── config.json     # 配置文件模板
-# 系统信息获取器通过适配脚本自动工作，无需额外测试文件
+# 系统信息获取器通过适配脚本自动工作，无需额外配置文件
 └── README.md       # 本文件
 ```
 

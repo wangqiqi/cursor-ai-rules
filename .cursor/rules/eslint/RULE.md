@@ -51,13 +51,13 @@ alwaysApply: true
 ### 手动检查
 ```bash
 # 检查当前目录
-./cursor/plugins/community/eslint-integration/scripts/check.sh
+./cursor/scripts/check.sh
 
 # 检查指定文件
-./cursor/plugins/community/eslint-integration/scripts/check.sh file.js
+./cursor/scripts/check.sh file.js
 
 # 自动修复
-./cursor/plugins/community/eslint-integration/scripts/fix.sh
+./cursor/scripts/check.sh --fix
 ```
 
 ## 📊 报告格式

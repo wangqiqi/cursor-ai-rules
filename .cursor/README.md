@@ -32,7 +32,7 @@
 ```bash
 cd your-project
 # 将 .cursor 目录放入项目根目录
-./.cursor/setup.sh
+./.cursor/cursor-adaptation-setup.sh
 ```
 
 **自动化流程：**
@@ -71,11 +71,9 @@ cd your-project
 ### 插件生态系统
 ```bash
 # 插件管理
-./.cursor/plugins/plugin_manager.sh list      # 查看插件
-./.cursor/plugins/plugin_manager.sh enable eslint-integration  # 启用插件
-
-# 已支持插件
-✅ ESLint代码质量检查
+./.cursor/scripts/plugin_manager.sh list      # 查看可用工具
+# 已支持规则
+✅ ESLint代码质量检查 (已集成到规则系统)
 🚧 Prettier代码格式化 (开发中)
 🚧 安全漏洞扫描 (开发中)
 ```
@@ -84,7 +82,7 @@ cd your-project
 
 ```bash
 # 智能帮助系统
-./.cursor/help.sh
+./.cursor/cursor-adaptation-setup.sh help
 
 # 查看感知数据
 cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
@@ -139,7 +137,7 @@ cat .cursorGrowth/growth_meta.json
 mkdir -p .cursor/plugins/custom/my-plugin
 # 添加 plugin.json, RULE.md, 相关脚本
 # 启用插件
-./.cursor/plugins/plugin_manager.sh enable my-plugin
+./.cursor/scripts/plugin_manager.sh enable my-tool
 ```
 
 ### 性能调优
@@ -157,12 +155,14 @@ jq .performance_metrics .cursorGrowth/data/perception_*.json
 ### 快速部署
 ```bash
 # 方法1：一键部署
-curl -fsSL https://raw.githubusercontent.com/wangqiqi/cursor-ai-rules/main/.cursor/setup.sh | bash
-
-# 方法2：手动部署
 git clone https://github.com/wangqiqi/cursor-ai-rules.git
 cp -r cursor-ai-rules/.cursor .
-./.cursor/setup.sh
+./.cursor/cursor-adaptation-setup.sh
+
+# 方法2：直接下载
+wget https://github.com/wangqiqi/cursor-ai-rules/releases/download/v2.0.0/cursor-ai-rules-v2.0.0.tar.gz
+tar -xzf cursor-ai-rules-v2.0.0.tar.gz -C your-project && mv your-project/cursor-ai-rules-v2.0.0 your-project/.cursor
+./your-project/.cursor/cursor-adaptation-setup.sh
 ```
 
 ### 企业部署
@@ -171,7 +171,7 @@ cp -r cursor-ai-rules/.cursor .
 for project in project1 project2 project3; do
   cp -r .cursor "$project/"
   cd "$project"
-  ./.cursor/setup.sh
+  ./.cursor/cursor-adaptation-setup.sh
   cd ..
 done
 ```
@@ -181,7 +181,7 @@ done
 ### 智能诊断
 ```bash
 # 一键诊断所有问题
-./.cursor/help.sh
+./.cursor/cursor-adaptation-setup.sh help
 
 # 环境完整性检查
 ./.cursor/scripts/env_check.sh
@@ -192,7 +192,7 @@ done
 **Q: 初始化失败？**
 ```bash
 # 检查权限和环境
-ls -la .cursor/setup.sh
+ls -la .cursor/cursor-adaptation-setup.sh
 ./.cursor/scripts/env_check.sh
 ```
 
@@ -200,13 +200,13 @@ ls -la .cursor/setup.sh
 ```bash
 # 重置智能进化数据
 rm -rf .cursorGrowth
-./.cursor/setup.sh
+./.cursor/cursor-adaptation-setup.sh
 ```
 
 **Q: 插件无法启用？**
 ```bash
 # 检查依赖并手动安装
-./.cursor/plugins/plugin_manager.sh list
+./.cursor/scripts/plugin_manager.sh list
 npm install -g eslint  # 示例
 ```
 

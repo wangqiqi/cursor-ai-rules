@@ -10,8 +10,8 @@ echo "===================================="
 echo ""
 
 # 📁 插件目录
-PLUGIN_DIRS=("core" "community" "custom")
-PLUGIN_ROOT=".cursor/plugins"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_ROOT="$(dirname "$SCRIPT_DIR")/plugins"
 
 # 🎯 插件元数据结构
 # {
@@ -32,32 +32,28 @@ list_plugins() {
 
     local plugin_count=0
 
-    for dir in "${PLUGIN_DIRS[@]}"; do
-        if [ -d "$PLUGIN_ROOT/$dir" ]; then
-            echo "📁 $dir 插件:"
+    # 直接扫描插件根目录
+    for plugin_dir in "$PLUGIN_ROOT"/*/; do
+        if [ -d "$plugin_dir" ] && [ "$(basename "$plugin_dir")" != "core" ] && [ "$(basename "$plugin_dir")" != "custom" ]; then
+            local plugin_name=$(basename "$plugin_dir")
+            local config_file="$plugin_dir/plugin.json"
 
-            for plugin_dir in "$PLUGIN_ROOT/$dir"/*/; do
-                if [ -d "$plugin_dir" ]; then
-                    local plugin_name=$(basename "$plugin_dir")
-                    local config_file="$plugin_dir/plugin.json"
+            if [ -f "$config_file" ]; then
+                local name=$(jq -r '.name // "'$plugin_name'"' "$config_file" 2>/dev/null || echo "$plugin_name")
+                local version=$(jq -r '.version // "未知"' "$config_file" 2>/dev/null || echo "未知")
+                local description=$(jq -r '.description // "无描述"' "$config_file" 2>/dev/null || echo "无描述")
+                local enabled=$(jq -r '.enabled // true' "$config_file" 2>/dev/null || echo "true")
 
-                    if [ -f "$config_file" ]; then
-                        local name=$(jq -r '.name // "'$plugin_name'"' "$config_file" 2>/dev/null || echo "$plugin_name")
-                        local version=$(jq -r '.version // "未知"' "$config_file" 2>/dev/null || echo "未知")
-                        local description=$(jq -r '.description // "无描述"' "$config_file" 2>/dev/null || echo "无描述")
-                        local enabled=$(jq -r '.enabled // true' "$config_file" 2>/dev/null || echo "true")
-
-                        local status="✅"
-                        if [ "$enabled" = "false" ]; then
-                            status="⏸️ "
-                        fi
-
-                        echo "   $status $name (v$version) - $description"
-                        plugin_count=$((plugin_count + 1))
-                    fi
+                local status="✅"
+                if [ "$enabled" = "false" ]; then
+                    status="⏸️ "
                 fi
-            done
-            echo ""
+
+                echo "   $status $name (v$version) - $description"
+                plugin_count=$((plugin_count + 1))
+            else
+                echo "   📂 $plugin_name (缺少配置文件)"
+            fi
         fi
     done
 
@@ -76,12 +72,11 @@ list_plugins() {
 find_plugin() {
     local plugin_name="$1"
 
-    for dir in "${PLUGIN_DIRS[@]}"; do
-        if [ -d "$PLUGIN_ROOT/$dir/$plugin_name" ]; then
-            echo "$PLUGIN_ROOT/$dir/$plugin_name"
-            return 0
-        fi
-    done
+    # 直接在插件根目录下查找
+    if [ -d "$PLUGIN_ROOT/$plugin_name" ]; then
+        echo "$PLUGIN_ROOT/$plugin_name"
+        return 0
+    fi
 
     return 1
 }
@@ -109,9 +104,9 @@ enable_plugin() {
     echo "✅ 插件 '$plugin_name' 已启用"
 
     # 执行插件的启用钩子
-    if [ -f "$plugin_path/enable.sh" ]; then
+    if [ -f ".cursor/scripts/enable.sh" ]; then
         echo "🔧 执行插件启用脚本..."
-        bash "$plugin_path/enable.sh"
+        bash ".cursor/scripts/enable.sh" "$plugin_name"
     fi
 }
 
@@ -151,8 +146,8 @@ install_plugin() {
 
     echo "📥 正在安装插件: $plugin_name"
 
-    # 确定安装目录（暂时安装到community）
-    local install_dir="$PLUGIN_ROOT/community/$plugin_name"
+    # 确定安装目录
+    local install_dir="$PLUGIN_ROOT/$plugin_name"
 
     if [ -d "$install_dir" ]; then
         echo "⚠️  插件已存在，是否覆盖？(y/N)"

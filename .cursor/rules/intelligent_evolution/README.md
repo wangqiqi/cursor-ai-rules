@@ -68,7 +68,7 @@
 cd /path/to/your/project
 
 # 运行感知分析
-./.cursor/rules/auto_evolution/perception.sh
+./.cursor/rules/intelligent_evolution/perception.sh
 ```
 
 ### 2. 查看感知结果
@@ -172,16 +172,16 @@ git status
 ls -la .cursorGrowth/data/
 
 # 手动运行感知分析
-./.cursor/rules/auto_evolution/perception.sh
+./.cursor/rules/intelligent_evolution/perception.sh
 ```
 
 ### 配置问题
 ```bash
 # 验证配置文件格式
-cat .cursor/rules/auto_evolution/config.json | jq .
+cat .cursor/rules/intelligent_evolution/config.json | jq .
 
 # 重置为默认配置
-cp .cursor/rules/auto_evolution/config.json.backup .cursor/rules/auto_evolution/config.json
+cp .cursor/rules/intelligent_evolution/config.json.backup .cursor/rules/intelligent_evolution/config.json
 ```
 
 ### 性能问题
