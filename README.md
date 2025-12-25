@@ -7,6 +7,8 @@
 [![Rules](https://img.shields.io/badge/rules-6-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
 
+🌍 **[English](README.en.md) | [中文](README.md)**
+
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
 [📖 文档](#-cursor-ai-rules---让ai成为你的超级编程伙伴) • [🚀 快速开始](#-快速开始-60秒完成) • [💡 特性](#-核心特性) • [🤝 贡献](#-加入我们共同进化)

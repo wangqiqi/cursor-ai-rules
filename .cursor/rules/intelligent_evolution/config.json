@@ -17,7 +17,11 @@
         "go.mod",
         "Cargo.toml",
         "pyproject.toml",
-        "composer.json"
+        "composer.json",
+        "CMakeLists.txt",
+        "Makefile",
+        "configure.ac",
+        "configure.in"
       ]
     },
     "team_dynamics": {
@@ -34,6 +38,19 @@
       "enabled": true,
       "commit_frequency_threshold": 10,
       "branch_complexity_threshold": 5
+    },
+    "system_environment": {
+      "enabled": true,
+      "detect_os": true,
+      "detect_architecture": true,
+      "detect_toolchain": true,
+      "toolchain_commands": [
+        "gcc",
+        "clang",
+        "cl",
+        "cc",
+        "g++"
+      ]
     }
   },
   "user_analysis": {

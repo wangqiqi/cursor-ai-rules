@@ -42,10 +42,24 @@ analyze_project_comprehensive() {
         tech_stack="Rust"
     elif [ -f "pom.xml" ] || [ -f "build.gradle" ]; then
         tech_stack="Java"
+    elif [ -f "CMakeLists.txt" ] || [ -f "Makefile" ] || [ -f "configure.ac" ] || [ -f "configure.in" ] || find . -name "*.pro" -type f 2>/dev/null | grep -q .; then
+        tech_stack="C/C++"
+        if [ -f "CMakeLists.txt" ]; then
+            tech_details="${tech_details}CMake "
+        fi
+        if [ -f "Makefile" ]; then
+            tech_details="${tech_details}Make "
+        fi
+        if [ -f "configure.ac" ] || [ -f "configure.in" ]; then
+            tech_details="${tech_details}Autotools "
+        fi
+        if find . -name "*.pro" -type f 2>/dev/null | grep -q .; then
+            tech_details="${tech_details}Qt "
+        fi
     fi
 
     # 计算代码文件数量
-    local code_files=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" 2>/dev/null | wc -l || echo "0")
+    local code_files=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" 2>/dev/null | wc -l || echo "0")
 
     result=$(echo "$result" | jq --arg tech "$tech_stack" --arg details "$tech_details" --arg files "$code_files" \
         '.tech_stack = {primary: $tech, details: $details, code_files: ($files | tonumber)}' 2>/dev/null || echo "$result")
@@ -61,8 +75,8 @@ analyze_project_comprehensive() {
 
     # 3. 项目规模分析
     echo "📏 正在分析项目规模..." >&2
-    local total_lines=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" 2>/dev/null | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
-    local total_files=$(find . -type f \( -name "*.md" -o -name "*.js" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" \) 2>/dev/null | wc -l || echo "0")
+    local total_lines=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" 2>/dev/null | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
+    local total_files=$(find . -type f \( -name "*.md" -o -name "*.js" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" \) 2>/dev/null | wc -l || echo "0")
     local dirs=$(find . -type d -not -path '*/\.*' 2>/dev/null | wc -l || echo "0")
 
     result=$(echo "$result" | jq --arg lines "$total_lines" --arg files "$total_files" --arg dirs "$dirs" \
@@ -104,6 +118,83 @@ analyze_project_comprehensive() {
     fi
 
     result=$(echo "$result" | jq --arg prefs "$preferences" '.communication_patterns = {preferences: $prefs}' 2>/dev/null || echo "$result")
+
+    # 6. 系统环境分析
+    echo "🖥️ 正在分析系统环境..." >&2
+    local os_type="未知"
+    local os_version="未知"
+    local architecture="未知"
+    local toolchain="未知"
+
+    # 检测操作系统类型
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        os_type="Linux"
+        # 获取Linux发行版信息
+        if [ -f "/etc/os-release" ]; then
+            os_version=$(grep "^PRETTY_NAME=" /etc/os-release | cut -d'"' -f2 2>/dev/null || echo "Linux")
+        elif [ -f "/etc/redhat-release" ]; then
+            os_version=$(cat /etc/redhat-release 2>/dev/null || echo "Red Hat Linux")
+        elif [ -f "/etc/debian_version" ]; then
+            os_version="Debian $(cat /etc/debian_version 2>/dev/null || echo "Unknown")"
+        else
+            os_version="Linux"
+        fi
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        os_type="macOS"
+        os_version=$(sw_vers -productVersion 2>/dev/null || echo "macOS")
+    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        os_type="Windows"
+        os_version=$(cmd.exe /c ver 2>/dev/null | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1 || echo "Windows")
+    elif [[ "$OSTYPE" == "cygwin" ]]; then
+        os_type="Windows (Cygwin)"
+        os_version=$(cmd.exe /c ver 2>/dev/null | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1 || echo "Windows")
+    elif [[ "$OSTYPE" == "freebsd"* ]]; then
+        os_type="FreeBSD"
+        os_version=$(uname -r 2>/dev/null || echo "FreeBSD")
+    else
+        os_type="其他"
+        os_version=$(uname -s 2>/dev/null || echo "Unknown")
+    fi
+
+    # 检测系统架构
+    architecture=$(uname -m 2>/dev/null || echo "未知")
+
+    # 检测开发工具链
+    local gcc_version=""
+    local clang_version=""
+    local msvc_version=""
+
+    # 检查GCC
+    if command -v gcc >/dev/null 2>&1; then
+        gcc_version=$(gcc --version 2>/dev/null | head -1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1 || echo "GCC")
+    fi
+
+    # 检查Clang
+    if command -v clang >/dev/null 2>&1; then
+        clang_version=$(clang --version 2>/dev/null | head -1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1 || echo "Clang")
+    fi
+
+    # 检查MSVC (Windows)
+    if [[ "$os_type" == "Windows"* ]] && command -v cl >/dev/null 2>&1; then
+        msvc_version=$(cl 2>&1 | head -1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1 || echo "MSVC")
+    fi
+
+    # 组装工具链信息
+    if [ -n "$gcc_version" ]; then
+        toolchain="${toolchain}GCC $gcc_version "
+    fi
+    if [ -n "$clang_version" ]; then
+        toolchain="${toolchain}Clang $clang_version "
+    fi
+    if [ -n "$msvc_version" ]; then
+        toolchain="${toolchain}MSVC $msvc_version "
+    fi
+    if [ -z "$toolchain" ] || [ "$toolchain" = "未知" ]; then
+        toolchain="未检测到常用编译器"
+    fi
+
+    result=$(echo "$result" | jq --arg os "$os_type" --arg version "$os_version" --arg arch "$architecture" --arg tools "$toolchain" \
+        '.system_environment = {os_type: $os, os_version: $version, architecture: $arch, toolchain: $tools}' 2>/dev/null || echo "$result")
 
     # 返回完整的JSON结果
     echo "$result"

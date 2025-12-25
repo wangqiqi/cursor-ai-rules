@@ -2,6 +2,8 @@
 
 **高性能 · 智能进化 · 插件化扩展**
 
+🌍 **[English](README.en.md) | [中文](README.md)**
+
 采用 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules) 定义的 AI 协作规范，结合单步多任务感知、智能缓存和插件化架构，实现高效、安全的人机协作。
 
 ## ⚡ 核心特性
@@ -58,11 +60,12 @@ cd your-project
 ## 🎛️ 智能功能
 
 ### 自动感知系统
-- **技术栈识别**: JavaScript/TypeScript, Python, Go, Rust, Java等
+- **技术栈识别**: JavaScript/TypeScript, Python, Go, Rust, Java, C/C++等
 - **团队动态分析**: 贡献者数量、提交频率统计
 - **项目规模评估**: 代码行数、文件数量分析
 - **开发阶段判断**: 概念验证→成长→成熟产品
 - **沟通模式学习**: 用户偏好智能识别
+- **系统环境感知**: 操作系统、版本、架构、工具链检测
 - **多语言支持**: 自动检测项目技术栈，无需手动配置
 
 ### 性能优化
@@ -169,7 +172,7 @@ cd /path/to/your-project
 
 **特点：**
 - 🔄 **自动适配**: 系统自动检测项目环境，无需手动配置
-- 🌍 **多语言支持**: 支持JavaScript、Python、Go、Rust、Java等多种语言
+- 🌍 **多语言支持**: 支持JavaScript、Python、Go、Rust、Java、C/C++等多种语言
 - 👤 **用户无关**: 使用Git配置或通用默认值，无硬编码用户信息
 - 📁 **项目无关**: 自动分析项目结构和团队动态
 
@@ -264,7 +267,7 @@ npm install -g eslint  # 示例
 ## 🎯 开箱即用特性
 
 ### 无关项目
-- ✅ 自动检测技术栈（JavaScript、Python、Go、Rust、Java等）
+- ✅ 自动检测技术栈（JavaScript、Python、Go、Rust、Java、C/C++等）
 - ✅ 智能分析团队规模和开发阶段
 - ✅ 动态适配项目复杂度要求
 - ✅ 无硬编码项目特定信息
