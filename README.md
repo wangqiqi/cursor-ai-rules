@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-6-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-11-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -47,9 +47,15 @@
 ### 🧠 智能协作框架
 - **🤝 AI共生宪法** - 人机协作的核心原则和最高准则
 - **💬 协作哲学** - 智能对话模式和沟通优化
-- **📈 智能演进系统** - 自动感知项目变化和用户偏好
-- **⚙️ 系统信息获取器** - 自动化获取环境信息和路径检测
-- **🎨 配置模板** - 规范化项目结构和初始化配置
+- **🧠 智能演进系统** - 统一协调自动感知和规则进化
+- **📈 演进哲学** - 规则演进的核心理念和原则指导
+- **📋 手动演进流程** - 人工触发的规则演进管理
+- **🤖 自动化演进系统** - 基于感知数据的智能规则优化
+- **🛡️ 演进治理机制** - 规则演进的安全保障和质量控制
+- **⚙️ 项目规则生成器** - 自动化生成个性化规则配置
+- **🔧 系统信息获取器** - 自动获取时间、路径和作者信息
+- **🎨 配置模板框架** - 自动化生成项目初始化配置
+- **🔍 ESLint代码质量检查** - 自动检测和修复JavaScript代码问题
 
 ### 🧠 智能特性
 
@@ -143,7 +149,7 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 | **通用性** | 任何项目 | ✅ 开箱即用 |
 | **语言支持** | 多语言 | 🔍 自动检测 |
 | **部署时间** | <5秒 | ⚡ 即插即用 |
-| **规则覆盖** | 6个规则模块 | 🛡️ 全方位保护 |
+| **规则覆盖** | 11个规则模块 | 🛡️ 全方位保护 |
 | **智能感知** | 已激活 | 🧠 持续学习 |
 
 </div>
@@ -198,12 +204,17 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 | 规则模块 | 功能描述 | 应用场景 | 状态 |
 | -------- | -------- | -------- | ---- |
-| **constitution** | 🤝 AI共生宪法 | 定义协作核心原则 | ✅ 活跃 |
+| **constitution** | 🤝 AI共生宪法 | 定义协作核心原则和最高准则 | ✅ 活跃 |
 | **philosophy** | 💬 协作哲学 | 优化沟通和交互模式 | ✅ 活跃 |
-| **generator** | ⚙️ 项目规则生成器 | 自动化生成个性化规则 | ✅ 活跃 |
-| **intelligent_evolution** | 🧠 智能演进系统 | 自动感知和规则进化 | ✅ 活跃 |
-| **system_info** | 🔧 系统信息测试器 | 路径检测和测试工具 | ✅ 活跃 |
-| **templates** | 🎨 配置模板 | 规范化项目结构 | ✅ 活跃 |
+| **intelligent_evolution** | 🧠 智能演进系统 | 自动感知和规则进化协调 | ✅ 活跃 |
+| **evolution-philosophy** | 📈 演进哲学 | 规则演进的核心理念和原则 | ✅ 活跃 |
+| **evolution-manual** | 📋 手动演进流程 | 人工触发的规则演进管理 | ✅ 活跃 |
+| **evolution-automation** | 🤖 自动化演进系统 | 基于感知数据的智能优化 | ✅ 活跃 |
+| **evolution-governance** | 🛡️ 演进治理机制 | 规则演进的安全保障和质量控制 | ✅ 活跃 |
+| **generator** | ⚙️ 项目规则生成器 | 自动化生成个性化规则配置 | ✅ 活跃 |
+| **system_info** | 🔧 系统信息获取器 | 自动获取时间、路径和作者信息 | ✅ 活跃 |
+| **templates** | 🎨 配置模板框架 | 自动化生成项目初始化配置 | ✅ 活跃 |
+| **eslint** | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题 | ✅ 活跃 |
 
 ## 🏆 核心优势
 

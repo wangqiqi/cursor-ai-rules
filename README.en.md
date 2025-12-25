@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-6-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-11-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -47,9 +47,15 @@
 ### 🧠 Intelligent Collaboration Framework
 - **🤝 AI Symbiosis Constitution** - Core principles and highest standards of human-AI collaboration
 - **💬 Collaboration Philosophy** - Intelligent dialogue patterns and communication optimization
-- **📈 Intelligent Evolution System** - Auto-perceive project changes and user preferences
-- **⚙️ System Information Retriever** - Automated environment info and path detection
-- **🎨 Configuration Templates** - Standardized project structure and initialization config
+- **🧠 Intelligent Evolution System** - Unified coordination of auto-perception and rule evolution
+- **📈 Evolution Philosophy** - Core principles and guidance for rule evolution
+- **📋 Manual Evolution Process** - Artificial trigger and rule evolution management
+- **🤖 Automated Evolution System** - Intelligent rule optimization based on perception data
+- **🛡️ Evolution Governance** - Security assurance and quality control for rule evolution
+- **⚙️ Project Rules Generator** - Automated personalized rule configuration generation
+- **🔧 System Information Retriever** - Auto-acquire time, path and author information
+- **🎨 Configuration Templates Framework** - Automated project initialization configuration
+- **🔍 ESLint Code Quality Check** - Auto-detect and fix JavaScript code issues
 
 ### 🧠 Intelligent Features
 
@@ -143,7 +149,7 @@ AI: 🧠 Perceived your project uses Node.js + MongoDB...
 | **Universality** | Any Project | ✅ Out-of-the-box |
 | **Language Support** | Multi-language | 🔍 Auto-detection |
 | **Deployment Time** | <5 seconds | ⚡ Plug-and-play |
-| **Rule Coverage** | 6 Rule Modules | 🛡️ Comprehensive Protection |
+| **Rule Coverage** | 11 Rule Modules | 🛡️ Comprehensive Protection |
 | **Intelligent Perception** | Activated | 🧠 Continuous Learning |
 
 </div>
@@ -198,12 +204,17 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 | Rule Module | Function Description | Application Scenarios | Status |
 | ----------- | ------------------- | -------------------- | ------ |
-| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles | ✅ Active |
+| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Active |
 | **philosophy** | 💬 Collaboration Philosophy | Optimize communication and interaction patterns | ✅ Active |
-| **generator** | ⚙️ Project Rules Generator | Automated personalized rule generation | ✅ Active |
-| **intelligent_evolution** | 🧠 Intelligent Evolution System | Auto-perception and rule evolution | ✅ Active |
-| **system_info** | 🔧 System Information Tester | Path detection and testing tools | ✅ Active |
-| **templates** | 🎨 Configuration Templates | Standardized project structure | ✅ Active |
+| **intelligent_evolution** | 🧠 Intelligent Evolution System | Auto-perception and rule evolution coordination | ✅ Active |
+| **evolution-philosophy** | 📈 Evolution Philosophy | Core principles and guidance for rule evolution | ✅ Active |
+| **evolution-manual** | 📋 Manual Evolution Process | Artificial trigger and rule evolution management | ✅ Active |
+| **evolution-automation** | 🤖 Automated Evolution System | Intelligent optimization based on perception data | ✅ Active |
+| **evolution-governance** | 🛡️ Evolution Governance | Security assurance and quality control for rule evolution | ✅ Active |
+| **generator** | ⚙️ Project Rules Generator | Automated personalized rule configuration generation | ✅ Active |
+| **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Active |
+| **templates** | 🎨 Configuration Templates Framework | Automated project initialization configuration | ✅ Active |
+| **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Active |
 
 ## 🏆 Core Advantages
 
