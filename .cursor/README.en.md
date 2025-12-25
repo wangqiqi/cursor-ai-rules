@@ -91,11 +91,19 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 | Rule | Description | Application Method | Status |
 |------|-------------|-------------------|--------|
 | **constitution** | AI Symbiosis Constitution - Core principles of human-AI collaboration | Always applied | ✅ |
-| **philosophy** | Communication Philosophy and Collaboration Patterns | Always applied | ✅ |
-| **intelligent_evolution** | Intelligent Evolution System - Perception-based adaptation | Smart application | ✅ |
-| **generator** | Project Rules Generator - Automated personalized rule generation | Code files | ✅ |
-| **system_info** | System Information Manager - Time, path, author information | Global application | ✅ |
-| **templates** | Configuration Template Framework - Project initialization config | Config files | ✅ |
+| **philosophy** | Communication Philosophy & Collaboration Modes | Always applied | ✅ |
+| **intelligent_evolution** | Intelligent Evolution System - Unified coordination of perception and evolution | Smart application | ✅ |
+| **generator** | Project Rules Generator - Automated personalized rule configuration | Code files | ✅ |
+| **system_info** | System Information Manager - Auto-acquire time, path, author information | Always applied | ✅ |
+| **templates** | Configuration Templates Framework - Project initialization configuration | Config files | ✅ |
+| **i18n** | Internationalization Support - Auto-detect language preferences | Always applied | ✅ |
+| **platform_adapter** | Cross-platform Adapter - Unified command, path, environment management | Always applied | ✅ |
+| **module_manager** | Rule Management System - Dependencies, activation, extensions | Always applied | ✅ |
+| **eslint** | ESLint Code Quality Check - Auto-detect and fix JavaScript issues | Always applied | ✅ |
+| **evolution-philosophy** | Evolution Philosophy - Core principles for rule evolution | Smart application | ✅ |
+| **evolution-manual** | Manual Evolution Process - Artificial trigger management | Smart application | ✅ |
+| **evolution-automation** | Automated Evolution System - Data-driven optimization | Smart application | ✅ |
+| **evolution-governance** | Evolution Governance - Security and quality control | Smart application | ✅ |
 
 ## 🚀 Quick Start
 

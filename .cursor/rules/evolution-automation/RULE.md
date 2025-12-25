@@ -6,7 +6,7 @@ alwaysApply: false
 
 # 🤖 自动化演进系统 (Automated Evolution System)
 
-*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_NAME}}}*
+*版本: v1.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 
 ## 🎯 核心机制 (Core Mechanisms)
 
@@ -14,18 +14,18 @@ alwaysApply: false
 
 ## 📊 自动化感知接口 (Automated Perception Interface)
 
-自动化演进系统基于 `@intelligent_evolution` 的感知数据，实现规则的自动优化。
+自动化演进系统基于直接的数据源感知，实现规则的自动优化。
 
 ### 数据源 (Data Sources)
-- **项目状态**: 引用 intelligent_evolution 的项目变化感知
-- **用户行为**: 使用 intelligent_evolution 的用户行为分析
-- **系统指标**: 集成 evolution-governance 的监控数据
+- **项目状态**: 直接调用 `perception.sh` 脚本进行项目变化感知
+- **用户行为**: 基于协作历史和使用模式分析
+- **系统指标**: 集成 `@evolution-governance` 的监控数据
 
 ### 感知触发 (Perception Triggers)
 系统通过以下方式获取感知数据：
-- 定时调用 `perception.sh` 脚本
-- 订阅 `@intelligent_evolution` 的数据更新事件
-- 集成 `@evolution-governance` 的监控指标
+- 定时调用 `perception.sh` 脚本进行项目状态扫描
+- 分析用户协作模式和反馈数据
+- 集成 `@evolution-governance` 的实时监控指标
 
 ## 🤖 自动化优化算法 (Automated Optimization Algorithms)
 
@@ -134,4 +134,8 @@ optimization_decision_tree:
 
 ### 数据集成 (Data Integration)
 所有性能数据通过 governance 的监控系统统一收集和分析，确保数据一致性和可追溯性。
+
+---
+
+*自动化演进系统通过智能感知和数据驱动的方式，实现规则的自动优化和持续改进。*
 

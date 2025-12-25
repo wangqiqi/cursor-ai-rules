@@ -9,70 +9,71 @@ alwaysApply: false
 
 ## 核心理念 (Core Philosophy)
 
-智能演进系统是.cursor规则演进的统一协调器，基于演进哲学原则，整合多个专门子系统实现规则的智能化演进。
+智能演进系统专注于项目的智能化感知和分析，为演进决策提供数据支持。
 
-**系统定位**：作为演进子系统的协调器和入口，提供统一的演进接口和智能化决策支持。
+**系统定位**：作为项目感知和分析的专门系统，为各种演进活动提供智能数据支持。
 
 ## 📋 系统架构 (System Architecture)
 
-### 演进子系统 (Evolution Subsystems)
+### 感知能力 (Perception Capabilities)
 
-| 子系统 | 功能描述 | 适用场景 | 状态 |
-|--------|----------|----------|------|
-| **@evolution-philosophy** | 演进理念和原则指导 | 理解演进框架 | ✅ 活跃 |
-| **@evolution-manual** | 手动演进流程管理 | 计划性和结构化的改进 | ✅ 活跃 |
-| **@evolution-automation** | 自动化演进系统 | 基于数据的智能优化 | ✅ 活跃 |
-| **@evolution-governance** | 演进治理和保障 | 安全性和质量控制 | ✅ 活跃 |
+| 感知类型 | 功能描述 | 数据来源 | 状态 |
+|----------|----------|----------|------|
+| **项目状态感知** | 分析项目结构、依赖、变化趋势 | 文件系统扫描、Git历史 | ✅ 活跃 |
+| **用户行为分析** | 理解协作模式、使用习惯 | 交互日志、操作记录 | ✅ 活跃 |
+| **环境特征检测** | 识别技术栈、平台、工具链 | 系统信息、配置文件 | ✅ 活跃 |
+| **性能指标收集** | 监控响应时间、资源使用 | 系统监控、性能日志 | ✅ 活跃 |
 
-### 协作模式 (Collaboration Modes)
+### 感知模式 (Perception Modes)
 
-#### 哲学引导模式 (Philosophy-Guided Mode)
+#### 实时感知模式 (Real-time Perception Mode)
 ```
-使用场景：需要理解演进理念和制定长期策略
-推荐规则：@evolution-philosophy
-```
-
-#### 手动管理模式 (Manual Management Mode)
-```
-使用场景：有计划的规则改进和流程优化
-推荐规则：@evolution-manual
+使用场景：需要即时了解项目状态变化
+触发方式：文件保存、Git提交、命令执行时自动触发
+输出：当前项目状态快照和变化分析
 ```
 
-#### 自动化优化模式 (Automated Optimization Mode)
+#### 周期性分析模式 (Periodic Analysis Mode)
 ```
-使用场景：基于数据驱动的持续改进
-推荐规则：@evolution-automation
+使用场景：定期评估项目健康度和趋势分析
+触发方式：每日/每周定时执行
+输出：项目趋势报告和改进建议
 ```
 
-#### 治理保障模式 (Governance Assurance Mode)
+#### 事件驱动模式 (Event-Driven Mode)
 ```
-使用场景：确保演进过程的安全性和合规性
-推荐规则：@evolution-governance
+使用场景：特定事件发生时进行深度分析
+触发方式：依赖变化、新功能上线、性能问题等
+输出：针对性分析报告和解决方案建议
 ```
 
 ## 🎯 使用指南 (Usage Guide)
 
 ### 快速开始 (Quick Start)
-1. 根据你的需求选择合适的子系统
-2. 使用 `@规则名` 手动激活特定规则
-3. 或让系统根据上下文自动选择
+1. 激活智能感知：`@intelligent_evolution`
+2. 配置感知范围：指定需要监控的项目路径
+3. 设置报告频率：选择实时、定时或事件驱动模式
+4. 集成到工作流：与其他规则结合使用感知数据
 
-### 组合使用 (Combined Usage)
+### 数据集成 (Data Integration)
 ```markdown
-# 复杂演进项目
-@evolution-philosophy @evolution-manual @evolution-governance
+# 与演进系统集成
+@intelligent_evolution @evolution-automation
 
-# 自动化优化项目
-@evolution-automation @evolution-governance
+# 与协作系统集成
+@intelligent_evolution @philosophy
+
+# 与治理系统集成
+@intelligent_evolution @evolution-governance
 ```
 
 ### 最佳实践 (Best Practices)
-- 从 `@evolution-philosophy` 开始理解框架
-- 使用 `@evolution-manual` 进行有计划的改进
-- 启用 `@evolution-automation` 实现持续优化
-- 始终应用 `@evolution-governance` 确保安全性
+- 定期检查感知数据的准确性和及时性
+- 根据项目特点调整感知频率和范围
+- 将感知结果作为决策的重要参考依据
+- 结合人工判断，避免过度依赖自动化感知
 
 ---
 
-*智能演进系统 - 模块化的规则演进框架，为不同的演进需求提供专门的解决方案。*
+*智能演进系统专注于项目的智能化感知和分析，为演进决策和规则优化提供数据支持和洞察。*
 

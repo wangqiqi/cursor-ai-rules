@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-11-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-16-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -46,7 +46,7 @@
 
 ### 🧠 智能协作框架
 - **🤝 AI共生宪法** - 人机协作的核心原则和最高准则
-- **💬 协作哲学** - 智能对话模式和沟通优化
+- **💬 交流哲学与协作模式** - 智能对话模式和沟通优化
 - **🧠 智能演进系统** - 统一协调自动感知和规则进化
 - **📈 演进哲学** - 规则演进的核心理念和原则指导
 - **📋 手动演进流程** - 人工触发的规则演进管理
@@ -56,6 +56,9 @@
 - **🔧 系统信息获取器** - 自动获取时间、路径和作者信息
 - **🎨 配置模板框架** - 自动化生成项目初始化配置
 - **🔍 ESLint代码质量检查** - 自动检测和修复JavaScript代码问题
+|- **🌍 国际化支持系统** - 自动检测语言偏好并切换沟通
+|- **🔧 跨平台适配器** - 统一管理不同OS间的命令、路径和环境
+|- **📋 规则管理系统** - 管理规则依赖关系、激活控制和扩展机制
 
 ### 🧠 智能特性
 
@@ -204,17 +207,20 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 | 规则模块 | 功能描述 | 应用场景 | 状态 |
 | -------- | -------- | -------- | ---- |
-| **constitution** | 🤝 AI共生宪法 | 定义协作核心原则和最高准则 | ✅ 活跃 |
-| **philosophy** | 💬 协作哲学 | 优化沟通和交互模式 | ✅ 活跃 |
+| **constitution** | 🤝 AI共生宪法 | 定义协作核心原则和最高准则 | ✅ 始终激活 |
+| **philosophy** | 💬 交流哲学与协作模式 | 优化沟通和交互模式 | ✅ 始终激活 |
 | **intelligent_evolution** | 🧠 智能演进系统 | 自动感知和规则进化协调 | ✅ 活跃 |
 | **evolution-philosophy** | 📈 演进哲学 | 规则演进的核心理念和原则 | ✅ 活跃 |
 | **evolution-manual** | 📋 手动演进流程 | 人工触发的规则演进管理 | ✅ 活跃 |
 | **evolution-automation** | 🤖 自动化演进系统 | 基于感知数据的智能优化 | ✅ 活跃 |
 | **evolution-governance** | 🛡️ 演进治理机制 | 规则演进的安全保障和质量控制 | ✅ 活跃 |
 | **generator** | ⚙️ 项目规则生成器 | 自动化生成个性化规则配置 | ✅ 活跃 |
-| **system_info** | 🔧 系统信息获取器 | 自动获取时间、路径和作者信息 | ✅ 活跃 |
+| **system_info** | 🔧 系统信息获取器 | 自动获取时间、路径和作者信息 | ✅ 始终激活 |
 | **templates** | 🎨 配置模板框架 | 自动化生成项目初始化配置 | ✅ 活跃 |
-| **eslint** | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题 | ✅ 活跃 |
+| **eslint** | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题 | ✅ 始终激活 |
+| **i18n** | 🌍 国际化支持系统 | 自动检测语言偏好并切换沟通 | ✅ 始终激活 |
+| **platform_adapter** | 🔧 跨平台适配器 | 统一管理不同OS间的命令、路径和环境 | ✅ 始终激活 |
+| **module_manager** | 📋 规则管理系统 | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
 
 ## 🏆 核心优势
 

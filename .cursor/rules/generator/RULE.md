@@ -165,19 +165,19 @@ alwaysApply: false
 ### 动态变量替换 (Dynamic Variable Replacement)
 这些变量在规则应用时会被自动替换为当前用户的环境信息：
 
-```bash
-# 获取当前时间
-2025-12-21 12:06:50 CST → $(date '+%Y-%m-%d %H:%M:%S %Z')
-2025-12-21T12:06:50+08:00 → $(date '+%Y-%m-%dT%H:%M:%S+08:00')
+#### 跨平台命令 (Cross-platform Commands)
+```typescript
+// 通过@platform_adapter统一执行
+const adapter = PlatformAdapterFactory.create();
 
-# 获取Git用户信息
-{{AUTHOR_NAME}} → $(git config --get user.name)
-{{AUTHOR_EMAIL}} → $(git config --get user.email)
-
-# 获取项目路径信息
-{{PROJECT_ROOT}} → $(git rev-parse --show-toplevel 2>/dev/null || pwd)
-{{WORK_DIR}} → $(pwd)
+const timestamp = await adapter.executeCommand('get_timestamp');
+const authorName = await adapter.executeCommand('get_user_name');
+const authorEmail = await adapter.executeCommand('get_user_email');
+const projectRoot = await adapter.executeCommand('get_project_root');
+const workDir = await adapter.executeCommand('get_work_dir');
 ```
+
+实际的平台特定命令由 `@platform_adapter` 规则自动选择和执行。
 
 **自动适配机制**：
 - 下载规则后，第一次使用时会自动扫描并替换所有硬编码信息
@@ -202,12 +202,12 @@ alwaysApply: false
 
 ### 环境信息获取 (Environment Information Gathering)
 - **本地时间**: 必须使用系统本地时区时间，而非AI模型时间
-  - 使用 `date '+%Y-%m-%d %H:%M:%S %Z'` 获取准确时间
+  - 通过 `@platform_adapter` 获取准确的平台特定时间戳
   - 格式示例: `2025-12-21 12:06:50 CST`
 - **Git用户信息**: 必须使用用户的git配置信息
-  - 使用 `git config --get user.name` 获取用户姓名
-  - 使用 `git config --get user.email` 获取用户邮箱
+  - 通过 `@platform_adapter` 统一获取Git用户信息
   - 示例: `{{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>`
+- **系统平台检测**: 由 `@platform_adapter` 自动检测并适配不同操作系统
 
 ### 输入验证 (Input Validation)
 - **必填检查**: 确保关键信息都已提供
@@ -232,7 +232,7 @@ alwaysApply: false
 - **必须使用本地时间**: 禁止使用AI模型内置时间戳
 - **格式统一**: `YYYY-MM-DD HH:MM:SS TZ` (如: 2025-12-21 12:06:50 CST)
 - **时区信息**: 包含时区标识符
-- **获取命令**: `date '+%Y-%m-%d %H:%M:%S %Z'`
+- **获取命令**: 通过 `@platform_adapter` 统一获取跨平台时间戳
 
 ### 作者信息规范 (Author Information Standards)
 - **使用Git配置**: 必须从 `git config` 获取用户信息

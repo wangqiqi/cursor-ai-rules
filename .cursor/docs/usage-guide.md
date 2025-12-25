@@ -16,13 +16,17 @@
 
 ### 核心规则层
 - **@constitution**: AI共生宪法，定义最高协作原则
-- **@philosophy**: 协作哲学，定义具体交互规范
-- **@intelligent_evolution**: 智能演进系统，协调规则演进
+- **@philosophy**: 交流哲学与协作模式，定义具体交互规范
+- **@intelligent_evolution**: 智能演进系统，统一协调感知和规则演进
+- **@i18n**: 国际化支持系统，自动检测语言偏好并切换沟通
+- **@platform_adapter**: 跨平台适配器，统一管理不同OS间的命令和环境
+- **@module_manager**: 规则管理系统，管理规则依赖关系和激活控制
 
 ### 功能规则层
-- **@generator**: 项目规则生成器，自动化生成个性化规则
-- **@system_info**: 系统信息管理器，提供时间和作者信息
-- **@templates**: 配置模板框架，项目初始化配置
+- **@generator**: 项目规则生成器，自动化生成个性化规则配置
+- **@system_info**: 系统信息获取器，自动获取时间、路径和作者信息
+- **@templates**: 配置模板框架，自动化生成项目初始化配置
+- **@eslint**: ESLint代码质量检查，自动检测和修复JavaScript代码问题
 
 ### 演进规则层
 - **@evolution-philosophy**: 演进理念和原则指导

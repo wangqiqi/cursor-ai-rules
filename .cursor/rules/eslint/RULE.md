@@ -80,3 +80,7 @@ alwaysApply: true
 2. 未使用变量 'unusedVar' (需要手动处理)
 3. 引号不一致 (自动修复可用)
 ```
+
+---
+
+*ESLint代码质量检查集成确保JavaScript/TypeScript项目的代码质量和一致性，提升开发效率和代码可维护性。*

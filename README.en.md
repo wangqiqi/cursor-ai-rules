@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-11-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-16-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-1-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -204,17 +204,20 @@ cat .cursorGrowth/data/perception_$(date +%Y%m%d).json
 
 | Rule Module | Function Description | Application Scenarios | Status |
 | ----------- | ------------------- | -------------------- | ------ |
-| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Active |
-| **philosophy** | 💬 Collaboration Philosophy | Optimize communication and interaction patterns | ✅ Active |
-| **intelligent_evolution** | 🧠 Intelligent Evolution System | Auto-perception and rule evolution coordination | ✅ Active |
+| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Always Active |
+| **philosophy** | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization | ✅ Always Active |
+| **intelligent_evolution** | 🧠 Intelligent Evolution System | Unified coordination of auto-perception and rule evolution | ✅ Active |
 | **evolution-philosophy** | 📈 Evolution Philosophy | Core principles and guidance for rule evolution | ✅ Active |
 | **evolution-manual** | 📋 Manual Evolution Process | Artificial trigger and rule evolution management | ✅ Active |
 | **evolution-automation** | 🤖 Automated Evolution System | Intelligent optimization based on perception data | ✅ Active |
 | **evolution-governance** | 🛡️ Evolution Governance | Security assurance and quality control for rule evolution | ✅ Active |
 | **generator** | ⚙️ Project Rules Generator | Automated personalized rule configuration generation | ✅ Active |
-| **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Active |
+| **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Always Active |
 | **templates** | 🎨 Configuration Templates Framework | Automated project initialization configuration | ✅ Active |
-| **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Active |
+| **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Always Active |
+| **i18n** | 🌍 Internationalization Support | Auto-detect language preferences and switch communication | ✅ Always Active |
+| **platform_adapter** | 🔧 Cross-platform Adapter | Unified management of commands, paths and environments | ✅ Always Active |
+| **module_manager** | 📋 Rule Management System | Manage rule dependencies, activation control and extensions | ✅ Always Active |
 
 ## 🏆 Core Advantages
 
