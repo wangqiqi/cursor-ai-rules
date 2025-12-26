@@ -58,8 +58,12 @@ analyze_project_comprehensive() {
         fi
     fi
 
-    # 计算代码文件数量
-    local code_files=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" 2>/dev/null | wc -l || echo "0")
+    # 计算代码文件数量（排除第三方依赖和构建产物）
+    local code_files=$(find . \
+        -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" \
+        -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" \
+        -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" \
+        2>/dev/null | grep -v -E "(node_modules|__pycache__|build|dist|\.git|\.cursorGrowth|target|\.next|\.nuxt|\.vuepress|coverage|\.nyc_output)" | wc -l || echo "0")
 
     result=$(echo "$result" | jq --arg tech "$tech_stack" --arg details "$tech_details" --arg files "$code_files" \
         '.tech_stack = {primary: $tech, details: $details, code_files: ($files | tonumber)}' 2>/dev/null || echo "$result")
@@ -75,9 +79,30 @@ analyze_project_comprehensive() {
 
     # 3. 项目规模分析
     echo "📏 正在分析项目规模..." >&2
-    local total_lines=$(find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" 2>/dev/null | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
-    local total_files=$(find . -type f \( -name "*.md" -o -name "*.js" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" \) 2>/dev/null | wc -l || echo "0")
-    local dirs=$(find . -type d -not -path '*/\.*' 2>/dev/null | wc -l || echo "0")
+    local total_lines=$(find . \
+        -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" \
+        -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" \
+        -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" \
+        2>/dev/null | grep -v -E "(node_modules|__pycache__|build|dist|\.git|\.cursorGrowth|target|\.next|\.nuxt|\.vuepress|coverage|\.nyc_output)" | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo "0")
+
+    local total_files=$(find . -type f \
+        \( -name "*.md" -o -name "*.js" -o -name "*.py" -o -name "*.java" -o -name "*.go" -o -name "*.rs" \
+        -o -name "*.c" -o -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" \
+        -o -name "*.h" -o -name "*.hpp" -o -name "*.hxx" \) \
+        2>/dev/null | grep -v -E "(node_modules|__pycache__|build|dist|\.git|\.cursorGrowth|target|\.next|\.nuxt|\.vuepress|coverage|\.nyc_output)" | wc -l || echo "0")
+    local dirs=$(find . -type d \
+        -not -path '*/\.*' \
+        -not -path '*/node_modules' \
+        -not -path '*/__pycache__' \
+        -not -path '*/build' \
+        -not -path '*/dist' \
+        -not -path '*/target' \
+        -not -path '*/.next' \
+        -not -path '*/.nuxt' \
+        -not -path '*/.vuepress' \
+        -not -path '*/coverage' \
+        -not -path '*/.nyc_output' \
+        2>/dev/null | wc -l || echo "0")
 
     result=$(echo "$result" | jq --arg lines "$total_lines" --arg files "$total_files" --arg dirs "$dirs" \
         '.project_scale = {total_lines: ($lines | tonumber), total_files: ($files | tonumber), directories: ($dirs | tonumber)}' 2>/dev/null || echo "$result")
@@ -206,7 +231,7 @@ should_skip_perception() {
     local current_hash=""
     local cached_hash=""
 
-    # 计算当前项目文件的哈希值（排除.cursorGrowth目录）
+    # 计算当前项目文件的哈希值（排除第三方依赖和构建产物）
     current_hash=$(find . -type f \
         -not -path './.cursorGrowth/*' \
         -not -path './node_modules/*' \
@@ -215,6 +240,14 @@ should_skip_perception() {
         -not -path './target/*' \
         -not -path './build/*' \
         -not -path './dist/*' \
+        -not -path './frontend/node_modules/*' \
+        -not -path './backend/__pycache__/*' \
+        -not -path './.next/*' \
+        -not -path './.nuxt/*' \
+        -not -path './.vuepress/*' \
+        -not -path './coverage/*' \
+        -not -path './.nyc_output/*' \
+        -not -path './*.log' \
         -exec sha256sum {} \; 2>/dev/null | sort | sha256sum | cut -d' ' -f1 || echo "no_files")
 
     # 读取缓存的哈希值
