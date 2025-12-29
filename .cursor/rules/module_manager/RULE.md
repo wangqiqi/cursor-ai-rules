@@ -26,6 +26,9 @@ alwaysApply: true
 ```
 统一模块管理器 (Module Manager)
 ├── 🧠 智能编排器 (Smart Orchestrator)    # 智能规则组合和编排 ⭐ 新增
+│   ├── 🎯 意图驱动编排 (Intent-Driven Orchestration) ⭐ 新增
+│   ├── 📊 上下文感知编排 (Context-Aware Orchestration) ⭐ 新增
+│   └── 🤖 自适应规则组合 (Adaptive Rule Composition) ⭐ 新增
 ├── 📦 模块注册表 (Module Registry)      # 模块元数据和状态管理
 ├── 🔍 模块发现器 (Module Discoverer)    # 自动发现可用模块
 ├── ⚖️ 依赖解析器 (Dependency Resolver)  # 解决模块依赖关系
@@ -41,20 +44,95 @@ alwaysApply: true
 ```mermaid
 graph TD
     A[用户请求] --> B[智能编排器]
-    B --> C[上下文分析]
-    C --> D[规则组合计算]
-    D --> E[依赖解析]
-    E --> F{依赖满足?}
-    F -->|是| G[编排规则集]
-    F -->|否| H[依赖优化]
-    G --> I[命令调度器]
-    H --> G
-    I --> J{模块已加载?}
-    J -->|是| K[直接执行]
-    J -->|否| L[模块发现器]
-    L --> M[模块加载器]
-    M --> N[初始化模块]
-    N --> K
+    B --> C{意图检测?}
+    C -->|是| D[意图驱动编排]
+    C -->|否| E[上下文分析]
+    D --> F[对话意图规则激活]
+    E --> G[规则组合计算]
+    F --> G
+    G --> H[依赖解析]
+    H --> I{依赖满足?}
+    I -->|是| J[编排规则集]
+    I -->|否| K[依赖优化]
+    J --> L[命令调度器]
+
+    M[conversation_intent_analyzer] --> F
+    N[intelligent_evolution] --> E
+```
+
+### 意图驱动编排 (Intent-Driven Orchestration) ⭐ 新增
+
+#### 意图检测和规则激活 (Intent Detection & Rule Activation)
+
+```typescript
+interface IntentDrivenOrchestrator {
+  // 意图识别
+  detectIntent(userInput: string): IntentAnalysis
+
+  // 规则映射
+  mapIntentToRules(intent: IntentAnalysis): RuleActivation[]
+
+  // 优先级排序
+  prioritizeRules(activations: RuleActivation[]): RuleActivation[]
+
+  // 冲突解决
+  resolveConflicts(activations: RuleActivation[]): RuleActivation[]
+}
+```
+
+#### 意图规则映射表 (Intent-Rule Mapping Table)
+
+| 意图类型 | 置信度阈值 | 激活规则 | 优先级 |
+|----------|------------|----------|--------|
+| `creation` + `frontend` | >0.7 | `conversation_intent_analyzer`, `generator` | 高 |
+| `creation` + `backend` | >0.7 | `conversation_intent_analyzer`, `templates` | 高 |
+| `creation` + `ai_ml` | >0.8 | `conversation_intent_analyzer`, `intelligent_evolution` | 高 |
+| `optimization` | >0.6 | `eslint`, `intelligent_evolution` | 中 |
+| `analysis` | >0.6 | `system_info`, `intelligent_evolution` | 中 |
+| `learning` | >0.5 | `i18n`, `conversation_intent_analyzer` | 低 |
+
+#### 动态规则编排算法 (Dynamic Rule Orchestration Algorithm)
+
+```python
+def orchestrate_intent_driven_rules(intent_analysis, context):
+    """
+    基于用户意图动态编排规则
+    """
+    # 1. 意图解析
+    primary_intent = intent_analysis['primary_intent']
+    tech_domains = intent_analysis['tech_domains']
+    confidence = intent_analysis['confidence']
+
+    # 2. 规则映射
+    candidate_rules = map_intent_to_rules(primary_intent, tech_domains)
+
+    # 3. 置信度过滤
+    filtered_rules = filter_by_confidence(candidate_rules, confidence)
+
+    # 4. 上下文调整
+    contextual_rules = adjust_for_context(filtered_rules, context)
+
+    # 5. 依赖解析
+    resolved_rules = resolve_dependencies(contextual_rules)
+
+    # 6. 优先级排序
+    prioritized_rules = sort_by_priority(resolved_rules)
+
+    return prioritized_rules
+```
+
+#### 编排执行流程 (Orchestration Execution Flow)
+
+```mermaid
+graph TD
+    A[用户输入] --> B[意图分析]
+    B --> C[规则映射]
+    C --> D[置信度过滤]
+    D --> E[上下文调整]
+    E --> F[依赖解析]
+    F --> G[优先级排序]
+    G --> H[规则激活]
+    H --> I[执行编排规则集]
 ```
 
 ### 🧠 智能规则编排器 (Smart Rule Orchestrator) ⭐ 新增功能

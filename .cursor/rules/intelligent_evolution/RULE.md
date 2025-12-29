@@ -24,13 +24,55 @@ alwaysApply: false
 | **用户行为分析** | 理解协作模式、使用习惯 | 交互日志、操作记录 | ✅ 活跃 |
 | **环境特征检测** | 识别技术栈、平台、工具链 | 系统信息、配置文件 | ✅ 活跃 |
 | **性能指标收集** | 监控响应时间、资源使用 | 系统监控、性能日志 | ✅ 活跃 |
-| **上下文感知引用** | 智能选择相关文件和代码片段 | 对话上下文、文件关联分析 | ⭐ 新增 |
-| **个性化学习引擎** | 深度学习用户偏好和行为模式 | 交互历史、反馈数据、学习算法 | ⭐ 新增 |
-| **性能监控系统** | 实时监控规则性能和系统健康 | 执行时间、缓存效率、错误率统计 | ⭐ 新增 |
+| **对话意图感知** | 理解用户对话内容和项目需求意图 | 对话历史、关键词分析、自然语言处理 | ⭐ 新增 |
+| **上下文感知引用** | 智能选择相关文件和代码片段 | 对话上下文、文件关联分析 | ✅ 活跃 |
+| **个性化学习引擎** | 深度学习用户偏好和行为模式 | 交互历史、反馈数据、学习算法 | ✅ 活跃 |
+| **性能监控系统** | 实时监控规则性能和系统健康 | 执行时间、缓存效率、错误率统计 | ✅ 活跃 |
 
 ### 感知模式 (Perception Modes)
 
-#### 上下文感知引用模式 (Context-Aware Reference Mode) ⭐ 新增
+#### 对话意图感知模式 (Conversation Intent Perception Mode) ⭐ 新增
+
+智能系统能够主动理解用户的对话内容，识别项目需求意图，并提供相应的技术规划建议：
+
+##### 意图识别策略 (Intent Recognition Strategies)
+- **关键词多层次分析**：识别意图类型（创建/优化/分析）和技术领域（前端/后端/AI等）
+- **上下文连续性分析**：考虑对话历史和上下文关系
+- **置信度动态评估**：基于关键词匹配度和上下文相关性计算置信度
+- **意图合成推理**：将多个关键词组合成复杂意图
+
+##### 意图分类体系 (Intent Classification System)
+```yaml
+# 一级意图：操作类型
+creation: ["创建", "开发", "构建", "设计", "实现"]
+optimization: ["优化", "改进", "重构", "升级"]
+analysis: ["分析", "评估", "诊断", "检查"]
+
+# 二级意图：技术领域
+frontend: ["前端", "界面", "UI", "React", "Vue"]
+backend: ["后端", "API", "服务", "Node.js", "Python"]
+ai_ml: ["AI", "机器学习", "训练", "推理", "标注"]
+```
+
+##### 智能响应生成 (Smart Response Generation)
+```typescript
+interface IntentResponse {
+  // 意图分析结果
+  primaryIntent: string      // "creation", "optimization", "analysis"
+  techDomains: string[]      // ["frontend", "backend", "ai_ml"]
+  confidence: number         // 0.0 - 1.0
+
+  // 响应策略
+  responseType: 'direct' | 'confirmatory' | 'clarification'
+  suggestions: TechSuggestion[]
+
+  // 个性化调整
+  userPreferences: UserPreferences
+  projectContext: ProjectContext
+}
+```
+
+#### 上下文感知引用模式 (Context-Aware Reference Mode) ✅ 活跃
 
 智能系统能够根据对话上下文自动选择和引用最相关的文件和代码片段：
 

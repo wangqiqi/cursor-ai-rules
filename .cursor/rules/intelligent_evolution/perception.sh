@@ -5,12 +5,83 @@
 
 set -e
 
+# 🎯 对话意图分析函数
+analyze_conversation_intent() {
+    echo "💬 正在分析对话意图..." >&2
+
+    # 尝试从环境变量或参数获取对话内容
+    local conversation_text="${CONVERSATION_TEXT:-}"
+    local recent_messages="${RECENT_MESSAGES:-}"
+
+    # 如果没有对话内容，返回空结果
+    if [ -z "$conversation_text" ] && [ -z "$recent_messages" ]; then
+        echo '{"intent_analysis": {"available": false, "reason": "no_conversation_data"}}'
+        return
+    fi
+
+    # 关键词分析
+    local keywords_found=""
+    local intent_categories=""
+    local tech_domains=""
+
+    # 意图关键词检测
+    if echo "$conversation_text $recent_messages" | grep -qiE "(我想做一个|开发一个|构建|创建|设计|实现)"; then
+        intent_categories="${intent_categories}creation,"
+    fi
+    if echo "$conversation_text $recent_messages" | grep -qiE "(优化|改进|重构|升级)"; then
+        intent_categories="${intent_categories}optimization,"
+    fi
+    if echo "$conversation_text $recent_messages" | grep -qiE "(分析|评估|诊断|检查)"; then
+        intent_categories="${intent_categories}analysis,"
+    fi
+
+    # 技术领域关键词检测
+    if echo "$conversation_text $recent_messages" | grep -qiE "(前端|界面|UI|React|Vue|Angular)"; then
+        tech_domains="${tech_domains}frontend,"
+    fi
+    if echo "$conversation_text $recent_messages" | grep -qiE "(后端|API|服务|Node|Python|Java|Go)"; then
+        tech_domains="${tech_domains}backend,"
+    fi
+    if echo "$conversation_text $recent_messages" | grep -qiE "(AI|机器学习|训练|推理|标注)"; then
+        tech_domains="${tech_domains}ai_ml,"
+    fi
+    if echo "$conversation_text $recent_messages" | grep -qiE "(数据|数据库|缓存)"; then
+        tech_domains="${tech_domains}data,"
+    fi
+
+    # 计算置信度
+    local intent_count=$(echo "$intent_categories" | tr -d ',' | wc -c)
+    local tech_count=$(echo "$tech_domains" | tr -d ',' | wc -c)
+    local confidence=$(( (intent_count + tech_count) * 10 ))
+    confidence=$(( confidence > 100 ? 100 : confidence ))
+
+    # 构建结果JSON
+    cat << EOF
+{
+  "intent_analysis": {
+    "available": true,
+    "conversation_text": "$conversation_text",
+    "intent_categories": "${intent_categories%,}",
+    "tech_domains": "${tech_domains%,}",
+    "confidence": $confidence,
+    "keywords_found": "$keywords_found",
+    "analysis_timestamp": "$(date '+%Y-%m-%d %H:%M:%S')"
+  }
+}
+EOF
+}
+
 # 🎯 核心函数：单步多任务项目感知
 analyze_project_comprehensive() {
     echo "🔍 执行单步多任务项目感知..." >&2
 
     # 初始化结果对象
     local result="{}"
+
+    # 0. 对话意图分析
+    echo "💬 正在分析对话意图..." >&2
+    local conversation_analysis=$(analyze_conversation_intent)
+    result=$(echo "$result" | jq --argjson conv "$conversation_analysis" '.conversation_intent = $conv.intent_analysis' 2>/dev/null || echo "$result")
 
     # 1. 技术栈分析
     echo "📊 正在分析技术栈..." >&2
@@ -293,12 +364,35 @@ should_skip_perception() {
         cached_hash=$(cat "$cache_file")
     fi
 
+    # 检查对话内容变化
+    local conversation_changed=false
+    local conversation_cache="${GROWTH_DIR}/cache/conversation_hash"
+    local current_conversation_hash=""
+
+    if [ -n "$CONVERSATION_TEXT" ] || [ -n "$RECENT_MESSAGES" ]; then
+        current_conversation_hash=$(echo "${CONVERSATION_TEXT:-}${RECENT_MESSAGES:-}" | sha256sum | cut -d' ' -f1)
+        local cached_conversation_hash=""
+        if [ -f "$conversation_cache" ]; then
+            cached_conversation_hash=$(cat "$conversation_cache")
+        fi
+
+        if [ "$current_conversation_hash" != "$cached_conversation_hash" ]; then
+            conversation_changed=true
+            echo "$current_conversation_hash" > "$conversation_cache"
+        fi
+    fi
+
     # 比较哈希值
-    if [ "$current_hash" = "$cached_hash" ]; then
-        echo "✅ 项目文件未发生变化，跳过感知分析"
+    if [ "$current_hash" = "$cached_hash" ] && [ "$conversation_changed" = "false" ]; then
+        echo "✅ 项目文件和对话内容均未发生变化，跳过感知分析"
         return 0  # 返回true表示应该跳过
     else
-        echo "📝 项目文件已变化，需要重新感知"
+        if [ "$current_hash" != "$cached_hash" ]; then
+            echo "📝 项目文件已变化，需要重新感知"
+        fi
+        if [ "$conversation_changed" = "true" ]; then
+            echo "💬 对话内容已变化，需要重新感知"
+        fi
         # 保存新的哈希值
         echo "$current_hash" > "$cache_file"
         return 1  # 返回false表示需要执行感知
