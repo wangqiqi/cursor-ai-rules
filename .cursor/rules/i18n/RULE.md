@@ -1,4 +1,5 @@
 ---
+command: i18n
 description: "国际化支持系统 - 自动检测用户语言偏好并切换沟通和注释语言"
 alwaysApply: true
 ---
@@ -15,6 +16,8 @@ alwaysApply: true
 - **外部交互适配**：根据用户特征自动切换沟通语言和代码注释语言
 - **智能检测**：通过多维度信号自动识别用户语言偏好
 - **渐进式适配**：从对话语境到系统级别的全方位语言支持
+- **文化适应性**：根据地区文化习惯调整交互方式 ⭐ 新增
+- **多语言混合支持**：在单一会话中支持多语言切换 ⭐ 新增
 
 ## 🔍 自动语言检测机制 (Automatic Language Detection)
 
@@ -47,6 +50,60 @@ alwaysApply: true
 ```
 
 #### 3. 时区语言关联 (Timezone-Language Correlation)
+```json
+{
+  "timezone_correlation": {
+    "asia_chinese": ["Asia/Shanghai", "Asia/Hong_Kong", "Asia/Taipei"],
+    "europe_english": ["Europe/London", "Europe/Dublin"],
+    "america_english": ["America/New_York", "America/Los_Angeles"],
+    "confidence_weight": 0.3
+  }
+}
+```
+
+#### 4. 文化适应性检测 (Cultural Adaptation Detection) ⭐ 新增
+```json
+{
+  "cultural_adaptation": {
+    "communication_styles": {
+      "high_context_cultures": ["CN", "JP", "KR"],  // 重视上下文的中国、日本、韩国
+      "low_context_cultures": ["US", "DE", "NL"],   // 重视明确表达的美国、德国、荷兰
+      "polychronic_cultures": ["IN", "BR", "MX"],   // 多任务并行文化的印度、巴西、墨西哥
+      "monochronic_cultures": ["US", "DE", "JP"]    // 单任务专注文化的美国、德国、日本
+    },
+    "decision_making": {
+      "consensus_based": ["JP", "SE", "NL"],        // 共识决策的日本、瑞典、荷兰
+      "hierarchical": ["CN", "KR", "IN"],           // 等级决策的中国、韩国、印度
+      "individual": ["US", "GB", "AU"]              // 个人决策的美国、英国、澳大利亚
+    }
+  }
+}
+```
+
+#### 5. 多语言混合支持 (Multilingual Hybrid Support) ⭐ 新增
+```typescript
+interface MultilingualSupport {
+  // 语言混合检测
+  detectLanguageMix(text: string): LanguageSegments[]
+
+  // 上下文保持翻译
+  translateWithContext(text: string, targetLang: string): TranslatedText
+
+  // 术语一致性
+  maintainTerminologyConsistency(terms: TechnicalTerms[]): ConsistentTerms
+}
+
+// 多语言混合示例
+const multilingual = new MultilingualSupport()
+
+// 检测混合语言
+const segments = multilingual.detectLanguageMix("请帮我优化这个 React component")
+// 返回: [{text: "请帮我优化这个", lang: "zh"}, {text: "React component", lang: "en"}]
+
+// 上下文翻译
+const translated = multilingual.translateWithContext("这个hook有bug", "en")
+// 返回: "This hook has a bug" (保持技术术语准确性)
+```
 ```json
 {
   "timezone_language_map": {

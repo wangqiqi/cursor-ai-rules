@@ -1,4 +1,5 @@
 ---
+command: generator
 description: "项目规则生成器 - 自动化生成个性化项目规则配置"
 globs: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.py", "*.java", "*.go"]
 alwaysApply: false

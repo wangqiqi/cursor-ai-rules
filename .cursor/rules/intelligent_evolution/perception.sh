@@ -74,8 +74,46 @@ analyze_project_comprehensive() {
     local recent_commits=$(git log --since="30 days ago" --oneline 2>/dev/null | wc -l || echo "0")
     local total_commits=$(git log --oneline 2>/dev/null | wc -l || echo "0")
 
+    # 增强Git分析 - 深度洞察 ⭐ 新增
+    local commit_frequency=$(echo "scale=2; $total_commits / ($(git log --reverse --format='%at' 2>/dev/null | head -1) / 86400)" | bc 2>/dev/null || echo "0")
+    local active_days=$(git log --format='%ai' 2>/dev/null | cut -d' ' -f1 | sort | uniq | wc -l || echo "1")
+    local avg_commits_per_day=$(echo "scale=1; $total_commits / $active_days" | bc 2>/dev/null || echo "0")
+
+    # 代码变更分析
+    local insertions=$(git log --shortstat 2>/dev/null | grep "insertions" | awk '{sum += $4} END {print sum+0}' || echo "0")
+    local deletions=$(git log --shortstat 2>/dev/null | grep "deletions" | awk '{sum += $6} END {print sum+0}' || echo "0")
+    local net_change=$((insertions - deletions))
+
+    # 分支策略分析
+    local branch_count=$(git branch -a 2>/dev/null | wc -l || echo "1")
+    local remote_branches=$(git branch -r 2>/dev/null | wc -l || echo "0")
+    local has_main_branch=$(git branch -a 2>/dev/null | grep -E "(main|master)" | wc -l || echo "0")
+
+    # 协作模式分析
+    local solo_commits=$(git log --format='%ae' 2>/dev/null | sort | uniq -c | awk '$1 == 1 {count++} END {print count+0}' || echo "0")
+    local pair_programming_ratio=$(echo "scale=2; ($contributors - $solo_commits) / $contributors * 100" | bc 2>/dev/null || echo "0")
+
     result=$(echo "$result" | jq --arg contributors "$contributors" --arg recent "$recent_commits" --arg total "$total_commits" \
-        '.team_dynamics = {contributors: ($contributors | tonumber), recent_commits: ($recent | tonumber), total_commits: ($total | tonumber)}' 2>/dev/null || echo "$result")
+        --arg frequency "$commit_frequency" --arg active_days "$active_days" --arg avg_per_day "$avg_commits_per_day" \
+        --arg insertions "$insertions" --arg deletions "$deletions" --arg net_change "$net_change" \
+        --arg branch_count "$branch_count" --arg remote_branches "$remote_branches" --arg has_main "$has_main_branch" \
+        --arg solo_commits "$solo_commits" --arg pair_ratio "$pair_programming_ratio" \
+        '.team_dynamics = {
+            contributors: ($contributors | tonumber),
+            recent_commits: ($recent | tonumber),
+            total_commits: ($total | tonumber),
+            commit_frequency: ($frequency | tonumber),
+            active_development_days: ($active_days | tonumber),
+            avg_commits_per_day: ($avg_per_day | tonumber),
+            code_insertions: ($insertions | tonumber),
+            code_deletions: ($deletions | tonumber),
+            net_code_change: ($net_change | tonumber),
+            branch_count: ($branch_count | tonumber),
+            remote_branches: ($remote_branches | tonumber),
+            has_main_branch: ($has_main | tonumber > 0),
+            solo_contributor_commits: ($solo_commits | tonumber),
+            pair_programming_ratio: ($pair_ratio | tonumber)
+        }' 2>/dev/null || echo "$result")
 
     # 3. 项目规模分析
     echo "📏 正在分析项目规模..." >&2
@@ -334,18 +372,22 @@ echo ""
 # 配置变量
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 GROWTH_DIR="${PROJECT_ROOT}/.cursorGrowth"
-DATA_DIR="${GROWTH_DIR}/data"
-CACHE_DIR="${GROWTH_DIR}/cache"
+DATA_DIR="${GROWTH_DIR}/data/perception"
+CACHE_DIR="${GROWTH_DIR}/cache/analysis"
 PERCEPTION_FILE="${DATA_DIR}/perception_$(date +%Y%m%d).json"
+PREFERENCES_DIR="${GROWTH_DIR}/data/user_preferences"
+METRICS_DIR="${GROWTH_DIR}/data/project_metrics"
+LEARNING_DIR="${GROWTH_DIR}/learning"
+MONITORING_DIR="${GROWTH_DIR}/monitoring"
 
 # 确保目录结构完整
 if [ ! -d "$GROWTH_DIR" ]; then
     echo "⚠️  未检测到.cursorGrowth目录，正在创建智能进化存储结构..."
-    mkdir -p "$DATA_DIR" "$CACHE_DIR"
+    mkdir -p "$DATA_DIR" "$CACHE_DIR" "$PREFERENCES_DIR" "$METRICS_DIR" "$LEARNING_DIR" "$MONITORING_DIR"
 fi
 
 # 创建必要的目录
-mkdir -p "$DATA_DIR" "$CACHE_DIR"
+mkdir -p "$DATA_DIR" "$CACHE_DIR" "$PREFERENCES_DIR" "$METRICS_DIR" "$LEARNING_DIR" "$MONITORING_DIR"
 
 # 🧠 智能缓存检查
 echo "🔍 检查项目变化状态..."
@@ -394,6 +436,15 @@ echo "$PERCEPTION_RESULT" | jq -r '
     "   贡献者数量: \(.team_dynamics.contributors)人",
     "   近30天提交: \(.team_dynamics.recent_commits)次",
     "   总提交次数: \(.team_dynamics.total_commits)次",
+    "   提交频率: \(.team_dynamics.commit_frequency)次/天",
+    "   活跃开发天数: \(.team_dynamics.active_development_days)天",
+    "   日均提交: \(.team_dynamics.avg_commits_per_day)次/天",
+    "   代码增量: +\(.team_dynamics.code_insertions)行",
+    "   代码删除: -\(.team_dynamics.code_deletions)行",
+    "   净代码变更: \(.team_dynamics.net_code_change)行",
+    "   分支数量: \(.team_dynamics.branch_count)个",
+    "   远程分支: \(.team_dynamics.remote_branches)个",
+    "   配对编程比例: \(.team_dynamics.pair_programming_ratio)%",
     "",
     "📏 项目规模分析:",
     "   总代码行数: \(.project_scale.total_lines)行",

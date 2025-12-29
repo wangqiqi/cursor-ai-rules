@@ -1,4 +1,5 @@
 ---
+command: evolution-philosophy
 description: "演进哲学 - 项目规则持续演进的核心理念和原则指导"
 alwaysApply: false
 ---

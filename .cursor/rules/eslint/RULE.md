@@ -1,4 +1,5 @@
 ---
+command: eslint
 description: "ESLint代码质量检查集成 - 自动检测和修复JavaScript代码问题"
 globs: ["*.js", "*.ts", "*.jsx", "*.tsx"]
 alwaysApply: true

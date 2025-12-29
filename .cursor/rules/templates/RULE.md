@@ -1,4 +1,5 @@
 ---
+command: templates
 description: "项目配置模板框架 - 自动化生成项目初始化配置"
 globs: ["*.json", "*.yaml", "*.yml", "*.toml"]
 alwaysApply: false

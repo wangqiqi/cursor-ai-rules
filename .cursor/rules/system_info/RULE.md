@@ -1,4 +1,5 @@
 ---
+command: system_info
 description: "系统信息获取器 - 自动获取时间、路径和作者信息的通用机制"
 globs: ["*.md", "*.mdc", "*.txt"]
 alwaysApply: true

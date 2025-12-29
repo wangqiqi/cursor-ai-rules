@@ -1,4 +1,5 @@
 ---
+command: evolution-governance
 description: "演进治理机制 - 规则演进的安全保障和质量控制体系"
 alwaysApply: false
 ---

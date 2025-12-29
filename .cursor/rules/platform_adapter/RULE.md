@@ -1,4 +1,5 @@
 ---
+command: platform_adapter
 description: "跨平台适配器 - 统一管理不同操作系统间的命令、路径和环境适配"
 alwaysApply: true
 ---

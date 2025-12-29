@@ -1,4 +1,5 @@
 ---
+command: evolution-automation
 description: "自动化演进系统 - 基于感知数据的智能规则自动优化"
 globs: ["*.json", "*.yaml", "*.yml"]
 alwaysApply: false
@@ -10,7 +11,7 @@ alwaysApply: false
 
 ## 🎯 核心机制 (Core Mechanisms)
 
-自动化演进系统通过持续感知项目状态和用户行为，实现规则的智能优化和自动调整。
+自动化演进系统通过持续感知项目状态和用户行为，实现规则的智能优化和自动调整。新增规则演进建议系统，基于数据驱动提供具体的演进方向和实施建议。
 
 ## 📊 自动化感知接口 (Automated Perception Interface)
 
@@ -47,6 +48,101 @@ class RuleOptimizer:
         optimal_params = self.calculate_optimal(trends)
 
         # 生成优化建议
+        suggestions = self.generate_suggestions(optimal_params)
+        return suggestions
+```
+
+#### 规则演进建议引擎 (Rule Evolution Suggestion Engine) ⭐ 新增
+
+基于感知数据和使用模式，智能生成具体的规则演进建议：
+
+##### 演进分析维度 (Evolution Analysis Dimensions)
+```typescript
+interface EvolutionAnalyzer {
+  // 项目成熟度分析
+  analyzeProjectMaturity(perception: PerceptionData): MaturityLevel
+
+  // 用户协作模式分析
+  analyzeCollaborationPatterns(interactions: InteractionHistory[]): CollaborationPattern
+
+  // 技术栈演进趋势
+  analyzeTechStackEvolution(techData: TechStackData): EvolutionTrend
+
+  // 规则使用效率分析
+  analyzeRuleEfficiency(usage: RuleUsageData): EfficiencyMetrics
+
+  // 生成演进建议
+  generateEvolutionSuggestions(analysis: AnalysisResult): EvolutionSuggestion[]
+}
+
+// 演进建议生成示例
+const analyzer = new EvolutionAnalyzer()
+
+// 1. 综合分析
+const maturity = analyzer.analyzeProjectMaturity(perceptionData)
+// 返回: {level: 'growing', confidence: 0.85}
+
+const patterns = analyzer.analyzeCollaborationPatterns(interactionHistory)
+// 返回: {style: 'iterative', team_size: 'small', frequency: 'daily'}
+
+const techTrends = analyzer.analyzeTechStackEvolution(techStackData)
+// 返回: {direction: 'modernization', priority: 'high', timeline: '3_months'}
+
+const efficiency = analyzer.analyzeRuleEfficiency(ruleUsageData)
+// 返回: {optimal_rules: ['eslint', 'system_info'], underutilized: ['templates']}
+
+// 2. 生成综合建议
+const suggestions = analyzer.generateEvolutionSuggestions({
+  maturity, patterns, techTrends, efficiency
+})
+```
+
+##### 智能建议类型 (Intelligent Suggestion Types)
+
+###### 项目成熟度建议 (Maturity-Based Suggestions)
+- **早期项目**：建议启用基础规则，保持轻量级
+- **成长项目**：建议增加质量控制和协作规则
+- **成熟项目**：建议启用高级自动化和治理规则
+
+###### 协作模式建议 (Collaboration-Based Suggestions)
+- **个人开发**：优化为高效单人工作流
+- **小团队**：启用同行评审和标准化规则
+- **大团队**：强化流程控制和文档要求
+
+###### 技术栈演进建议 (Technology Evolution Suggestions)
+- **现代化改造**：建议升级到新版本框架
+- **最佳实践 adoption**：引入行业标准工具
+- **性能优化**：基于使用数据优化技术选择
+
+###### 使用效率建议 (Efficiency-Based Suggestions)
+- **规则优化**：停用低效规则，启用高效替代
+- **流程简化**：基于使用模式优化工作流程
+- **自动化增强**：增加重复任务的自动化程度
+
+##### 建议优先级算法 (Suggestion Priority Algorithm)
+```typescript
+interface SuggestionPrioritizer {
+  // 计算建议优先级
+  calculatePriority(suggestion: EvolutionSuggestion): PriorityScore
+
+  // 考虑实施难度
+  assessImplementationDifficulty(suggestion: EvolutionSuggestion): DifficultyLevel
+
+  // 评估潜在收益
+  estimatePotentialBenefit(suggestion: EvolutionSuggestion): BenefitScore
+
+  // 生成实施路线图
+  createImplementationRoadmap(suggestions: EvolutionSuggestion[]): Roadmap
+}
+
+// 优先级计算示例
+const prioritizer = new SuggestionPrioritizer()
+
+const priority = prioritizer.calculatePriority(suggestion)
+// 基于: 收益大小 × 实施难度倒数 × 紧急程度
+
+const roadmap = prioritizer.createImplementationRoadmap(suggestions)
+// 返回结构化的实施计划，按阶段和依赖关系排序
         suggestions = self.generate_suggestions(optimal_params)
 
         return suggestions

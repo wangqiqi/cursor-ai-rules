@@ -122,7 +122,9 @@
     "data_storage": {
       "local_only": true,
       "encrypted": true,
-      "max_size_mb": 10
+      "max_size_mb": 10,
+      "growth_directory": ".cursorGrowth",
+      "data_retention_days": 365
     },
     "model_update": {
       "frequency": "daily",
@@ -139,7 +141,24 @@
     "confidence_threshold": 0.75,
     "max_suggestions": 3,
     "explanation_required": true,
-    "user_feedback_collection": true
+    "user_feedback_collection": true,
+    "personalization_enabled": true
+  },
+  "growth_architecture": {
+    "enabled": true,
+    "data_directories": {
+      "perception": "data/perception",
+      "user_preferences": "data/user_preferences",
+      "project_metrics": "data/project_metrics"
+    },
+    "cache_directories": {
+      "analysis": "cache/analysis",
+      "templates": "cache/templates",
+      "rules": "cache/rules"
+    },
+    "learning_storage": "learning",
+    "monitoring_storage": "monitoring",
+    "backup_storage": "backups/config_backups"
   },
   "monitoring": {
     "performance_metrics": {
