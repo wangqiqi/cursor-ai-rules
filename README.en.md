@@ -312,6 +312,47 @@ A: Only reads public Git configuration information for personalized experience.
 
 ---
 
+## 📋 Environment Requirements
+
+- **Cursor Editor** v0.40+
+- **Git** 2.0+
+- **Bash** 4.0+
+- **jq** (JSON processor, optional but recommended)
+
+---
+
+## 🎯 Out-of-the-Box Features
+
+### Project Agnostic
+- ✅ Auto-detect tech stack (JavaScript, Python, Go, Rust, Java, C/C++, etc.)
+- ✅ Smart analysis of team size and development stage
+- ✅ Dynamic adaptation to project complexity requirements
+- ✅ No hardcoded project-specific information
+
+### User Agnostic
+- ✅ Use Git config to get user information
+- ✅ Support universal defaults without Git environment
+- ✅ Auto-get local time and timezone
+- ✅ Privacy protection, no storage of personal sensitive information
+
+### Language Agnostic
+- ✅ Auto-detect project file structure
+- ✅ Support mainstream programming languages
+- ✅ Smart recommendation of language-specific best practices
+- ✅ Extensible support for new languages
+
+### Autonomous Perception and Evolution
+- ✅ Single-step multi-task project analysis
+- ✅ Continuous learning of user collaboration preferences
+- ✅ Data-driven rule optimization
+- ✅ Progressive system evolution
+
+---
+
+*🚀 Cursor AI Rules v4.0.0 - Making AI collaboration simple and powerful*
+*Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*Based on Cursor official specifications, integrated with intelligent evolution technology and rule system*
+
 ## 📄 License
 
 This project uses the MIT License - see [LICENSE](LICENSE) file for details

@@ -1,11 +1,15 @@
-# 🚀 Cursor AI Rules - Intelligent AI Collaboration System v3.0.0
+# 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
-**High Performance · Intelligent Evolution · Rule Extensibility**
+[![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
+[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![GitHub](https://img.shields.io/badge/GitHub-wangqiqi/cursor--ai--rules-blue?logo=github)](https://github.com/wangqiqi/cursor-ai-rules)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
+
+**🌟 Revolutionary AI Programming Collaboration Experience - Let AI Truly Understand Your Project and Needs**
 
 📚 **[Usage Guide](docs/usage-guide.md)** | **[Intelligent Evolution Guide](docs/intelligent-evolution-guide.md)** | **[System Info Guide](docs/system-info-guide.md)** | **[Team Rules Example](docs/team-rules-example.md)** | **[Remote Rules Import](docs/remote-rules-guide.md)**
 
@@ -299,7 +303,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 Technical Metrics
 
-| Metric | v1.0 | v3.0.0 | Improvement |
+| Metric | v1.0 | v4.0.0 | Improvement |
 |--------|------|------|-------------|
 | Initialization Time | ~30s | ~5s | **83%↑** |
 | Perception Time | ~10s | ~1s | **90%↑** |
@@ -345,6 +349,6 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ---
 
-*🚀 Cursor AI Rules v3.0.0 - Making AI collaboration simple and powerful*
+*🚀 Cursor AI Rules v4.0.0 - Making AI collaboration simple and powerful*
 *Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 *Based on Cursor official specifications, integrated with intelligent evolution technology and rule system*

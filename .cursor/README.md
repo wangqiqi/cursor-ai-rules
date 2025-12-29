@@ -1,11 +1,15 @@
-# 🚀 Cursor AI Rules - 智能AI协作系统 v3.0.0
+# 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
-**高性能 · 智能进化 · 规则扩展**
+[![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
+[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![GitHub](https://img.shields.io/badge/GitHub-wangqiqi/cursor--ai--rules-blue?logo=github)](https://github.com/wangqiqi/cursor-ai-rules)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
+
+**🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
 📚 **[使用指南](docs/usage-guide.md)** | **[智能进化指南](docs/intelligent-evolution-guide.md)** | **[系统信息指南](docs/system-info-guide.md)** | **[团队规则示例](docs/team-rules-example.md)** | **[远程规则导入](docs/remote-rules-guide.md)**
 
@@ -298,7 +302,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 技术指标
 
-| 指标 | v1.0 | v3.0.0 | 提升 |
+| 指标 | v1.0 | v4.0.0 | 提升 |
 |------|------|------|------|
 | 初始化时间 | ~30s | ~5s | **83%↑** |
 | 感知耗时 | ~10s | ~1s | **90%↑** |
@@ -344,7 +348,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ---
 
-*🚀 Cursor AI Rules v3.0.0 - 让AI协作变得简单而强大*
+*🚀 Cursor AI Rules v4.0.0 - 让AI协作变得简单而强大*
 *最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
 *基于 Cursor 官方规范，集成智能进化技术和规则系统*
 
