@@ -84,7 +84,7 @@ check_script_permissions() {
     echo "📊 检查脚本权限..."
 
     local scripts=(
-        ".cursor/cursor-adaptation-setup.sh"
+        ".cursor/scripts/cursor-adaptation-setup.sh"
         ".cursor/rules/intelligent_evolution/perception.sh"
     )
 
@@ -190,7 +190,7 @@ generate_report() {
 
         echo ""
         echo "🔧 自动修复命令:"
-        echo "   chmod +x .cursor/cursor-adaptation-setup.sh"
+        echo "   chmod +x .cursor/scripts/cursor-adaptation-setup.sh"
         echo "   chmod +x .cursor/rules/intelligent_evolution/perception.sh"
     fi
 

@@ -36,10 +36,10 @@
 ### 🚀 Plug-and-Play
 ```bash
 # One-click deploy to any project
-./.cursor/cursor-adaptation-setup.sh
+./.cursor/scripts/cursor-adaptation-setup.sh
 
 # Run intelligent perception analysis
-./.cursor/rules/intelligent_evolution/perception.sh
+./.cursor/scripts/perception.sh
 ```
 
 ### 🧠 Intelligent Collaboration Framework
@@ -61,7 +61,7 @@
 - ✅ **User Learning** - Analyze communication patterns, learn collaboration preferences
 - ✅ **Adaptive Adjustment** - Auto-optimize rules based on perception data
 - ✅ **Progressive Evolution** - Small steps, fast iterations, ensure smooth transition
-- ✅ **Perception Analysis** - Run `./.cursor/rules/intelligent_evolution/perception.sh` to get project insights
+- ✅ **Perception Analysis** - Run `./.cursor/scripts/perception.sh` to get project insights
 - ✅ **Out-of-the-Box** - No configuration needed, copy and use, support any project, any language
 
 ### 🔧 Adaptive Environment
@@ -142,13 +142,13 @@ AI: 🧠 Perceived your project uses Node.js + MongoDB...
 
 <div align="center">
 
-| 📊 Metric | 🎯 Status | 📈 Trend |
-|--------|--------|--------|
-| **Universality** | Any Project | ✅ Out-of-the-box |
-| **Language Support** | Multi-language | 🔍 Auto-detection |
-| **Deployment Time** | <5 seconds | ⚡ Plug-and-play |
-| **Rule Coverage** | 14 Rule Modules | 🛡️ Comprehensive Protection |
-| **Intelligent Perception** | Activated | 🧠 Continuous Learning |
+| 📊 Metric                   | 🎯 Status        | 📈 Trend                    |
+| -------------------------- | --------------- | -------------------------- |
+| **Universality**           | Any Project     | ✅ Out-of-the-box           |
+| **Language Support**       | Multi-language  | 🔍 Auto-detection           |
+| **Deployment Time**        | <5 seconds      | ⚡ Plug-and-play            |
+| **Rule Coverage**          | 14 Rule Modules | 🛡️ Comprehensive Protection |
+| **Intelligent Perception** | Activated       | 🧠 Continuous Learning      |
 
 </div>
 
@@ -168,7 +168,7 @@ cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
 
 # 2⃣ Enter project and run adaptation
 cd your-project
-./.cursor/cursor-adaptation-setup.sh
+./.cursor/scripts/cursor-adaptation-setup.sh
 
 # 3⃣ 🎉 Done! AI now truly understands your project
 ```
@@ -190,7 +190,7 @@ AI will immediately respond:
 
 ```bash
 # Run intelligent perception to understand the full project picture
-./.cursor/rules/intelligent_evolution/perception.sh
+./.cursor/scripts/perception.sh
 
 # Check environment integrity
 ./.cursor/scripts/env_check.sh
@@ -200,33 +200,33 @@ AI will immediately respond:
 
 ## 📋 Rules System
 
-| Rule Module | Function Description | Application Scenarios | Status |
-| ----------- | ------------------- | -------------------- | ------ |
-| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Always Active |
-| **philosophy** | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization | ✅ Always Active |
-| **intelligent_evolution** | 🧠 Intelligent Evolution System | Unified coordination of auto-perception and rule evolution | ✅ Active |
-| **evolution-philosophy** | 📈 Evolution Philosophy | Core principles and guidance for rule evolution | ✅ Active |
-| **evolution-manual** | 📋 Manual Evolution Process | Artificial trigger and rule evolution management | ✅ Active |
-| **evolution-automation** | 🤖 Automated Evolution System | Intelligent optimization based on perception data | ✅ Active |
-| **evolution-governance** | 🛡️ Evolution Governance | Security assurance and quality control for rule evolution | ✅ Active |
-| **generator** | ⚙️ Project Rules Generator | Automated personalized rule configuration generation | ✅ Active |
-| **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Always Active |
-| **templates** | 🎨 Configuration Templates | Automated project initialization configuration | ✅ Active |
-| **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Always Active |
-| **i18n** | 🌍 Internationalization Support | Auto-detect language preferences and switch communication | ✅ Always Active |
-| **platform_adapter** | 🔧 Cross-platform Adapter | Unified management of commands, paths and environments | ✅ Always Active |
-| **module_manager** | 📋 Rule Management System | Manage rule dependencies, activation control and extensions | ✅ Always Active |
+| Rule Module               | Function Description                             | Application Scenarios                                       | Status          |
+| ------------------------- | ------------------------------------------------ | ----------------------------------------------------------- | --------------- |
+| **constitution**          | 🤝 AI Symbiosis Constitution                      | Define collaboration core principles and highest standards  | ✅ Always Active |
+| **philosophy**            | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization     | ✅ Always Active |
+| **intelligent_evolution** | 🧠 Intelligent Evolution System                   | Unified coordination of auto-perception and rule evolution  | ✅ Active        |
+| **evolution-philosophy**  | 📈 Evolution Philosophy                           | Core principles and guidance for rule evolution             | ✅ Active        |
+| **evolution-manual**      | 📋 Manual Evolution Process                       | Artificial trigger and rule evolution management            | ✅ Active        |
+| **evolution-automation**  | 🤖 Automated Evolution System                     | Intelligent optimization based on perception data           | ✅ Active        |
+| **evolution-governance**  | 🛡️ Evolution Governance                           | Security assurance and quality control for rule evolution   | ✅ Active        |
+| **generator**             | ⚙️ Project Rules Generator                        | Automated personalized rule configuration generation        | ✅ Active        |
+| **system_info**           | 🔧 System Information Retriever                   | Auto-acquire time, path and author information              | ✅ Always Active |
+| **templates**             | 🎨 Configuration Templates                        | Automated project initialization configuration              | ✅ Active        |
+| **eslint**                | 🔍 ESLint Code Quality Check                      | Auto-detect and fix JavaScript code issues                  | ✅ Always Active |
+| **i18n**                  | 🌍 Internationalization Support                   | Auto-detect language preferences and switch communication   | ✅ Always Active |
+| **platform_adapter**      | 🔧 Cross-platform Adapter                         | Unified management of commands, paths and environments      | ✅ Always Active |
+| **module_manager**        | 📋 Rule Management System                         | Manage rule dependencies, activation control and extensions | ✅ Always Active |
 
 ## 🏆 Core Advantages
 
 <div align="center">
 
-| Feature | Traditional Solutions | Cursor AI Rules |
-|---------|---------------------|------------------|
-| **Environment Adaptation** | Manual Configuration | 🔄 Auto-perceive project environment |
-| **Collaboration Patterns** | Fixed Rules | 🎯 Smart adjustment based on team size |
-| **Learning Ability** | No Memory | 🧠 Continuous learning of user preferences |
-| **Deployment Complexity** | High | ⚡ 60-second copy-and-use |
+| Feature                    | Traditional Solutions | Cursor AI Rules                           |
+| -------------------------- | --------------------- | ----------------------------------------- |
+| **Environment Adaptation** | Manual Configuration  | 🔄 Auto-perceive project environment       |
+| **Collaboration Patterns** | Fixed Rules           | 🎯 Smart adjustment based on team size     |
+| **Learning Ability**       | No Memory             | 🧠 Continuous learning of user preferences |
+| **Deployment Complexity**  | High                  | ⚡ 60-second copy-and-use                  |
 
 </div>
 
@@ -236,15 +236,15 @@ AI will immediately respond:
 
 ### 💬 Dialogue Examples
 
-| Scenario | Traditional AI | Cursor AI Rules |
-|----------|---------------|------------------|
-| **New API** | "Write a login API" → Generic template | "Write a login API" → Project-customized solution, integrate existing auth framework |
-| **Code Refactoring** | "Refactor this function" → Standard suggestions | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
-| **Architecture Decision** | "How to design caching" → Generic comparison | "How to design caching" → Optimized suggestions combining project tech stack |
+| Scenario                  | Traditional AI                                  | Cursor AI Rules                                                                                      |
+| ------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **New API**               | "Write a login API" → Generic template          | "Write a login API" → Project-customized solution, integrate existing auth framework                 |
+| **Code Refactoring**      | "Refactor this function" → Standard suggestions | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
+| **Architecture Decision** | "How to design caching" → Generic comparison    | "How to design caching" → Optimized suggestions combining project tech stack                         |
 
 ### ⚡ Instant Perception
 
-After running `./.cursor/rules/intelligent_evolution/perception.sh`, AI immediately understands:
+After running `./.cursor/scripts/perception.sh`, AI immediately understands:
 
 - 🛠️ **Your Tech Stack** - Node.js + React + MongoDB
 - 👥 **Team Collaboration Mode** - Single developer, rapid iteration
