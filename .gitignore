@@ -52,7 +52,5 @@ coverage/
 
 # Cursor AI Rules - 通用规则保持跟踪
 !.cursor/
-!.cursor/**
-
-# 保留生长文件夹的占位符
+!.cursor/**# 保留生长文件夹的占位符
 !.cursorGrowth/.gitkeep
