@@ -6,7 +6,7 @@ alwaysApply: true
 
 # 🌐 跨平台适配器 (Cross-platform Adapter)
 
-*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🎯 核心使命 (Core Mission)
 

@@ -1,11 +1,12 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-16-blueviolet?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -36,13 +37,14 @@
 ### 🚀 即插即用
 ```bash
 # 一键部署到任何项目
-./.cursor/scripts/cursor-adaptation-setup.sh
+./.cursor/cursor-adaptation-setup.sh
 
 # 运行智能感知分析
-./.cursor/scripts/perception.sh
+./.cursor/rules/intelligent_evolution/perception.sh
 ```
 
 ### 🧠 智能协作框架
+- **🎯 智能Master控制器** - 自动感知需求并智能执行内部命令
 - **🤝 AI共生宪法** - 人机协作的核心原则和最高准则
 - **💬 交流哲学与协作模式** - 智能对话模式和沟通优化
 - **🧠 智能演进系统** - 统一协调自动感知和规则进化
@@ -57,14 +59,17 @@
 |- **🌍 国际化支持系统** - 自动检测语言偏好并切换沟通
 |- **🔧 跨平台适配器** - 统一管理不同OS间的命令、路径和环境
 |- **📋 规则管理系统** - 管理规则依赖关系、激活控制和扩展机制
+|- **🎯 智能Master控制器** - 自动感知需求并智能执行内部命令
+|- **🛠️ 16个专业Skills** - 全套专业技能库（文档处理、设计创作、AI集成、企业协作、测试开发）
 
 ### 🧠 智能特性
 
+- ✅ **智能Master** - 自然语言驱动，自动分析意图并执行最优方案
 - ✅ **自动感知** - 实时监控项目变化和技术栈演进
 - ✅ **用户学习** - 分析沟通模式，学习协作偏好
 - ✅ **自适应调整** - 基于感知数据自动优化规则
 - ✅ **渐进进化** - 小步快跑，确保平滑过渡
-- ✅ **感知分析** - 运行 `./.cursor/scripts/perception.sh` 获取项目洞察
+- ✅ **感知分析** - 运行 `./.cursor/rules/intelligent_evolution/perception.sh` 获取项目洞察
 - ✅ **开箱即用** - 无需配置，复制即用，支持任何项目、任何语言
 
 ### 🔧 自适应环境
@@ -145,13 +150,13 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 
 <div align="center">
 
-| 📊 指标       | 🎯 状态       | 📈 趋势       |
-| ------------ | ------------ | ------------ |
-| **通用性**   | 任何项目     | ✅ 开箱即用   |
-| **语言支持** | 多语言       | 🔍 自动检测   |
-| **部署时间** | <5秒         | ⚡ 即插即用   |
+| 📊 指标 | 🎯 状态 | 📈 趋势 |
+|--------|--------|--------|
+| **通用性** | 任何项目 | ✅ 开箱即用 |
+| **语言支持** | 多语言 | 🔍 自动检测 |
+| **部署时间** | <5秒 | ⚡ 即插即用 |
 | **规则覆盖** | 14个规则模块 | 🛡️ 全方位保护 |
-| **智能感知** | 已激活       | 🧠 持续学习   |
+| **智能感知** | 已激活 | 🧠 持续学习 |
 
 </div>
 
@@ -171,14 +176,29 @@ cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
 
 # 2⃣ 进入项目并运行适配
 cd your-project
-./.cursor/scripts/cursor-adaptation-setup.sh
+./.cursor/cursor-adaptation-setup.sh
 
 # 3⃣ 🎉 完成！AI现在真正理解你的项目了
 ```
 
 ### 💬 立即测试
 
-安装后在Cursor中提问：
+#### 方式1：在Cursor对话框中使用智能Master
+```bash
+@master 我想创建一个React项目
+@master 需要优化代码质量
+@master 帮我分析项目现状
+```
+
+AI会自动感知并执行：
+```
+🎯 智能Master控制器已激活
+🧠 正在分析用户意图...
+🔍 正在感知项目环境...
+⚡ 自动执行: env_check → enable → generator
+```
+
+#### 方式2：传统方式提问
 > *"帮我优化这个API的安全性"*
 
 AI会立即响应：
@@ -193,7 +213,7 @@ AI会立即响应：
 
 ```bash
 # 运行智能感知，了解项目全貌
-./.cursor/scripts/perception.sh
+./.cursor/rules/intelligent_evolution/perception.sh
 
 # 检查环境完整性
 ./.cursor/scripts/env_check.sh
@@ -203,33 +223,49 @@ AI会立即响应：
 
 ## 📋 规则体系
 
-| 规则模块                  | 功能描述             | 应用场景                             | 状态       |
-| ------------------------- | -------------------- | ------------------------------------ | ---------- |
-| **constitution**          | 🤝 AI共生宪法         | 定义协作核心原则和最高准则           | ✅ 始终激活 |
-| **philosophy**            | 💬 交流哲学与协作模式 | 优化沟通和交互模式                   | ✅ 始终激活 |
-| **intelligent_evolution** | 🧠 智能演进系统       | 自动感知和规则进化协调               | ✅ 活跃     |
-| **evolution-philosophy**  | 📈 演进哲学           | 规则演进的核心理念和原则             | ✅ 活跃     |
-| **evolution-manual**      | 📋 手动演进流程       | 人工触发的规则演进管理               | ✅ 活跃     |
-| **evolution-automation**  | 🤖 自动化演进系统     | 基于感知数据的智能优化               | ✅ 活跃     |
-| **evolution-governance**  | 🛡️ 演进治理机制       | 规则演进的安全保障和质量控制         | ✅ 活跃     |
-| **generator**             | ⚙️ 项目规则生成器     | 自动化生成个性化规则配置             | ✅ 活跃     |
-| **system_info**           | 🔧 系统信息获取器     | 自动获取时间、路径和作者信息         | ✅ 始终激活 |
-| **templates**             | 🎨 配置模板           | 自动化生成项目初始化配置             | ✅ 活跃     |
-| **eslint**                | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题     | ✅ 始终激活 |
-| **i18n**                  | 🌍 国际化支持系统     | 自动检测语言偏好并切换沟通           | ✅ 始终激活 |
-| **platform_adapter**      | 🔧 跨平台适配器       | 统一管理不同OS间的命令、路径和环境   | ✅ 始终激活 |
-| **module_manager**        | 📋 规则管理系统       | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
+| 规则模块 | 功能描述 | 应用场景 | 状态 |
+| -------- | -------- | -------- | ---- |
+| **master** | 🎯 智能Master控制器 | 自动感知需求并智能执行内部命令 | ✅ 始终激活 |
+| **constitution** | 🤝 AI共生宪法 | 定义协作核心原则和最高准则 | ✅ 始终激活 |
+| **philosophy** | 💬 交流哲学与协作模式 | 优化沟通和交互模式 | ✅ 始终激活 |
+| **intelligent_evolution** | 🧠 智能演进系统 | 自动感知和规则进化协调 | ✅ 活跃 |
+| **evolution-philosophy** | 📈 演进哲学 | 规则演进的核心理念和原则 | ✅ 活跃 |
+| **evolution-manual** | 📋 手动演进流程 | 人工触发的规则演进管理 | ✅ 活跃 |
+| **evolution-automation** | 🤖 自动化演进系统 | 基于感知数据的智能优化 | ✅ 活跃 |
+| **evolution-governance** | 🛡️ 演进治理机制 | 规则演进的安全保障和质量控制 | ✅ 活跃 |
+| **generator** | ⚙️ 项目规则生成器 | 自动化生成个性化规则配置 | ✅ 活跃 |
+| **system_info** | 🔧 系统信息获取器 | 自动获取时间、路径和作者信息 | ✅ 始终激活 |
+| **templates** | 🎨 配置模板 | 自动化生成项目初始化配置 | ✅ 活跃 |
+| **eslint** | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题 | ✅ 始终激活 |
+| **i18n** | 🌍 国际化支持系统 | 自动检测语言偏好并切换沟通 | ✅ 始终激活 |
+| **platform_adapter** | 🔧 跨平台适配器 | 统一管理不同OS间的命令、路径和环境 | ✅ 始终激活 |
+| **module_manager** | 📋 规则管理系统 | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
+| **master** | 🎯 智能Master控制器 | 自动感知需求并智能执行内部命令 | ✅ 始终激活 |
+
+### 🎯 Skills扩展系统
+
+**16个专业技能库** - 全方位覆盖开发需求：
+
+| 分类 | 技能 | 功能描述 |
+|------|------|----------|
+| **📄 文档处理** | docx, pdf, pptx, xlsx | Office文档处理和转换 |
+| **🎨 创意设计** | algorithmic-art, canvas-design, frontend-design, theme-factory | 设计创作和可视化 |
+| **🤖 AI集成** | mcp-builder, slack-gif-creator, skill-creator | AI工具和技能开发 |
+| **🏢 企业协作** | brand-guidelines, internal-comms, doc-coauthoring | 企业规范和沟通 |
+| **🧪 测试开发** | webapp-testing, web-artifacts-builder | 质量保障和构建工具 |
 
 ## 🏆 核心优势
 
 <div align="center">
 
-| 特性           | 传统方案 | Cursor AI Rules        |
-| -------------- | -------- | ---------------------- |
-| **环境适配**   | 手动配置 | 🔄 自动感知项目环境     |
-| **协作模式**   | 固定规则 | 🎯 基于团队规模智能调整 |
-| **学习能力**   | 无记忆   | 🧠 持续学习用户偏好     |
-| **部署复杂度** | 高       | ⚡ 60秒复制即用         |
+| 特性 | 传统方案 | Cursor AI Rules |
+|------|----------|-----------------|
+| **交互方式** | 记忆命令语法 | 🎯 自然语言驱动 |
+| **执行模式** | 手动调用多个命令 | ⚡ 智能决策自动执行 |
+| **环境适配** | 手动配置 | 🔄 自动感知项目环境 |
+| **协作模式** | 固定规则 | 🎯 基于团队规模智能调整 |
+| **学习能力** | 无记忆 | 🧠 持续学习用户偏好 |
+| **部署复杂度** | 高 | ⚡ 60秒复制即用 |
 
 </div>
 
@@ -239,15 +275,16 @@ AI会立即响应：
 
 ### 💬 对话示例
 
-| 场景         | 传统AI                     | Cursor AI Rules                                         |
-| ------------ | -------------------------- | ------------------------------------------------------- |
-| **新建API**  | "写个登录API吧" → 通用模板 | "写个登录API吧" → 项目定制方案，集成现有认证框架        |
-| **代码重构** | "重构这个函数" → 标准建议  | "重构这个函数" → 基于项目复杂度、团队规模的定制重构策略 |
-| **架构决策** | "如何设计缓存" → 通用对比  | "如何设计缓存" → 结合项目技术栈的优化建议               |
+| 场景 | 传统AI | Cursor AI Rules |
+|------|--------|-----------------|
+| **智能需求处理** | "我想做一个项目" → 手动执行多个命令 | `@master 我想做一个项目` → 自动感知并执行完整流程 |
+| **新建API** | "写个登录API吧" → 通用模板 | "写个登录API吧" → 项目定制方案，集成现有认证框架 |
+| **代码重构** | "重构这个函数" → 标准建议 | "重构这个函数" → 基于项目复杂度、团队规模的定制重构策略 |
+| **架构决策** | "如何设计缓存" → 通用对比 | "如何设计缓存" → 结合项目技术栈的优化建议 |
 
 ### ⚡ 即时感知
 
-运行 `./.cursor/scripts/perception.sh` 后，AI立即理解：
+运行 `./.cursor/rules/intelligent_evolution/perception.sh` 后，AI立即理解：
 
 - 🛠️ **你的技术栈** - Node.js + React + MongoDB
 - 👥 **团队协作模式** - 单人开发，快速迭代
@@ -352,9 +389,9 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - 让AI协作变得简单而强大*
-*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
-*基于 Cursor 官方规范，集成智能进化技术和规则系统*
+*🚀 Cursor AI Rules v4.2.0 - 智能Master引领AI协作新时代*
+*最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*基于 Cursor 官方规范，集成智能感知、决策和进化系统*
 
 ## 📄 许可证
 

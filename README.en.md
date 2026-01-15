@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
@@ -36,13 +36,14 @@
 ### 🚀 Plug-and-Play
 ```bash
 # One-click deploy to any project
-./.cursor/scripts/cursor-adaptation-setup.sh
+./.cursor/cursor-adaptation-setup.sh
 
 # Run intelligent perception analysis
-./.cursor/scripts/perception.sh
+./.cursor/rules/intelligent_evolution/perception.sh
 ```
 
 ### 🧠 Intelligent Collaboration Framework
+- **🎯 Intelligent Master Controller** - Auto-perceive demands and intelligently execute internal commands
 - **🤝 AI Symbiosis Constitution** - Core principles and highest standards of human-AI collaboration
 - **💬 Collaboration Philosophy** - Intelligent dialogue patterns and communication optimization
 - **🧠 Intelligent Evolution System** - Unified coordination of auto-perception and rule evolution
@@ -57,11 +58,12 @@
 
 ### 🧠 Intelligent Features
 
+- ✅ **Intelligent Master** - Natural language driven, auto-analyze intent and execute optimal solutions
 - ✅ **Auto-Perception** - Real-time monitoring of project changes and tech stack evolution
 - ✅ **User Learning** - Analyze communication patterns, learn collaboration preferences
 - ✅ **Adaptive Adjustment** - Auto-optimize rules based on perception data
 - ✅ **Progressive Evolution** - Small steps, fast iterations, ensure smooth transition
-- ✅ **Perception Analysis** - Run `./.cursor/scripts/perception.sh` to get project insights
+- ✅ **Perception Analysis** - Run `./.cursor/rules/intelligent_evolution/perception.sh` to get project insights
 - ✅ **Out-of-the-Box** - No configuration needed, copy and use, support any project, any language
 
 ### 🔧 Adaptive Environment
@@ -142,13 +144,13 @@ AI: 🧠 Perceived your project uses Node.js + MongoDB...
 
 <div align="center">
 
-| 📊 Metric                   | 🎯 Status        | 📈 Trend                    |
-| -------------------------- | --------------- | -------------------------- |
-| **Universality**           | Any Project     | ✅ Out-of-the-box           |
-| **Language Support**       | Multi-language  | 🔍 Auto-detection           |
-| **Deployment Time**        | <5 seconds      | ⚡ Plug-and-play            |
-| **Rule Coverage**          | 14 Rule Modules | 🛡️ Comprehensive Protection |
-| **Intelligent Perception** | Activated       | 🧠 Continuous Learning      |
+| 📊 Metric | 🎯 Status | 📈 Trend |
+|--------|--------|--------|
+| **Universality** | Any Project | ✅ Out-of-the-box |
+| **Language Support** | Multi-language | 🔍 Auto-detection |
+| **Deployment Time** | <5 seconds | ⚡ Plug-and-play |
+| **Rule Coverage** | 14 Rule Modules | 🛡️ Comprehensive Protection |
+| **Intelligent Perception** | Activated | 🧠 Continuous Learning |
 
 </div>
 
@@ -168,14 +170,29 @@ cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
 
 # 2⃣ Enter project and run adaptation
 cd your-project
-./.cursor/scripts/cursor-adaptation-setup.sh
+./.cursor/cursor-adaptation-setup.sh
 
 # 3⃣ 🎉 Done! AI now truly understands your project
 ```
 
 ### 💬 Test Immediately
 
-After installation, ask in Cursor:
+#### Method 1: Use Intelligent Master in Cursor Chat
+```bash
+@master I want to create a React project
+@master Need to optimize code quality
+@master Help me analyze the current project status
+```
+
+AI will auto-perceive and execute:
+```
+🎯 Intelligent Master Controller Activated
+🧠 Analyzing user intent...
+🔍 Perceiving project environment...
+⚡ Auto-executing: env_check → enable → generator
+```
+
+#### Method 2: Traditional Questioning
 > *"Help me optimize this API security"*
 
 AI will immediately respond:
@@ -190,7 +207,7 @@ AI will immediately respond:
 
 ```bash
 # Run intelligent perception to understand the full project picture
-./.cursor/scripts/perception.sh
+./.cursor/rules/intelligent_evolution/perception.sh
 
 # Check environment integrity
 ./.cursor/scripts/env_check.sh
@@ -200,33 +217,49 @@ AI will immediately respond:
 
 ## 📋 Rules System
 
-| Rule Module               | Function Description                             | Application Scenarios                                       | Status          |
-| ------------------------- | ------------------------------------------------ | ----------------------------------------------------------- | --------------- |
-| **constitution**          | 🤝 AI Symbiosis Constitution                      | Define collaboration core principles and highest standards  | ✅ Always Active |
-| **philosophy**            | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization     | ✅ Always Active |
-| **intelligent_evolution** | 🧠 Intelligent Evolution System                   | Unified coordination of auto-perception and rule evolution  | ✅ Active        |
-| **evolution-philosophy**  | 📈 Evolution Philosophy                           | Core principles and guidance for rule evolution             | ✅ Active        |
-| **evolution-manual**      | 📋 Manual Evolution Process                       | Artificial trigger and rule evolution management            | ✅ Active        |
-| **evolution-automation**  | 🤖 Automated Evolution System                     | Intelligent optimization based on perception data           | ✅ Active        |
-| **evolution-governance**  | 🛡️ Evolution Governance                           | Security assurance and quality control for rule evolution   | ✅ Active        |
-| **generator**             | ⚙️ Project Rules Generator                        | Automated personalized rule configuration generation        | ✅ Active        |
-| **system_info**           | 🔧 System Information Retriever                   | Auto-acquire time, path and author information              | ✅ Always Active |
-| **templates**             | 🎨 Configuration Templates                        | Automated project initialization configuration              | ✅ Active        |
-| **eslint**                | 🔍 ESLint Code Quality Check                      | Auto-detect and fix JavaScript code issues                  | ✅ Always Active |
-| **i18n**                  | 🌍 Internationalization Support                   | Auto-detect language preferences and switch communication   | ✅ Always Active |
-| **platform_adapter**      | 🔧 Cross-platform Adapter                         | Unified management of commands, paths and environments      | ✅ Always Active |
-| **module_manager**        | 📋 Rule Management System                         | Manage rule dependencies, activation control and extensions | ✅ Always Active |
+| Rule Module | Function Description | Application Scenarios | Status |
+| ----------- | ------------------- | -------------------- | ------ |
+| **master** | 🎯 Intelligent Master Controller | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
+| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Always Active |
+| **philosophy** | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization | ✅ Always Active |
+| **intelligent_evolution** | 🧠 Intelligent Evolution System | Unified coordination of auto-perception and rule evolution | ✅ Active |
+| **evolution-philosophy** | 📈 Evolution Philosophy | Core principles and guidance for rule evolution | ✅ Active |
+| **evolution-manual** | 📋 Manual Evolution Process | Artificial trigger and rule evolution management | ✅ Active |
+| **evolution-automation** | 🤖 Automated Evolution System | Intelligent optimization based on perception data | ✅ Active |
+| **evolution-governance** | 🛡️ Evolution Governance | Security assurance and quality control for rule evolution | ✅ Active |
+| **generator** | ⚙️ Project Rules Generator | Automated personalized rule configuration generation | ✅ Active |
+| **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Always Active |
+| **templates** | 🎨 Configuration Templates | Automated project initialization configuration | ✅ Active |
+| **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Always Active |
+| **i18n** | 🌍 Internationalization Support | Auto-detect language preferences and switch communication | ✅ Always Active |
+| **platform_adapter** | 🔧 Cross-platform Adapter | Unified management of commands, paths and environments | ✅ Always Active |
+| **module_manager** | 📋 Rule Management System | Manage rule dependencies, activation control and extensions | ✅ Always Active |
+| **master** | 🎯 Intelligent Master Controller | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
+
+### 🎯 Skills Extension System
+
+**16 Professional Skills Libraries** - Comprehensive coverage of development needs:
+
+| Category | Skills | Function Description |
+|----------|--------|---------------------|
+| **📄 Document Processing** | docx, pdf, pptx, xlsx | Office document processing and conversion |
+| **🎨 Creative Design** | algorithmic-art, canvas-design, frontend-design, theme-factory | Design creation and visualization |
+| **🤖 AI Integration** | mcp-builder, slack-gif-creator, skill-creator | AI tools and skill development |
+| **🏢 Enterprise Collaboration** | brand-guidelines, internal-comms, doc-coauthoring | Enterprise standards and communication |
+| **🧪 Testing & Development** | webapp-testing, web-artifacts-builder | Quality assurance and build tools |
 
 ## 🏆 Core Advantages
 
 <div align="center">
 
-| Feature                    | Traditional Solutions | Cursor AI Rules                           |
-| -------------------------- | --------------------- | ----------------------------------------- |
-| **Environment Adaptation** | Manual Configuration  | 🔄 Auto-perceive project environment       |
-| **Collaboration Patterns** | Fixed Rules           | 🎯 Smart adjustment based on team size     |
-| **Learning Ability**       | No Memory             | 🧠 Continuous learning of user preferences |
-| **Deployment Complexity**  | High                  | ⚡ 60-second copy-and-use                  |
+| Feature | Traditional Solutions | Cursor AI Rules |
+|---------|---------------------|------------------|
+| **Interaction Method** | Memorize command syntax | 🎯 Natural language driven |
+| **Execution Mode** | Manually call multiple commands | ⚡ Intelligent decision auto-execution |
+| **Environment Adaptation** | Manual Configuration | 🔄 Auto-perceive project environment |
+| **Collaboration Patterns** | Fixed Rules | 🎯 Smart adjustment based on team size |
+| **Learning Ability** | No Memory | 🧠 Continuous learning of user preferences |
+| **Deployment Complexity** | High | ⚡ 60-second copy-and-use |
 
 </div>
 
@@ -236,15 +269,16 @@ AI will immediately respond:
 
 ### 💬 Dialogue Examples
 
-| Scenario                  | Traditional AI                                  | Cursor AI Rules                                                                                      |
-| ------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| **New API**               | "Write a login API" → Generic template          | "Write a login API" → Project-customized solution, integrate existing auth framework                 |
-| **Code Refactoring**      | "Refactor this function" → Standard suggestions | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
-| **Architecture Decision** | "How to design caching" → Generic comparison    | "How to design caching" → Optimized suggestions combining project tech stack                         |
+| Scenario | Traditional AI | Cursor AI Rules |
+|----------|---------------|------------------|
+| **Smart Demand Handling** | "I want to make a project" → Manually execute multiple commands | `@master I want to make a project` → Auto-perceive and execute complete process |
+| **New API** | "Write a login API" → Generic template | "Write a login API" → Project-customized solution, integrate existing auth framework |
+| **Code Refactoring** | "Refactor this function" → Standard suggestions | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
+| **Architecture Decision** | "How to design caching" → Generic comparison | "How to design caching" → Optimized suggestions combining project tech stack |
 
 ### ⚡ Instant Perception
 
-After running `./.cursor/scripts/perception.sh`, AI immediately understands:
+After running `./.cursor/rules/intelligent_evolution/perception.sh`, AI immediately understands:
 
 - 🛠️ **Your Tech Stack** - Node.js + React + MongoDB
 - 👥 **Team Collaboration Mode** - Single developer, rapid iteration
@@ -349,9 +383,9 @@ A: Only reads public Git configuration information for personalized experience.
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - Making AI collaboration simple and powerful*
-*Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
-*Based on Cursor official specifications, integrated with intelligent evolution technology and rule system*
+*🚀 Cursor AI Rules v4.2.0 - Intelligent Master leads the new era of AI collaboration*
+*Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
+*Based on Cursor official specifications, integrated with intelligent perception, decision-making and evolution systems*
 
 ## 📄 License
 

@@ -104,7 +104,7 @@ alwaysApply: true
 
 **核心原则**：**需求讨论优先，方案确认后行动！违反此规则即违反宪法！**
 
-*版本: v4.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🎯 核心使命 (Core Mission)
 
@@ -627,6 +627,6 @@ class ABTestingFramework:
 
 ---
 
-*🚀 对话意图分析器 v4.0.0 - 让AI真正理解你的需求，成为智能的编程规划助手！*
+*🚀 对话意图分析器 v4.2.0 - 让AI真正理解你的需求，成为智能的编程规划助手！*
 
 *核心创新*: 从被动代码分析到主动需求理解，从硬编码关键词到动态学习，从固定响应到个性化定制！

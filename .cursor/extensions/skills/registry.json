@@ -1,0 +1,157 @@
+{
+  "skills_registry": {
+    "metadata": {
+      "version": "1.0.0",
+      "last_updated": "2026-01-15",
+      "source_path": "/home/saida/workspace/skills",
+      "total_skills": 16,
+      "integration_status": "active"
+    },
+    "skills": {
+      "algorithmic-art": {
+        "source": "/home/saida/workspace/skills/skills/algorithmic-art",
+        "category": "creative",
+        "cursor_rule": ".cursor/extensions/skills/algorithmic-art.md",
+        "dependencies": ["javascript"],
+        "status": "converted",
+        "description": "Algorithmic art generation and visualization"
+      },
+      "brand-guidelines": {
+        "source": "/home/saida/workspace/skills/skills/brand-guidelines",
+        "category": "enterprise",
+        "cursor_rule": ".cursor/extensions/skills/brand-guidelines.md",
+        "dependencies": [],
+        "status": "converted",
+        "description": "Brand guidelines and communication standards"
+      },
+      "canvas-design": {
+        "source": "/home/saida/workspace/skills/skills/canvas-design",
+        "category": "design",
+        "cursor_rule": ".cursor/extensions/skills/canvas-design.md",
+        "dependencies": ["fonts"],
+        "status": "converted",
+        "description": "Canvas-based design and graphics creation"
+      },
+      "doc-coauthoring": {
+        "source": "/home/saida/workspace/skills/skills/doc-coauthoring",
+        "category": "productivity",
+        "cursor_rule": ".cursor/extensions/skills/doc-coauthoring.md",
+        "dependencies": [],
+        "status": "converted",
+        "description": "Document co-authoring and collaboration"
+      },
+      "docx": {
+        "source": "/home/saida/workspace/skills/skills/docx",
+        "category": "document_processing",
+        "cursor_rule": ".cursor/extensions/skills/docx.md",
+        "dependencies": ["python", "docx"],
+        "status": "converted",
+        "description": "Word document creation and editing"
+      },
+      "frontend-design": {
+        "source": "/home/saida/workspace/skills/skills/frontend-design",
+        "category": "design",
+        "cursor_rule": ".cursor/extensions/skills/frontend-design.md",
+        "dependencies": ["html", "css"],
+        "status": "converted",
+        "description": "Frontend interface design and prototyping"
+      },
+      "internal-comms": {
+        "source": "/home/saida/workspace/skills/skills/internal-comms",
+        "category": "enterprise",
+        "cursor_rule": ".cursor/extensions/skills/internal-comms.md",
+        "dependencies": [],
+        "status": "converted",
+        "description": "Internal communications and messaging"
+      },
+      "mcp-builder": {
+        "source": "/home/saida/workspace/skills/skills/mcp-builder",
+        "category": "ai_integration",
+        "cursor_rule": ".cursor/extensions/skills/mcp-builder.md",
+        "dependencies": ["python", "node"],
+        "status": "converted",
+        "description": "MCP server development and integration"
+      },
+      "pdf": {
+        "source": "/home/saida/workspace/skills/skills/pdf",
+        "category": "document_processing",
+        "cursor_rule": ".cursor/extensions/skills/pdf.md",
+        "dependencies": ["python"],
+        "status": "converted",
+        "description": "PDF processing and form handling"
+      },
+      "pptx": {
+        "source": "/home/saida/workspace/skills/skills/pptx",
+        "category": "document_processing",
+        "cursor_rule": ".cursor/extensions/skills/pptx.md",
+        "dependencies": ["python", "javascript"],
+        "status": "converted",
+        "description": "PowerPoint presentation creation"
+      },
+      "skill-creator": {
+        "source": "/home/saida/workspace/skills/skills/skill-creator",
+        "category": "development",
+        "cursor_rule": ".cursor/extensions/skills/skill-creator.md",
+        "dependencies": ["python"],
+        "status": "converted",
+        "description": "Skill creation and development tools"
+      },
+      "slack-gif-creator": {
+        "source": "/home/saida/workspace/skills/skills/slack-gif-creator",
+        "category": "creative",
+        "cursor_rule": ".cursor/extensions/skills/slack-gif-creator.md",
+        "dependencies": ["python"],
+        "status": "converted",
+        "description": "Animated GIF creation for Slack"
+      },
+      "theme-factory": {
+        "source": "/home/saida/workspace/skills/skills/theme-factory",
+        "category": "design",
+        "cursor_rule": ".cursor/extensions/skills/theme-factory.md",
+        "dependencies": [],
+        "status": "converted",
+        "description": "Design theme creation and management"
+      },
+      "webapp-testing": {
+        "source": "/home/saida/workspace/skills/skills/webapp-testing",
+        "category": "testing",
+        "cursor_rule": ".cursor/extensions/skills/webapp-testing.md",
+        "dependencies": ["python"],
+        "status": "converted",
+        "description": "Web application testing and automation"
+      },
+      "web-artifacts-builder": {
+        "source": "/home/saida/workspace/skills/skills/web-artifacts-builder",
+        "category": "development",
+        "cursor_rule": ".cursor/extensions/skills/web-artifacts-builder.md",
+        "dependencies": ["shell", "node"],
+        "status": "converted",
+        "description": "Web artifacts and component building"
+      },
+      "xlsx": {
+        "source": "/home/saida/workspace/skills/skills/xlsx",
+        "category": "document_processing",
+        "cursor_rule": ".cursor/extensions/skills/xlsx.md",
+        "dependencies": ["python"],
+        "status": "converted",
+        "description": "Excel spreadsheet processing and calculation"
+      }
+    },
+    "categories": {
+      "creative": ["algorithmic-art", "canvas-design", "slack-gif-creator", "theme-factory"],
+      "design": ["canvas-design", "frontend-design", "theme-factory"],
+      "document_processing": ["docx", "pdf", "pptx", "xlsx"],
+      "enterprise": ["brand-guidelines", "internal-comms"],
+      "ai_integration": ["mcp-builder"],
+      "development": ["skill-creator", "web-artifacts-builder"],
+      "productivity": ["doc-coauthoring"],
+      "testing": ["webapp-testing"]
+    },
+    "integration_rules": {
+      "command_prefix": "skill:",
+      "path_resolution": "auto",
+      "dependency_check": "strict",
+      "permission_isolation": "enabled"
+    }
+  }
+}

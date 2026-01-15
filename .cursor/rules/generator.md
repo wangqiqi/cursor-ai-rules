@@ -7,7 +7,7 @@ alwaysApply: false
 
 # 🎯 项目规则生成器 (Project Rules Generator)
 
-*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 启动对话模板 (Initialization Dialog Template)
 
@@ -87,7 +87,7 @@ alwaysApply: false
 
 ```
 项目: [项目名称]
-规则版本: v3.0.0 (初始化版本)
+规则版本: v4.2.0 (初始化版本)
 生成时间: [时间戳]
 技术栈适配: [主要技术栈]
 质量标准: [选择的标准]
@@ -207,7 +207,7 @@ const workDir = await adapter.executeCommand('get_work_dir');
   - 格式示例: `2025-12-21 12:06:50 CST`
 - **Git用户信息**: 必须使用用户的git配置信息
   - 通过 `@platform_adapter` 统一获取Git用户信息
-  - 示例: `{{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>`
+  - 示例: `wangqiqi (https://github.com/wangqiqi)`
 - **系统平台检测**: 由 `@platform_adapter` 自动检测并适配不同操作系统
 
 ### 输入验证 (Input Validation)
@@ -239,18 +239,18 @@ const workDir = await adapter.executeCommand('get_work_dir');
 - **使用Git配置**: 必须从 `git config` 获取用户信息
 - **姓名获取**: `git config --get user.name`
 - **邮箱获取**: `git config --get user.email`
-- **格式规范**: `姓名 <邮箱>` (如: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>)
+- **格式规范**: `姓名 <邮箱>` (如: wangqiqi (https://github.com/wangqiqi))
 - **禁止使用**: AI团队、机器人、通用标识
 
 ### 文档元数据 (Document Metadata)
 ```markdown
-*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 ```
 
 ### 代码注释标准 (Code Comment Standards)
 ```javascript
 // Created: 2025-12-21 12:06:50 CST
-// Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>
+// Author: wangqiqi (https://github.com/wangqiqi)
 // Description: 功能描述
 ```
 

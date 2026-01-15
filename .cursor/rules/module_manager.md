@@ -6,7 +6,7 @@ alwaysApply: true
 
 # 📋 规则管理系统 (Rule Management System)
 
-*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🎯 核心使命 (Core Mission)
 
@@ -905,7 +905,7 @@ alwaysApply: true/false
 
 # 规则标题
 
-*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 功能描述
 <!-- 规则的详细功能说明 -->
@@ -949,7 +949,7 @@ alwaysApply: false
 
 # 我的自定义规则
 
-*版本: v3.0.0 | 最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 功能描述
 <!-- 描述规则的功能 -->
