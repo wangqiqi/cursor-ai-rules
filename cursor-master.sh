@@ -36,7 +36,12 @@ analyze_user_intent() {
     local actions=()
 
     # 意图识别规则
-    if echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
+    if echo "$user_input" | grep -qiE "^skill "; then
+        intent_type="skill_call"
+        confidence=95
+        skill_name=$(echo "$user_input" | sed 's/^skill //' | tr -d '\n\r')
+        actions=("skill:$skill_name")
+    elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
         intent_type="project_creation"
         confidence=90
         actions=("env_check" "enable" "generator" "constitution")
@@ -163,6 +168,17 @@ make_decision() {
             execution_plan=("templates" "generator")
             explanation="提供学习和模板资源"
             ;;
+        "skill_call")
+            # 从intent_json中提取技能名称
+            local skill_action=$(echo "$intent_json" | jq -r '.intent_analysis.recommended_actions[0]' 2>/dev/null || echo "")
+            if [ -n "$skill_action" ] && [ "$skill_action" != "null" ]; then
+                execution_plan=("$skill_action")
+                explanation="调用指定的专业技能"
+            else
+                should_execute=false
+                explanation="无法确定要调用的技能"
+            fi
+            ;;
         *)
             should_execute=false
             explanation="无法确定具体意图，建议提供更详细的需求描述"
@@ -257,6 +273,11 @@ execute_action() {
             ;;
         "templates")
             echo -e "${GREEN}✅ 项目模板框架已激活 (alwaysApply: false)${NC}"
+            ;;
+        skill:*)
+            # Skills扩展调用
+            local skill_name=$(echo "$action" | sed 's/skill://')
+            execute_skill "$skill_name"
             ;;
         *)
             echo -e "${YELLOW}⚠️  未知动作: $action${NC}"
@@ -451,6 +472,27 @@ show_traditional_commands() {
 
     echo ""
     echo -e "${YELLOW}💡 提示: 建议使用智能模式 './cursor-master.sh [需求描述]' 而非传统命令模式${NC}"
+}
+
+# 🎯 Skills执行器
+execute_skill() {
+    local skill_name="$1"
+    local skill_file="$PROJECT_ROOT/.cursor/extensions/skills/${skill_name}.md"
+
+    echo -e "${PURPLE}🎯 调用Skills: ${CYAN}$skill_name${NC}"
+
+    if [ -f "$skill_file" ]; then
+        echo -e "${GREEN}✅ Skills文件存在: $skill_file${NC}"
+        echo -e "${YELLOW}💡 此技能已准备就绪，可通过 @master skill:$skill_name 调用${NC}"
+    else
+        echo -e "${RED}❌ Skills文件不存在: $skill_file${NC}"
+        echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
+
+        # 尝试自动发现和转换
+        if [ -f "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" ]; then
+            bash "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" load "$skill_name"
+        fi
+    fi
 }
 
 # 执行主函数

@@ -6,7 +6,7 @@ alwaysApply: true
 
 # 🎯 智能总命令控制器 (Intelligent Master Command Controller)
 
-*版本: v4.1.0 | 最后更新: 2026-01-15 | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.2.0 | 最后更新: 2026-01-15 | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🧠 核心理念：智能感知 + 自动决策 + 自主执行
 
@@ -185,7 +185,12 @@ analyze_user_intent() {
     local actions=()
 
     # 意图识别规则
-    if echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
+    if echo "$user_input" | grep -qiE "^skill "; then
+        intent_type="skill_call"
+        confidence=95
+        skill_name=$(echo "$user_input" | sed 's/^skill //' | tr -d '\n\r')
+        actions=("skill:$skill_name")
+    elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
         intent_type="project_creation"
         confidence=90
         actions=("env_check" "enable" "generator" "constitution")
@@ -422,7 +427,7 @@ execute_action() {
 # 🎯 Skills执行器
 execute_skill() {
     local skill_name="$1"
-    local skill_file="$PROJECT_ROOT/.cursor/extensions/skills/bridge/${skill_name}.md"
+    local skill_file="$PROJECT_ROOT/.cursor/extensions/skills/${skill_name}.md"
 
     echo -e "${PURPLE}🎯 调用Skills: ${CYAN}$skill_name${NC}"
 
@@ -434,8 +439,8 @@ execute_skill() {
         echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
 
         # 尝试自动发现和转换
-        if [ -f "$PROJECT_ROOT/.cursor/extensions/skills/runtime/skill-discovery.sh" ]; then
-            bash "$PROJECT_ROOT/.cursor/extensions/skills/runtime/skill-discovery.sh" load "$skill_name"
+        if [ -f "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" ]; then
+            bash "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" load "$skill_name"
         fi
     fi
 }

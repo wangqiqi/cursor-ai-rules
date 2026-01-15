@@ -1,11 +1,12 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-4.1.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-16-blueviolet?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -58,6 +59,8 @@
 |- **🌍 国际化支持系统** - 自动检测语言偏好并切换沟通
 |- **🔧 跨平台适配器** - 统一管理不同OS间的命令、路径和环境
 |- **📋 规则管理系统** - 管理规则依赖关系、激活控制和扩展机制
+|- **🎯 智能Master控制器** - 自动感知需求并智能执行内部命令
+|- **🛠️ 16个专业Skills** - 全套专业技能库（文档处理、设计创作、AI集成、企业协作、测试开发）
 
 ### 🧠 智能特性
 
@@ -237,6 +240,19 @@ AI会立即响应：
 | **i18n** | 🌍 国际化支持系统 | 自动检测语言偏好并切换沟通 | ✅ 始终激活 |
 | **platform_adapter** | 🔧 跨平台适配器 | 统一管理不同OS间的命令、路径和环境 | ✅ 始终激活 |
 | **module_manager** | 📋 规则管理系统 | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
+| **master** | 🎯 智能Master控制器 | 自动感知需求并智能执行内部命令 | ✅ 始终激活 |
+
+### 🎯 Skills扩展系统
+
+**16个专业技能库** - 全方位覆盖开发需求：
+
+| 分类 | 技能 | 功能描述 |
+|------|------|----------|
+| **📄 文档处理** | docx, pdf, pptx, xlsx | Office文档处理和转换 |
+| **🎨 创意设计** | algorithmic-art, canvas-design, frontend-design, theme-factory | 设计创作和可视化 |
+| **🤖 AI集成** | mcp-builder, slack-gif-creator, skill-creator | AI工具和技能开发 |
+| **🏢 企业协作** | brand-guidelines, internal-comms, doc-coauthoring | 企业规范和沟通 |
+| **🧪 测试开发** | webapp-testing, web-artifacts-builder | 质量保障和构建工具 |
 
 ## 🏆 核心优势
 
@@ -373,7 +389,7 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 
 ---
 
-*🚀 Cursor AI Rules v4.1.0 - 智能Master引领AI协作新时代*
+*🚀 Cursor AI Rules v4.2.0 - 智能Master引领AI协作新时代*
 *最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 *基于 Cursor 官方规范，集成智能感知、决策和进化系统*
 

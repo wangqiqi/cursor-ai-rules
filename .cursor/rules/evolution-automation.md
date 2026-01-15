@@ -7,7 +7,7 @@ alwaysApply: false
 
 # 🤖 自动化演进系统 (Automated Evolution System)
 
-*版本: v4.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🎯 核心机制 (Core Mechanisms)
 

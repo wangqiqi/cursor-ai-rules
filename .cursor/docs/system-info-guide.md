@@ -32,7 +32,7 @@ cp RULE.md .cursor/rules/system_info/
 
 ```markdown
 # 文档模板
-*版本: v4.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 项目根目录: {{PROJECT_ROOT}}
 工作目录: {{WORK_DIR}}

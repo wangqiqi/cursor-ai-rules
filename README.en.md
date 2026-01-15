@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-4.1.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
@@ -234,6 +234,19 @@ AI will immediately respond:
 | **i18n** | 🌍 Internationalization Support | Auto-detect language preferences and switch communication | ✅ Always Active |
 | **platform_adapter** | 🔧 Cross-platform Adapter | Unified management of commands, paths and environments | ✅ Always Active |
 | **module_manager** | 📋 Rule Management System | Manage rule dependencies, activation control and extensions | ✅ Always Active |
+| **master** | 🎯 Intelligent Master Controller | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
+
+### 🎯 Skills Extension System
+
+**16 Professional Skills Libraries** - Comprehensive coverage of development needs:
+
+| Category | Skills | Function Description |
+|----------|--------|---------------------|
+| **📄 Document Processing** | docx, pdf, pptx, xlsx | Office document processing and conversion |
+| **🎨 Creative Design** | algorithmic-art, canvas-design, frontend-design, theme-factory | Design creation and visualization |
+| **🤖 AI Integration** | mcp-builder, slack-gif-creator, skill-creator | AI tools and skill development |
+| **🏢 Enterprise Collaboration** | brand-guidelines, internal-comms, doc-coauthoring | Enterprise standards and communication |
+| **🧪 Testing & Development** | webapp-testing, web-artifacts-builder | Quality assurance and build tools |
 
 ## 🏆 Core Advantages
 
@@ -370,7 +383,7 @@ A: Only reads public Git configuration information for personalized experience.
 
 ---
 
-*🚀 Cursor AI Rules v4.1.0 - Intelligent Master leads the new era of AI collaboration*
+*🚀 Cursor AI Rules v4.2.0 - Intelligent Master leads the new era of AI collaboration*
 *Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
 *Based on Cursor official specifications, integrated with intelligent perception, decision-making and evolution systems*
 

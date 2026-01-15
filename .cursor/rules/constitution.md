@@ -75,7 +75,7 @@ alwaysApply: true
 
 **在任何操作之前，必须先完成这个检查流程！**
 
-*版本: v4.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## ⚠️ 最高优先级规则：项目创建意图处理 (Highest Priority Rule: Project Creation Intent Handling)
 

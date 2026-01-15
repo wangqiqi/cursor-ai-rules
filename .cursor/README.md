@@ -112,6 +112,16 @@
 | **evolution-automation** | 自动化演进系统 - 基于感知数据的智能优化 | 智能应用 | ✅ |
 | **evolution-governance** | 演进治理机制 - 规则演进的安全保障和质量控制 | 智能应用 | ✅ |
 
+### 🎯 Skills扩展系统 (16个专业技能)
+
+| 技能分类 | 技能数量 | 功能描述 | 状态 |
+|----------|----------|----------|------|
+| **文档处理** | 4个 | docx, pdf, pptx, xlsx - Office文档处理和转换 | ✅ 全部集成 |
+| **创意设计** | 4个 | algorithmic-art, canvas-design, frontend-design, theme-factory | ✅ 全部集成 |
+| **AI集成** | 3个 | mcp-builder, slack-gif-creator, skill-creator | ✅ 全部集成 |
+| **企业协作** | 3个 | brand-guidelines, internal-comms, doc-coauthoring | ✅ 全部集成 |
+| **测试开发** | 2个 | webapp-testing, web-artifacts-builder | ✅ 全部集成 |
+
 ## 🚀 快速开始
 
 ### 一键智能初始化 (推荐)
@@ -319,7 +329,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 技术指标
 
-| 指标 | v1.0 | v4.1.0 | 提升 |
+| 指标 | v1.0 | v4.2.0 | 提升 |
 |------|------|------|------|
 | 初始化时间 | ~30s | ~5s | **83%↑** |
 | 感知耗时 | ~10s | ~1s | **90%↑** |
@@ -365,7 +375,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ---
 
-*🚀 Cursor AI Rules v4.1.0 - 智能Master引领AI协作新时代*
+*🚀 Cursor AI Rules v4.2.0 - 智能Master引领AI协作新时代*
 *最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 *基于 Cursor 官方规范，集成智能感知、决策和进化系统*
 

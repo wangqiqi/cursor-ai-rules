@@ -7,7 +7,7 @@ alwaysApply: false
 
 # 🎯 项目规则生成器 (Project Rules Generator)
 
-*版本: v4.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 启动对话模板 (Initialization Dialog Template)
 
@@ -87,7 +87,7 @@ alwaysApply: false
 
 ```
 项目: [项目名称]
-规则版本: v4.1.0 (初始化版本)
+规则版本: v4.2.0 (初始化版本)
 生成时间: [时间戳]
 技术栈适配: [主要技术栈]
 质量标准: [选择的标准]
@@ -244,7 +244,7 @@ const workDir = await adapter.executeCommand('get_work_dir');
 
 ### 文档元数据 (Document Metadata)
 ```markdown
-*版本: v4.1.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 ```
 
 ### 代码注释标准 (Code Comment Standards)
