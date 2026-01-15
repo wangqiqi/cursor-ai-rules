@@ -24,6 +24,10 @@ Guide for creating, editing, and formatting Microsoft Word documents with advanc
 
 This skill provides comprehensive guidance for working with Microsoft Word documents through code. It covers document creation, text formatting, tables, images, headers/footers, and advanced styling options.
 
+## 📖 详细技术指南
+
+🔗 **[查看完整技术指南](docx-guide.md)** - 包含详细的代码示例、最佳实践和高级用法
+
 ## Core Capabilities
 
 ### Document Creation

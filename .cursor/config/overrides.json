@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "description": "用户自定义配置覆盖 - 此文件中的设置将覆盖全局和项目配置",
+  "overrides": {
+    "system": {
+      "log_level": "debug",
+      "backup_enabled": true
+    },
+    "features": {
+      "automation": {
+        "scheduling": true
+      },
+      "intelligence": {
+        "prediction": true
+      }
+    },
+    "security": {
+      "data_encryption": true,
+      "audit_logging": true
+    },
+    "performance": {
+      "max_memory_mb": 1024,
+      "max_concurrent_tasks": 5
+    }
+  },
+  "custom": {
+    "rules": [],
+    "skills": [],
+    "hooks": [],
+    "scripts": []
+  },
+  "disabled": {
+    "features": [],
+    "hooks": [],
+    "skills": []
+  },
+  "experimental": {
+    "features": [],
+    "enabled": false
+  },
+  "metadata": {
+    "last_modified": "2024-01-15T10:00:00Z",
+    "modified_by": "user",
+    "notes": "此文件用于自定义Cursor AI Rules的行为。修改后可能需要重启相关服务。"
+  }
+}

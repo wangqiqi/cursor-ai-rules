@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "generated_at": "{{GENERATION_TIME}}",
+  "generated_by": "{{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}>",
+  "project": {
+    "name": "{{PROJECT_NAME}}",
+    "root": "{{PROJECT_ROOT}}",
+    "tech_stack": "{{TECH_STACK}}",
+    "team_size": "{{TEAM_SIZE}}",
+    "maturity": "{{PROJECT_MATURITY}}",
+    "has_git": {{HAS_GIT}},
+    "languages": {{DETECTED_LANGUAGES}},
+    "frameworks": {{DETECTED_FRAMEWORKS}}
+  },
+  "environment": {
+    "os": "{{OS_TYPE}}",
+    "architecture": "{{CPU_ARCH}}",
+    "node_version": "{{NODE_VERSION}}",
+    "python_version": "{{PYTHON_VERSION}}",
+    "go_version": "{{GO_VERSION}}",
+    "java_version": "{{JAVA_VERSION}}",
+    "dotnet_version": "{{DOTNET_VERSION}}"
+  },
+  "features": {
+    "automation": {
+      "enabled": true,
+      "hooks": {{HAS_GIT}},
+      "scripts": true,
+      "scheduling": false
+    },
+    "skills": {
+      "enabled": true,
+      "auto_install": true,
+      "installed": {{INSTALLED_SKILLS}},
+      "available": {{AVAILABLE_SKILLS}}
+    },
+    "rules": {
+      "enabled": true,
+      "activated": {{ACTIVATED_RULES}},
+      "custom": []
+    }
+  },
+  "paths": {
+    "source_dirs": {{SOURCE_DIRS}},
+    "test_dirs": {{TEST_DIRS}},
+    "config_files": {{CONFIG_FILES}},
+    "documentation": {{DOC_FILES}}
+  },
+  "metrics": {
+    "total_files": {{TOTAL_FILES}},
+    "total_dirs": {{TOTAL_DIRS}},
+    "code_lines": {{CODE_LINES}},
+    "test_coverage": {{TEST_COVERAGE}}
+  },
+  "integrations": {
+    "git": {
+      "enabled": {{HAS_GIT}},
+      "remote_url": "{{GIT_REMOTE_URL}}",
+      "branch": "{{GIT_BRANCH}}",
+      "contributors": {{GIT_CONTRIBUTORS}}
+    },
+    "ci_cd": {
+      "enabled": {{HAS_CI_CD}},
+      "provider": "{{CI_PROVIDER}}",
+      "workflows": {{CI_WORKFLOWS}}
+    },
+    "containerization": {
+      "enabled": {{HAS_CONTAINERIZATION}},
+      "platform": "{{CONTAINER_PLATFORM}}",
+      "orchestration": "{{ORCHESTRATION_TOOL}}"
+    },
+    "cloud": {
+      "provider": "{{CLOUD_PROVIDER}}",
+      "services": {{CLOUD_SERVICES}}
+    }
+  }
+}

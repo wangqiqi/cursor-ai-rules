@@ -4,10 +4,10 @@
 [![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-6-orange?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-16-blueviolet?style=flat-square)]()
-[![Hooks](https://img.shields.io/badge/hooks-6-red?style=flat-square)]()
+[![Bootstrap](https://img.shields.io/badge/bootstrap-3-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-16-green?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-16-9cf?style=flat-square)]()
+[![Automation](https://img.shields.io/badge/automation-8-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -44,6 +44,12 @@
 ./.cursor/rules/intelligent_evolution/perception.sh
 ```
 
+### 🚀 自适应引导系统
+- **🔍 智能环境检测** - 自动识别技术栈、团队规模、项目成熟度
+- **⚙️ 自动配置生成** - 基于检测结果生成个性化配置
+- **📦 按需技能安装** - 只安装项目需要的AI技能
+- **🎯 规则智能激活** - 根据项目特点自动启用相关规则
+
 ### 🧠 智能协作框架
 - **🎯 智能Master控制器** - 自动感知需求并智能执行内部命令
 - **🤝 AI共生宪法** - 人机协作的核心原则和最高准则
@@ -53,15 +59,18 @@
 - **📋 手动演进流程** - 人工触发的规则演进管理
 - **🤖 自动化演进系统** - 基于感知数据的智能规则优化
 - **🛡️ 演进治理机制** - 规则演进的安全保障和质量控制
-- **⚙️ 项目规则生成器** - 自动化生成个性化规则配置
-- **🔧 系统信息获取器** - 自动获取时间、路径和作者信息
-- **🎨 配置模板** - 自动化生成项目初始化配置
-- **🔍 ESLint代码质量检查** - 自动检测和修复JavaScript代码问题
-|- **🌍 国际化支持系统** - 自动检测语言偏好并切换沟通
-|- **🔧 跨平台适配器** - 统一管理不同OS间的命令、路径和环境
-|- **📋 规则管理系统** - 管理规则依赖关系、激活控制和扩展机制
-|- **🎯 智能Master控制器** - 自动感知需求并智能执行内部命令
-|- **🛠️ 16个专业Skills** - 全套专业技能库（文档处理、设计创作、AI集成、企业协作、测试开发）
+
+### 🎨 分层配置系统
+- **🌐 全局配置模板** - 系统级默认设置
+- **🏗️ 项目配置生成** - 基于环境自动生成
+- **👤 用户自定义覆盖** - 个性化设置覆盖
+- **🔄 配置智能合并** - 自动解决配置冲突
+
+### ⚙️ 自动化脚本引擎
+- **🎣 事件驱动钩子** - 7个自动化钩子脚本
+- **🛠️ 手动工具脚本** - 8个通用维护脚本
+- **🔧 自适应配置** - 根据项目环境调整行为
+- **📊 性能监控** - 实时监控和优化
 
 ### 🧠 智能特性
 
@@ -212,38 +221,39 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 
 <div align="center">
 
-### ⚡ 三步安装，立即体验
+### ⚡ 一键安装，智能适配
 
 ```bash
-# 1⃣ 获取规则包（复制.cursor目录到项目根目录）
+# 1⃣ 获取并部署到项目
 cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
+cd /path/to/your-project
 
-# 或者从Git仓库克隆：
-# git clone <your-repo-url> cursor-ai-rules
-# cp -r cursor-ai-rules/.cursor your-project/
+# 2⃣ 运行自适应初始化（自动检测环境并配置）
+./.cursor/bootstrap/init.sh
 
-# 2⃣ 进入项目并运行适配
-cd your-project
-./.cursor/cursor-adaptation-setup.sh
-
-# 3⃣ 🎉 完成！AI现在真正理解你的项目了
+# 3⃣ 🎉 完成！系统自动完成：
+#   - 🔍 环境检测（技术栈、团队规模、项目成熟度）
+#   - ⚙️ 配置生成（个性化项目配置）
+#   - 📋 规则激活（相关规则自动启用）
+#   - 🎯 技能安装（适配技能自动安装）
 ```
 
 ### 💬 立即测试
 
-#### 方式1：在Cursor对话框中使用智能Master
+#### 方式1：使用自适应引导系统
 ```bash
-@master 我想创建一个React项目
-@master 需要优化代码质量
-@master 帮我分析项目现状
-```
+# 智能初始化（自动适配项目环境）
+./.cursor/bootstrap/init.sh
 
-AI会自动感知并执行：
-```
-🎯 智能Master控制器已激活
-🧠 正在分析用户意图...
-🔍 正在感知项目环境...
-⚡ 自动执行: env_check → enable → generator
+# 系统自动执行：
+🔍 检测项目环境...
+  ✅ 技术栈: node,react,typescript
+  👥 团队规模: 个人开发
+  📊 项目成熟度: 开发阶段
+
+⚙️ 生成个性化配置...
+📋 激活相关规则 (javascript, react, testing)
+🎯 安装适配技能 (nodejs, react, typescript)
 ```
 
 #### 方式2：传统方式提问
@@ -290,60 +300,65 @@ AI会立即响应：
 | **module_manager**        | 📋 规则管理系统       | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
 | **master**                | 🎯 智能Master控制器   | 自动感知需求并智能执行内部命令       | ✅ 始终激活 |
 
-### 🎯 Skills扩展系统
+### 🎯 自适应技能系统
 
-**16个专业技能库** - 全方位覆盖开发需求，支持最新的Cursor Agent Skills标准：
+**16个专业技能库** - 支持按需安装，智能匹配项目需求：
 
-#### ✨ Agent Skills标准支持
+#### 🧠 智能技能匹配
+- **🔍 环境感知**：自动检测技术栈和项目需求
+- **🎯 按需安装**：只安装项目相关的技能
+- **📦 技能市场**：支持从技能注册表安装新技能
+- **🔄 自动更新**：技能版本管理和更新
 
-项目现已支持Cursor Agent Skills开放标准，提供更好的兼容性和扩展性：
+#### 技能分类体系
 
-- **🎯 标准兼容**：遵循Cursor官方Agent Skills规范
-- **📁 结构化存储**：技能存储在`.cursor/skills/`标准目录中
-- **🔄 自动发现**：Cursor启动时自动加载和识别技能
-- **📦 可移植性**：技能可在任何支持Agent Skills的Agent中使用
-- **🔧 版本控制**：技能文件可通过Git进行管理和追踪
+| 分类             | 技能数量 | 适用场景             |
+| ---------------- | -------- | -------------------- |
+| **🧠 核心技能**   | 3个      | 所有项目的基础功能   |
+| **💻 技术技能**   | 11个     | 特定技术栈的专业技能 |
+| **🛠️ 工具技能**   | 5个      | 开发工具和平台集成   |
+| **🔄 工作流技能** | 4个      | 开发流程和质量保证   |
 
-#### 已转换的核心技能
+#### 核心技能（自动安装）
+- **代码质量检查** - 文件编辑后的自动化代码检查
+- **安全审计** - 命令执行前的安全验证
+- **技能创建器** - AI技能开发和定制工具
 
-| 技能                | 状态           | 描述                   |
-| ------------------- | -------------- | ---------------------- |
-| **skill-creator**   | ✅ Agent Skills | 技能创建和开发工具     |
-| **frontend-design** | ✅ Agent Skills | 前端界面设计和原型制作 |
-| **pdf**             | ✅ Agent Skills | PDF文档处理和分析      |
-| **webapp-testing**  | ✅ Agent Skills | Web应用测试和自动化    |
-| **docx**            | ✅ Agent Skills | Word文档创建和编辑     |
-| **pptx**            | ✅ Agent Skills | PowerPoint演示文稿制作 |
-| **xlsx**            | ✅ Agent Skills | Excel表格处理和分析    |
+#### 技术技能（按需安装）
+- **Node.js** - JavaScript/TypeScript/React/Vue开发
+- **Python** - Django/FastAPI数据科学开发
+- **Go** - 微服务和高性能应用开发
+- **Java** - Spring企业级应用开发
+- **.NET** - C#企业应用开发
+- **PHP** - Web应用开发
+- **Ruby** - Rails全栈开发
 
-#### 传统技能系统
+#### 工具技能（条件安装）
+- **Docker** - 容器化部署和编排
+- **Kubernetes** - 容器编排和管理
+- **AWS/Azure/GCP** - 云平台集成
+- **Terraform** - 基础设施即代码
 
-**16个专业技能库** - 全方位覆盖开发需求：
+#### 工作流技能（项目成熟度相关）
+- **测试自动化** - 单元测试、集成测试、E2E测试
+- **CI/CD流水线** - 自动化构建和部署
+- **文档生成** - API文档和项目文档
+- **安全扫描** - 代码安全和依赖检查
 
-| 分类           | 技能                                                           | 功能描述             |
-| -------------- | -------------------------------------------------------------- | -------------------- |
-| **📄 文档处理** | docx, pdf, pptx, xlsx                                          | Office文档处理和转换 |
-| **🎨 创意设计** | algorithmic-art, canvas-design, frontend-design, theme-factory | 设计创作和可视化     |
-| **🤖 AI集成**   | mcp-builder, slack-gif-creator, skill-creator                  | AI工具和技能开发     |
-| **🏢 企业协作** | brand-guidelines, internal-comms, doc-coauthoring              | 企业规范和沟通       |
-| **🧪 测试开发** | webapp-testing, web-artifacts-builder                          | 质量保障和构建工具   |
-
-#### 🔄 技能迁移计划
-
-- **当前进度**：7/16 个技能已转换为Agent Skills标准
-- **迁移策略**：逐步转换，确保向后兼容性
-- **兼容性**：新旧技能系统并存，无缝过渡
-
-#### 🛠️ 批量转换工具
-
-使用内置转换脚本加速迁移过程：
+#### 🛠️ 技能管理工具
 
 ```bash
-# 运行技能转换脚本
-./.cursor/scripts/convert_to_agent_skills.sh
+# 查看可用技能
+.cursor/automation/scripts/skill-list.sh
 
-# 查看转换结果
-ls -la .cursor/skills/
+# 安装特定技能
+.cursor/automation/scripts/skill-install.sh nodejs
+
+# 查看技能状态
+.cursor/automation/scripts/skill-status.sh
+
+# 更新技能
+.cursor/automation/scripts/skill-update.sh
 ```
 
 转换脚本会自动：
@@ -398,16 +413,16 @@ ls -la .cursor/skills/
 
 ```
 .cursor/
-├── skills/                    # Agent Skills标准目录
-│   ├── skill-creator/         # 技能创建工具
-│   │   └── SKILL.md          # 技能定义文件
-│   ├── frontend-design/       # 前端设计技能
-│   │   └── SKILL.md
-│   └── ...                    # 其他技能
-└── extensions/
-    └── skills/                # 传统技能系统（兼容）
-        ├── registry.json      # 技能注册表
-        └── *.md              # 传统技能文件
+├── skills/                    # AI技能系统
+│   ├── agent/                 # Agent Skills (标准格式)
+│   │   ├── skill-creator.md   # 技能创建工具
+│   │   ├── frontend-design.md # 前端设计技能
+│   │   └── *.md               # 其他Agent技能
+│   ├── legacy/                # 传统技能 (兼容)
+│   │   ├── registry.json      # 技能注册表
+│   │   └── *.md               # 传统技能文件
+│   └── tools/                 # 技能工具
+│       └── *.sh               # 技能管理脚本
 ```
 
 ### SKILL.md 文件格式

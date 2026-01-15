@@ -1,11 +1,13 @@
 # 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-4.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
+[![Bootstrap](https://img.shields.io/badge/bootstrap-3-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-16-green?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-16-9cf?style=flat-square)]()
+[![Automation](https://img.shields.io/badge/automation-8-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -84,44 +86,92 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 
 ## ⚡ Core Features
 
-| Feature | Description | Effect |
-|---------|-------------|--------|
-| 🧠 **Single-Step Multi-Task Perception** | Complete all project analysis in one go | **60% Token Savings** |
-| 💾 **Intelligent Caching System** | Cache mechanism based on file changes | **5x Response Speed Improvement** |
-| 🔌 **Extensible Rules** | ESLint integration and rule system | Code Quality Assurance |
-| 🛡️ **Graceful Degradation** | Environment detection and error handling | **99.9% Stability** |
-| 🎯 **One-Click Initialization** | Smart guidance and auto-configuration | **90% Reduced Onboarding Time** |
-| 🔓 **Out-of-the-Box** | No configuration needed, copy and use | Support for any project, any language |
+| Feature                                 | Description                              | Effect                                |
+| --------------------------------------- | ---------------------------------------- | ------------------------------------- |
+| 🧠 **Single-Step Multi-Task Perception** | Complete all project analysis in one go  | **60% Token Savings**                 |
+| 💾 **Intelligent Caching System**        | Cache mechanism based on file changes    | **5x Response Speed Improvement**     |
+| 🔌 **Extensible Rules**                  | ESLint integration and rule system       | Code Quality Assurance                |
+| 🛡️ **Graceful Degradation**              | Environment detection and error handling | **99.9% Stability**                   |
+| 🎯 **One-Click Initialization**          | Smart guidance and auto-configuration    | **90% Reduced Onboarding Time**       |
+| 🔓 **Out-of-the-Box**                    | No configuration needed, copy and use    | Support for any project, any language |
 
 ## 📋 Intelligent Rules System
 
-| Rule | Description | Application Method | Status |
-|------|-------------|-------------------|--------|
-| **master** | Intelligent Master Controller - Auto-perceive demands and execute internal commands | Always applied | ✅ |
-| **constitution** | AI Symbiosis Constitution - Core principles of human-AI collaboration | Always applied | ✅ |
-| **philosophy** | Communication Philosophy & Collaboration Modes | Always applied | ✅ |
-| **intelligent_evolution** | Intelligent Evolution System - Unified coordination of perception and evolution | Smart application | ✅ |
-| **generator** | Project Rules Generator - Automated personalized rule configuration | Code files | ✅ |
-| **system_info** | System Information Manager - Auto-acquire time, path, author information | Always applied | ✅ |
-| **templates** | Configuration Templates - Project initialization configuration | Config files | ✅ |
-| **i18n** | Internationalization Support - Auto-detect language preferences | Always applied | ✅ |
-| **platform_adapter** | Cross-platform Adapter - Unified command, path, environment management | Always applied | ✅ |
-| **module_manager** | Rule Management System - Dependencies, activation, extensions | Always applied | ✅ |
-| **eslint** | ESLint Code Quality Check - Auto-detect and fix JavaScript issues | Always applied | ✅ |
-| **evolution-philosophy** | Evolution Philosophy - Core principles for rule evolution | Smart application | ✅ |
-| **evolution-manual** | Manual Evolution Process - Artificial trigger management | Smart application | ✅ |
-| **evolution-automation** | Automated Evolution System - Data-driven optimization | Smart application | ✅ |
-| **evolution-governance** | Evolution Governance - Security and quality control | Smart application | ✅ |
+| Rule                      | Description                                                                         | Application Method | Status |
+| ------------------------- | ----------------------------------------------------------------------------------- | ------------------ | ------ |
+| **master**                | Intelligent Master Controller - Auto-perceive demands and execute internal commands | Always applied     | ✅      |
+| **constitution**          | AI Symbiosis Constitution - Core principles of human-AI collaboration               | Always applied     | ✅      |
+| **philosophy**            | Communication Philosophy & Collaboration Modes                                      | Always applied     | ✅      |
+| **intelligent_evolution** | Intelligent Evolution System - Unified coordination of perception and evolution     | Smart application  | ✅      |
+| **generator**             | Project Rules Generator - Automated personalized rule configuration                 | Code files         | ✅      |
+| **system_info**           | System Information Manager - Auto-acquire time, path, author information            | Always applied     | ✅      |
+| **templates**             | Configuration Templates - Project initialization configuration                      | Config files       | ✅      |
+| **i18n**                  | Internationalization Support - Auto-detect language preferences                     | Always applied     | ✅      |
+| **platform_adapter**      | Cross-platform Adapter - Unified command, path, environment management              | Always applied     | ✅      |
+| **module_manager**        | Rule Management System - Dependencies, activation, extensions                       | Always applied     | ✅      |
+| **eslint**                | ESLint Code Quality Check - Auto-detect and fix JavaScript issues                   | Always applied     | ✅      |
+| **evolution-philosophy**  | Evolution Philosophy - Core principles for rule evolution                           | Smart application  | ✅      |
+| **evolution-manual**      | Manual Evolution Process - Artificial trigger management                            | Smart application  | ✅      |
+| **evolution-automation**  | Automated Evolution System - Data-driven optimization                               | Smart application  | ✅      |
+| **evolution-governance**  | Evolution Governance - Security and quality control                                 | Smart application  | ✅      |
 
-### 🎯 Skills Extension System (16 Professional Skills)
+### 🎯 Adaptive Skills System (16 Professional Skills Libraries)
 
-| Skill Category | Count | Skills | Status |
-|----------------|-------|--------|--------|
-| **Document Processing** | 4 | docx, pdf, pptx, xlsx - Office document processing | ✅ Fully Integrated |
-| **Creative Design** | 4 | algorithmic-art, canvas-design, frontend-design, theme-factory | ✅ Fully Integrated |
-| **AI Integration** | 3 | mcp-builder, slack-gif-creator, skill-creator | ✅ Fully Integrated |
-| **Enterprise Collaboration** | 3 | brand-guidelines, internal-comms, doc-coauthoring | ✅ Fully Integrated |
-| **Testing & Development** | 2 | webapp-testing, web-artifacts-builder | ✅ Fully Integrated |
+**Support on-demand installation, intelligent matching of project needs:**
+
+#### 🧠 Intelligent Skill Matching
+- **🔍 Environment Perception**: Auto-detect tech stack and project requirements
+- **🎯 On-Demand Installation**: Install only project-related skills
+- **📦 Skills Marketplace**: Support installation of new skills from skill registry
+- **🔄 Auto-Updates**: Skill version management and updates
+
+#### Skills Classification System
+
+| Category              | Skills Count | Applicable Scenarios                         |
+| --------------------- | ------------ | -------------------------------------------- |
+| **🧠 Core Skills**     | 3            | Basic functions for all projects             |
+| **💻 Tech Skills**     | 11           | Professional skills for specific tech stacks |
+| **🛠️ Tool Skills**     | 5            | Development tools and platform integration   |
+| **🔄 Workflow Skills** | 4            | Development processes and quality assurance  |
+
+#### Core Skills (Auto-Installation)
+- **Code Quality Check** - Automated code inspection after file editing
+- **Security Audit** - Security verification before command execution
+- **Skill Creator** - AI skill development and customization tools
+
+#### Tech Skills (On-Demand Installation)
+- **Node.js** - JavaScript/TypeScript/React/Vue development
+- **Python** - Django/FastAPI data science development
+- **Go** - Microservices and high-performance applications
+- **Java** - Spring enterprise applications
+- **.NET** - C# enterprise applications
+- **PHP** - Web application development
+- **Ruby** - Rails full-stack development
+
+#### Tool Skills (Conditional Installation)
+- **Docker** - Containerized deployment and orchestration
+- **Kubernetes** - Container orchestration and management
+- **AWS/Azure/GCP** - Cloud platform integration
+- **Terraform** - Infrastructure as Code
+
+#### Workflow Skills (Project Maturity Related)
+- **Test Automation** - Unit testing, integration testing, E2E testing
+- **CI/CD Pipeline** - Automated build and deployment
+- **Documentation Generation** - API docs and project documentation
+- **Security Scanning** - Code security and dependency checks
+
+#### 🛠️ Skill Management Tools
+
+```bash
+# View available skills
+.cursor/automation/scripts/skill-list.sh
+
+# Install skills for current project
+.cursor/automation/scripts/skill-install.sh
+
+# Update skill versions
+.cursor/automation/scripts/skill-update.sh
+```
 
 ## 🚀 Quick Start
 
@@ -330,14 +380,14 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 Technical Metrics
 
-| Metric | v1.0 | v4.2.0 | Improvement |
-|--------|------|------|-------------|
-| Initialization Time | ~30s | ~5s | **83%↑** |
-| Perception Time | ~10s | ~1s | **90%↑** |
-| Token Savings | Baseline | 60%↓ | **60%↑** |
-| Error Tolerance | Medium | High | **Significant Improvement** |
-| Extensibility | Limited | Infinite | **Rule-based** |
-| Universality | None | Complete | **Out-of-the-box** |
+| Metric              | v1.0     | v4.2.0   | Improvement                 |
+| ------------------- | -------- | -------- | --------------------------- |
+| Initialization Time | ~30s     | ~5s      | **83%↑**                    |
+| Perception Time     | ~10s     | ~1s      | **90%↑**                    |
+| Token Savings       | Baseline | 60%↓     | **60%↑**                    |
+| Error Tolerance     | Medium   | High     | **Significant Improvement** |
+| Extensibility       | Limited  | Infinite | **Rule-based**              |
+| Universality        | None     | Complete | **Out-of-the-box**          |
 
 ## 📋 Environment Requirements
 

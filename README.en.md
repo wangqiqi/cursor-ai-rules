@@ -4,9 +4,10 @@
 [![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-6-orange?style=flat-square)]()
-[![Hooks](https://img.shields.io/badge/hooks-6-red?style=flat-square)]()
+[![Bootstrap](https://img.shields.io/badge/bootstrap-3-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-16-green?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-16-9cf?style=flat-square)]()
+[![Automation](https://img.shields.io/badge/automation-8-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -43,6 +44,12 @@
 ./.cursor/rules/intelligent_evolution/perception.sh
 ```
 
+### 🚀 Adaptive Bootstrap System
+- **🔍 Intelligent Environment Detection** - Auto-identify tech stack, team size, project maturity
+- **⚙️ Auto Configuration Generation** - Generate personalized configs based on detection results
+- **📦 On-Demand Skill Installation** - Install only AI skills needed by the project
+- **🎯 Intelligent Rule Activation** - Auto-enable relevant rules based on project characteristics
+
 ### 🧠 Intelligent Collaboration Framework
 - **🎯 Intelligent Master Controller** - Auto-perceive demands and intelligently execute internal commands
 - **🤝 AI Symbiosis Constitution** - Core principles and highest standards of human-AI collaboration
@@ -56,6 +63,18 @@
 - **🔧 System Information Retriever** - Auto-acquire time, path and author information
 - **🎨 Configuration Templates** - Automated project initialization configuration
 - **🔍 ESLint Code Quality Check** - Auto-detect and fix JavaScript code issues
+
+### 🎨 Hierarchical Configuration System
+- **🌐 Global Configuration Templates** - System-level default settings
+- **🏗️ Project Configuration Generation** - Auto-generated based on environment
+- **👤 User Custom Overrides** - Personalized settings override
+- **🔄 Intelligent Configuration Merge** - Auto-resolve configuration conflicts
+
+### ⚙️ Automation Script Engine
+- **🎣 Event-Driven Hooks** - 7 automated hook scripts
+- **🛠️ Manual Tool Scripts** - 8 general maintenance scripts
+- **🔧 Adaptive Configuration** - Adjust behavior based on project environment
+- **📊 Performance Monitoring** - Real-time monitoring and optimization
 
 ### 🧠 Intelligent Features
 
@@ -76,29 +95,29 @@
 
 ### 🎣 Cursor Hooks Integration
 
-> **🚀 v4.2.0 新功能** - 集成Cursor官方Hooks系统，提供企业级的AI协作安全保障
+> **🚀 v4.2.0 New Feature** - Deep integration with Cursor's official Hooks system, providing enterprise-grade AI collaboration security
 
-Cursor Hooks是Cursor官方提供的强大扩展机制，允许您通过自定义脚本来观察、控制和扩展AI协作流程。Cursor AI Rules已深度集成Hooks系统，提供全方位的安全监控和质量保障：
+Cursor Hooks is a powerful extension mechanism provided by Cursor officially, allowing you to observe, control, and extend AI collaboration processes through custom scripts. Cursor AI Rules deeply integrates with the Hooks system, providing comprehensive security monitoring and quality assurance:
 
 #### 🛡️ Security & Audit Hooks
-- **🔒 Command Security Audit** - 自动阻止危险shell命令，保护系统安全
-- **📊 Execution Logging** - 记录所有AI执行的命令和操作，便于审计追踪
-- **🚫 Sensitive Content Detection** - 检测并阻止包含API密钥等敏感信息的prompt
-- **⚠️ Risk Assessment** - 对高风险操作进行实时风险评估
+- **🔒 Command Security Audit** - Automatically block dangerous shell commands to protect system security
+- **📊 Execution Logging** - Record all commands and operations executed by AI for easy audit tracking
+- **🚫 Sensitive Content Detection** - Detect and block prompts containing sensitive information like API keys
+- **⚠️ Risk Assessment** - Real-time risk assessment for high-risk operations
 
 #### 🔍 Quality Assurance Hooks
-- **🎨 Auto Code Formatting** - AI编辑代码后自动运行ESLint、Prettier等格式化工具
-- **🐍 Multi-language Support** - 支持JavaScript/TypeScript、Python、Go、Rust等多种语言
-- **📏 Quality Gates** - 代码质量检查，确保符合团队编码规范
+- **🎨 Auto Code Formatting** - Automatically run ESLint, Prettier, etc. after AI code edits
+- **🐍 Multi-Language Support** - Support JavaScript/TypeScript, Python, Go, Rust, and other languages
+- **📏 Quality Gates** - Code quality checks to ensure compliance with team coding standards
 
 #### 📈 Analytics & Optimization Hooks
-- **📋 Rule Usage Tracking** - 监控AI规则系统使用情况，优化协作模式
-- **📊 Performance Monitoring** - 跟踪响应时间和资源使用情况
-- **🎯 Session Analytics** - 生成会话摘要报告，分析AI协作效果
+- **📋 Rule Usage Tracking** - Monitor AI rule system usage to optimize collaboration patterns
+- **📊 Performance Monitoring** - Track response times and resource usage
+- **🎯 Session Analytics** - Generate session summary reports to analyze AI collaboration effectiveness
 
-#### ⚙️ Easy Configuration
+#### ⚙️ Simple Configuration
 
-Hooks系统开箱即用，只需确保`.cursor/hooks.json`配置文件存在：
+The Hooks system works out-of-the-box, just ensure the `.cursor/hooks.json` configuration file exists:
 
 ```json
 {
@@ -113,13 +132,13 @@ Hooks系统开箱即用，只需确保`.cursor/hooks.json`配置文件存在：
 
 #### 📊 Monitoring Dashboard
 
-所有Hooks活动都会记录在`.cursorGrowth/logs/`目录中，您可以查看：
-- `security-events.log` - 安全事件记录
-- `command-execution.log` - 命令执行统计
-- `rule-usage.log` - 规则使用分析
-- `session-summary.md` - 会话摘要报告
+All Hooks activities are logged in the `.cursorGrowth/logs/` directory, where you can view:
+- `security-events.log` - Security event records
+- `command-execution.log` - Command execution statistics
+- `rule-usage.log` - Rule usage analysis
+- `session-summary.md` - Session summary reports
 
-> **💡 提示**: Hooks系统完全兼容现有的Cursor AI Rules规则系统，两者协同工作提供双重保障
+> **💡 Tip**: The Hooks system is fully compatible with the existing Cursor AI Rules system, working together to provide dual assurance
 
 ## 📺 Effect Demonstration
 
@@ -284,17 +303,63 @@ AI will immediately respond:
 | **module_manager**        | 📋 Rule Management System                         | Manage rule dependencies, activation control and extensions       | ✅ Always Active |
 | **master**                | 🎯 Intelligent Master Controller                  | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
 
-### 🎯 Skills Extension System
+### 🎯 Adaptive Skills System
 
-**16 Professional Skills Libraries** - Comprehensive coverage of development needs:
+**16 Professional Skills Libraries** - Support on-demand installation, intelligent matching of project needs:
 
-| Category                       | Skills                                                         | Function Description                      |
-| ------------------------------ | -------------------------------------------------------------- | ----------------------------------------- |
-| **📄 Document Processing**      | docx, pdf, pptx, xlsx                                          | Office document processing and conversion |
-| **🎨 Creative Design**          | algorithmic-art, canvas-design, frontend-design, theme-factory | Design creation and visualization         |
-| **🤖 AI Integration**           | mcp-builder, slack-gif-creator, skill-creator                  | AI tools and skill development            |
-| **🏢 Enterprise Collaboration** | brand-guidelines, internal-comms, doc-coauthoring              | Enterprise standards and communication    |
-| **🧪 Testing & Development**    | webapp-testing, web-artifacts-builder                          | Quality assurance and build tools         |
+#### 🧠 Intelligent Skill Matching
+- **🔍 Environment Perception**: Auto-detect tech stack and project requirements
+- **🎯 On-Demand Installation**: Install only project-related skills
+- **📦 Skills Marketplace**: Support installation of new skills from skill registry
+- **🔄 Auto-Updates**: Skill version management and updates
+
+#### Skills Classification System
+
+| Category             | Skills Count | Applicable Scenarios             |
+| -------------------- | ------------ | -------------------------------- |
+| **🧠 Core Skills**   | 3            | Basic functions for all projects |
+| **💻 Tech Skills**   | 11           | Professional skills for specific tech stacks |
+| **🛠️ Tool Skills**   | 5            | Development tools and platform integration |
+| **🔄 Workflow Skills**| 4            | Development processes and quality assurance |
+
+#### Core Skills (Auto-Installation)
+- **Code Quality Check** - Automated code inspection after file editing
+- **Security Audit** - Security verification before command execution
+- **Skill Creator** - AI skill development and customization tools
+
+#### Tech Skills (On-Demand Installation)
+- **Node.js** - JavaScript/TypeScript/React/Vue development
+- **Python** - Django/FastAPI data science development
+- **Go** - Microservices and high-performance applications
+- **Java** - Spring enterprise applications
+- **.NET** - C# enterprise applications
+- **PHP** - Web application development
+- **Ruby** - Rails full-stack development
+
+#### Tool Skills (Conditional Installation)
+- **Docker** - Containerized deployment and orchestration
+- **Kubernetes** - Container orchestration and management
+- **AWS/Azure/GCP** - Cloud platform integration
+- **Terraform** - Infrastructure as Code
+
+#### Workflow Skills (Project Maturity Related)
+- **Test Automation** - Unit testing, integration testing, E2E testing
+- **CI/CD Pipeline** - Automated build and deployment
+- **Documentation Generation** - API docs and project documentation
+- **Security Scanning** - Code security and dependency checks
+
+#### 🛠️ Skill Management Tools
+
+```bash
+# View available skills
+.cursor/automation/scripts/skill-list.sh
+
+# Install skills for current project
+.cursor/automation/scripts/skill-install.sh
+
+# Update skill versions
+.cursor/automation/scripts/skill-update.sh
+```
 
 ## 🏆 Core Advantages
 

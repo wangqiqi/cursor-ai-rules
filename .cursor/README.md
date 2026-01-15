@@ -1,11 +1,13 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-4.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
+[![Bootstrap](https://img.shields.io/badge/bootstrap-3-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-16-green?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-16-9cf?style=flat-square)]()
+[![Automation](https://img.shields.io/badge/automation-8-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -83,44 +85,92 @@
 
 ## ⚡ 核心特性
 
-| 特性 | 说明 | 效果 |
-|------|------|------|
-| 🧠 **单步多任务感知** | 一次性完成所有项目分析 | **Token节省 60%** |
-| 💾 **智能缓存系统** | 基于文件变化的缓存机制 | **响应速度 5x提升** |
-| 🔌 **可扩展规则** | ESLint集成和规则系统 | 代码质量保证 |
-| 🛡️ **优雅降级** | 环境检测和容错处理 | **稳定性 99.9%** |
-| 🎯 **一键初始化** | 智能引导和自动配置 | **入门时间 90%减少** |
-| 🔓 **开箱即用** | 无需配置，复制即用 | 支持任何项目、任何语言 |
+| 特性                 | 说明                   | 效果                   |
+| -------------------- | ---------------------- | ---------------------- |
+| 🧠 **单步多任务感知** | 一次性完成所有项目分析 | **Token节省 60%**      |
+| 💾 **智能缓存系统**   | 基于文件变化的缓存机制 | **响应速度 5x提升**    |
+| 🔌 **可扩展规则**     | ESLint集成和规则系统   | 代码质量保证           |
+| 🛡️ **优雅降级**       | 环境检测和容错处理     | **稳定性 99.9%**       |
+| 🎯 **一键初始化**     | 智能引导和自动配置     | **入门时间 90%减少**   |
+| 🔓 **开箱即用**       | 无需配置，复制即用     | 支持任何项目、任何语言 |
 
 ## 📋 智能规则系统
 
-| 规则 | 描述 | 应用方式 | 状态 |
-|------|------|----------|------|
-| **master** | 智能Master控制器 - 自动感知需求并智能执行内部命令 | 始终应用 | ✅ |
-| **constitution** | AI共生宪法 - 人机协作核心原则 | 始终应用 | ✅ |
-| **philosophy** | 交流哲学与协作模式 | 始终应用 | ✅ |
-| **intelligent_evolution** | 智能演进系统 - 统一协调感知和进化 | 智能应用 | ✅ |
-| **generator** | 项目规则生成器 - 自动化生成个性化规则配置 | 代码文件 | ✅ |
-| **system_info** | 系统信息获取器 - 自动获取时间、路径、作者信息 | 始终应用 | ✅ |
-| **templates** | 配置模板 - 自动化生成项目初始化配置 | 配置文件 | ✅ |
-| **i18n** | 国际化支持系统 - 自动检测语言偏好并切换沟通 | 始终应用 | ✅ |
-| **platform_adapter** | 跨平台适配器 - 统一管理不同OS间的命令、路径和环境 | 始终应用 | ✅ |
-| **module_manager** | 规则管理系统 - 管理规则依赖关系、激活控制和扩展机制 | 始终应用 | ✅ |
-| **eslint** | ESLint代码质量检查 - 自动检测和修复JavaScript代码问题 | 始终应用 | ✅ |
-| **evolution-philosophy** | 演进哲学 - 规则演进的核心理念和原则 | 智能应用 | ✅ |
-| **evolution-manual** | 手动演进流程 - 人工触发的规则演进管理 | 智能应用 | ✅ |
-| **evolution-automation** | 自动化演进系统 - 基于感知数据的智能优化 | 智能应用 | ✅ |
-| **evolution-governance** | 演进治理机制 - 规则演进的安全保障和质量控制 | 智能应用 | ✅ |
+| 规则                      | 描述                                                  | 应用方式 | 状态 |
+| ------------------------- | ----------------------------------------------------- | -------- | ---- |
+| **master**                | 智能Master控制器 - 自动感知需求并智能执行内部命令     | 始终应用 | ✅    |
+| **constitution**          | AI共生宪法 - 人机协作核心原则                         | 始终应用 | ✅    |
+| **philosophy**            | 交流哲学与协作模式                                    | 始终应用 | ✅    |
+| **intelligent_evolution** | 智能演进系统 - 统一协调感知和进化                     | 智能应用 | ✅    |
+| **generator**             | 项目规则生成器 - 自动化生成个性化规则配置             | 代码文件 | ✅    |
+| **system_info**           | 系统信息获取器 - 自动获取时间、路径、作者信息         | 始终应用 | ✅    |
+| **templates**             | 配置模板 - 自动化生成项目初始化配置                   | 配置文件 | ✅    |
+| **i18n**                  | 国际化支持系统 - 自动检测语言偏好并切换沟通           | 始终应用 | ✅    |
+| **platform_adapter**      | 跨平台适配器 - 统一管理不同OS间的命令、路径和环境     | 始终应用 | ✅    |
+| **module_manager**        | 规则管理系统 - 管理规则依赖关系、激活控制和扩展机制   | 始终应用 | ✅    |
+| **eslint**                | ESLint代码质量检查 - 自动检测和修复JavaScript代码问题 | 始终应用 | ✅    |
+| **evolution-philosophy**  | 演进哲学 - 规则演进的核心理念和原则                   | 智能应用 | ✅    |
+| **evolution-manual**      | 手动演进流程 - 人工触发的规则演进管理                 | 智能应用 | ✅    |
+| **evolution-automation**  | 自动化演进系统 - 基于感知数据的智能优化               | 智能应用 | ✅    |
+| **evolution-governance**  | 演进治理机制 - 规则演进的安全保障和质量控制           | 智能应用 | ✅    |
 
-### 🎯 Skills扩展系统 (16个专业技能)
+### 🎯 自适应技能系统 (16个专业技能库)
 
-| 技能分类 | 技能数量 | 功能描述 | 状态 |
-|----------|----------|----------|------|
-| **文档处理** | 4个 | docx, pdf, pptx, xlsx - Office文档处理和转换 | ✅ 全部集成 |
-| **创意设计** | 4个 | algorithmic-art, canvas-design, frontend-design, theme-factory | ✅ 全部集成 |
-| **AI集成** | 3个 | mcp-builder, slack-gif-creator, skill-creator | ✅ 全部集成 |
-| **企业协作** | 3个 | brand-guidelines, internal-comms, doc-coauthoring | ✅ 全部集成 |
-| **测试开发** | 2个 | webapp-testing, web-artifacts-builder | ✅ 全部集成 |
+**支持按需安装，智能匹配项目需求：**
+
+#### 🧠 智能技能匹配
+- **🔍 环境感知**：自动检测技术栈和项目需求
+- **🎯 按需安装**：只安装项目相关的技能
+- **📦 技能市场**：支持从技能注册表安装新技能
+- **🔄 自动更新**：技能版本管理和更新
+
+#### 技能分类体系
+
+| 分类             | 技能数量 | 适用场景             |
+| ---------------- | -------- | -------------------- |
+| **🧠 核心技能**   | 3个      | 所有项目的基础功能   |
+| **💻 技术技能**   | 11个     | 特定技术栈的专业技能 |
+| **🛠️ 工具技能**   | 5个      | 开发工具和平台集成   |
+| **🔄 工作流技能** | 4个      | 开发流程和质量保证   |
+
+#### 核心技能（自动安装）
+- **代码质量检查** - 文件编辑后的自动化代码检查
+- **安全审计** - 命令执行前的安全验证
+- **技能创建器** - AI技能开发和定制工具
+
+#### 技术技能（按需安装）
+- **Node.js** - JavaScript/TypeScript/React/Vue开发
+- **Python** - Django/FastAPI数据科学开发
+- **Go** - 微服务和高性能应用开发
+- **Java** - Spring企业级应用开发
+- **.NET** - C#企业应用开发
+- **PHP** - Web应用开发
+- **Ruby** - Rails全栈开发
+
+#### 工具技能（条件安装）
+- **Docker** - 容器化部署和编排
+- **Kubernetes** - 容器编排和管理
+- **AWS/Azure/GCP** - 云平台集成
+- **Terraform** - 基础设施即代码
+
+#### 工作流技能（项目成熟度相关）
+- **测试自动化** - 单元测试、集成测试、E2E测试
+- **CI/CD流水线** - 自动化构建和部署
+- **文档生成** - API文档和项目文档
+- **安全扫描** - 代码安全和依赖检查
+
+#### 🛠️ 技能管理工具
+
+```bash
+# 查看可用技能
+.cursor/automation/scripts/skill-list.sh
+
+# 为当前项目安装技能
+.cursor/automation/scripts/skill-install.sh
+
+# 更新技能版本
+.cursor/automation/scripts/skill-update.sh
+```
 
 ## 🚀 快速开始
 
@@ -329,14 +379,14 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 技术指标
 
-| 指标 | v1.0 | v4.2.0 | 提升 |
-|------|------|------|------|
-| 初始化时间 | ~30s | ~5s | **83%↑** |
-| 感知耗时 | ~10s | ~1s | **90%↑** |
-| Token节省 | 基准 | 60%↓ | **60%↑** |
-| 错误容忍度 | 中等 | 高 | **显著提升** |
-| 扩展性 | 有限 | 无限 | **规则化** |
-| 通用性 | 无 | 完全 | **开箱即用** |
+| 指标       | v1.0 | v4.2.0 | 提升         |
+| ---------- | ---- | ------ | ------------ |
+| 初始化时间 | ~30s | ~5s    | **83%↑**     |
+| 感知耗时   | ~10s | ~1s    | **90%↑**     |
+| Token节省  | 基准 | 60%↓   | **60%↑**     |
+| 错误容忍度 | 中等 | 高     | **显著提升** |
+| 扩展性     | 有限 | 无限   | **规则化**   |
+| 通用性     | 无   | 完全   | **开箱即用** |
 
 ## 📋 环境要求
 

@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "created_at": "2024-01-15T10:00:00Z",
+    "description": "Cursor AI Rules 全局配置模板",
+    "author": "Cursor AI Rules Team"
+  },
+  "system": {
+    "os": "auto-detect",
+    "log_level": "info",
+    "backup_enabled": true,
+    "auto_update": true,
+    "max_memory_mb": 512,
+    "max_concurrent_tasks": 3
+  },
+  "features": {
+    "automation": {
+      "enabled": true,
+      "hooks": true,
+      "scripts": true,
+      "scheduling": false
+    },
+    "skills": {
+      "enabled": true,
+      "auto_install": true,
+      "marketplace": true,
+      "custom_skills": true
+    },
+    "rules": {
+      "enabled": true,
+      "auto_activation": true,
+      "custom_rules": true,
+      "evolution": true
+    },
+    "intelligence": {
+      "enabled": true,
+      "learning": true,
+      "adaptation": true,
+      "prediction": false
+    }
+  },
+  "performance": {
+    "cache_enabled": true,
+    "cache_size_mb": 100,
+    "compression": true,
+    "lazy_loading": true,
+    "resource_limits": {
+      "cpu_percent": 50,
+      "memory_mb": 256,
+      "disk_mb": 100
+    }
+  },
+  "security": {
+    "input_validation": true,
+    "output_filtering": true,
+    "audit_logging": true,
+    "rate_limiting": {
+      "enabled": true,
+      "max_requests_per_minute": 60
+    },
+    "data_encryption": false,
+    "secure_defaults": true
+  },
+  "network": {
+    "connectivity_check": true,
+    "proxy_support": true,
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "trusted_domains": [
+      "github.com",
+      "api.github.com",
+      "registry.npmjs.org",
+      "pypi.org"
+    ]
+  },
+  "ui": {
+    "theme": "auto",
+    "language": "auto",
+    "notifications": true,
+    "tooltips": true,
+    "shortcuts": true
+  },
+  "telemetry": {
+    "enabled": false,
+    "anonymized": true,
+    "error_reporting": false,
+    "usage_stats": false
+  }
+}
