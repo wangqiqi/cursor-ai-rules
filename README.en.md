@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
@@ -43,6 +43,7 @@
 ```
 
 ### 🧠 Intelligent Collaboration Framework
+- **🎯 Intelligent Master Controller** - Auto-perceive demands and intelligently execute internal commands
 - **🤝 AI Symbiosis Constitution** - Core principles and highest standards of human-AI collaboration
 - **💬 Collaboration Philosophy** - Intelligent dialogue patterns and communication optimization
 - **🧠 Intelligent Evolution System** - Unified coordination of auto-perception and rule evolution
@@ -57,6 +58,7 @@
 
 ### 🧠 Intelligent Features
 
+- ✅ **Intelligent Master** - Natural language driven, auto-analyze intent and execute optimal solutions
 - ✅ **Auto-Perception** - Real-time monitoring of project changes and tech stack evolution
 - ✅ **User Learning** - Analyze communication patterns, learn collaboration preferences
 - ✅ **Adaptive Adjustment** - Auto-optimize rules based on perception data
@@ -175,7 +177,22 @@ cd your-project
 
 ### 💬 Test Immediately
 
-After installation, ask in Cursor:
+#### Method 1: Use Intelligent Master in Cursor Chat
+```bash
+@master I want to create a React project
+@master Need to optimize code quality
+@master Help me analyze the current project status
+```
+
+AI will auto-perceive and execute:
+```
+🎯 Intelligent Master Controller Activated
+🧠 Analyzing user intent...
+🔍 Perceiving project environment...
+⚡ Auto-executing: env_check → enable → generator
+```
+
+#### Method 2: Traditional Questioning
 > *"Help me optimize this API security"*
 
 AI will immediately respond:
@@ -202,6 +219,7 @@ AI will immediately respond:
 
 | Rule Module | Function Description | Application Scenarios | Status |
 | ----------- | ------------------- | -------------------- | ------ |
+| **master** | 🎯 Intelligent Master Controller | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
 | **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Always Active |
 | **philosophy** | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization | ✅ Always Active |
 | **intelligent_evolution** | 🧠 Intelligent Evolution System | Unified coordination of auto-perception and rule evolution | ✅ Active |
@@ -223,6 +241,8 @@ AI will immediately respond:
 
 | Feature | Traditional Solutions | Cursor AI Rules |
 |---------|---------------------|------------------|
+| **Interaction Method** | Memorize command syntax | 🎯 Natural language driven |
+| **Execution Mode** | Manually call multiple commands | ⚡ Intelligent decision auto-execution |
 | **Environment Adaptation** | Manual Configuration | 🔄 Auto-perceive project environment |
 | **Collaboration Patterns** | Fixed Rules | 🎯 Smart adjustment based on team size |
 | **Learning Ability** | No Memory | 🧠 Continuous learning of user preferences |
@@ -238,6 +258,7 @@ AI will immediately respond:
 
 | Scenario | Traditional AI | Cursor AI Rules |
 |----------|---------------|------------------|
+| **Smart Demand Handling** | "I want to make a project" → Manually execute multiple commands | `@master I want to make a project` → Auto-perceive and execute complete process |
 | **New API** | "Write a login API" → Generic template | "Write a login API" → Project-customized solution, integrate existing auth framework |
 | **Code Refactoring** | "Refactor this function" → Standard suggestions | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
 | **Architecture Decision** | "How to design caching" → Generic comparison | "How to design caching" → Optimized suggestions combining project tech stack |
@@ -349,9 +370,9 @@ A: Only reads public Git configuration information for personalized experience.
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - Making AI collaboration simple and powerful*
+*🚀 Cursor AI Rules v4.0.0 - Intelligent Master leads the new era of AI collaboration*
 *Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
-*Based on Cursor official specifications, integrated with intelligent evolution technology and rule system*
+*Based on Cursor official specifications, integrated with intelligent perception, decision-making and evolution systems*
 
 ## 📄 License
 

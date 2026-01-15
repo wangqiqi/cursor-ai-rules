@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
@@ -96,6 +96,7 @@
 
 | 规则 | 描述 | 应用方式 | 状态 |
 |------|------|----------|------|
+| **master** | 智能Master控制器 - 自动感知需求并智能执行内部命令 | 始终应用 | ✅ |
 | **constitution** | AI共生宪法 - 人机协作核心原则 | 始终应用 | ✅ |
 | **philosophy** | 交流哲学与协作模式 | 始终应用 | ✅ |
 | **intelligent_evolution** | 智能演进系统 - 统一协调感知和进化 | 智能应用 | ✅ |
@@ -119,6 +120,9 @@
 cd your-project
 # 将 .cursor 目录放入项目根目录
 ./.cursor/cursor-adaptation-setup.sh
+
+# 🎯 或者使用智能Master（更简单！）
+@master 我想创建一个React项目  # AI自动感知并执行完整流程
 ```
 
 **自动化流程：**
@@ -176,7 +180,20 @@ cd your-project
 
 ## 💡 使用示例
 
-### 规则引用
+### 智能Master使用
+直接用自然语言描述你的需求：
+
+```bash
+# 在Cursor对话框中
+@master 我想创建一个React项目
+@master 需要优化代码质量
+@master 帮我分析项目现状
+
+# 或者在命令行中
+./cursor-master.sh "我想创建一个React项目"
+```
+
+### 传统规则引用
 设置完成后，规则会自动应用。你也可以手动引用：
 
 ```markdown
@@ -348,7 +365,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - 让AI协作变得简单而强大*
+*🚀 Cursor AI Rules v4.0.0 - 智能Master引领AI协作新时代*
 *最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
-*基于 Cursor 官方规范，集成智能进化技术和规则系统*
+*基于 Cursor 官方规范，集成智能感知、决策和进化系统*
 
