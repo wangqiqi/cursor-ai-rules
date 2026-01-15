@@ -4,7 +4,7 @@ description: "🎯 Skills扩展: Guide for creating, editing, and formatting Mic
 alwaysApply: false
 skill_metadata:
   original_name: "docx"
-  source_path: "/home/saida/workspace/skills/skills/docx"
+  source_path: "{{SKILLS_SOURCE}}/docx"
   category: "document_processing"
   dependencies: ["python", "docx"]
   license: "Complete terms in LICENSE.txt"

@@ -4,7 +4,7 @@ description: "🎯 Skills扩展: Creating algorithmic art using p5.js with seede
 alwaysApply: false
 skill_metadata:
   original_name: "algorithmic-art"
-  source_path: "/home/saida/workspace/skills/skills/algorithmic-art"
+  source_path: "{{SKILLS_SOURCE}}/algorithmic-art"
   category: "creative"
   dependencies: [
   ""

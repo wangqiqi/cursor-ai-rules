@@ -5,7 +5,8 @@
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-6-orange?style=flat-square)]()
+[![Hooks](https://img.shields.io/badge/hooks-6-red?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -72,6 +73,53 @@
 - 📝 **Template Variable Replacement** - Dynamic variable system, ready to use
 - 🛡️ **Secure Collaboration Guarantee** - Risk control and privacy protection
 - 📊 **Usage Statistics Monitoring** - Real-time perception and performance analysis
+
+### 🎣 Cursor Hooks Integration
+
+> **🚀 v4.2.0 新功能** - 集成Cursor官方Hooks系统，提供企业级的AI协作安全保障
+
+Cursor Hooks是Cursor官方提供的强大扩展机制，允许您通过自定义脚本来观察、控制和扩展AI协作流程。Cursor AI Rules已深度集成Hooks系统，提供全方位的安全监控和质量保障：
+
+#### 🛡️ Security & Audit Hooks
+- **🔒 Command Security Audit** - 自动阻止危险shell命令，保护系统安全
+- **📊 Execution Logging** - 记录所有AI执行的命令和操作，便于审计追踪
+- **🚫 Sensitive Content Detection** - 检测并阻止包含API密钥等敏感信息的prompt
+- **⚠️ Risk Assessment** - 对高风险操作进行实时风险评估
+
+#### 🔍 Quality Assurance Hooks
+- **🎨 Auto Code Formatting** - AI编辑代码后自动运行ESLint、Prettier等格式化工具
+- **🐍 Multi-language Support** - 支持JavaScript/TypeScript、Python、Go、Rust等多种语言
+- **📏 Quality Gates** - 代码质量检查，确保符合团队编码规范
+
+#### 📈 Analytics & Optimization Hooks
+- **📋 Rule Usage Tracking** - 监控AI规则系统使用情况，优化协作模式
+- **📊 Performance Monitoring** - 跟踪响应时间和资源使用情况
+- **🎯 Session Analytics** - 生成会话摘要报告，分析AI协作效果
+
+#### ⚙️ Easy Configuration
+
+Hooks系统开箱即用，只需确保`.cursor/hooks.json`配置文件存在：
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [{ "command": ".cursor/hooks/code-quality.sh" }],
+    "beforeShellExecution": [{ "command": ".cursor/hooks/security-audit.sh" }],
+    "afterAgentResponse": [{ "command": ".cursor/hooks/rule-usage-tracker.sh" }]
+  }
+}
+```
+
+#### 📊 Monitoring Dashboard
+
+所有Hooks活动都会记录在`.cursorGrowth/logs/`目录中，您可以查看：
+- `security-events.log` - 安全事件记录
+- `command-execution.log` - 命令执行统计
+- `rule-usage.log` - 规则使用分析
+- `session-summary.md` - 会话摘要报告
+
+> **💡 提示**: Hooks系统完全兼容现有的Cursor AI Rules规则系统，两者协同工作提供双重保障
 
 ## 📺 Effect Demonstration
 
@@ -144,13 +192,13 @@ AI: 🧠 Perceived your project uses Node.js + MongoDB...
 
 <div align="center">
 
-| 📊 Metric | 🎯 Status | 📈 Trend |
-|--------|--------|--------|
-| **Universality** | Any Project | ✅ Out-of-the-box |
-| **Language Support** | Multi-language | 🔍 Auto-detection |
-| **Deployment Time** | <5 seconds | ⚡ Plug-and-play |
-| **Rule Coverage** | 14 Rule Modules | 🛡️ Comprehensive Protection |
-| **Intelligent Perception** | Activated | 🧠 Continuous Learning |
+| 📊 Metric                   | 🎯 Status        | 📈 Trend                    |
+| -------------------------- | --------------- | -------------------------- |
+| **Universality**           | Any Project     | ✅ Out-of-the-box           |
+| **Language Support**       | Multi-language  | 🔍 Auto-detection           |
+| **Deployment Time**        | <5 seconds      | ⚡ Plug-and-play            |
+| **Rule Coverage**          | 14 Rule Modules | 🛡️ Comprehensive Protection |
+| **Intelligent Perception** | Activated       | 🧠 Continuous Learning      |
 
 </div>
 
@@ -217,49 +265,49 @@ AI will immediately respond:
 
 ## 📋 Rules System
 
-| Rule Module | Function Description | Application Scenarios | Status |
-| ----------- | ------------------- | -------------------- | ------ |
-| **master** | 🎯 Intelligent Master Controller | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
-| **constitution** | 🤝 AI Symbiosis Constitution | Define collaboration core principles and highest standards | ✅ Always Active |
-| **philosophy** | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization | ✅ Always Active |
-| **intelligent_evolution** | 🧠 Intelligent Evolution System | Unified coordination of auto-perception and rule evolution | ✅ Active |
-| **evolution-philosophy** | 📈 Evolution Philosophy | Core principles and guidance for rule evolution | ✅ Active |
-| **evolution-manual** | 📋 Manual Evolution Process | Artificial trigger and rule evolution management | ✅ Active |
-| **evolution-automation** | 🤖 Automated Evolution System | Intelligent optimization based on perception data | ✅ Active |
-| **evolution-governance** | 🛡️ Evolution Governance | Security assurance and quality control for rule evolution | ✅ Active |
-| **generator** | ⚙️ Project Rules Generator | Automated personalized rule configuration generation | ✅ Active |
-| **system_info** | 🔧 System Information Retriever | Auto-acquire time, path and author information | ✅ Always Active |
-| **templates** | 🎨 Configuration Templates | Automated project initialization configuration | ✅ Active |
-| **eslint** | 🔍 ESLint Code Quality Check | Auto-detect and fix JavaScript code issues | ✅ Always Active |
-| **i18n** | 🌍 Internationalization Support | Auto-detect language preferences and switch communication | ✅ Always Active |
-| **platform_adapter** | 🔧 Cross-platform Adapter | Unified management of commands, paths and environments | ✅ Always Active |
-| **module_manager** | 📋 Rule Management System | Manage rule dependencies, activation control and extensions | ✅ Always Active |
-| **master** | 🎯 Intelligent Master Controller | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
+| Rule Module               | Function Description                             | Application Scenarios                                             | Status          |
+| ------------------------- | ------------------------------------------------ | ----------------------------------------------------------------- | --------------- |
+| **master**                | 🎯 Intelligent Master Controller                  | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
+| **constitution**          | 🤝 AI Symbiosis Constitution                      | Define collaboration core principles and highest standards        | ✅ Always Active |
+| **philosophy**            | 💬 Communication Philosophy & Collaboration Modes | Optimize dialogue patterns and interaction optimization           | ✅ Always Active |
+| **intelligent_evolution** | 🧠 Intelligent Evolution System                   | Unified coordination of auto-perception and rule evolution        | ✅ Active        |
+| **evolution-philosophy**  | 📈 Evolution Philosophy                           | Core principles and guidance for rule evolution                   | ✅ Active        |
+| **evolution-manual**      | 📋 Manual Evolution Process                       | Artificial trigger and rule evolution management                  | ✅ Active        |
+| **evolution-automation**  | 🤖 Automated Evolution System                     | Intelligent optimization based on perception data                 | ✅ Active        |
+| **evolution-governance**  | 🛡️ Evolution Governance                           | Security assurance and quality control for rule evolution         | ✅ Active        |
+| **generator**             | ⚙️ Project Rules Generator                        | Automated personalized rule configuration generation              | ✅ Active        |
+| **system_info**           | 🔧 System Information Retriever                   | Auto-acquire time, path and author information                    | ✅ Always Active |
+| **templates**             | 🎨 Configuration Templates                        | Automated project initialization configuration                    | ✅ Active        |
+| **eslint**                | 🔍 ESLint Code Quality Check                      | Auto-detect and fix JavaScript code issues                        | ✅ Always Active |
+| **i18n**                  | 🌍 Internationalization Support                   | Auto-detect language preferences and switch communication         | ✅ Always Active |
+| **platform_adapter**      | 🔧 Cross-platform Adapter                         | Unified management of commands, paths and environments            | ✅ Always Active |
+| **module_manager**        | 📋 Rule Management System                         | Manage rule dependencies, activation control and extensions       | ✅ Always Active |
+| **master**                | 🎯 Intelligent Master Controller                  | Auto-perceive demands and intelligently execute internal commands | ✅ Always Active |
 
 ### 🎯 Skills Extension System
 
 **16 Professional Skills Libraries** - Comprehensive coverage of development needs:
 
-| Category | Skills | Function Description |
-|----------|--------|---------------------|
-| **📄 Document Processing** | docx, pdf, pptx, xlsx | Office document processing and conversion |
-| **🎨 Creative Design** | algorithmic-art, canvas-design, frontend-design, theme-factory | Design creation and visualization |
-| **🤖 AI Integration** | mcp-builder, slack-gif-creator, skill-creator | AI tools and skill development |
-| **🏢 Enterprise Collaboration** | brand-guidelines, internal-comms, doc-coauthoring | Enterprise standards and communication |
-| **🧪 Testing & Development** | webapp-testing, web-artifacts-builder | Quality assurance and build tools |
+| Category                       | Skills                                                         | Function Description                      |
+| ------------------------------ | -------------------------------------------------------------- | ----------------------------------------- |
+| **📄 Document Processing**      | docx, pdf, pptx, xlsx                                          | Office document processing and conversion |
+| **🎨 Creative Design**          | algorithmic-art, canvas-design, frontend-design, theme-factory | Design creation and visualization         |
+| **🤖 AI Integration**           | mcp-builder, slack-gif-creator, skill-creator                  | AI tools and skill development            |
+| **🏢 Enterprise Collaboration** | brand-guidelines, internal-comms, doc-coauthoring              | Enterprise standards and communication    |
+| **🧪 Testing & Development**    | webapp-testing, web-artifacts-builder                          | Quality assurance and build tools         |
 
 ## 🏆 Core Advantages
 
 <div align="center">
 
-| Feature | Traditional Solutions | Cursor AI Rules |
-|---------|---------------------|------------------|
-| **Interaction Method** | Memorize command syntax | 🎯 Natural language driven |
-| **Execution Mode** | Manually call multiple commands | ⚡ Intelligent decision auto-execution |
-| **Environment Adaptation** | Manual Configuration | 🔄 Auto-perceive project environment |
-| **Collaboration Patterns** | Fixed Rules | 🎯 Smart adjustment based on team size |
-| **Learning Ability** | No Memory | 🧠 Continuous learning of user preferences |
-| **Deployment Complexity** | High | ⚡ 60-second copy-and-use |
+| Feature                    | Traditional Solutions           | Cursor AI Rules                           |
+| -------------------------- | ------------------------------- | ----------------------------------------- |
+| **Interaction Method**     | Memorize command syntax         | 🎯 Natural language driven                 |
+| **Execution Mode**         | Manually call multiple commands | ⚡ Intelligent decision auto-execution     |
+| **Environment Adaptation** | Manual Configuration            | 🔄 Auto-perceive project environment       |
+| **Collaboration Patterns** | Fixed Rules                     | 🎯 Smart adjustment based on team size     |
+| **Learning Ability**       | No Memory                       | 🧠 Continuous learning of user preferences |
+| **Deployment Complexity**  | High                            | ⚡ 60-second copy-and-use                  |
 
 </div>
 
@@ -269,12 +317,12 @@ AI will immediately respond:
 
 ### 💬 Dialogue Examples
 
-| Scenario | Traditional AI | Cursor AI Rules |
-|----------|---------------|------------------|
-| **Smart Demand Handling** | "I want to make a project" → Manually execute multiple commands | `@master I want to make a project` → Auto-perceive and execute complete process |
-| **New API** | "Write a login API" → Generic template | "Write a login API" → Project-customized solution, integrate existing auth framework |
-| **Code Refactoring** | "Refactor this function" → Standard suggestions | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
-| **Architecture Decision** | "How to design caching" → Generic comparison | "How to design caching" → Optimized suggestions combining project tech stack |
+| Scenario                  | Traditional AI                                                  | Cursor AI Rules                                                                                      |
+| ------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Smart Demand Handling** | "I want to make a project" → Manually execute multiple commands | `@master I want to make a project` → Auto-perceive and execute complete process                      |
+| **New API**               | "Write a login API" → Generic template                          | "Write a login API" → Project-customized solution, integrate existing auth framework                 |
+| **Code Refactoring**      | "Refactor this function" → Standard suggestions                 | "Refactor this function" → Customized refactoring strategy based on project complexity and team size |
+| **Architecture Decision** | "How to design caching" → Generic comparison                    | "How to design caching" → Optimized suggestions combining project tech stack                         |
 
 ### ⚡ Instant Perception
 

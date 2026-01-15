@@ -6,7 +6,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILLS_SOURCE="/home/saida/workspace/skills/skills"
+SKILLS_SOURCE="${SKILLS_SOURCE:-$HOME/skills/skills}"
 
 # 转换单个技能
 convert_skill() {

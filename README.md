@@ -5,8 +5,9 @@
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-5-orange?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-6-orange?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-16-blueviolet?style=flat-square)]()
+[![Hooks](https://img.shields.io/badge/hooks-6-red?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -79,6 +80,53 @@
 - 🛡️ **安全协作保障** - 风险控制和隐私保护
 - 📊 **使用统计监控** - 实时感知和性能分析
 
+### 🎣 Cursor Hooks集成
+
+> **🚀 v4.2.0 新功能** - 深度集成Cursor官方Hooks系统，提供企业级AI协作安全保障
+
+Cursor Hooks是Cursor官方提供的强大扩展机制，允许您通过自定义脚本来观察、控制和扩展AI协作流程。Cursor AI Rules已深度集成Hooks系统，提供全方位的安全监控和质量保障：
+
+#### 🛡️ 安全审计Hooks
+- **🔒 命令安全审计** - 自动阻止危险shell命令，保护系统安全
+- **📊 执行日志记录** - 记录所有AI执行的命令和操作，便于审计追踪
+- **🚫 敏感内容检测** - 检测并阻止包含API密钥等敏感信息的prompt
+- **⚠️ 风险评估** - 对高风险操作进行实时风险评估
+
+#### 🔍 质量保障Hooks
+- **🎨 自动代码格式化** - AI编辑代码后自动运行ESLint、Prettier等格式化工具
+- **🐍 多语言支持** - 支持JavaScript/TypeScript、Python、Go、Rust等多种语言
+- **📏 质量门禁** - 代码质量检查，确保符合团队编码规范
+
+#### 📈 分析优化Hooks
+- **📋 规则使用追踪** - 监控AI规则系统使用情况，优化协作模式
+- **📊 性能监控** - 跟踪响应时间和资源使用情况
+- **🎯 会话分析** - 生成会话摘要报告，分析AI协作效果
+
+#### ⚙️ 简单配置
+
+Hooks系统开箱即用，只需确保`.cursor/hooks.json`配置文件存在：
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [{ "command": ".cursor/hooks/code-quality.sh" }],
+    "beforeShellExecution": [{ "command": ".cursor/hooks/security-audit.sh" }],
+    "afterAgentResponse": [{ "command": ".cursor/hooks/rule-usage-tracker.sh" }]
+  }
+}
+```
+
+#### 📊 监控面板
+
+所有Hooks活动都会记录在`.cursorGrowth/logs/`目录中，您可以查看：
+- `security-events.log` - 安全事件记录
+- `command-execution.log` - 命令执行统计
+- `rule-usage.log` - 规则使用分析
+- `session-summary.md` - 会话摘要报告
+
+> **💡 提示**: Hooks系统完全兼容现有的Cursor AI Rules规则系统，两者协同工作提供双重保障
+
 ## 📺 效果演示
 
 <div align="center">
@@ -150,13 +198,13 @@ AI: 🧠 感知到你的项目使用Node.js+MongoDB...
 
 <div align="center">
 
-| 📊 指标 | 🎯 状态 | 📈 趋势 |
-|--------|--------|--------|
-| **通用性** | 任何项目 | ✅ 开箱即用 |
-| **语言支持** | 多语言 | 🔍 自动检测 |
-| **部署时间** | <5秒 | ⚡ 即插即用 |
+| 📊 指标       | 🎯 状态       | 📈 趋势       |
+| ------------ | ------------ | ------------ |
+| **通用性**   | 任何项目     | ✅ 开箱即用   |
+| **语言支持** | 多语言       | 🔍 自动检测   |
+| **部署时间** | <5秒         | ⚡ 即插即用   |
 | **规则覆盖** | 14个规则模块 | 🛡️ 全方位保护 |
-| **智能感知** | 已激活 | 🧠 持续学习 |
+| **智能感知** | 已激活       | 🧠 持续学习   |
 
 </div>
 
@@ -223,49 +271,99 @@ AI会立即响应：
 
 ## 📋 规则体系
 
-| 规则模块 | 功能描述 | 应用场景 | 状态 |
-| -------- | -------- | -------- | ---- |
-| **master** | 🎯 智能Master控制器 | 自动感知需求并智能执行内部命令 | ✅ 始终激活 |
-| **constitution** | 🤝 AI共生宪法 | 定义协作核心原则和最高准则 | ✅ 始终激活 |
-| **philosophy** | 💬 交流哲学与协作模式 | 优化沟通和交互模式 | ✅ 始终激活 |
-| **intelligent_evolution** | 🧠 智能演进系统 | 自动感知和规则进化协调 | ✅ 活跃 |
-| **evolution-philosophy** | 📈 演进哲学 | 规则演进的核心理念和原则 | ✅ 活跃 |
-| **evolution-manual** | 📋 手动演进流程 | 人工触发的规则演进管理 | ✅ 活跃 |
-| **evolution-automation** | 🤖 自动化演进系统 | 基于感知数据的智能优化 | ✅ 活跃 |
-| **evolution-governance** | 🛡️ 演进治理机制 | 规则演进的安全保障和质量控制 | ✅ 活跃 |
-| **generator** | ⚙️ 项目规则生成器 | 自动化生成个性化规则配置 | ✅ 活跃 |
-| **system_info** | 🔧 系统信息获取器 | 自动获取时间、路径和作者信息 | ✅ 始终激活 |
-| **templates** | 🎨 配置模板 | 自动化生成项目初始化配置 | ✅ 活跃 |
-| **eslint** | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题 | ✅ 始终激活 |
-| **i18n** | 🌍 国际化支持系统 | 自动检测语言偏好并切换沟通 | ✅ 始终激活 |
-| **platform_adapter** | 🔧 跨平台适配器 | 统一管理不同OS间的命令、路径和环境 | ✅ 始终激活 |
-| **module_manager** | 📋 规则管理系统 | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
-| **master** | 🎯 智能Master控制器 | 自动感知需求并智能执行内部命令 | ✅ 始终激活 |
+| 规则模块                  | 功能描述             | 应用场景                             | 状态       |
+| ------------------------- | -------------------- | ------------------------------------ | ---------- |
+| **master**                | 🎯 智能Master控制器   | 自动感知需求并智能执行内部命令       | ✅ 始终激活 |
+| **constitution**          | 🤝 AI共生宪法         | 定义协作核心原则和最高准则           | ✅ 始终激活 |
+| **philosophy**            | 💬 交流哲学与协作模式 | 优化沟通和交互模式                   | ✅ 始终激活 |
+| **intelligent_evolution** | 🧠 智能演进系统       | 自动感知和规则进化协调               | ✅ 活跃     |
+| **evolution-philosophy**  | 📈 演进哲学           | 规则演进的核心理念和原则             | ✅ 活跃     |
+| **evolution-manual**      | 📋 手动演进流程       | 人工触发的规则演进管理               | ✅ 活跃     |
+| **evolution-automation**  | 🤖 自动化演进系统     | 基于感知数据的智能优化               | ✅ 活跃     |
+| **evolution-governance**  | 🛡️ 演进治理机制       | 规则演进的安全保障和质量控制         | ✅ 活跃     |
+| **generator**             | ⚙️ 项目规则生成器     | 自动化生成个性化规则配置             | ✅ 活跃     |
+| **system_info**           | 🔧 系统信息获取器     | 自动获取时间、路径和作者信息         | ✅ 始终激活 |
+| **templates**             | 🎨 配置模板           | 自动化生成项目初始化配置             | ✅ 活跃     |
+| **eslint**                | 🔍 ESLint代码质量检查 | 自动检测和修复JavaScript代码问题     | ✅ 始终激活 |
+| **i18n**                  | 🌍 国际化支持系统     | 自动检测语言偏好并切换沟通           | ✅ 始终激活 |
+| **platform_adapter**      | 🔧 跨平台适配器       | 统一管理不同OS间的命令、路径和环境   | ✅ 始终激活 |
+| **module_manager**        | 📋 规则管理系统       | 管理规则依赖关系、激活控制和扩展机制 | ✅ 始终激活 |
+| **master**                | 🎯 智能Master控制器   | 自动感知需求并智能执行内部命令       | ✅ 始终激活 |
 
 ### 🎯 Skills扩展系统
 
+**16个专业技能库** - 全方位覆盖开发需求，支持最新的Cursor Agent Skills标准：
+
+#### ✨ Agent Skills标准支持
+
+项目现已支持Cursor Agent Skills开放标准，提供更好的兼容性和扩展性：
+
+- **🎯 标准兼容**：遵循Cursor官方Agent Skills规范
+- **📁 结构化存储**：技能存储在`.cursor/skills/`标准目录中
+- **🔄 自动发现**：Cursor启动时自动加载和识别技能
+- **📦 可移植性**：技能可在任何支持Agent Skills的Agent中使用
+- **🔧 版本控制**：技能文件可通过Git进行管理和追踪
+
+#### 已转换的核心技能
+
+| 技能                | 状态           | 描述                   |
+| ------------------- | -------------- | ---------------------- |
+| **skill-creator**   | ✅ Agent Skills | 技能创建和开发工具     |
+| **frontend-design** | ✅ Agent Skills | 前端界面设计和原型制作 |
+| **pdf**             | ✅ Agent Skills | PDF文档处理和分析      |
+| **webapp-testing**  | ✅ Agent Skills | Web应用测试和自动化    |
+| **docx**            | ✅ Agent Skills | Word文档创建和编辑     |
+| **pptx**            | ✅ Agent Skills | PowerPoint演示文稿制作 |
+| **xlsx**            | ✅ Agent Skills | Excel表格处理和分析    |
+
+#### 传统技能系统
+
 **16个专业技能库** - 全方位覆盖开发需求：
 
-| 分类 | 技能 | 功能描述 |
-|------|------|----------|
-| **📄 文档处理** | docx, pdf, pptx, xlsx | Office文档处理和转换 |
-| **🎨 创意设计** | algorithmic-art, canvas-design, frontend-design, theme-factory | 设计创作和可视化 |
-| **🤖 AI集成** | mcp-builder, slack-gif-creator, skill-creator | AI工具和技能开发 |
-| **🏢 企业协作** | brand-guidelines, internal-comms, doc-coauthoring | 企业规范和沟通 |
-| **🧪 测试开发** | webapp-testing, web-artifacts-builder | 质量保障和构建工具 |
+| 分类           | 技能                                                           | 功能描述             |
+| -------------- | -------------------------------------------------------------- | -------------------- |
+| **📄 文档处理** | docx, pdf, pptx, xlsx                                          | Office文档处理和转换 |
+| **🎨 创意设计** | algorithmic-art, canvas-design, frontend-design, theme-factory | 设计创作和可视化     |
+| **🤖 AI集成**   | mcp-builder, slack-gif-creator, skill-creator                  | AI工具和技能开发     |
+| **🏢 企业协作** | brand-guidelines, internal-comms, doc-coauthoring              | 企业规范和沟通       |
+| **🧪 测试开发** | webapp-testing, web-artifacts-builder                          | 质量保障和构建工具   |
+
+#### 🔄 技能迁移计划
+
+- **当前进度**：7/16 个技能已转换为Agent Skills标准
+- **迁移策略**：逐步转换，确保向后兼容性
+- **兼容性**：新旧技能系统并存，无缝过渡
+
+#### 🛠️ 批量转换工具
+
+使用内置转换脚本加速迁移过程：
+
+```bash
+# 运行技能转换脚本
+./.cursor/scripts/convert_to_agent_skills.sh
+
+# 查看转换结果
+ls -la .cursor/skills/
+```
+
+转换脚本会自动：
+- 读取传统技能文件
+- 转换为Agent Skills标准格式
+- 生成SKILL.md文件
+- 提供转换统计和状态报告
 
 ## 🏆 核心优势
 
 <div align="center">
 
-| 特性 | 传统方案 | Cursor AI Rules |
-|------|----------|-----------------|
-| **交互方式** | 记忆命令语法 | 🎯 自然语言驱动 |
-| **执行模式** | 手动调用多个命令 | ⚡ 智能决策自动执行 |
-| **环境适配** | 手动配置 | 🔄 自动感知项目环境 |
-| **协作模式** | 固定规则 | 🎯 基于团队规模智能调整 |
-| **学习能力** | 无记忆 | 🧠 持续学习用户偏好 |
-| **部署复杂度** | 高 | ⚡ 60秒复制即用 |
+| 特性           | 传统方案         | Cursor AI Rules        |
+| -------------- | ---------------- | ---------------------- |
+| **交互方式**   | 记忆命令语法     | 🎯 自然语言驱动         |
+| **执行模式**   | 手动调用多个命令 | ⚡ 智能决策自动执行     |
+| **环境适配**   | 手动配置         | 🔄 自动感知项目环境     |
+| **协作模式**   | 固定规则         | 🎯 基于团队规模智能调整 |
+| **学习能力**   | 无记忆           | 🧠 持续学习用户偏好     |
+| **部署复杂度** | 高               | ⚡ 60秒复制即用         |
 
 </div>
 
@@ -275,12 +373,12 @@ AI会立即响应：
 
 ### 💬 对话示例
 
-| 场景 | 传统AI | Cursor AI Rules |
-|------|--------|-----------------|
-| **智能需求处理** | "我想做一个项目" → 手动执行多个命令 | `@master 我想做一个项目` → 自动感知并执行完整流程 |
-| **新建API** | "写个登录API吧" → 通用模板 | "写个登录API吧" → 项目定制方案，集成现有认证框架 |
-| **代码重构** | "重构这个函数" → 标准建议 | "重构这个函数" → 基于项目复杂度、团队规模的定制重构策略 |
-| **架构决策** | "如何设计缓存" → 通用对比 | "如何设计缓存" → 结合项目技术栈的优化建议 |
+| 场景             | 传统AI                              | Cursor AI Rules                                         |
+| ---------------- | ----------------------------------- | ------------------------------------------------------- |
+| **智能需求处理** | "我想做一个项目" → 手动执行多个命令 | `@master 我想做一个项目` → 自动感知并执行完整流程       |
+| **新建API**      | "写个登录API吧" → 通用模板          | "写个登录API吧" → 项目定制方案，集成现有认证框架        |
+| **代码重构**     | "重构这个函数" → 标准建议           | "重构这个函数" → 基于项目复杂度、团队规模的定制重构策略 |
+| **架构决策**     | "如何设计缓存" → 通用对比           | "如何设计缓存" → 结合项目技术栈的优化建议               |
 
 ### ⚡ 即时感知
 
@@ -294,7 +392,91 @@ AI会立即响应：
 </div>
 
 
-### 💻 贡献方式
+## 🎯 Agent Skills 使用指南
+
+### 技能目录结构
+
+```
+.cursor/
+├── skills/                    # Agent Skills标准目录
+│   ├── skill-creator/         # 技能创建工具
+│   │   └── SKILL.md          # 技能定义文件
+│   ├── frontend-design/       # 前端设计技能
+│   │   └── SKILL.md
+│   └── ...                    # 其他技能
+└── extensions/
+    └── skills/                # 传统技能系统（兼容）
+        ├── registry.json      # 技能注册表
+        └── *.md              # 传统技能文件
+```
+
+### SKILL.md 文件格式
+
+每个Agent Skills都遵循标准格式：
+
+```markdown
+---
+name: skill-name
+description: Brief description of what this skill does
+---
+
+# 🎯 Skill Title
+
+Detailed description and usage instructions...
+
+## When to Use
+
+- Condition 1 for using this skill
+- Condition 2 for using this skill
+
+## Instructions
+
+Step-by-step guidance for the agent...
+```
+
+### 使用方法
+
+#### 1. 直接调用技能
+```bash
+# 在对话中使用技能
+@skill-creator 我想创建一个新的技能
+
+# 或使用传统方式
+@master skill:frontend-design 创建一个登录页面
+```
+
+#### 2. 自动激活
+Cursor会根据对话上下文自动识别并激活相关技能，无需手动调用。
+
+#### 3. 技能发现
+- Cursor启动时自动扫描`.cursor/skills/`目录
+- 在Cursor设置 > Rules > Agent Decides中查看已发现的技能
+
+### 从GitHub安装技能
+
+```bash
+# 方法1：通过Cursor设置安装
+1. 打开Cursor设置 > Rules > Project Rules
+2. 点击"Add Rule" > "Remote Rule (GitHub)"
+3. 输入GitHub仓库URL
+
+# 方法2：手动克隆和复制
+git clone <skill-repo-url>
+cp -r skill-repo/.cursor/skills/* .cursor/skills/
+```
+
+### 开发自定义技能
+
+参考`skill-creator`技能的文档创建自己的专业技能：
+
+1. 创建技能目录：`.cursor/skills/your-skill/`
+2. 编写`SKILL.md`文件
+3. 定义技能的使用场景和指导
+4. 测试技能在Cursor中的表现
+
+---
+
+## 💻 贡献方式
 
 #### 🚀 代码贡献
 ```bash

@@ -339,7 +339,7 @@ class FilesystemDiscoverer implements ModuleDiscoverer {
     "community_repositories": [
       {
         "name": "cursor_ai_rules_github",
-        "url": "https://github.com/saidada(cursor-ai-rules)",
+        "url": "https://github.com/wangqiqi/cursor-ai-rules",
         "description": "官方Cursor AI规则仓库",
         "type": "git"
       },
