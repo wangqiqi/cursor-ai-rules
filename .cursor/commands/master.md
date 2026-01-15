@@ -407,12 +407,37 @@ execute_action() {
         "templates")
             echo -e "${GREEN}✅ 项目模板框架已激活 (alwaysApply: false)${NC}"
             ;;
+        skill:*)  # Skills扩展调用
+            local skill_name=$(echo "$action" | sed 's/skill://')
+            execute_skill "$skill_name"
+            ;;
         *)
             echo -e "${YELLOW}⚠️  未知动作: $action${NC}"
             ;;
     esac
 
     echo ""
+}
+
+# 🎯 Skills执行器
+execute_skill() {
+    local skill_name="$1"
+    local skill_file="$PROJECT_ROOT/.cursor/extensions/skills/bridge/${skill_name}.md"
+
+    echo -e "${PURPLE}🎯 调用Skills: ${CYAN}$skill_name${NC}"
+
+    if [ -f "$skill_file" ]; then
+        echo -e "${GREEN}✅ Skills文件存在: $skill_file${NC}"
+        echo -e "${YELLOW}💡 此技能已准备就绪，可通过 @master skill:$skill_name 调用${NC}"
+    else
+        echo -e "${RED}❌ Skills文件不存在: $skill_file${NC}"
+        echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
+
+        # 尝试自动发现和转换
+        if [ -f "$PROJECT_ROOT/.cursor/extensions/skills/runtime/skill-discovery.sh" ]; then
+            bash "$PROJECT_ROOT/.cursor/extensions/skills/runtime/skill-discovery.sh" load "$skill_name"
+        fi
+    fi
 }
 
 # 🎓 学习引擎 - 记录用户偏好
@@ -544,12 +569,19 @@ show_intelligent_help() {
     echo "  @master list                   # 查看所有可用命令"
     echo "  @master help                   # 显示此帮助信息"
     echo ""
+    echo -e "${YELLOW}🎯 Skills扩展:${NC}"
+    echo "  @master skill docx             # Word文档处理"
+    echo "  @master skill pdf              # PDF文档处理"
+    echo "  @master skill mcp-builder      # MCP服务器构建"
+    echo "  @master skill webapp-testing   # Web应用测试"
+    echo ""
     echo -e "${YELLOW}✨ 智能特性:${NC}"
     echo "  • 自动意图识别 - 无需记忆命令语法"
     echo "  • 环境感知 - 智能判断项目状态"
     echo "  • 决策优化 - 选择最合适的操作组合"
     echo "  • 自主执行 - 一键完成复杂任务"
     echo "  • 持续学习 - 从交互中改进决策"
+    echo "  • Skills扩展 - 集成16个专业技能库"
     echo ""
     echo -e "${GREEN}🚀 现在就开始使用: @master [描述你的需求]${NC}"
 }
@@ -567,6 +599,16 @@ main() {
         "list")
             show_intelligent_logo
             show_traditional_commands
+            ;;
+        "skill")
+            # Skills扩展调用
+            local skill_name="$2"
+            if [ -z "$skill_name" ]; then
+                echo -e "${RED}❌ 错误: 请指定技能名称${NC}"
+                echo -e "${YELLOW}💡 示例: ./cursor-master.sh skill docx${NC}"
+                exit 1
+            fi
+            execute_skill "$skill_name"
             ;;
         *)
             # 智能模式：将所有参数作为用户需求处理
