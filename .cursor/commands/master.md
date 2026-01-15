@@ -6,7 +6,7 @@ alwaysApply: true
 
 # 🎯 智能总命令控制器 (Intelligent Master Command Controller)
 
-*版本: v3.0.0 | 最后更新: 2026-01-15 | 作者: AI共生系统*
+*版本: v4.1.0 | 最后更新: 2026-01-15 | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🧠 核心理念：智能感知 + 自动决策 + 自主执行
 

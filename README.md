@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - 让AI成为你的超级编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-4.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.1.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
@@ -373,8 +373,8 @@ A: 只会读取公开的Git配置信息，用于个性化体验。
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - 智能Master引领AI协作新时代*
-*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*🚀 Cursor AI Rules v4.1.0 - 智能Master引领AI协作新时代*
+*最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 *基于 Cursor 官方规范，集成智能感知、决策和进化系统*
 
 ## 📄 许可证

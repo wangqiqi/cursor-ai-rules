@@ -320,7 +320,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 Technical Metrics
 
-| Metric | v1.0 | v4.0.0 | Improvement |
+| Metric | v1.0 | v4.1.0 | Improvement |
 |--------|------|------|-------------|
 | Initialization Time | ~30s | ~5s | **83%↑** |
 | Perception Time | ~10s | ~1s | **90%↑** |
@@ -366,6 +366,6 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - Intelligent Master leads the new era of AI collaboration*
-*Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*🚀 Cursor AI Rules v4.1.0 - Intelligent Master leads the new era of AI collaboration*
+*Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
 *Based on Cursor official specifications, integrated with intelligent perception, decision-making and evolution systems*

@@ -319,7 +319,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ## 📊 技术指标
 
-| 指标 | v1.0 | v4.0.0 | 提升 |
+| 指标 | v1.0 | v4.1.0 | 提升 |
 |------|------|------|------|
 | 初始化时间 | ~30s | ~5s | **83%↑** |
 | 感知耗时 | ~10s | ~1s | **90%↑** |
@@ -365,7 +365,7 @@ ls -la .cursor/cursor-adaptation-setup.sh
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - 智能Master引领AI协作新时代*
-*最后更新: {{GENERATION_TIME}} | 作者: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*🚀 Cursor AI Rules v4.1.0 - 智能Master引领AI协作新时代*
+*最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 *基于 Cursor 官方规范，集成智能感知、决策和进化系统*
 

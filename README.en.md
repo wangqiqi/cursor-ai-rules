@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-4.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-4.1.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Rules](https://img.shields.io/badge/rules-14-blue?style=flat-square)]()
@@ -370,8 +370,8 @@ A: Only reads public Git configuration information for personalized experience.
 
 ---
 
-*🚀 Cursor AI Rules v4.0.0 - Intelligent Master leads the new era of AI collaboration*
-*Last updated: {{GENERATION_TIME}} | Author: {{AUTHOR_NAME}} <{{AUTHOR_EMAIL}}}*
+*🚀 Cursor AI Rules v4.1.0 - Intelligent Master leads the new era of AI collaboration*
+*Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
 *Based on Cursor official specifications, integrated with intelligent perception, decision-making and evolution systems*
 
 ## 📄 License
