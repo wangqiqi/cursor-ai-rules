@@ -115,7 +115,7 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 | **evolution-automation**  | Automated Evolution System - Data-driven optimization                               | Smart application  | ✅      |
 | **evolution-governance**  | Evolution Governance - Security and quality control                                 | Smart application  | ✅      |
 
-### 🎯 Adaptive Skills System (16 Professional Skills Libraries)
+### 🎯 Adaptive Skills System (37 Professional Skills Libraries)
 
 **Support on-demand installation, intelligent matching of project needs:**
 

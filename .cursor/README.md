@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Bootstrap](https://img.shields.io/badge/bootstrap-3-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-16-green?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-16-9cf?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-15-green?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-37-9cf?style=flat-square)]()
 [![Automation](https://img.shields.io/badge/automation-8-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -114,7 +114,7 @@
 | **evolution-automation**  | 自动化演进系统 - 基于感知数据的智能优化               | 智能应用 | ✅    |
 | **evolution-governance**  | 演进治理机制 - 规则演进的安全保障和质量控制           | 智能应用 | ✅    |
 
-### 🎯 自适应技能系统 (16个专业技能库)
+### 🎯 自适应技能系统 (37个专业技能库)
 
 **支持按需安装，智能匹配项目需求：**
 
