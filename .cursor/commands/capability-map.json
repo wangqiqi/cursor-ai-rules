@@ -2289,6 +2289,7 @@
     },
 
     "monitoring_and_analytics": {
+      "description": "Monitoring and analytics configuration",
       "execution_tracking": {
         "enabled": true,
         "metrics": [
@@ -2316,42 +2317,43 @@
           "resource_exhaustion": ">90% usage"
         }
       }
-    },
-    "version_info": {
-      "current_version": "4.3.0",
-      "last_updated": "2026-01-16",
-      "total_mappings": 56,
-      "supported_scenarios": [
-        "project_creation",
-        "code_quality",
-        "deployment",
-        "debugging",
-        "isolation_debug",
-        "pattern_analysis",
-        "batch_error_fix",
-        "debug_assistant",
-        "performance",
-        "webapp-testing",
-        "api_development",
-        "dependency_management",
-        "security_audit",
-        "documentation",
-        "learning",
-        "containerization",
-        "commit_code",
-        "learn_project_patterns",
-        "show_growth_status",
-        "initialize_project",
-        "analyze_environment",
-        "check_consistency",
-        "architecture_check",
-        "growth_management",
-        "performance_monitoring",
-        "system_optimization",
-        "config_management",
-        "quality_check",
-        "sync_cursor"
-      ]
     }
+  },
+  "version_info": {
+    "description": "Version information and system metadata",
+    "current_version": "4.3.0",
+    "last_updated": "2026-01-16",
+    "total_mappings": 56,
+    "supported_scenarios": [
+      "project_creation",
+      "code_quality",
+      "deployment",
+      "debugging",
+      "isolation_debug",
+      "pattern_analysis",
+      "batch_error_fix",
+      "debug_assistant",
+      "performance",
+      "webapp-testing",
+      "api_development",
+      "dependency_management",
+      "security_audit",
+      "documentation",
+      "learning",
+      "containerization",
+      "commit_code",
+      "learn_project_patterns",
+      "show_growth_status",
+      "initialize_project",
+      "analyze_environment",
+      "check_consistency",
+      "architecture_check",
+      "growth_management",
+      "performance_monitoring",
+      "system_optimization",
+      "config_management",
+      "quality_check",
+      "sync_cursor"
+    ]
   }
 }

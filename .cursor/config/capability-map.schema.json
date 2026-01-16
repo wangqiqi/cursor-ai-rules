@@ -161,6 +161,394 @@
         }
       },
       "additionalProperties": false
+    },
+    "execution_presets": {
+      "type": "object",
+      "description": "Predefined execution mode configurations",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Preset description"
+            },
+            "timeout_multiplier": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 10.0,
+              "description": "Timeout multiplier for this preset"
+            },
+            "skip_optional_steps": {
+              "type": "boolean",
+              "description": "Whether to skip optional execution steps"
+            },
+            "parallel_execution": {
+              "type": "boolean",
+              "description": "Whether to enable parallel execution"
+            },
+            "rollback_enabled": {
+              "type": "boolean",
+              "description": "Whether rollback is enabled"
+            },
+            "backup_before_execution": {
+              "type": "boolean",
+              "description": "Whether to backup before execution"
+            },
+            "progress_confirmations": {
+              "type": "boolean",
+              "description": "Whether to show progress confirmations"
+            },
+            "additional_validations": {
+              "type": "boolean",
+              "description": "Whether to run additional validations"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "error_handling": {
+      "type": "object",
+      "description": "Error handling configurations",
+      "properties": {
+        "strategies": {
+          "type": "object",
+          "description": "Error handling strategies",
+          "properties": {
+            "graceful_degradation": {
+              "type": "object",
+              "description": "Graceful degradation configuration",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Whether graceful degradation is enabled"
+                },
+                "degradation_levels": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Available degradation levels"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "patternProperties": {
+            "^(?!graceful_degradation)[a-zA-Z_][a-zA-Z0-9_-]*$": {
+              "type": "object",
+              "properties": {
+                "max_attempts": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10,
+                  "description": "Maximum retry attempts"
+                },
+                "backoff_multiplier": {
+                  "type": "number",
+                  "minimum": 1.0,
+                  "maximum": 5.0,
+                  "description": "Backoff multiplier for retries"
+                },
+                "retryable_errors": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "List of retryable error types"
+                },
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Whether this strategy is enabled"
+                },
+                "fallback_mappings": {
+                  "type": "object",
+                  "description": "Fallback capability mappings",
+                  "patternProperties": {
+                    ".*": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "recovery_actions": {
+          "type": "object",
+          "description": "Recovery action configurations",
+          "patternProperties": {
+            "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
+              "type": "object",
+              "description": "Recovery action configuration",
+              "additionalProperties": {
+                "type": ["boolean", "string", "number"]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "performance_optimization": {
+      "type": "object",
+      "description": "Performance optimization configurations and capability mappings",
+      "properties": {
+        "caching": {
+          "type": "object",
+          "description": "Caching configurations",
+          "properties": {
+            "capability_maps": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "ttl": { "type": "integer" },
+                "invalidation_events": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "additionalProperties": false
+            },
+            "execution_results": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "ttl": { "type": "integer" },
+                "max_entries": { "type": "integer" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "parallelization": {
+          "type": "object",
+          "description": "Parallelization settings",
+          "properties": {
+            "max_concurrent_executions": { "type": "integer" },
+            "resource_pooling": { "type": "boolean" },
+            "load_balancing": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "lazy_loading": {
+          "type": "object",
+          "description": "Lazy loading configurations",
+          "additionalProperties": { "type": "boolean" }
+        },
+        "system_health_monitoring": {
+          "type": "object",
+          "description": "System health monitoring configuration",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "alerts": {
+              "type": "object",
+              "description": "Alert thresholds",
+              "additionalProperties": { "type": "string" }
+            }
+          },
+          "additionalProperties": false
+        },
+        "user_behavior_analysis": {
+          "type": "object",
+          "description": "User behavior analysis settings",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "track_patterns": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "privacy_compliant": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "monitoring_and_analytics": {
+          "type": "object",
+          "description": "Monitoring and analytics configuration",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Configuration description"
+            },
+            "execution_tracking": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "metrics": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "retention_days": { "type": "integer" }
+              },
+              "additionalProperties": false
+            },
+            "user_behavior_analysis": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "track_patterns": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "privacy_compliant": { "type": "boolean" }
+              },
+              "additionalProperties": false
+            },
+            "system_health_monitoring": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "alerts": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "patternProperties": {
+        "^(?!caching|parallelization|lazy_loading|system_health_monitoring|user_behavior_analysis|retention_days|monitoring_and_analytics)[a-zA-Z_][a-zA-Z0-9_-]*$": {
+          "type": "object",
+          "description": "Performance optimization capability mapping",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Capability description"
+            },
+            "intents": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Intents that trigger this capability"
+            },
+            "confidence_threshold": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Confidence threshold for activation"
+            },
+            "user_examples": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Example user inputs"
+            },
+            "capabilities": {
+              "type": "object",
+              "properties": {
+                "rules": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Rules to activate"
+                },
+                "skills": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Skills to invoke"
+                },
+                "scripts": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Scripts to execute"
+                },
+                "workflows": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Workflows to run"
+                },
+                "hooks": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Hooks to trigger"
+                }
+              }
+            },
+            "execution_order": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Order of execution"
+            },
+            "parameters": {
+              "type": "object",
+              "description": "Default parameters"
+            },
+            "validation_rules": {
+              "type": "object",
+              "description": "Validation rules for this mapping"
+            },
+            "fallback_strategies": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Fallback strategies"
+            }
+          },
+          "required": ["description", "intents", "capabilities"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "intent_patterns": {
+      "type": "object",
+      "description": "Intent pattern configurations for enhanced recognition",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
+          "type": "object",
+          "description": "Intent pattern configuration",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Keywords associated with this intent"
+            },
+            "tech_indicators": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Technology indicators for this intent"
+            },
+            "confidence_boosters": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Words that boost confidence for this intent"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "version_info": {
+      "type": "object",
+      "description": "Version information and system metadata",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Version info description"
+        },
+        "current_version": {
+          "type": "string",
+          "description": "Current system version"
+        },
+        "last_updated": {
+          "type": "string",
+          "description": "Last update timestamp"
+        },
+        "total_mappings": {
+          "type": "integer",
+          "description": "Total number of capability mappings"
+        },
+        "supported_scenarios": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of supported scenarios"
+        }
+      },
+      "required": ["current_version", "last_updated", "total_mappings"],
+      "additionalProperties": false
     }
   },
   "required": ["version", "mappings"],
