@@ -1485,6 +1485,58 @@
         "manual-setup"
       ]
     },
+
+    "learn_project_patterns": {
+      "description": "学习项目模式",
+      "intents": ["learn", "study", "analyze", "patterns", "growth"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "学习项目模式",
+        "分析使用习惯",
+        "学习我的偏好",
+        "分析项目生长数据"
+      ],
+      "capabilities": {
+        "rules": ["intelligent_evolution"],
+        "scripts": [],
+        "workflows": ["analyze-growth-data", "generate-learning-insights"],
+        "hooks": []
+      },
+      "execution_order": ["workflows"],
+      "parameters": {
+        "analysis_depth": "comprehensive",
+        "include_historical_data": true,
+        "generate_recommendations": true
+      },
+      "validation_rules": {
+        "growth_data_exists": true,
+        "minimum_interactions": 5
+      },
+      "fallback_strategies": ["basic-analysis", "data-collection"]
+    },
+
+    "show_growth_status": {
+      "description": "显示生长状态",
+      "intents": ["show", "display", "status", "growth", "metrics"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "显示生长状态",
+        "查看项目生长",
+        "显示学习成果",
+        "查看成长指标"
+      ],
+      "capabilities": {
+        "scripts": [],
+        "workflows": ["display-growth-metrics"],
+        "hooks": []
+      },
+      "execution_order": ["workflows"],
+      "parameters": {
+        "include_trends": true,
+        "show_recommendations": true
+      }
+    },
+
     "monitoring_and_analytics": {
       "execution_tracking": {
         "enabled": true,
@@ -1517,7 +1569,7 @@
     "version_info": {
       "current_version": "4.3.0",
       "last_updated": "2026-01-16",
-      "total_mappings": 15,
+      "total_mappings": 17,
       "supported_scenarios": [
         "project_creation",
         "code_quality",
@@ -1529,7 +1581,11 @@
         "dependency_management",
         "security_audit",
         "documentation",
-        "learning"
+        "learning",
+        "containerization",
+        "commit_code",
+        "learn_project_patterns",
+        "show_growth_status"
       ]
     }
   }

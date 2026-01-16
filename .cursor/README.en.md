@@ -367,7 +367,7 @@ ls -la .cursor/core/init.sh
 - ✅ Use Git config to get user information
 - ✅ Support universal defaults without Git environment
 - ✅ Auto-get local time and timezone
-- ✅ Privacy protection, no storage of personal sensitive information
+- ✅ **Automatic Privacy Protection**: Proactively manage `.gitignore` to prevent sensitive data leaks
 
 ### Language Agnostic
 - ✅ Auto-detect project file structure
@@ -383,6 +383,156 @@ ls -la .cursor/core/init.sh
 
 ---
 
-*🚀 Cursor AI Rules v4.3.0 - Unified intelligent entry, 4-layer architecture refactor, AI truly becomes a programming assistant*
-*Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
-*Based on Cursor official specifications, integrated with intelligent perception, decision-making and evolution systems*
+## 🌱 Project Growth System (.cursorGrowth)
+
+### 🎯 Intelligent Growth Directory
+
+The system automatically creates a `.cursorGrowth` directory in the project root directory **on first use**, used to store project-private information and growth data.
+
+#### 🔒 Automatic Privacy Protection
+
+The system **automatically manages** the `.gitignore` file in the project root directory to ensure growth data is not accidentally committed:
+
+- **New Project**: Automatically create a `.gitignore` file containing privacy protection rules
+- **Existing Project**: Add `.cursorGrowth/` ignore rules at the beginning of existing `.gitignore` files
+- **Effectiveness Verification**: Automatically verify that Git ignore rules are working correctly
+
+**Privacy Protection Entries**:
+```gitignore
+# Cursor AI Growth Data - Automatic Perception and Learning
+# This data contains user preferences, local configurations and learning data, should not be tracked in repositories
+.cursorGrowth/
+```
+
+```bash
+# Automatically created when running any @master command for the first time
+@master create React project
+
+# System automatically creates directory structure:
+.cursorGrowth/
+├── README.md                     # Growth directory description
+├── learning/                     # AI learning data
+│   ├── profile.json             # User and project learning profile
+│   └── master_interactions.json # Interaction history
+├── conversations/               # Conversation records
+│   └── session_*.json          # Detailed records of each conversation
+├── debug/                       # Debug information
+│   └── error_*.json            # Error and exception records
+├── growth/                      # Growth metrics
+│   └── metrics.json            # Project growth statistics
+└── personal/                    # Personalized data
+    └── user_profile.json       # User preferences and habits
+```
+
+### 📊 Automatically Recorded Data Types
+
+#### **Learning Data (learning/)**
+- User intent recognition patterns and accuracy rates
+- Successful command combination patterns
+- Failure cases and improvement suggestions
+- Personalized preference learning
+
+#### **Conversation History (conversations/)**
+- Complete conversation records with AI assistant each time
+- Intent recognition results and decision-making processes
+- Execution results and user feedback
+- Project context information
+
+#### **Debug Information (debug/)**
+- Detailed error information for execution failures
+- System exceptions and edge cases
+- Performance issues and bottleneck analysis
+- Troubleshooting suggestions
+
+#### **Growth Metrics (growth/)**
+- Total interaction count statistics
+- Success rate trends
+- Intent type distribution analysis
+- Daily activity tracking
+
+#### **Personalized Profile (personal/)**
+- User language preference auto-detection
+- Commonly used intent types statistics
+- Interaction style and preference analysis
+
+### 🧠 Intelligent Learning Mechanism
+
+#### **Automatic Learning (Every Call)**
+```bash
+# Automatically executed every time @master command is used:
+1. 📝 Record user input and intent recognition results
+2. 📊 Update learning statistics and pattern analysis
+3. 👤 Accumulate personalized preference data
+4. 📈 Calculate growth metrics and trends
+5. 🧠 Optimize future response strategies
+```
+
+#### **Active Learning (Specified Commands)**
+```bash
+# Actively trigger in-depth learning
+@master learn project patterns    # Analyze .cursorGrowth data
+@master optimize my preferences   # Personalize AI behavior based on history
+@master analyze usage habits     # Generate detailed usage analysis reports
+@master show growth status       # Display project growth status
+```
+
+### 🔒 Privacy and Security
+
+#### **Data Protection Measures**
+- `.cursorGrowth` directory **will not be committed** to version control
+- All data stored in local project directory only
+- Automatic generation of privacy protection instructions
+- Compliance with privacy protection best practices
+
+#### **Data Usage Principles**
+- Data used only to improve AI assistant service quality
+- Will not be uploaded to any external servers
+- Users can view, export or delete data at any time
+- Support data anonymization and privacy modes
+
+### 📈 Growth Visualization
+
+#### **View Growth Status**
+```bash
+@master show growth status   # View project growth metrics
+@master analyze learning progress   # Display AI learning results
+@master generate growth report   # Complete growth analysis report
+```
+
+#### **Growth Metrics Example**
+```
+🌱 Project Growth Status (2026-01-16)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 Total Interactions: 45 times
+✅ Success Rate: 92%
+🎯 Most Used Intents: Project Creation (40%), Code Optimization (35%)
+📈 Learning Improvement: +15% Intent Recognition Accuracy
+👤 User Preferences: Chinese Interface, React Tech Stack
+📅 Active Days: 12 days
+```
+
+### 🎓 Learning Command Details
+
+#### **@master learn project patterns**
+- Analyze data in .cursorGrowth/learning/
+- Identify user behavior patterns and preferences
+- Optimize future command response accuracy
+- Generate personalized usage suggestions
+
+#### **@master optimize my preferences**
+- Analyze user interaction history
+- Adjust AI behavior based on user preferences
+- Improve intent recognition accuracy
+- Personalize interaction style
+
+#### **@master analyze usage habits**
+- Generate detailed usage statistics reports
+- Identify efficiency improvement opportunities
+- Provide usage optimization suggestions
+- Predict future usage trends
+
+---
+
+*🌱 Cursor AI Rules v4.3.0 - Intelligent growth system allows AI assistants to continuously evolve, projects grow with each interaction!*
+
+*Core Innovation*: From static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants!
