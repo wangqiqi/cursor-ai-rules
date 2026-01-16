@@ -43,6 +43,7 @@ graph TD
 @master 帮我分析项目现状                # 自动运行感知分析和报告生成
 @master 准备部署环境                    # 自动配置部署环境和验证
 @master 学习新技术栈                    # 自动生成学习路径和练习项目
+@master 提交代码                        # 自动暂存、提交并询问是否推送
 
 # 高级用法：指定执行模式
 @master 我想创建一个React项目 --mode fast     # 快速模式
@@ -77,6 +78,138 @@ graph TD
 - **项目状态**: 技术栈、开发阶段、团队规模等
 - **环境上下文**: 操作系统、工具链、依赖状态等
 - **历史偏好**: 用户过往的选择和反馈
+
+### 🎯 扩展能力映射
+
+系统支持的智能场景：
+
+#### 🚀 项目创建系列
+```bash
+@master 创建React项目            # 完整项目脚手架
+@master 创建Vue应用             # Vue.js项目初始化
+@master 创建Node.js API         # 后端API服务
+@master 创建Python应用          # Python项目配置
+@master 创建全栈应用            # 前后端一体化
+```
+
+#### 🔧 代码质量系列
+```bash
+@master 检查代码质量            # 全面质量分析
+@master 修复代码问题            # 自动修复ESLint错误
+@master 优化性能                # 性能分析和优化建议
+@master 重构代码                # 智能代码重构
+@master 提升测试覆盖率          # 测试用例生成
+```
+
+#### 🚀 部署运维系列
+```bash
+@master 设置CI/CD              # 自动化流水线
+@master 容器化应用              # Docker配置
+@master 配置数据库              # 数据库初始化
+@master 部署到生产环境          # 生产部署配置
+@master 监控应用健康            # 应用监控设置
+```
+
+#### 📚 学习开发系列
+```bash
+@master 学习React               # React学习路径
+@master 掌握Docker              # 容器化技术学习
+@master 理解微服务架构          # 架构设计指导
+@master 数据库设计最佳实践      # 数据建模指导
+@master API设计规范             # RESTful API设计
+```
+
+#### 🛠️ 问题解决系列
+```bash
+@master 调试这个错误            # 错误分析和修复
+@master 解决依赖冲突            # 包管理问题解决
+@master 优化构建速度            # 构建性能优化
+@master 修复安全漏洞            # 安全问题修复
+@master 迁移到新版本            # 版本升级指导
+```
+
+### 💡 智能引导特性
+
+#### 📝 实时意图提示
+```bash
+# 输入过程中系统会智能提示：
+@master 创建
+# 系统提示: "检测到项目创建意图，建议: React/Vue/Node/Python/全栈"
+
+@master 优化
+# 系统提示: "检测到优化意图，可选: 代码质量/性能/安全性/可维护性"
+```
+
+#### 📊 执行状态反馈
+```bash
+# 执行过程中实时反馈：
+🔄 正在分析项目结构...
+✅ 已检测到技术栈: React + TypeScript
+🔄 正在配置ESLint规则...
+✅ 已生成项目模板
+🔄 正在安装依赖...
+⚠️  发现潜在冲突，正在解决...
+✅ 项目创建完成！用时: 45秒
+```
+
+#### 🛟 智能错误恢复
+```bash
+# 遇到问题时智能引导：
+❌ 依赖安装失败
+💡 建议解决方案:
+   1. 检查网络连接
+   2. 清理缓存后重试
+   3. 使用国内镜像源
+   4. 降级到兼容版本
+
+@master 重试依赖安装 --solution 3  # 自动执行建议方案
+```
+
+#### 🎓 学习与适应
+```bash
+# 系统会记住你的偏好：
+@master 创建项目  # 第一次使用
+# 系统记录: 用户偏好TypeScript + ESLint
+
+@master 新项目    # 后续使用
+# 系统自动应用: TypeScript + ESLint + 首选模板
+```
+
+### 🔧 高级配置选项
+
+#### 执行模式控制
+```bash
+@master 创建项目 --mode fast      # 快速模式（跳过可选步骤）
+@master 创建项目 --mode thorough  # 全面模式（包含所有最佳实践）
+@master 创建项目 --mode safe      # 安全模式（带详细验证和回滚）
+
+@master 检查质量 --depth shallow  # 快速检查
+@master 检查质量 --depth deep     # 深度分析
+@master 检查质量 --focus security # 专注安全检查
+```
+
+#### 自定义参数
+```bash
+@master 创建React项目 --template minimal --testing jest --styling styled-components
+
+@master 设置CI/CD --provider github-actions --node-version 18 --cache-enabled true
+
+@master 部署应用 --environment production --rollback-enabled true --monitoring datadog
+```
+
+### 📈 智能进化机制
+
+#### 学习用户模式
+- **意图模式**: 记住常用操作组合
+- **偏好学习**: 适应用户的选择习惯
+- **反馈学习**: 从成功/失败中改进
+- **上下文学习**: 理解项目特定的需求
+
+#### 动态优化
+- **性能监控**: 跟踪执行时间和成功率
+- **质量提升**: 持续改进建议准确性
+- **扩展能力**: 自动发现新规则和技能
+- **适应变化**: 根据技术栈更新推荐
 
 ### ⚡ 自动决策逻辑
 

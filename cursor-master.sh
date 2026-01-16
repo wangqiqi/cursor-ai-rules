@@ -35,32 +35,94 @@ analyze_user_intent() {
     local confidence=0
     local actions=()
 
-    # 意图识别规则
+    # 意图识别规则 - 扩展支持更多场景
     if echo "$user_input" | grep -qiE "^skill "; then
         intent_type="skill_call"
         confidence=95
         skill_name=$(echo "$user_input" | sed 's/^skill //' | tr -d '\n\r')
         actions=("skill:$skill_name")
-    elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
-        intent_type="project_creation"
-        confidence=90
+
+    # 项目创建系列
+    elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个).*react"; then
+        intent_type="create_react_project"
+        confidence=95
         actions=("env-perception" "init" "generator" "constitution")
+    elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个).*vue"; then
+        intent_type="create_vue_project"
+        confidence=95
+        actions=("env-perception" "init" "generator" "constitution")
+    elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个).*python"; then
+        intent_type="create_python_project"
+        confidence=95
+        actions=("env-perception" "init" "generator" "constitution")
+
+    # 代码质量系列
     elif echo "$user_input" | grep -qiE "(优化|改进|重构|质量|检查)"; then
         intent_type="code_optimization"
         confidence=85
-        actions=("check" "eslint" "perception")
+        actions=("quality" "eslint" "perception")
+    elif echo "$user_input" | grep -qiE "检查代码质量"; then
+        intent_type="check_code_quality"
+        confidence=90
+        actions=("quality" "eslint" "perception")
+
+    # 部署运维系列
+    elif echo "$user_input" | grep -qiE "(ci|cd|pipeline|自动化)"; then
+        intent_type="setup_ci_cd"
+        confidence=85
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(docker|container)"; then
+        intent_type="containerize_application"
+        confidence=85
+        actions=("env-perception" "init")
+
+    # 问题解决系列
+    elif echo "$user_input" | grep -qiE "(调试|debug|fix|错误|bug)"; then
+        intent_type="debug_application"
+        confidence=85
+        actions=("perception" "quality")
+    elif echo "$user_input" | grep -qiE "(性能|optimize|speed)"; then
+        intent_type="optimize_performance"
+        confidence=85
+        actions=("perception")
+
+    # 学习开发系列
+    elif echo "$user_input" | grep -qiE "(学习|了解|教程|指南)"; then
+        intent_type="learn_technology"
+        confidence=70
+        actions=("templates" "generator")
+
+    # 其他通用意图
     elif echo "$user_input" | grep -qiE "(分析|评估|诊断|状态)"; then
         intent_type="project_analysis"
         confidence=80
         actions=("perception")
+
+    # Git操作系列
+    elif echo "$user_input" | grep -qiE "(提交|commit|保存|push)"; then
+        intent_type="commit_code"
+        confidence=90
+        actions=("git-commit")
     elif echo "$user_input" | grep -qiE "(部署|发布|上线|运维)"; then
         intent_type="deployment"
         confidence=75
         actions=("env-perception" "plugin_manager")
-    elif echo "$user_input" | grep -qiE "(学习|了解|教程|指南)"; then
-        intent_type="learning"
-        confidence=70
-        actions=("templates" "generator")
+    elif echo "$user_input" | grep -qiE "(测试|testing)"; then
+        intent_type="write_tests"
+        confidence=80
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(api|rest|graphql)"; then
+        intent_type="api_development"
+        confidence=80
+        actions=("init" "generator")
+    elif echo "$user_input" | grep -qiE "(依赖|dependency|package)"; then
+        intent_type="manage_dependencies"
+        confidence=80
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(安全|security)"; then
+        intent_type="security_audit"
+        confidence=85
+        actions=("perception")
     fi
 
     # 返回JSON格式的结果
@@ -75,6 +137,60 @@ analyze_user_intent() {
   }
 }
 EOF
+}
+
+# 🎯 智能能力映射引擎 (利用capability-map.json)
+map_capabilities_from_json() {
+    local intent_type="$1"
+    local capability_map_file="$CURSOR_DIR/commands/capability-map.json"
+
+    if [ ! -f "$capability_map_file" ]; then
+        echo "{}"
+        return
+    fi
+
+    # 从capability-map.json中查找对应的映射
+    local mapping=$(jq -r ".mappings.\"$intent_type\" // empty" "$capability_map_file" 2>/dev/null)
+
+    if [ -z "$mapping" ] || [ "$mapping" = "null" ]; then
+        echo "{}"
+        return
+    fi
+
+    echo "$mapping"
+}
+
+# 🎯 增强的意图分析 (结合JSON映射)
+enhanced_intent_analysis() {
+    local user_input="$1"
+    local intent_result=$(analyze_user_intent "$user_input")
+
+    # 提取意图类型
+    local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
+
+    # 获取能力映射
+    local capability_mapping=$(map_capabilities_from_json "$intent_type")
+
+    # 如果找到映射，增强意图结果
+    if [ "$capability_mapping" != "{}" ]; then
+        local confidence=$(echo "$capability_mapping" | jq -r '.confidence_threshold // 0.5')
+        local description=$(echo "$capability_mapping" | jq -r '.description // ""')
+        local user_examples=$(echo "$capability_mapping" | jq -r '.user_examples // [] | join(", ")')
+
+        # 增强返回结果
+        enhanced_result=$(echo "$intent_result" | jq --arg desc "$description" --arg examples "$user_examples" --argjson conf "$confidence" '
+            .intent_analysis |= . + {
+                description: $desc,
+                suggested_examples: ($examples | split(", ")),
+                capability_confidence: $conf,
+                mapped_from_json: true
+            }
+        ' 2>/dev/null || echo "$intent_result")
+
+        echo "$enhanced_result"
+    else
+        echo "$intent_result"
+    fi
 }
 
 # 🎯 环境感知引擎
@@ -167,6 +283,58 @@ make_decision() {
         "learning")
             execution_plan=("templates" "generator")
             explanation="提供学习和模板资源"
+            ;;
+        "create_react_project")
+            execution_plan=("env-perception" "init" "generator")
+            explanation="创建React项目，自动配置完整开发环境"
+            ;;
+        "create_vue_project")
+            execution_plan=("env-perception" "init" "generator")
+            explanation="创建Vue项目，自动配置完整开发环境"
+            ;;
+        "create_python_project")
+            execution_plan=("env-perception" "init" "generator")
+            explanation="创建Python项目，自动配置开发环境和依赖"
+            ;;
+        "check_code_quality")
+            execution_plan=("quality" "eslint" "perception")
+            explanation="执行全面代码质量检查和优化建议"
+            ;;
+        "setup_ci_cd")
+            execution_plan=("env-perception" "init")
+            explanation="设置CI/CD流水线和自动化部署"
+            ;;
+        "containerize_application")
+            execution_plan=("env-perception" "init")
+            explanation="容器化应用，生成Docker配置"
+            ;;
+        "debug_application")
+            execution_plan=("perception" "quality")
+            explanation="调试应用问题，提供错误分析和修复建议"
+            ;;
+        "optimize_performance")
+            execution_plan=("perception")
+            explanation="性能优化分析，提供优化建议和实施方案"
+            ;;
+        "write_tests")
+            execution_plan=("perception")
+            explanation="编写测试用例，提升测试覆盖率"
+            ;;
+        "api_development")
+            execution_plan=("init" "generator")
+            explanation="API开发支持，生成API端点和文档"
+            ;;
+        "manage_dependencies")
+            execution_plan=("perception")
+            explanation="依赖管理，解决冲突和安全问题"
+            ;;
+        "security_audit")
+            execution_plan=("perception")
+            explanation="安全审计，识别和修复安全漏洞"
+            ;;
+        "commit_code")
+            execution_plan=("git-commit")
+            explanation="提交代码变更到Git仓库"
             ;;
         "skill_call")
             # 从intent_json中提取技能名称
@@ -271,6 +439,59 @@ execute_action() {
                 echo -e "${YELLOW}⚠️  未找到插件管理脚本${NC}"
             fi
             ;;
+        "git-commit")
+            echo -e "${BLUE}🔄 执行Git提交流程...${NC}"
+
+            # 检查Git状态
+            if ! git rev-parse --git-dir > /dev/null 2>&1; then
+                echo -e "${RED}❌ 当前目录不是Git仓库${NC}"
+                return 1
+            fi
+
+            # 检查是否有未提交的更改
+            if [ -z "$(git status --porcelain)" ]; then
+                echo -e "${YELLOW}⚠️  没有发现未提交的更改${NC}"
+                return 0
+            fi
+
+            # 自动暂存所有更改
+            echo -e "${BLUE}📦 暂存所有更改...${NC}"
+            git add .
+
+            # 生成提交信息
+            echo -e "${BLUE}📝 生成提交信息...${NC}"
+            local commit_message="feat: update project files"
+
+            # 检查是否有具体的更改类型
+            if git diff --cached --name-only | grep -q "\.md$"; then
+                commit_message="docs: update documentation"
+            elif git diff --cached --name-only | grep -q "\.(js\|ts\|jsx\|tsx)$"; then
+                commit_message="feat: update code"
+            elif git diff --cached --name-only | grep -q "\.(json\|yaml\|yml)$"; then
+                commit_message="config: update configuration"
+            fi
+
+            # 执行提交
+            echo -e "${BLUE}💾 提交更改...${NC}"
+            if git commit -m "$commit_message"; then
+                echo -e "${GREEN}✅ 代码提交成功${NC}"
+
+                # 询问是否推送
+                echo -e "${BLUE}🔄 是否推送到远程仓库？(y/N)${NC}"
+                read -r -t 10 push_choice
+                if [ "$push_choice" = "y" ] || [ "$push_choice" = "Y" ]; then
+                    echo -e "${BLUE}📤 推送代码...${NC}"
+                    if git push; then
+                        echo -e "${GREEN}✅ 代码推送成功${NC}"
+                    else
+                        echo -e "${YELLOW}⚠️  推送失败，请手动推送${NC}"
+                    fi
+                fi
+            else
+                echo -e "${RED}❌ 提交失败${NC}"
+                return 1
+            fi
+            ;;
         "templates")
             echo -e "${GREEN}✅ 项目模板框架已激活 (alwaysApply: false)${NC}"
             ;;
@@ -331,8 +552,8 @@ intelligent_master() {
     echo -e "${CYAN}🎯 智能Master控制器已激活${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    # 1. 分析用户意图
-    local intent_result=$(analyze_user_intent "$user_input")
+    # 1. 增强意图分析 (结合capability-map.json)
+    local intent_result=$(enhanced_intent_analysis "$user_input")
 
     # 2. 感知环境
     local env_result=$(analyze_environment)
@@ -350,12 +571,63 @@ intelligent_master() {
         execute_plan "$decision_result"
     else
         echo -e "${YELLOW}💡 建议: ${NC}$(echo "$decision_result" | jq -r '.decision_making.explanation' 2>/dev/null || echo "无法确定执行策略")"
+        # 显示智能引导
+        show_smart_guidance "$intent_result"
     fi
 
     # 6. 学习和记录
     learn_from_interaction "$user_input" "$decision_result"
 
     echo -e "${GREEN}✅ 智能执行完成！${NC}"
+}
+
+# 🎯 智能引导函数
+show_smart_guidance() {
+    local intent_result="$1"
+    local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
+    local confidence=$(echo "$intent_result" | jq -r '.intent_analysis.confidence' 2>/dev/null || echo "0")
+
+    # 如果置信度较低，提供引导建议
+    if [ "$confidence" -lt 70 ] && [ "$intent_type" != "unknown" ]; then
+        echo ""
+        echo -e "${YELLOW}💡 智能建议:${NC}"
+        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+        case "$intent_type" in
+            "project_creation")
+                echo -e "${CYAN}📝 建议提供更多细节:${NC}"
+                echo "  • 具体技术栈: React, Vue, Node.js, Python..."
+                echo "  • 项目类型: 前端/后端/全栈/API服务..."
+                echo "  • 功能需求: 用户认证、数据库、部署..."
+                ;;
+            "code_optimization")
+                echo -e "${CYAN}📝 建议指定优化类型:${NC}"
+                echo "  • 代码质量: ESLint, 格式化, 最佳实践..."
+                echo "  • 性能优化: 响应速度, 内存使用, 算法..."
+                echo "  • 安全性: 漏洞扫描, 代码审计..."
+                ;;
+            "deployment")
+                echo -e "${CYAN}📝 建议指定部署需求:${NC}"
+                echo "  • 目标环境: 开发/测试/生产..."
+                echo "  • 部署方式: Docker, 云服务, 传统服务器..."
+                echo "  • 自动化需求: CI/CD, 监控, 回滚..."
+                ;;
+            *)
+                echo -e "${CYAN}💭 尝试以下表达方式:${NC}"
+                echo "  • 具体描述您的需求和目标"
+                echo "  • 提及使用的技术栈或框架"
+                echo "  • 说明项目的当前状态"
+                ;;
+        esac
+
+        echo ""
+        echo -e "${GREEN}🚀 热门使用场景:${NC}"
+        echo "  • @master 创建React项目"
+        echo "  • @master 检查代码质量"
+        echo "  • @master 设置CI/CD"
+        echo "  • @master 调试应用"
+        echo "  • @master 学习新技术"
+    fi
 }
 
 # 🎨 智能界面显示函数
@@ -383,8 +655,14 @@ show_analysis_results() {
     # 显示意图分析
     local intent_type=$(echo "$intent_json" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
     local confidence=$(echo "$intent_json" | jq -r '.intent_analysis.confidence' 2>/dev/null || echo "0")
+    local description=$(echo "$intent_json" | jq -r '.intent_analysis.description // empty' 2>/dev/null || echo "")
+    local mapped_from_json=$(echo "$intent_json" | jq -r '.intent_analysis.mapped_from_json // false' 2>/dev/null || echo "false")
 
     echo -e "${PURPLE}🎯 用户意图: ${NC}$intent_type (置信度: ${confidence}%)"
+    if [ "$mapped_from_json" = "true" ] && [ -n "$description" ]; then
+        echo -e "${PURPLE}📋 场景描述: ${NC}$description"
+        echo -e "${BLUE}🔗 能力映射: ${NC}已从capability-map.json加载"
+    fi
 
     # 显示环境分析
     local project_type=$(echo "$env_json" | jq -r '.environment_analysis.project_type' 2>/dev/null || echo "unknown")

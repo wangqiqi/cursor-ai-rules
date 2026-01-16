@@ -419,6 +419,241 @@ class ExecutionLearner {
 }
 ```
 
+## 🎯 智能用户引导系统
+
+### 实时意图解析提示
+
+```typescript
+interface UserGuidance {
+  // 输入解析提示
+  inputHints: {
+    showIntentSuggestions: boolean;
+    suggestCompletions: boolean;
+    highlightKeywords: boolean;
+    contextAware: boolean;
+  };
+
+  // 执行状态反馈
+  executionFeedback: {
+    showProgress: boolean;
+    realTimeUpdates: boolean;
+    stepByStep: boolean;
+    estimatedTime: boolean;
+  };
+
+  // 错误处理引导
+  errorGuidance: {
+    suggestAlternatives: boolean;
+    provideContext: boolean;
+    learnFromMistakes: boolean;
+    recoveryOptions: string[];
+  };
+
+  // 学习与适应
+  adaptiveLearning: {
+    rememberPreferences: boolean;
+    improveSuggestions: boolean;
+    personalizeResponses: boolean;
+    continuousOptimization: boolean;
+  };
+}
+```
+
+### 智能提示算法
+
+```typescript
+class SmartGuidanceEngine {
+  // 意图识别提示
+  generateIntentHints(input: string): IntentHints {
+    return {
+      detectedIntents: this.analyzeInput(input),
+      confidenceLevels: this.calculateConfidence(input),
+      suggestedCompletions: this.generateCompletions(input),
+      alternativePhrasings: this.suggestAlternatives(input)
+    };
+  }
+
+  // 执行进度引导
+  generateExecutionGuidance(plan: ExecutionPlan): ExecutionGuidance {
+    return {
+      steps: this.breakdownSteps(plan),
+      estimatedDuration: this.calculateDuration(plan),
+      progressIndicators: this.createProgressMarkers(plan),
+      checkpointValidations: this.defineCheckpoints(plan)
+    };
+  }
+
+  // 错误恢复引导
+  generateErrorGuidance(error: ExecutionError): ErrorGuidance {
+    return {
+      errorAnalysis: this.analyzeError(error),
+      recoveryStrategies: this.suggestRecoveries(error),
+      preventiveMeasures: this.identifyPrevention(error),
+      learningPoints: this.extractLessons(error)
+    };
+  }
+}
+```
+
+### 个性化学习系统
+
+```typescript
+interface UserLearningProfile {
+  // 用户偏好学习
+  preferences: {
+    preferredTools: string[];
+    commonIntents: string[];
+    successPatterns: Pattern[];
+    failurePatterns: Pattern[];
+  };
+
+  // 交互模式分析
+  interactionStyle: {
+    verbosityLevel: 'minimal' | 'normal' | 'detailed';
+    feedbackPreference: 'progress' | 'results' | 'comprehensive';
+    errorHandling: 'guided' | 'autonomous' | 'manual';
+  };
+
+  // 适应性调整
+  adaptations: {
+    responseTimeOptimization: boolean;
+    contextPreservation: boolean;
+    personalizedSuggestions: boolean;
+    predictiveExecution: boolean;
+  };
+}
+
+class AdaptiveGuidanceSystem {
+  private userProfiles: Map<string, UserLearningProfile> = new Map();
+
+  async adaptGuidance(userId: string, interaction: UserInteraction): Promise<UserGuidance> {
+    const profile = await this.loadUserProfile(userId);
+    const adaptations = this.analyzeInteraction(interaction, profile);
+    return this.generatePersonalizedGuidance(adaptations);
+  }
+
+  private analyzeInteraction(interaction: UserInteraction, profile: UserLearningProfile): Adaptations {
+    return {
+      intentPrediction: this.improveIntentPrediction(interaction, profile),
+      responseOptimization: this.optimizeResponseStyle(interaction, profile),
+      errorPrevention: this.enhanceErrorPrevention(interaction, profile),
+      learningAcceleration: this.accelerateLearning(interaction, profile)
+    };
+  }
+}
+```
+
+## 🔄 动态能力发现
+
+### 自动能力注册
+
+```typescript
+interface CapabilityDiscovery {
+  // 文件系统扫描
+  filesystemScanning: {
+    scanDirectories: string[];
+    fileExtensions: string[];
+    namingPatterns: RegExp[];
+    metadataExtraction: boolean;
+  };
+
+  // 能力验证
+  capabilityValidation: {
+    syntaxChecking: boolean;
+    dependencyAnalysis: boolean;
+    compatibilityTesting: boolean;
+    performanceBenchmarking: boolean;
+  };
+
+  // 动态注册
+  dynamicRegistration: {
+    hotReload: boolean;
+    versionCompatibility: boolean;
+    conflictResolution: boolean;
+    rollbackCapability: boolean;
+  };
+}
+
+class AutoDiscoveryEngine {
+  async discoverCapabilities(): Promise<DiscoveredCapabilities> {
+    // 1. 扫描文件系统
+    const files = await this.scanFilesystem();
+
+    // 2. 提取元数据
+    const metadata = await this.extractMetadata(files);
+
+    // 3. 验证能力
+    const validated = await this.validateCapabilities(metadata);
+
+    // 4. 注册到映射表
+    await this.registerCapabilities(validated);
+
+    return validated;
+  }
+
+  private async scanFilesystem(): Promise<FileInfo[]> {
+    const scanPaths = [
+      '.cursor/rules',
+      '.cursor/skills',
+      '.cursor/scripts',
+      '.cursor/hooks'
+    ];
+
+    return await Promise.all(
+      scanPaths.map(path => this.scanDirectory(path))
+    );
+  }
+}
+```
+
+## 📊 智能反馈系统
+
+### 执行状态监控
+
+```typescript
+interface ExecutionMonitoring {
+  // 实时状态跟踪
+  realTimeTracking: {
+    stepProgress: ProgressIndicator[];
+    resourceUsage: ResourceMetrics;
+    performanceMetrics: PerformanceStats;
+    errorDetection: ErrorAlerts;
+  };
+
+  // 智能反馈生成
+  feedbackGeneration: {
+    successIndicators: SuccessMetrics;
+    improvementSuggestions: Suggestion[];
+    learningOpportunities: Lesson[];
+    nextSteps: Action[];
+  };
+
+  // 用户体验优化
+  userExperience: {
+    progressVisualization: boolean;
+    contextualHelp: boolean;
+    predictiveSuggestions: boolean;
+    adaptiveTimeouts: boolean;
+  };
+}
+
+class SmartFeedbackEngine {
+  async generateFeedback(execution: ExecutionResult): Promise<SmartFeedback> {
+    const analysis = await this.analyzeExecution(execution);
+    const suggestions = await this.generateSuggestions(analysis);
+    const learning = await this.extractLearningPoints(analysis);
+
+    return {
+      executionSummary: this.createSummary(execution),
+      performanceMetrics: analysis.metrics,
+      improvementSuggestions: suggestions,
+      learningPoints: learning,
+      nextActions: this.suggestNextSteps(execution)
+    };
+  }
+}
+```
+
 ## 🛠️ 配置与扩展
 
 ### 路由器配置
@@ -428,28 +663,61 @@ class ExecutionLearner {
   "command_router": {
     "version": "1.0.0",
     "enabled": true,
+    "smart_guidance": {
+      "user_hints": {
+        "intent_suggestions": true,
+        "completion_assistance": true,
+        "contextual_help": true,
+        "personalized_tips": true
+      },
+      "execution_feedback": {
+        "real_time_progress": true,
+        "step_by_step_updates": true,
+        "estimated_completion": true,
+        "resource_monitoring": true
+      },
+      "error_handling": {
+        "intelligent_recovery": true,
+        "alternative_suggestions": true,
+        "preventive_guidance": true,
+        "learning_from_errors": true
+      },
+      "adaptive_learning": {
+        "user_profile_learning": true,
+        "preference_adaptation": true,
+        "performance_optimization": true,
+        "predictive_execution": true
+      }
+    },
     "intent_parsing": {
       "confidence_threshold": 0.7,
       "max_intent_candidates": 3,
       "context_window_size": 5,
-      "learning_enabled": true
+      "learning_enabled": true,
+      "multi_language_support": true
     },
     "execution_engine": {
       "max_parallel_executions": 3,
       "default_timeout": 300000,
       "retry_attempts": 2,
-      "resource_limits": {
-        "cpu_percent": 50,
-        "memory_mb": 256,
-        "disk_mb": 100
-      }
+      "intelligent_scheduling": true,
+      "resource_optimization": true,
+      "failure_recovery": true
     },
     "capability_mappings": {
       "auto_discovery": true,
       "version_checking": true,
       "dependency_validation": true,
       "cache_enabled": true,
-      "cache_ttl": 3600000
+      "cache_ttl": 3600000,
+      "conflict_resolution": true,
+      "hot_reload": true
+    },
+    "feedback_system": {
+      "real_time_monitoring": true,
+      "intelligent_suggestions": true,
+      "user_experience_optimization": true,
+      "continuous_learning": true
     }
   }
 }
