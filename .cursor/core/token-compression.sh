@@ -42,6 +42,10 @@ init_compression() {
     # 创建压缩缓存目录
     mkdir -p ".cursorGrowth/compression"
 
+    # 初始化数据模式文件
+    [[ ! -f "$SCRIPT_DIR/patterns.json" ]] && echo "{}" > "$SCRIPT_DIR/patterns.json"
+    [[ ! -f ".cursorGrowth/compression_strategies.json" ]] && echo "{}" > ".cursorGrowth/compression_strategies.json"
+
     # 初始化流式输出缓冲
     STREAM_BUFFER=""
     LAST_RESPONSE=""
@@ -681,7 +685,7 @@ learn_data_patterns() {
     local data="$1"
     local operation="$2"
 
-    local patterns_file="$SCRIPT_DIR/data_patterns.json"
+    local patterns_file="$SCRIPT_DIR/patterns.json"
     local features=$(analyze_data_features "$data")
 
     local patterns="{}"

@@ -311,7 +311,7 @@ find .cursorGrowth -name "*.json" -mtime +30 -delete
 
 ```bash
 # 启用隐私模式
-echo '{"privacy_mode": true}' > .cursorGrowth/config.json
+echo '{"privacy_mode": true}' > .cursorGrowth/personal/user_profile.json
 
 # 查看数据使用情况
 @master show data usage

@@ -37,7 +37,7 @@ USER_CONFIG="$SCRIPT_DIR/user_config.json"  # 错误：会进入版本控制
 echo '{"preference": "value"}' > "$USER_CONFIG"
 
 # ✅ 正确示例
-USER_CONFIG="$PROJECT_ROOT/.cursorGrowth/personal/user_config.json"
+USER_CONFIG="$PROJECT_ROOT/.cursorGrowth/personal/user_profile.json"
 echo '{"preference": "value"}' > "$USER_CONFIG"
 ```
 

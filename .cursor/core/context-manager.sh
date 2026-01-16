@@ -29,13 +29,21 @@ declare -A CONTEXT_LAYERS=(
 init_context_manager() {
     smart_echo "初始化智能上下文管理系统..." "processing"
 
-    # 创建上下文缓存目录
+    # 创建必要的目录结构
     mkdir -p "$CONTEXT_CACHE_DIR"
+    mkdir -p ".cursorGrowth/context"
+    mkdir -p ".cursorGrowth/learning"
+    mkdir -p ".cursorGrowth/conversations"
+    mkdir -p ".cursorGrowth/personal"
 
     # 初始化上下文数据文件
     [[ ! -f "$CONTEXT_DEPENDENCY_FILE" ]] && echo "{}" > "$CONTEXT_DEPENDENCY_FILE"
     [[ ! -f "$CONTEXT_RELEVANCE_FILE" ]] && echo "{}" > "$CONTEXT_RELEVANCE_FILE"
     [[ ! -f "$CONTEXT_PREDICTION_FILE" ]] && echo "{}" > "$CONTEXT_PREDICTION_FILE"
+
+    # 初始化其他必要文件
+    [[ ! -f ".cursorGrowth/learning/patterns.json" ]] && echo "[]" > ".cursorGrowth/learning/patterns.json"
+    [[ ! -f ".cursorGrowth/personal/user_profile.json" ]] && echo "{}" > ".cursorGrowth/personal/user_profile.json"
 
     smart_echo "智能上下文管理系统初始化完成" "success"
 }
@@ -876,7 +884,6 @@ export -f analyze_behavior_patterns
 export -f predict_needed_contexts
 export -f recommend_related_contexts
 export -f validate_context_integrity
-export -f intelligent_context_scheduler
 
 # 获取操作历史数据
 get_operation_history() {
