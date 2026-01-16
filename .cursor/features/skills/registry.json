@@ -219,6 +219,88 @@
         "conditions": {},
         "dependencies": [],
         "source": "anthropic-skills"
+      },
+      "node_mcp_server": {
+        "name": "Node.js MCP服务器",
+        "description": "Node.js实现的MCP服务器框架",
+        "category": "ai_integration",
+        "auto_install": false,
+        "path": "reference/node_mcp_server.md",
+        "conditions": {
+          "dependencies": [
+            "node"
+          ]
+        },
+        "dependencies": [
+          "node"
+        ],
+        "source": "reference"
+      },
+      "mcp-specification": {
+        "name": "MCP规范文档",
+        "description": "Model Context Protocol规范和实现指南",
+        "category": "documentation",
+        "auto_install": false,
+        "path": "reference/mcp-specification.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "reference"
+      },
+      "python-sdk-README": {
+        "name": "Python SDK说明",
+        "description": "Python MCP SDK使用指南",
+        "category": "documentation",
+        "auto_install": false,
+        "path": "reference/python-sdk-README.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "reference"
+      },
+      "evaluation": {
+        "name": "技能评估框架",
+        "description": "MCP技能质量评估和测试框架",
+        "category": "testing",
+        "auto_install": false,
+        "path": "reference/evaluation.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "reference"
+      },
+      "python_mcp_server": {
+        "name": "Python MCP服务器",
+        "description": "Python实现的MCP服务器框架",
+        "category": "ai_integration",
+        "auto_install": false,
+        "path": "reference/python_mcp_server.md",
+        "conditions": {
+          "dependencies": [
+            "python"
+          ]
+        },
+        "dependencies": [
+          "python"
+        ],
+        "source": "reference"
+      },
+      "typescript-sdk-README": {
+        "name": "TypeScript SDK说明",
+        "description": "TypeScript MCP SDK使用指南",
+        "category": "documentation",
+        "auto_install": false,
+        "path": "reference/typescript-sdk-README.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "reference"
+      },
+      "mcp_best_practices": {
+        "name": "MCP最佳实践",
+        "description": "MCP开发和部署的最佳实践指南",
+        "category": "documentation",
+        "auto_install": false,
+        "path": "reference/mcp_best_practices.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "reference"
       }
     }
   },
@@ -253,7 +335,14 @@
       "xlsx"
     ],
     "testing": [
-      "webapp-testing"
+      "webapp-testing",
+      "evaluation"
+    ],
+    "documentation": [
+      "mcp-specification",
+      "python-sdk-README",
+      "typescript-sdk-README",
+      "mcp_best_practices"
     ]
   },
   "auto_install_rules": {

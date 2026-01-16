@@ -47,9 +47,9 @@ Error messages should guide agents toward solutions with specific suggestions an
 
 **Navigate the MCP specification:**
 
-Start with the sitemap to find relevant pages: `https://modelcontextprotocol.io/sitemap.xml`
+Start with the sitemap to find relevant pages: `[🗺️ View Sitemap](./reference/mcp_sitemap.xml)`
 
-Then fetch specific pages with `.md` suffix for markdown format (e.g., `https://modelcontextprotocol.io/specification/draft.md`).
+Then fetch specific pages with `.md` suffix for markdown format (e.g., `[📋 View Protocol Spec](./reference/mcp-specification.md)`).
 
 Key pages to review:
 - Specification overview and architecture

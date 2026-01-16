@@ -53,7 +53,9 @@ graph TD
 
 ### 🔄 统一命令架构
 
-**系统集成**: `@command-router` + `@capability-map.json`
+**系统集成**: `@command-router` + `@capability-map.json` + `growth-recorder.sh`
+
+**🎉 完整生长支持**: `@master` 现在通过调用 `growth-recorder.sh` 脚本实现完整的AI学习和生长数据记录！任何用户、任何项目调用 `@master` 都会产生个性化的生长信息。
 
 ```mermaid
 graph TD
@@ -710,8 +712,18 @@ intelligent_master() {
         echo -e "${YELLOW}💡 建议: ${NC}$(echo "$decision_result" | jq -r '.decision_making.explanation')"
     fi
 
-    # 6. 学习和记录
-    learn_from_interaction "$user_input" "$decision_result"
+    # 6. 学习和记录 - 通过生长记录器实现数据持久化
+    echo -e "${CYAN}🌱 调用生长系统记录交互数据...${NC}"
+
+    # 调用专门的生长记录器脚本
+    if [ -f "$CURSOR_DIR/core/growth-recorder.sh" ]; then
+        echo -e "${BLUE}📝 记录交互数据到生长目录...${NC}"
+        # 使用Cursor规则的终端命令执行方式
+        # run-terminal-command: bash $CURSOR_DIR/core/growth-recorder.sh record "$user_input" "$decision_result" "$intent_type"
+        bash "$CURSOR_DIR/core/growth-recorder.sh" record "$user_input" "$decision_result" "$intent_type" 2>/dev/null || echo -e "${YELLOW}⚠️ 生长记录失败，但不影响主要功能${NC}"
+    else
+        echo -e "${YELLOW}⚠️ 生长记录器未找到${NC}"
+    fi
 
     echo -e "${GREEN}✅ 智能执行完成！${NC}"
 }

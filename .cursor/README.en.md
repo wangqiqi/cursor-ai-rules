@@ -11,7 +11,7 @@
 
 **🌟 Revolutionary AI Programming Collaboration Experience - Let AI Truly Understand Your Project and Needs**
 
-📚 **[Usage Guide](docs/usage-guide.md)** | **[Intelligent Evolution Guide](docs/intelligent-evolution-guide.md)** | **[System Info Guide](docs/system-info-guide.md)** | **[Team Rules Example](docs/team-rules-example.md)** | **[Remote Rules Import](docs/remote-rules-guide.md)**
+📚 **[Usage Guide](.cursor/docs/usage-guide.md)** | **[Intelligent Evolution Guide](.cursor/docs/intelligent-evolution-guide.md)** | **[System Info Guide](.cursor/docs/system-info-guide.md)** | **[Team Rules Example](.cursor/docs/team-rules-example.md)** | **[Remote Rules Import](.cursor/docs/remote-rules-guide.md)**
 
 Adopting the AI collaboration specifications defined by the [Cursor Rules System](https://cursor.com/docs/context/rules), combined with single-step multi-task perception, intelligent caching, and rule system to achieve efficient and secure human-AI collaboration.
 
