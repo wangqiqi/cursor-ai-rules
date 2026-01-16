@@ -1,0 +1,19 @@
+// 测试自动提交功能的示例文件
+console.log("这是一个测试文件 - 包含多个调试日志");
+
+// 模拟一些可修复的模式
+function testFunction() {
+    console.log("测试函数 - 这个应该被移除");
+    console.log("更多调试信息");
+    // TODO: 修复这个函数
+    return "test";
+}
+
+// 另一个函数
+function anotherFunction() {
+    console.log("另一个函数");
+    print("Python风格的print - 应该被修复");
+}
+
+testFunction();
+anotherFunction();

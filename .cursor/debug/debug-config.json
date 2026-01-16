@@ -1,0 +1,345 @@
+{
+  "debug_system": {
+    "version": "1.0.0",
+    "description": "智能调试系统配置 - 基于注释大法和同类项合并法",
+    "last_updated": "2026-01-16",
+    "author": "Cursor AI Rules Team"
+  },
+
+  "isolation_debug": {
+    "description": "注释大法配置",
+    "enabled": true,
+    "backup_strategy": "timestamped",
+    "backup_retention_days": 7,
+    "max_backup_files": 50,
+    "isolation_methods": {
+      "comment": {
+        "description": "通过注释隔离代码块",
+        "enabled": true,
+        "supported_languages": ["javascript", "typescript", "python", "java", "cpp", "generic"],
+        "max_blocks_per_file": 5,
+        "comment_markers": {
+          "javascript": "// 🔍 ISOLATION DEBUG",
+          "typescript": "// 🔍 ISOLATION DEBUG",
+          "python": "# 🔍 ISOLATION DEBUG",
+          "java": "// 🔍 ISOLATION DEBUG",
+          "cpp": "// 🔍 ISOLATION DEBUG",
+          "generic": "# 🔍 ISOLATION DEBUG"
+        }
+      },
+      "conditional": {
+        "description": "通过条件编译隔离",
+        "enabled": true,
+        "flag_name": "ISOLATION_DEBUG",
+        "supported_languages": ["javascript", "typescript", "python"]
+      },
+      "remove": {
+        "description": "完全移除代码块（高风险）",
+        "enabled": false,
+        "requires_confirmation": true,
+        "risk_level": "high"
+      }
+    },
+    "test_integration": {
+      "default_test_command": "npm test",
+      "test_timeout_seconds": 300,
+      "error_count_tracking": true,
+      "performance_monitoring": true
+    },
+    "safety_limits": {
+      "max_files_per_batch": 10,
+      "max_lines_per_file": 1000,
+      "forbidden_patterns": [
+        "*.min.js",
+        "*.min.css",
+        "node_modules/**",
+        ".git/**",
+        "dist/**",
+        "build/**"
+      ]
+    }
+  },
+
+  "pattern_analysis": {
+    "description": "同类项合并法配置",
+    "enabled": true,
+    "similarity_threshold": 0.8,
+    "batch_fix_limit": 10,
+    "analysis_sources": {
+      "log_files": {
+        "enabled": true,
+        "patterns": [
+          "*.log",
+          "error.log",
+          "debug.log",
+          ".cursorGrowth/logs/*.log"
+        ],
+        "max_file_size_mb": 10,
+        "encoding": "utf-8"
+      },
+      "test_results": {
+        "enabled": true,
+        "formats": ["junit", "xunit", "jest", "mocha"],
+        "file_patterns": [
+          "test-results.xml",
+          "junit.xml",
+          "coverage/lcov-report/*.html"
+        ]
+      },
+      "code_analysis": {
+        "enabled": true,
+        "supported_languages": ["javascript", "typescript", "python", "java", "cpp"],
+        "file_extensions": [".js", ".jsx", ".ts", ".tsx", ".py", ".java", ".cpp", ".c", ".h"],
+        "exclude_patterns": [
+          "node_modules/**",
+          "dist/**",
+          "build/**",
+          "*.min.js",
+          "*.min.css"
+        ]
+      }
+    },
+    "error_categorization": {
+      "categories": {
+        "log_error": {
+          "description": "日志中的错误信息",
+          "severity": "error",
+          "patterns": ["ERROR", "Error", "Exception", "Failed"]
+        },
+        "test_failure": {
+          "description": "测试失败",
+          "severity": "error",
+          "patterns": ["test failure", "assertion failed", "expect.*failed"]
+        },
+        "code_issue": {
+          "description": "代码质量问题",
+          "severity": "warning",
+          "patterns": ["TODO", "FIXME", "HACK", "console.log", "debugger"]
+        },
+        "syntax_error": {
+          "description": "语法错误",
+          "severity": "error",
+          "patterns": ["SyntaxError", "ParseError", "unexpected token"]
+        },
+        "runtime_error": {
+          "description": "运行时错误",
+          "severity": "error",
+          "patterns": ["TypeError", "ReferenceError", "NullPointerException"]
+        }
+      }
+    },
+    "fix_strategies": {
+      "safe_comment": {
+        "description": "安全注释可疑代码",
+        "risk_level": "low",
+        "requires_backup": true,
+        "syntax_validation": true
+      },
+      "remove_debug_logs": {
+        "description": "移除调试日志",
+        "risk_level": "low",
+        "requires_backup": true,
+        "syntax_validation": true,
+        "patterns": ["console.log", "print(", "printf", "logger.debug"]
+      },
+      "add_null_checks": {
+        "description": "添加空值检查",
+        "risk_level": "medium",
+        "requires_backup": true,
+        "syntax_validation": true,
+        "auto_fix": false
+      },
+      "add_error_handling": {
+        "description": "添加错误处理",
+        "risk_level": "medium",
+        "requires_backup": true,
+        "syntax_validation": true,
+        "auto_fix": false
+      }
+    }
+  },
+
+  "security_rules": {
+    "description": "调试安全规则",
+    "backup_requirements": {
+      "mandatory_backup": true,
+      "backup_location": ".cursorGrowth/debug/backups",
+      "backup_naming": "timestamped",
+      "compression_enabled": false
+    },
+    "risk_assessment": {
+      "enabled": true,
+      "risk_levels": {
+        "low": {
+          "description": "低风险操作",
+          "max_files": 50,
+          "requires_confirmation": false,
+          "examples": ["注释代码", "移除调试日志"]
+        },
+        "medium": {
+          "description": "中等风险操作",
+          "max_files": 20,
+          "requires_confirmation": true,
+          "examples": ["修改函数签名", "添加错误处理"]
+        },
+        "high": {
+          "description": "高风险操作",
+          "max_files": 5,
+          "requires_confirmation": true,
+          "requires_review": true,
+          "examples": ["删除代码块", "重构类结构"]
+        }
+      }
+    },
+    "validation_rules": {
+      "syntax_check": {
+        "enabled": true,
+        "tools": {
+          "javascript": "node -c",
+          "typescript": "tsc --noEmit",
+          "python": "python3 -m py_compile",
+          "json": "jq empty"
+        }
+      },
+      "dependency_check": {
+        "enabled": true,
+        "check_imports": true,
+        "check_exports": true
+      },
+      "test_validation": {
+        "enabled": true,
+        "run_after_fix": true,
+        "failure_threshold": 0.1
+      }
+    },
+    "rollback_mechanism": {
+      "enabled": true,
+      "auto_rollback_on_failure": true,
+      "max_rollback_steps": 10,
+      "rollback_timeout_seconds": 60
+    }
+  },
+
+  "performance_settings": {
+    "description": "性能优化设置",
+    "caching": {
+      "enabled": true,
+      "cache_location": ".cursorGrowth/debug/cache",
+      "cache_ttl_hours": 24,
+      "max_cache_size_mb": 100
+    },
+    "parallel_processing": {
+      "enabled": true,
+      "max_concurrent_files": 5,
+      "max_concurrent_tests": 3
+    },
+    "resource_limits": {
+      "max_memory_mb": 512,
+      "max_cpu_percent": 50,
+      "timeout_seconds": 300
+    }
+  },
+
+  "reporting": {
+    "description": "报告和日志配置",
+    "report_formats": ["json", "text", "html"],
+    "report_location": ".cursorGrowth/debug/reports",
+    "log_level": "info",
+    "metrics_collection": {
+      "enabled": true,
+      "metrics": [
+        "execution_time",
+        "success_rate",
+        "error_reduction",
+        "backup_creation_time",
+        "syntax_validation_time"
+      ]
+    },
+    "notifications": {
+      "enabled": false,
+      "on_completion": false,
+      "on_error": true,
+      "notification_methods": ["log", "file"]
+    }
+  },
+
+  "integration": {
+    "description": "与其他系统的集成",
+    "git_integration": {
+      "enabled": true,
+      "auto_commit_fixes": false,
+      "create_feature_branch": true,
+      "commit_message_template": "fix: [DEBUG] {pattern} - {error_count} errors reduced"
+    },
+    "ci_cd_integration": {
+      "enabled": true,
+      "supported_platforms": ["github-actions", "gitlab-ci", "jenkins"],
+      "auto_create_pr": false,
+      "pr_template": {
+        "title": "🔧 Automated Debug Fixes",
+        "body": "This PR contains automated fixes for {error_count} errors using pattern analysis.",
+        "labels": ["automated", "debug", "fixes"]
+      }
+    },
+    "monitoring_integration": {
+      "enabled": false,
+      "supported_tools": ["datadog", "new-relic", "prometheus"],
+      "metrics_export": false
+    }
+  },
+
+  "user_preferences": {
+    "description": "用户偏好设置",
+    "default_isolation_method": "comment",
+    "auto_backup_enabled": true,
+    "dry_run_default": true,
+    "verbose_output": false,
+    "color_output": true,
+    "language": "zh-CN",
+    "timezone": "Asia/Shanghai"
+  },
+
+  "auto_commit": {
+    "description": "自动提交配置",
+    "enabled": true,
+    "batch_fix_triggers": {
+      "success_rate_threshold": 80,
+      "min_success_count": 3,
+      "min_files_threshold": 5
+    },
+    "validation_triggers": {
+      "error_reduction_percentage": 30,
+      "error_reduction_absolute": 10,
+      "min_baseline_errors": 5
+    },
+    "isolation_triggers": {
+      "test_pass_required": true,
+      "max_error_threshold": 5
+    },
+    "commit_message_template": {
+      "batch_fix": "fix: 批量修复错误模式 '{pattern}'\n\n修复统计:\n- 成功修复: {success_count}/{total_files} 个文件\n- 成功率: {success_rate}%\n- 失败数量: {fail_count}\n\n修复策略: {strategy}\n\n🤖 自动提交 - {reason}",
+      "validation": "fix: 验证修复错误模式 '{pattern}'\n\n修复验证结果:\n- 修复前错误数: {before_count}\n- 修复后错误数: {after_count}\n- 错误减少数量: {error_reduction}\n- 改善幅度: {improvement_percentage}%\n\n{validation_note}\n\n🤖 自动提交 - {reason}",
+      "isolation": "debug: 隔离测试 '{target_file}'\n\n隔离方法: {isolation_type}\n\n测试结果:\n- 测试状态: {test_status}\n- 错误数量: {error_count}\n- 测试耗时: {duration}秒\n\n🔍 自动提交 - {reason}"
+    }
+  },
+
+  "advanced_features": {
+    "description": "高级功能配置",
+    "ai_assisted_debugging": {
+      "enabled": false,
+      "model": "claude-3",
+      "auto_suggestions": false,
+      "learning_from_fixes": true
+    },
+    "collaborative_debugging": {
+      "enabled": false,
+      "shared_reports": false,
+      "team_notifications": false
+    },
+    "predictive_analysis": {
+      "enabled": false,
+      "historical_data_analysis": true,
+      "risk_prediction": false
+    }
+  }
+}

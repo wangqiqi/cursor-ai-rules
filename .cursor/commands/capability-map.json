@@ -939,6 +939,281 @@
         "manual-inspection"
       ]
     },
+    "isolate_debug": {
+      "description": "注释大法：智能隔离调试（支持自动提交重大进展）",
+      "intents": [
+        "isolate",
+        "isolation",
+        "注释",
+        "debug",
+        "isolate debug"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "隔离调试这个文件",
+        "注释大法调试",
+        "帮我隔离这个模块",
+        "注释掉可疑代码"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "debug-assistant"
+        ],
+        "scripts": [
+          "debug/isolation-debugger.sh"
+        ],
+        "workflows": [
+          "isolation-test",
+          "backup-creation",
+          "syntax-validation"
+        ],
+        "hooks": [
+          "command-log.sh"
+        ]
+      },
+      "execution_order": [
+        "scripts",
+        "skills",
+        "workflows"
+      ],
+      "parameters": {
+        "isolation_method": "comment",
+        "backup_enabled": true,
+        "test_integration": true,
+        "max_blocks": 5
+      },
+      "validation_rules": {
+        "supported_file_types": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+          ".py",
+          ".java",
+          ".cpp",
+          ".c"
+        ],
+        "safety_checks": [
+          "backup_created",
+          "syntax_valid",
+          "test_passed"
+        ]
+      },
+      "fallback_strategies": [
+        "manual_commenting",
+        "selective_disable"
+      ]
+    },
+    "pattern_analysis": {
+      "description": "同类项合并法：错误模式分析（支持自动提交修复进展）",
+      "intents": [
+        "analyze",
+        "pattern",
+        "merge",
+        "batch",
+        "similar",
+        "error pattern"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "分析错误模式",
+        "同类项合并法",
+        "批量修复相似错误",
+        "找出最常出现的bug",
+        "统计错误类型"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "debug-assistant"
+        ],
+        "scripts": [
+          "debug/pattern-analyzer.sh"
+        ],
+        "workflows": [
+          "error-collection",
+          "pattern-recognition",
+          "impact-analysis"
+        ],
+        "hooks": [
+          "command-log.sh",
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "scripts",
+        "skills",
+        "workflows"
+      ],
+      "parameters": {
+        "analysis_depth": "comprehensive",
+        "similarity_threshold": 0.8,
+        "max_patterns": 20,
+        "include_code_analysis": true
+      },
+      "validation_rules": {
+        "data_sources": [
+          "log_files",
+          "test_results",
+          "code_files"
+        ],
+        "quality_checks": [
+          "data_integrity",
+          "pattern_accuracy",
+          "impact_assessment"
+        ]
+      },
+      "fallback_strategies": [
+        "manual_analysis",
+        "selective_scanning"
+      ]
+    },
+    "batch_error_fix": {
+      "description": "批量错误修复（智能自动提交重大进展）",
+      "intents": [
+        "batch fix",
+        "bulk fix",
+        "fix all",
+        "repair",
+        "correct",
+        "batch repair"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "批量修复console.log",
+        "修复所有undefined错误",
+        "批量清理调试代码",
+        "统一修复错误模式",
+        "大规模代码修复"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "eslint"
+        ],
+        "skills": [
+          "debug-assistant"
+        ],
+        "scripts": [
+          "debug/pattern-analyzer.sh",
+          "debug/isolation-debugger.sh"
+        ],
+        "workflows": [
+          "batch-fix-validation",
+          "backup-creation",
+          "fix-verification",
+          "rollback-preparation"
+        ],
+        "hooks": [
+          "command-log.sh",
+          "security-audit.sh"
+        ]
+      },
+      "execution_order": [
+        "scripts",
+        "skills",
+        "workflows"
+      ],
+      "parameters": {
+        "fix_strategy": "safe_comment",
+        "dry_run_default": true,
+        "max_files_per_batch": 10,
+        "backup_required": true,
+        "syntax_validation": true
+      },
+      "validation_rules": {
+        "risk_assessment": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "safety_measures": [
+          "backup_verified",
+          "syntax_checked",
+          "tests_passed",
+          "rollback_ready"
+        ]
+      },
+      "fallback_strategies": [
+        "selective_fixing",
+        "manual_verification",
+        "incremental_application"
+      ]
+    },
+    "debug_assistant": {
+      "description": "智能调试助手",
+      "intents": [
+        "debug assistant",
+        "debug help",
+        "debugging",
+        "troubleshoot",
+        "debug tool",
+        "调试助手"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "调用调试助手",
+        "智能调试工具",
+        "帮我调试代码",
+        "调试助手技能",
+        "使用调试工具"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "debug-assistant"
+        ],
+        "scripts": [
+          "debug/isolation-debugger.sh",
+          "debug/pattern-analyzer.sh"
+        ],
+        "workflows": [
+          "debug-workflow-selection",
+          "interactive-debugging",
+          "progress-tracking"
+        ],
+        "hooks": [
+          "command-log.sh",
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "skills",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "interaction_mode": "guided",
+        "learning_enabled": true,
+        "progress_tracking": true,
+        "safety_first": true
+      },
+      "validation_rules": {
+        "user_intent": [
+          "isolation_debug",
+          "pattern_analysis",
+          "batch_fixing",
+          "general_debugging"
+        ],
+        "capability_checks": [
+          "tools_available",
+          "permissions_granted",
+          "environment_ready"
+        ]
+      },
+      "fallback_strategies": [
+        "basic_guidance",
+        "manual_debugging",
+        "external_help"
+      ]
+    },
     "optimize_performance": {
       "description": "性能优化",
       "intents": [
@@ -1027,7 +1302,7 @@
           "module_manager"
         ],
         "skills": [
-          "node",
+          "node"
         ],
         "scripts": [
           "core/init.sh",
@@ -1057,7 +1332,7 @@
       },
       "validation_rules": {
         "required_tools": [
-          "git",
+          "git"
         ],
         "supported_providers": [
           "github-actions",
@@ -1407,7 +1682,6 @@
       "intents": [
         "docker",
         "container",
-,
         "deploy"
       ],
       "confidence_threshold": 0.8,
@@ -1548,12 +1822,16 @@
     "version_info": {
       "current_version": "4.3.0",
       "last_updated": "2026-01-16",
-      "total_mappings": 17,
+      "total_mappings": 21,
       "supported_scenarios": [
         "project_creation",
         "code_quality",
         "deployment",
         "debugging",
+        "isolation_debug",
+        "pattern_analysis",
+        "batch_error_fix",
+        "debug_assistant",
         "performance",
         "webapp-testing",
         "api_development",
