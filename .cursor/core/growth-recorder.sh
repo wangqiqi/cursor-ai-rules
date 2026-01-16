@@ -25,9 +25,21 @@ NC='\033[0m'
 
 # 初始化生长目录
 init_growth_if_needed() {
+    local needs_init=false
+
+    # 检查目录是否存在
     if [ ! -d "$GROWTH_DIR" ]; then
         echo -e "${CYAN}🌱 初始化项目生长目录...${NC}"
+        needs_init=true
+    else
+        # 检查必要的文件是否存在
+        if [ ! -f "$GROWTH_DIR/growth/metrics.json" ] || [ ! -f "$GROWTH_DIR/learning/profile.json" ]; then
+            echo -e "${YELLOW}⚠️  检测到缺失的生长文件，正在补充...${NC}"
+            needs_init=true
+        fi
+    fi
 
+    if [ "$needs_init" = true ]; then
         # 创建目录结构
         mkdir -p "$GROWTH_DIR/learning"
         mkdir -p "$GROWTH_DIR/conversations"
@@ -41,14 +53,15 @@ init_growth_if_needed() {
         create_initial_files
         ensure_gitignore_protection
 
-        echo -e "${GREEN}✅ 生长目录初始化完成${NC}"
+        echo -e "${GREEN}✅ 生长目录初始化/补充完成${NC}"
     fi
 }
 
 # 创建初始文件
 create_initial_files() {
-    # README
-    cat > "$GROWTH_DIR/README.md" << 'EOF'
+    # README (只有在不存在时创建)
+    if [ ! -f "$GROWTH_DIR/README.md" ]; then
+        cat > "$GROWTH_DIR/README.md" << 'EOF'
 # 🌱 项目生长目录 (.cursorGrowth)
 
 此目录包含项目的AI学习数据和生长信息。
@@ -63,9 +76,11 @@ create_initial_files() {
 - cache/ - 缓存数据
 - monitoring/ - 监控数据
 EOF
+    fi
 
-    # 初始配置文件
-    cat > "$GROWTH_DIR/learning/profile.json" << EOF
+    # 初始配置文件 (只有在不存在时创建)
+    if [ ! -f "$GROWTH_DIR/learning/profile.json" ]; then
+        cat > "$GROWTH_DIR/learning/profile.json" << EOF
 {
   "profile": {
     "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -81,9 +96,11 @@ EOF
   }
 }
 EOF
+    fi
 
-    # 初始对话记录
-    cat > "$GROWTH_DIR/conversations/initial_conversation.json" << EOF
+    # 初始对话记录 (只有在不存在时创建)
+    if [ ! -f "$GROWTH_DIR/conversations/initial_conversation.json" ]; then
+        cat > "$GROWTH_DIR/conversations/initial_conversation.json" << EOF
 {
   "conversation_id": "initial_$(date +%s)",
   "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -102,9 +119,11 @@ EOF
   }
 }
 EOF
+    fi
 
-    # 初始生长指标
-    cat > "$GROWTH_DIR/growth/metrics.json" << EOF
+    # 初始生长指标 (只有在不存在时创建)
+    if [ ! -f "$GROWTH_DIR/growth/metrics.json" ]; then
+        cat > "$GROWTH_DIR/growth/metrics.json" << EOF
 {
   "metrics": {
     "start_date": "$(date '+%Y-%m-%d')",
@@ -118,6 +137,7 @@ EOF
   }
 }
 EOF
+    fi
 }
 
 # 确保gitignore保护

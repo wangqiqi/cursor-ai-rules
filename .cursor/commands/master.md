@@ -55,7 +55,7 @@ graph TD
 
 **系统集成**: `@command-router` + `@capability-map.json` + `growth-recorder.sh`
 
-**🎉 完整生长支持**: `@master` 现在通过调用 `growth-recorder.sh` 脚本实现完整的AI学习和生长数据记录！任何用户、任何项目调用 `@master` 都会产生个性化的生长信息。
+**🎉 完整生长支持**: `@master` 现在通过调用 `growth-recorder.sh` 和 `cursor-sync.sh` 脚本实现完整的AI学习和生长数据记录！不仅记录 @master 交互，还会自动同步Cursor IDE的对话历史，实现真正的全方位AI生长。
 
 ```mermaid
 graph TD
@@ -130,6 +130,14 @@ graph TD
 @master 迁移到新版本            # 版本升级指导
 ```
 
+#### 🔄 Cursor对话同步系列
+```bash
+@master sync-cursor             # 同步最新Cursor IDE对话记录
+@master sync-all-cursor         # 同步所有Cursor IDE对话记录
+@master enable-cursor-sync      # 启用自动Cursor对话同步
+@master cursor-sync-status      # 查看Cursor对话同步状态
+```
+
 ### 💡 智能引导特性
 
 #### 📝 实时意图提示
@@ -175,6 +183,10 @@ graph TD
 
 @master 新项目    # 后续使用
 # 系统自动应用: TypeScript + ESLint + 首选模板
+
+# Cursor对话同步：
+@master sync-cursor  # 手动同步Cursor IDE对话记录
+@master enable-cursor-sync  # 启用自动同步Cursor对话
 ```
 
 ### 🔧 高级配置选项
@@ -691,6 +703,14 @@ intelligent_master() {
     echo -e "${CYAN}🎯 智能Master控制器已激活${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+    # 0. 智能同步外部数据 (学习/升级/总结等场景)
+    if echo "$user_input" | grep -qiE "(学习|升级|总结|分析|同步|sync)"; then
+        echo -e "${CYAN}🔄 检测到学习/分析意图，自动同步Cursor数据...${NC}"
+        if [ -f "$CURSOR_DIR/core/cursor-sync.sh" ]; then
+            bash "$CURSOR_DIR/core/cursor-sync.sh" sync >/dev/null 2>&1 && echo -e "${GREEN}✅ Cursor数据同步完成${NC}" || echo -e "${YELLOW}⚠️ Cursor数据同步失败${NC}"
+        fi
+    fi
+
     # 1. 分析用户意图
     local intent_result=$(analyze_user_intent "$user_input")
 
@@ -712,17 +732,19 @@ intelligent_master() {
         echo -e "${YELLOW}💡 建议: ${NC}$(echo "$decision_result" | jq -r '.decision_making.explanation')"
     fi
 
-    # 6. 学习和记录 - 通过生长记录器实现数据持久化
+    # 6. 学习和记录 - 完整生长系统集成
     echo -e "${CYAN}🌱 调用生长系统记录交互数据...${NC}"
 
-    # 调用专门的生长记录器脚本
+    # 记录@master交互数据
     if [ -f "$CURSOR_DIR/core/growth-recorder.sh" ]; then
         echo -e "${BLUE}📝 记录交互数据到生长目录...${NC}"
-        # 使用Cursor规则的终端命令执行方式
-        # run-terminal-command: bash $CURSOR_DIR/core/growth-recorder.sh record "$user_input" "$decision_result" "$intent_type"
         bash "$CURSOR_DIR/core/growth-recorder.sh" record "$user_input" "$decision_result" "$intent_type" 2>/dev/null || echo -e "${YELLOW}⚠️ 生长记录失败，但不影响主要功能${NC}"
-    else
-        echo -e "${YELLOW}⚠️ 生长记录器未找到${NC}"
+    fi
+
+    # 同步Cursor IDE对话记录 (如果可用)
+    if [ -f "$CURSOR_DIR/core/cursor-sync.sh" ]; then
+        echo -e "${BLUE}🔄 同步Cursor IDE对话记录...${NC}"
+        bash "$CURSOR_DIR/core/cursor-sync.sh" sync 2>/dev/null || echo -e "${YELLOW}⚠️ Cursor对话同步失败${NC}"
     fi
 
     echo -e "${GREEN}✅ 智能执行完成！${NC}"

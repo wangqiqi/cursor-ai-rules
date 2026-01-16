@@ -256,6 +256,8 @@ A: 启用低资源模式，减少缓存大小，定期清理
 
 - [智能进化指南](intelligent-evolution-guide.md)
 - [使用指南](usage-guide.md)
+- [Token压缩技术指南](token-compression-guide.md)
+- [项目生长架构](project-growth-architecture.md)
 - [系统架构文档](../README.md)
 
 ## 🤝 贡献

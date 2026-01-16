@@ -11,6 +11,7 @@ source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 source "$SCRIPT_DIR/batch-executor.sh"
 source "$SCRIPT_DIR/performance-monitor.sh"
+source "$SCRIPT_DIR/token-compression.sh"
 
 # 优化配置
 OPTIMIZATION_LEVEL="${OPTIMIZATION_LEVEL:-balanced}"  # minimal, balanced, aggressive, maximum
@@ -31,6 +32,10 @@ init_optimizer() {
     # 初始化各个子系统
     init_cache
     init_monitoring
+    init_compression
+    init_streaming
+    init_incremental_updates
+    init_predictive_preload
     auto_select_mode
 
     # 应用优化策略
@@ -87,18 +92,32 @@ optimized_execute() {
         optimized_decision_execute "$decision_result"
     fi
 
-    # 6. 记录性能指标
+    # 6. 高级token压缩和流式输出
+    local response_data="{
+        \"intent_analysis\": $intent_result,
+        \"environment_analysis\": $env_result,
+        \"decision_making\": $decision_result,
+        \"execution_time_ms\": $(($(date +%s) - start_time))
+    }"
+
+    # 应用token压缩
+    local compressed_response=$(execute_optimized "response_generation" "$response_data" "technical")
+    end_streaming
+
+    # 7. 记录性能指标
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
-    local tokens_used=$(estimate_tokens "optimized_execute" "${#user_input}")
+    local original_tokens=$(estimate_tokens "response" "${#response_data}")
+    local compressed_tokens=$(estimate_tokens "compressed_response" "${#compressed_response}")
+    local tokens_saved=$((original_tokens - compressed_tokens))
 
     log_performance_metric "optimized_execute" "$duration" "$(get_memory_usage)" "$(get_cpu_usage)" "success"
-    log_token_usage "optimized_execute" "$tokens_used" "$tokens_used" "false"
+    log_token_usage "optimized_execute" "$compressed_tokens" "$original_tokens" "false"
 
-    # 7. 更新监控指标
+    # 8. 更新监控指标
     update_metrics
 
-    smart_echo "优化执行完成 (${duration}ms, ${tokens_used} tokens)" "success"
+    smart_echo "优化执行完成 (${duration}ms, ${compressed_tokens}/${original_tokens} tokens, 节省: ${tokens_saved})" "success"
 }
 
 # 快速决策制定（简化版）

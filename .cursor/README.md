@@ -11,7 +11,7 @@
 
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
-📚 **[使用指南](.cursor/docs/usage-guide.md)** | **[智能进化指南](.cursor/docs/intelligent-evolution-guide.md)** | **[系统信息指南](.cursor/docs/system-info-guide.md)** | **[团队规则示例](.cursor/docs/team-rules-example.md)** | **[远程规则导入](.cursor/docs/remote-rules-guide.md)**
+📚 **[使用指南](.cursor/docs/usage-guide.md)** | **[智能进化指南](.cursor/docs/intelligent-evolution-guide.md)** | **[Token压缩技术](.cursor/docs/token-compression-guide.md)** | **[系统信息指南](.cursor/docs/system-info-guide.md)** | **[团队规则示例](.cursor/docs/team-rules-example.md)** | **[远程规则导入](.cursor/docs/remote-rules-guide.md)**
 
 采用 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules) 定义的 AI 协作规范，结合单步多任务感知、智能缓存和规则系统，实现高效、安全的人机协作。
 

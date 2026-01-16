@@ -1253,8 +1253,14 @@ main() {
                         health_check
                     fi
                     ;;
+                "compression"|"compress")
+                    # Token压缩演示
+                    if [ -f "$CURSOR_DIR/core/compression-demo.sh" ]; then
+                        bash "$CURSOR_DIR/core/compression-demo.sh"
+                    fi
+                    ;;
                 *)
-                    echo -e "${YELLOW}💡 性能命令: status, report, analyze, health${NC}" >&2
+                    echo -e "${YELLOW}💡 性能命令: status, report, analyze, health, compression${NC}" >&2
                     ;;
             esac
             ;;
