@@ -3,465 +3,6 @@
   "last_updated": "2026-01-15",
   "description": "Cursor AI Rules 技能注册表 - 合并了agent和legacy技能",
   "skills": {
-    "core": {
-      "code-quality": {
-        "name": "代码质量检查",
-        "description": "自动化代码质量检查和格式化",
-        "category": "core",
-        "auto_install": true,
-        "path": "code-quality.md",
-        "conditions": {
-          "always": true
-        }
-      },
-      "security-audit": {
-        "name": "安全审计",
-        "description": "命令执行前的安全检查和审计",
-        "category": "core",
-        "auto_install": true,
-        "path": "security-audit.md",
-        "conditions": {
-          "always": true
-        }
-      },
-      "skill-creator": {
-        "name": "技能创建器",
-        "description": "AI技能开发和定制工具",
-        "category": "core",
-        "auto_install": true,
-        "path": "skill-creator.md",
-        "conditions": {
-          "always": true
-        }
-      }
-    },
-    "tech": {
-      "node": {
-        "name": "Node.js 开发",
-        "description": "Node.js 和 JavaScript 开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/node.md",
-        "conditions": {
-          "files": [
-            "package.json"
-          ],
-          "commands": [
-            "node",
-            "npm"
-          ]
-        },
-        "dependencies": [
-          "javascript"
-        ]
-      },
-      "typescript": {
-        "name": "TypeScript 开发",
-        "description": "TypeScript 类型安全开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/typescript.md",
-        "conditions": {
-          "files": [
-            "tsconfig.json"
-          ],
-          "dependencies": [
-            "typescript"
-          ]
-        },
-        "dependencies": [
-          "javascript",
-          "node"
-        ]
-      },
-      "react": {
-        "name": "React 开发",
-        "description": "React 前端框架开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/react.md",
-        "conditions": {
-          "dependencies": [
-            "react"
-          ],
-          "files": [
-            "src/App.js",
-            "src/App.tsx"
-          ]
-        },
-        "dependencies": [
-          "javascript",
-          "node"
-        ]
-      },
-      "vue": {
-        "name": "Vue.js 开发",
-        "description": "Vue.js 前端框架开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/vue.md",
-        "conditions": {
-          "dependencies": [
-            "vue"
-          ],
-          "files": [
-            "src/main.js",
-            "src/App.vue"
-          ]
-        },
-        "dependencies": [
-          "javascript",
-          "node"
-        ]
-      },
-      "python": {
-        "name": "Python 开发",
-        "description": "Python 后端开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/python.md",
-        "conditions": {
-          "files": [
-            "requirements.txt",
-            "pyproject.toml",
-            "setup.py"
-          ],
-          "commands": [
-            "python3",
-            "python",
-            "pip"
-          ]
-        }
-      },
-      "django": {
-        "name": "Django 开发",
-        "description": "Django Web 框架开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/django.md",
-        "conditions": {
-          "dependencies": [
-            "django"
-          ],
-          "files": [
-            "manage.py",
-            "settings.py"
-          ]
-        },
-        "dependencies": [
-          "python"
-        ]
-      },
-      "fastapi": {
-        "name": "FastAPI 开发",
-        "description": "FastAPI 现代化 API 框架开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/fastapi.md",
-        "conditions": {
-          "dependencies": [
-            "fastapi"
-          ],
-          "files": [
-            "main.py"
-          ]
-        },
-        "dependencies": [
-          "python"
-        ]
-      },
-      "go": {
-        "name": "Go 开发",
-        "description": "Go 语言开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/go.md",
-        "conditions": {
-          "files": [
-            "go.mod",
-            "go.sum"
-          ],
-          "commands": [
-            "go"
-          ]
-        }
-      },
-      "rust": {
-        "name": "Rust 开发",
-        "description": "Rust 系统编程技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/rust.md",
-        "conditions": {
-          "files": [
-            "Cargo.toml",
-            "Cargo.lock"
-          ],
-          "commands": [
-            "cargo"
-          ]
-        }
-      },
-      "java": {
-        "name": "Java 开发",
-        "description": "Java 企业级开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/java.md",
-        "conditions": {
-          "files": [
-            "pom.xml",
-            "build.gradle",
-            "*.java"
-          ],
-          "commands": [
-            "java",
-            "javac"
-          ]
-        }
-      },
-      "spring": {
-        "name": "Spring 开发",
-        "description": "Spring 框架开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/spring.md",
-        "conditions": {
-          "dependencies": [
-            "spring-boot"
-          ],
-          "files": [
-            "@SpringBootApplication"
-          ]
-        },
-        "dependencies": [
-          "java"
-        ]
-      },
-      "dotnet": {
-        "name": ".NET 开发",
-        "description": ".NET 平台开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/dotnet.md",
-        "conditions": {
-          "files": [
-            "*.csproj",
-            "*.fsproj",
-            "*.vbproj"
-          ],
-          "commands": [
-            "dotnet"
-          ]
-        }
-      },
-      "php": {
-        "name": "PHP 开发",
-        "description": "PHP Web 开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/php.md",
-        "conditions": {
-          "files": [
-            "composer.json",
-            "*.php"
-          ],
-          "commands": [
-            "php"
-          ]
-        }
-      },
-      "ruby": {
-        "name": "Ruby 开发",
-        "description": "Ruby 语言开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/ruby.md",
-        "conditions": {
-          "files": [
-            "Gemfile",
-            "*.rb"
-          ],
-          "commands": [
-            "ruby"
-          ]
-        }
-      },
-      "rails": {
-        "name": "Ruby on Rails",
-        "description": "Rails Web 框架开发技能",
-        "category": "tech",
-        "auto_install": false,
-        "path": "tech/rails.md",
-        "conditions": {
-          "files": [
-            "config/application.rb"
-          ],
-          "dependencies": [
-            "rails"
-          ]
-        },
-        "dependencies": [
-          "ruby"
-        ]
-      }
-    },
-    "tooling": {
-      "docker": {
-        "name": "Docker 容器化",
-        "description": "Docker 容器和编排技能",
-        "category": "tooling",
-        "auto_install": false,
-        "path": "tooling/docker.md",
-        "conditions": {
-          "files": [
-            "Dockerfile",
-            "docker-compose.yml"
-          ],
-          "commands": [
-            "docker"
-          ]
-        }
-      },
-      "kubernetes": {
-        "name": "Kubernetes 编排",
-        "description": "K8s 容器编排技能",
-        "category": "tooling",
-        "auto_install": false,
-        "path": "tooling/kubernetes.md",
-        "conditions": {
-          "files": [
-            "k8s/",
-            "*.yaml",
-            "*.yml"
-          ],
-          "commands": [
-            "kubectl"
-          ]
-        },
-        "dependencies": [
-          "docker"
-        ]
-      },
-      "terraform": {
-        "name": "Terraform 基础设施",
-        "description": "基础设施即代码技能",
-        "category": "tooling",
-        "auto_install": false,
-        "path": "tooling/terraform.md",
-        "conditions": {
-          "files": [
-            "*.tf",
-            "terraform.tfstate"
-          ],
-          "commands": [
-            "terraform"
-          ]
-        }
-      },
-      "aws": {
-        "name": "AWS 云服务",
-        "description": "Amazon Web Services 云技能",
-        "category": "tooling",
-        "auto_install": false,
-        "path": "tooling/aws.md",
-        "conditions": {
-          "files": [
-            "serverless.yml",
-            ".aws/"
-          ],
-          "commands": [
-            "aws"
-          ]
-        }
-      },
-      "azure": {
-        "name": "Azure 云服务",
-        "description": "Microsoft Azure 云技能",
-        "category": "tooling",
-        "auto_install": false,
-        "path": "tooling/azure.md",
-        "conditions": {
-          "files": [
-            "azure-pipelines.yml"
-          ],
-          "commands": [
-            "az"
-          ]
-        }
-      },
-      "gcp": {
-        "name": "Google Cloud",
-        "description": "Google Cloud Platform 技能",
-        "category": "tooling",
-        "auto_install": false,
-        "path": "tooling/gcp.md",
-        "conditions": {
-          "commands": [
-            "gcloud"
-          ]
-        }
-      }
-    },
-    "workflow": {
-      "testing": {
-        "name": "测试自动化",
-        "description": "软件测试和质量保障技能",
-        "category": "workflow",
-        "auto_install": false,
-        "path": "workflow/testing.md",
-        "conditions": {
-          "files": [
-            "tests/",
-            "spec/",
-            "__tests__/",
-            "*test*"
-          ]
-        }
-      },
-      "ci-cd": {
-        "name": "CI/CD 流水线",
-        "description": "持续集成和部署技能",
-        "category": "workflow",
-        "auto_install": false,
-        "path": "workflow/ci-cd.md",
-        "conditions": {
-          "files": [
-            ".github/workflows/",
-            ".gitlab-ci.yml",
-            "Jenkinsfile"
-          ]
-        }
-      },
-      "documentation": {
-        "name": "文档编写",
-        "description": "技术文档撰写技能",
-        "category": "workflow",
-        "auto_install": false,
-        "path": "workflow/documentation.md",
-        "conditions": {
-          "files": [
-            "docs/",
-            "README.md",
-            "*.md"
-          ]
-        }
-      },
-      "security": {
-        "name": "安全开发",
-        "description": "安全编码和审计技能",
-        "category": "workflow",
-        "auto_install": false,
-        "path": "workflow/security.md",
-        "conditions": {
-          "files": [
-            ".secrets",
-            ".env",
-            "security.txt"
-          ]
-        }
-      }
-    },
     "legacy": {
       "algorithmic-art": {
         "name": "算法艺术生成",
@@ -515,6 +56,36 @@
         "dependencies": [],
         "source": "anthropic-skills"
       },
+      "docx": {
+        "name": "Word文档处理",
+        "description": "Microsoft Word文档创建、编辑和格式化",
+        "category": "document",
+        "auto_install": false,
+        "path": "docx.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "anthropic-skills"
+      },
+      "frontend-design": {
+        "name": "前端界面设计",
+        "description": "创建高质量的前端界面和组件",
+        "category": "design",
+        "auto_install": false,
+        "path": "frontend-design.md",
+        "conditions": {
+          "dependencies": [
+            "javascript",
+            "html",
+            "css"
+          ]
+        },
+        "dependencies": [
+          "javascript",
+          "html",
+          "css"
+        ],
+        "source": "anthropic-skills"
+      },
       "internal-comms": {
         "name": "内部通讯",
         "description": "内部通讯和消息传递",
@@ -543,6 +114,38 @@
         ],
         "source": "anthropic-skills"
       },
+      "pdf": {
+        "name": "PDF文档处理",
+        "description": "PDF文档处理、文本提取和表单填写",
+        "category": "document",
+        "auto_install": false,
+        "path": "pdf.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "anthropic-skills"
+      },
+      "pptx": {
+        "name": "PowerPoint演示文稿",
+        "description": "演示文稿创建、编辑和格式化",
+        "category": "document",
+        "auto_install": false,
+        "path": "pptx.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "anthropic-skills"
+      },
+      "skill-creator": {
+        "name": "技能创建器",
+        "description": "AI技能开发和定制工具",
+        "category": "ai_integration",
+        "auto_install": true,
+        "path": "skill-creator.md",
+        "conditions": {
+          "always": true
+        },
+        "dependencies": [],
+        "source": "anthropic-skills"
+      },
       "slack-gif-creator": {
         "name": "Slack GIF创建器",
         "description": "为Slack创建动画GIF",
@@ -569,38 +172,64 @@
         "dependencies": [],
         "source": "anthropic-skills"
       },
+      "webapp-testing": {
+        "name": "Web应用测试",
+        "description": "使用Playwright进行Web应用测试",
+        "category": "testing",
+        "auto_install": false,
+        "path": "webapp-testing.md",
+        "conditions": {
+          "dependencies": [
+            "javascript",
+            "node"
+          ]
+        },
+        "dependencies": [
+          "javascript",
+          "node"
+        ],
+        "source": "anthropic-skills"
+      },
       "web-artifacts-builder": {
         "name": "Web工件构建器",
-        "description": "Web工件和组件构建工具",
+        "description": "使用React和Tailwind构建复杂Web组件",
         "category": "development",
         "auto_install": false,
         "path": "web-artifacts-builder.md",
         "conditions": {
           "dependencies": [
-            "shell",
+            "javascript",
+            "react",
             "node"
           ]
         },
         "dependencies": [
-          "shell",
+          "javascript",
+          "react",
           "node"
         ],
+        "source": "anthropic-skills"
+      },
+      "xlsx": {
+        "name": "Excel电子表格",
+        "description": "电子表格创建、编辑和数据分析",
+        "category": "document",
+        "auto_install": false,
+        "path": "xlsx.md",
+        "conditions": {},
+        "dependencies": [],
         "source": "anthropic-skills"
       }
     }
   },
   "categories": {
-    "core": [
-      "code-quality",
-      "security-audit",
-      "skill-creator"
-    ],
     "creative": [
       "algorithmic-art",
       "slack-gif-creator"
     ],
     "design": [
       "canvas-design",
+      "frontend-design",
       "theme-factory"
     ],
     "enterprise": [
@@ -608,7 +237,8 @@
       "internal-comms"
     ],
     "ai_integration": [
-      "mcp-builder"
+      "mcp-builder",
+      "skill-creator"
     ],
     "development": [
       "web-artifacts-builder"
@@ -616,188 +246,26 @@
     "productivity": [
       "doc-coauthoring"
     ],
-    "tech": [
-      "node",
-      "typescript",
-      "react",
-      "vue",
-      "python",
-      "django",
-      "fastapi",
-      "go",
-      "rust",
-      "java",
-      "spring",
-      "dotnet",
-      "php",
-      "ruby",
-      "rails"
+    "document": [
+      "docx",
+      "pdf",
+      "pptx",
+      "xlsx"
     ],
-    "tooling": [
-      "docker",
-      "kubernetes",
-      "terraform",
-      "aws",
-      "azure",
-      "gcp"
-    ],
-    "workflow": [
-      "testing",
-      "ci-cd",
-      "documentation",
-      "security"
+    "testing": [
+      "webapp-testing"
     ]
   },
   "auto_install_rules": {
     "always": [
-      "code-quality",
-      "security-audit",
       "skill-creator"
     ],
-    "by_tech_stack": {
-      "node": [
-        "node",
-        "testing"
-      ],
-      "typescript": [
-        "typescript",
-        "node",
-        "testing"
-      ],
-      "react": [
-        "react",
-        "node",
-        "testing"
-      ],
-      "vue": [
-        "vue",
-        "node",
-        "testing"
-      ],
-      "python": [
-        "python",
-        "testing"
-      ],
-      "django": [
-        "django",
-        "python",
-        "testing"
-      ],
-      "fastapi": [
-        "fastapi",
-        "python",
-        "testing"
-      ],
-      "go": [
-        "go",
-        "testing"
-      ],
-      "rust": [
-        "rust",
-        "testing"
-      ],
-      "java": [
-        "java",
-        "testing"
-      ],
-      "spring": [
-        "spring",
-        "java",
-        "testing"
-      ],
-      "dotnet": [
-        "dotnet",
-        "testing"
-      ],
-      "php": [
-        "php",
-        "testing"
-      ],
-      "ruby": [
-        "ruby",
-        "testing"
-      ],
-      "rails": [
-        "rails",
-        "ruby",
-        "testing"
-      ]
-    },
-    "by_tools": {
-      "docker": [
-        "docker"
-      ],
-      "kubernetes": [
-        "kubernetes",
-        "docker"
-      ],
-      "terraform": [
-        "terraform"
-      ],
-      "aws": [
-        "aws"
-      ],
-      "azure": [
-        "azure"
-      ],
-      "gcp": [
-        "gcp"
-      ]
-    },
-    "by_workflow": {
-      "testing": [
-        "testing"
-      ],
-      "ci_cd": [
-        "ci-cd"
-      ],
-      "documentation": [
-        "documentation"
-      ],
-      "security": [
-        "security"
-      ]
-    }
+    "by_tech_stack": {},
+    "by_tools": {},
+    "by_workflow": {}
   },
   "compatibility_matrix": {
-    "skill_dependencies": {
-      "typescript": [
-        "node"
-      ],
-      "react": [
-        "node",
-        "javascript"
-      ],
-      "vue": [
-        "node",
-        "javascript"
-      ],
-      "django": [
-        "python"
-      ],
-      "fastapi": [
-        "python"
-      ],
-      "spring": [
-        "java"
-      ],
-      "rails": [
-        "ruby"
-      ],
-      "kubernetes": [
-        "docker"
-      ]
-    },
-    "conflicts": {
-      "react": [
-        "vue"
-      ],
-      "django": [
-        "flask"
-      ],
-      "spring": [
-        "micronaut"
-      ]
-    }
+    "skill_dependencies": {},
+    "conflicts": {}
   }
 }

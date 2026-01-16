@@ -114,6 +114,10 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 | **evolution-manual** | Manual Evolution Process - Artificial trigger management | Smart application | ✅ |
 | **evolution-automation** | Automated Evolution System - Data-driven optimization | Smart application | ✅ |
 | **evolution-governance** | Evolution Governance - Security and quality control | Smart application | ✅ |
+| **collaboration** | Team Collaboration Rules - Best practices for multi-developer environments | Smart application | ✅ |
+| **conversation_intent_analyzer** | Conversation Intent Analyzer - Intelligent understanding of user needs | Always applied | ✅ |
+| **javascript** | JavaScript/TypeScript Development Rules - Modern frontend development best practices | Code files | ✅ |
+| **python** | Python Development Rules - Backend development and data processing best practices | Code files | ✅ |
 
 ### 🎯 Skills Extension System (16 Professional Skills)
 

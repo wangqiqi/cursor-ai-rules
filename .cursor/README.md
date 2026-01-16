@@ -113,6 +113,10 @@
 | **evolution-manual** | 手动演进流程 - 人工触发的规则演进管理 | 智能应用 | ✅ |
 | **evolution-automation** | 自动化演进系统 - 基于感知数据的智能优化 | 智能应用 | ✅ |
 | **evolution-governance** | 演进治理机制 - 规则演进的安全保障和质量控制 | 智能应用 | ✅ |
+| **collaboration** | 团队协作规则 - 多开发者环境的最佳实践 | 智能应用 | ✅ |
+| **conversation_intent_analyzer** | 会话意图分析器 - 智能理解用户需求和意图 | 始终应用 | ✅ |
+| **javascript** | JavaScript/TypeScript开发规则 - 现代前端开发最佳实践 | 代码文件 | ✅ |
+| **python** | Python开发规则 - 后端开发和数据处理最佳实践 | 代码文件 | ✅ |
 
 ### 🎯 Skills扩展系统 (16个专业技能)
 
