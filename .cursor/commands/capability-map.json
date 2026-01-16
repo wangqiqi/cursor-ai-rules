@@ -30,12 +30,12 @@
         "rules": [
           "conversation_intent_analyzer",
           "generator",
-          "templates"
+          "templates",
+          "javascript"
         ],
         "skills": [
-          "react",
-          "node",
-          "typescript"
+          "frontend-design",
+          "webapp-testing"
         ],
         "scripts": [
           "core/init.sh",
@@ -93,12 +93,12 @@
         "rules": [
           "conversation_intent_analyzer",
           "generator",
-          "templates"
+          "templates",
+          "javascript"
         ],
         "skills": [
-          "vue",
-          "node",
-          "typescript"
+          "frontend-design",
+          "webapp-testing"
         ],
         "scripts": [
           "core/init.sh",
@@ -152,12 +152,11 @@
         "rules": [
           "conversation_intent_analyzer",
           "generator",
-          "templates"
+          "templates",
+          "python"
         ],
         "skills": [
-          "python",
-          "fastapi",
-          "django"
+          "webapp-testing"
         ],
         "scripts": [
           "core/init.sh",

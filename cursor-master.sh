@@ -15,6 +15,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$SCRIPT_DIR/.cursor"
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
+# 🚀 初始化优化系统（如果可用）
+if [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
+    source "$CURSOR_DIR/core/optimizer.sh"
+    init_optimizer >/dev/null 2>&1 || true
+fi
+
 # 🌱 初始化项目生长目录
 GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
 init_growth_directory() {
@@ -1213,9 +1219,57 @@ main() {
             show_intelligent_logo
             show_traditional_commands
             ;;
-        *)
-            # 智能模式：将所有参数作为用户需求处理
+        "optimize"|"optimizer")
+            # 优化系统命令
+            shift
+            if [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
+                bash "$CURSOR_DIR/core/optimizer.sh" "$@"
+            else
+                echo -e "${RED}❌ 优化系统未找到${NC}" >&2
+                exit 1
+            fi
+            ;;
+        "performance"|"perf")
+            # 性能监控命令
+            shift
+            case "${1:-status}" in
+                "report"|"analyze")
+                    if [ -f "$CURSOR_DIR/core/performance-monitor.sh" ]; then
+                        source "$CURSOR_DIR/core/performance-monitor.sh"
+                        show_performance_report
+                    fi
+                    ;;
+                "status")
+                    if [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
+                        bash "$CURSOR_DIR/core/optimizer.sh" status
+                    fi
+                    ;;
+                "health")
+                    if [ -f "$CURSOR_DIR/core/performance-monitor.sh" ]; then
+                        source "$CURSOR_DIR/core/performance-monitor.sh"
+                        health_check
+                    fi
+                    ;;
+                *)
+                    echo -e "${YELLOW}💡 性能命令: status, report, analyze, health${NC}" >&2
+                    ;;
+            esac
+            ;;
+        "fast"|"quick")
+            # 快速模式：启用所有优化
+            export OPTIMIZATION_LEVEL=maximum
+            export COMPACT_MODE=true
+            shift
             intelligent_master "$*"
+            ;;
+        *)
+            # 检查是否启用优化执行
+            if [ "${OPTIMIZATION_LEVEL:-balanced}" != "minimal" ] && [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
+                bash "$CURSOR_DIR/core/optimizer.sh" execute "$*"
+            else
+                # 智能模式：将所有参数作为用户需求处理
+                intelligent_master "$*"
+            fi
             ;;
     esac
 }
