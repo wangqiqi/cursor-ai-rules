@@ -357,6 +357,344 @@ compress_context_aware() {
     echo "$data"
 }
 
+# 🎯 智能自适应压缩系统
+# 基于内容特征和使用模式自动选择最佳压缩策略
+
+# 智能压缩分析器
+intelligent_compression_analyzer() {
+    local data="$1"
+    local operation="${2:-general}"
+    local max_tokens="${3:-4096}"
+
+    smart_echo "启动智能压缩分析..." "processing"
+
+    # 1. 分析数据特征
+    local data_features=$(analyze_data_features "$data")
+
+    # 2. 评估压缩潜力
+    local compression_potential=$(evaluate_compression_potential "$data_features")
+
+    # 3. 选择最优压缩策略
+    local optimal_strategy=$(select_optimal_strategy "$compression_potential" "$operation" "$max_tokens")
+
+    # 4. 应用智能压缩
+    local compressed_data=$(apply_intelligent_compression "$data" "$optimal_strategy")
+
+    # 5. 验证压缩效果
+    local compression_stats=$(validate_compression_effectiveness "$data" "$compressed_data")
+
+    smart_echo "智能压缩分析完成 - 节省: $(echo "$compression_stats" | jq -r '.token_savings // 0') tokens" "success"
+
+    # 返回压缩后的数据和统计信息
+    cat <<EOF
+{
+  "compressed_data": $compressed_data,
+  "compression_stats": $compression_stats,
+  "strategy_used": "$optimal_strategy"
+}
+EOF
+}
+
+# 分析数据特征
+analyze_data_features() {
+    local data="$1"
+
+    # 计算各种特征指标
+    local data_size=${#data}
+    local json_keys=$(echo "$data" | jq 'keys | length' 2>/dev/null || echo "0")
+    local repeated_patterns=$(detect_repeated_patterns "$data")
+    local semantic_density=$(calculate_semantic_density "$data")
+    local structural_complexity=$(assess_structural_complexity "$data")
+
+    cat <<EOF
+{
+  "data_size": $data_size,
+  "json_keys": $json_keys,
+  "repeated_patterns": $repeated_patterns,
+  "semantic_density": $semantic_density,
+  "structural_complexity": $structural_complexity,
+  "data_type": "$(detect_data_type "$data")"
+}
+EOF
+}
+
+# 检测重复模式
+detect_repeated_patterns() {
+    local data="$1"
+    local repeated_count=$(echo "$data" | grep -o '"[^"]*"' | sort | uniq -c | awk '$1 > 1 {count++} END {print count+0}')
+    echo "$repeated_count"
+}
+
+# 计算语义密度
+calculate_semantic_density() {
+    local data="$1"
+    local total_chars=${#data}
+    local meaningful_chars=$(echo "$data" | sed 's/[[:space:]]//g' | sed 's/["{},:]//g' | wc -c)
+
+    if (( total_chars > 0 )); then
+        echo "scale=2; $meaningful_chars / $total_chars" | bc 2>/dev/null || echo "0.5"
+    else
+        echo "0"
+    fi
+}
+
+# 评估结构复杂度
+assess_structural_complexity() {
+    local data="$1"
+    local nesting_level=$(echo "$data" | jq '[paths | length] | max' 2>/dev/null || echo "1")
+    local branch_count=$(echo "$data" | jq 'walk(if type == "object" then keys else . end) | flatten | length' 2>/dev/null || echo "1")
+    echo "scale=2; $nesting_level * 0.3 + $branch_count * 0.1" | bc 2>/dev/null || echo "1.0"
+}
+
+# 检测数据类型
+detect_data_type() {
+    local data="$1"
+    if echo "$data" | jq empty 2>/dev/null; then
+        echo "json"
+    elif echo "$data" | grep -q "^import\|^export\|^function\|^class"; then
+        echo "code"
+    elif echo "$data" | grep -q "^#\|^[[:space:]]*//\|^/\*"; then
+        echo "documentation"
+    else
+        echo "text"
+    fi
+}
+
+# 评估压缩潜力
+evaluate_compression_potential() {
+    local features="$1"
+    local data_size=$(echo "$features" | jq -r '.data_size // 0')
+    local repeated_patterns=$(echo "$features" | jq -r '.repeated_patterns // 0')
+    local semantic_density=$(echo "$features" | jq -r '.semantic_density // 0.5')
+    local structural_complexity=$(echo "$features" | jq -r '.structural_complexity // 1.0')
+
+    local dict_compression_potential=$(echo "scale=2; $repeated_patterns * 0.15" | bc 2>/dev/null || echo "0")
+    local semantic_compression_potential=$(echo "scale=2; (1 - $semantic_density) * 0.25" | bc 2>/dev/null || echo "0")
+    local structural_compression_potential=$(echo "scale=2; $structural_complexity * 0.1" | bc 2>/dev/null || echo "0")
+
+    cat <<EOF
+{
+  "overall_potential": $(echo "scale=2; $dict_compression_potential + $semantic_compression_potential + $structural_compression_potential" | bc 2>/dev/null || echo "0"),
+  "dict_compression": $dict_compression_potential,
+  "semantic_compression": $semantic_compression_potential,
+  "structural_compression": $structural_compression_potential,
+  "recommended_strategy": "$(select_recommended_strategy "$dict_compression_potential" "$semantic_compression_potential" "$structural_compression_potential")"
+}
+EOF
+}
+
+# 选择推荐策略
+select_recommended_strategy() {
+    local dict="$1"
+    local semantic="$2"
+    local structural="$3"
+
+    if (( $(echo "$dict > 0.3" | bc -l 2>/dev/null || echo "0") )); then
+        echo "balanced"
+    elif (( $(echo "$semantic > 0.2" | bc -l 2>/dev/null || echo "0") )); then
+        echo "aggressive"
+    elif (( $(echo "$structural > 1.5" | bc -l 2>/dev/null || echo "0") )); then
+        echo "minimal"
+    else
+        echo "balanced"
+    fi
+}
+
+# 选择最优压缩策略
+select_optimal_strategy() {
+    local compression_potential="$1"
+    local operation="$2"
+    local max_tokens="$3"
+
+    local recommended=$(echo "$compression_potential" | jq -r '.recommended_strategy // "balanced"')
+
+    case "$operation" in
+        "code_review"|"debugging")
+            echo "minimal"
+            ;;
+        "documentation"|"learning")
+            echo "aggressive"
+            ;;
+        "automation"|"batch_processing")
+            echo "maximum"
+            ;;
+        *)
+            echo "$recommended"
+            ;;
+    esac
+}
+
+# 应用智能压缩
+apply_intelligent_compression() {
+    local data="$1"
+    local strategy="$2"
+
+    case "$strategy" in
+        "minimal")
+            compress_json_keys "$data"
+            ;;
+        "balanced")
+            data=$(compress_json_keys "$data")
+            compress_repeated_strings "$data"
+            ;;
+        "aggressive")
+            data=$(compress_json_keys "$data")
+            data=$(compress_repeated_strings "$data")
+            compress_semantic "$data"
+            ;;
+        "maximum")
+            data=$(compress_json_keys "$data")
+            data=$(compress_repeated_strings "$data")
+            data=$(compress_semantic "$data")
+            compress_to_binary "$data"
+            ;;
+        *)
+            echo "$data"
+            ;;
+    esac
+}
+
+# 验证压缩效果
+validate_compression_effectiveness() {
+    local original="$1"
+    local compressed="$2"
+
+    local original_tokens=$(estimate_tokens "original" "${#original}")
+    local compressed_tokens=$(estimate_tokens "compressed" "${#compressed}")
+    local token_savings=$((original_tokens - compressed_tokens))
+    local compression_ratio
+
+    if (( original_tokens > 0 )); then
+        compression_ratio=$(echo "scale=2; $compressed_tokens / $original_tokens" | bc 2>/dev/null || echo "1.00")
+    else
+        compression_ratio="1.00"
+    fi
+
+    cat <<EOF
+{
+  "original_tokens": $original_tokens,
+  "compressed_tokens": $compressed_tokens,
+  "token_savings": $token_savings,
+  "compression_ratio": $compression_ratio,
+  "effectiveness": "$(calculate_compression_effectiveness "$token_savings" "$original_tokens")"
+}
+EOF
+}
+
+# 计算压缩效果等级
+calculate_compression_effectiveness() {
+    local savings="$1"
+    local original="$2"
+
+    if (( original == 0 )); then
+        echo "neutral"
+        return
+    fi
+
+    local ratio=$(echo "scale=2; $savings / $original" | bc 2>/dev/null || echo "0")
+
+    if (( $(echo "$ratio >= 0.7" | bc -l 2>/dev/null || echo "0") )); then
+        echo "excellent"
+    elif (( $(echo "$ratio >= 0.5" | bc -l 2>/dev/null || echo "0") )); then
+        echo "good"
+    elif (( $(echo "$ratio >= 0.3" | bc -l 2>/dev/null || echo "0") )); then
+        echo "fair"
+    elif (( $(echo "$ratio >= 0.1" | bc -l 2>/dev/null || echo "0") )); then
+        echo "poor"
+    else
+        echo "minimal"
+    fi
+}
+
+# 🎯 自适应压缩学习系统
+adaptive_compression_learning() {
+    local operation="$1"
+    local original_data="$2"
+    local compressed_data="$3"
+    local user_feedback="${4:-neutral}"
+
+    local stats=$(validate_compression_effectiveness "$original_data" "$compressed_data")
+    local effectiveness=$(echo "$stats" | jq -r '.effectiveness')
+
+    update_compression_strategy "$operation" "$effectiveness" "$user_feedback"
+    learn_data_patterns "$original_data" "$operation"
+
+    smart_echo "自适应压缩学习完成 - 效果: $effectiveness" "info"
+}
+
+# 更新压缩策略
+update_compression_strategy() {
+    local operation="$1"
+    local effectiveness="$2"
+    local feedback="$3"
+
+    local strategy_file="$SCRIPT_DIR/compression_strategies.json"
+
+    local strategies="{}"
+    [[ -f "$strategy_file" ]] && strategies=$(cat "$strategy_file")
+
+    local current_preference=$(echo "$strategies" | jq -r ".operations.\"$operation\".preferred_strategy // \"balanced\"")
+    local new_preference="$current_preference"
+
+    case "$feedback:$effectiveness" in
+        "positive:excellent"|"positive:good")
+            ;;
+        "positive:fair"|"positive:poor")
+            new_preference=$(get_more_aggressive_strategy "$current_preference")
+            ;;
+        "negative:excellent"|"negative:good")
+            new_preference=$(get_more_conservative_strategy "$current_preference")
+            ;;
+        "negative:fair"|"negative:poor")
+            new_preference=$(get_more_conservative_strategy "$current_preference")
+            ;;
+    esac
+
+    strategies=$(echo "$strategies" | jq --arg op "$operation" --arg strategy "$new_preference" '.operations[$op].preferred_strategy = $strategy')
+    echo "$strategies" > "$strategy_file"
+}
+
+# 获取更激进的策略
+get_more_aggressive_strategy() {
+    local current="$1"
+    case "$current" in
+        "minimal") echo "balanced" ;;
+        "balanced") echo "aggressive" ;;
+        "aggressive") echo "maximum" ;;
+        *) echo "$current" ;;
+    esac
+}
+
+# 获取更保守的策略
+get_more_conservative_strategy() {
+    local current="$1"
+    case "$current" in
+        "maximum") echo "aggressive" ;;
+        "aggressive") echo "balanced" ;;
+        "balanced") echo "minimal" ;;
+        *) echo "$current" ;;
+    esac
+}
+
+# 学习数据模式
+learn_data_patterns() {
+    local data="$1"
+    local operation="$2"
+
+    local patterns_file="$SCRIPT_DIR/data_patterns.json"
+    local features=$(analyze_data_features "$data")
+
+    local patterns="{}"
+    [[ -f "$patterns_file" ]] && patterns=$(cat "$patterns_file")
+
+    patterns=$(echo "$patterns" | jq --arg op "$operation" --argjson features "$features" '.operations[$op].patterns += [$features]')
+    echo "$patterns" > "$patterns_file"
+}
+
+# 导出新函数
+export -f intelligent_compression_analyzer
+export -f adaptive_compression_learning
+
 # 预测性预加载系统
 init_predictive_preload() {
     PREDICTIVE_CACHE=""

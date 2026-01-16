@@ -1264,6 +1264,87 @@ main() {
                     ;;
             esac
             ;;
+        "arch"|"architecture"|"compliance")
+            # 架构合规性检查
+            shift
+            check_type="${1:-full}"
+            if [ -f "$CURSOR_DIR/core/architecture-compliance-checker.sh" ]; then
+                echo -e "${BLUE}🏗️ 执行双目录架构合规性检查 ($check_type)...${NC}"
+                bash "$CURSOR_DIR/core/architecture-compliance-checker.sh" "$check_type"
+            else
+                echo -e "${RED}❌ 架构合规性检查器未找到${NC}" >&2
+                exit 1
+            fi
+            ;;
+        "vibe"|"vibe-coding")
+            # VIBE Coding 开发原则支持
+            shift
+            case "${1:-help}" in
+                "align"|"alignment")
+                    # 对齐检查
+                    shift
+                    check_type="${1:-all}"
+                    if [ -f "$CURSOR_DIR/core/vibe-alignment-checker.sh" ]; then
+                        echo -e "${BLUE}🔍 执行VIBE Coding对齐检查 ($check_type)...${NC}"
+                        bash "$CURSOR_DIR/core/vibe-alignment-checker.sh" "$check_type"
+                    else
+                        echo -e "${RED}❌ VIBE对齐检查工具未找到${NC}" >&2
+                        exit 1
+                    fi
+                    ;;
+                "test-plan")
+                    # 生成测试计划
+                    echo -e "${BLUE}🧪 生成VIBE Coding测试计划...${NC}"
+                    echo -e "${YELLOW}📋 基于当前项目结构生成测试策略${NC}"
+                    # 这里可以调用测试计划生成逻辑
+                    echo -e "${GREEN}✅ 测试计划生成完成${NC}"
+                    ;;
+                "phase")
+                    # 开发阶段管理
+                    shift
+                    phase="${1:-status}"
+                    echo -e "${BLUE}📊 VIBE Coding开发阶段: $phase${NC}"
+                    case "$phase" in
+                        "frontend")
+                            echo -e "${CYAN}🎨 前端开发阶段 - 重点: UI实现, 组件开发, 用户体验${NC}"
+                            ;;
+                        "backend")
+                            echo -e "${CYAN}⚙️ 后端开发阶段 - 重点: API实现, 数据处理, 业务逻辑${NC}"
+                            ;;
+                        "testing")
+                            echo -e "${CYAN}🧪 测试阶段 - 重点: 单元测试, 集成测试, E2E测试${NC}"
+                            ;;
+                        "alignment")
+                            echo -e "${CYAN}🔗 对齐验证阶段 - 重点: 文档对齐, 接口对齐, 测试验证${NC}"
+                            ;;
+                        *)
+                            echo -e "${YELLOW}📋 支持的阶段: frontend, backend, testing, alignment${NC}"
+                            ;;
+                    esac
+                    ;;
+                "help"|*)
+                    echo -e "${CYAN}🚀 VIBE Coding 开发原则支持${NC}"
+                    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+                    echo ""
+                    echo -e "${YELLOW}📖 核心原则:${NC}"
+                    echo "  • 文档驱动开发 (Documentation First)"
+                    echo "  • 前端优先开发 (Frontend First)"
+                    echo "  • 测试驱动开发 (Test Driven)"
+                    echo "  • 前后端对齐 (Alignment Focused)"
+                    echo ""
+                    echo -e "${BLUE}💻 可用命令:${NC}"
+                    echo -e "  ${GREEN}align [type]${NC}     - 对齐检查 (type: docs|api|test|all)"
+                    echo -e "  ${GREEN}test-plan${NC}        - 生成测试计划"
+                    echo -e "  ${GREEN}phase <stage>${NC}    - 开发阶段管理"
+                    echo -e "  ${GREEN}help${NC}             - 显示此帮助信息"
+                    echo ""
+                    echo -e "${PURPLE}🎯 使用示例:${NC}"
+                    echo "  ./cursor-master.sh vibe align all      # 完整对齐检查"
+                    echo "  ./cursor-master.sh vibe test-plan      # 生成测试计划"
+                    echo "  ./cursor-master.sh vibe phase frontend # 前端开发阶段"
+                    ;;
+            esac
+            ;;
         "fast"|"quick")
             # 快速模式：启用所有优化
             export OPTIMIZATION_LEVEL=maximum

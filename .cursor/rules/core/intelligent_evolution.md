@@ -194,6 +194,275 @@ const adaptations = learningEngine.adaptBehavior(preferences)
 └── metrics.json         # 学习指标
 ```
 
+#### 模块同步感知模式 (Module Synchronization Awareness Mode) ⭐ 新增
+
+智能系统能够主动检测和提醒模块间的同步需求，确保AI编程时的上下文完整性：
+
+##### 同步触发条件 (Synchronization Triggers)
+- **共享资源修改**：检测到常量、类型、配置的变更
+- **接口变更**：API、函数签名、数据结构的修改
+- **依赖关系变化**：导入/导出关系的改变
+- **架构重构**：影响多个模块的结构调整
+
+##### 智能同步提醒 (Smart Synchronization Reminders)
+```typescript
+interface SyncReminder {
+  // 同步类型
+  type: 'shared_constant' | 'type_definition' | 'api_interface' | 'config_change'
+
+  // 受影响文件
+  affectedFiles: FileLocation[]
+
+  // 具体同步操作
+  requiredActions: SyncAction[]
+
+  // 优先级
+  priority: 'critical' | 'high' | 'medium' | 'low'
+
+  // 自动化建议
+  autoFixSuggestions?: AutoFix[]
+}
+
+interface SyncAction {
+  file: string
+  line?: number
+  description: string
+  codeSnippet?: string
+  autoFixable: boolean
+}
+
+interface AutoFix {
+  type: 'add_import' | 'update_property' | 'modify_type' | 'update_test'
+  parameters: Record<string, any>
+}
+```
+
+##### 同步感知算法 (Synchronization Awareness Algorithm)
+```typescript
+interface SynchronizationAwareness {
+  // 变更检测
+  detectChanges(file: File, changes: Change[]): DetectedChanges
+
+  // 影响分析
+  analyzeImpact(changes: DetectedChanges, project: Project): ImpactAnalysis
+
+  // 同步规划
+  planSynchronization(impact: ImpactAnalysis): SyncPlan
+
+  // 智能提醒
+  generateReminders(plan: SyncPlan): SyncReminder[]
+
+  // 学习优化
+  learnFromSync(syncResult: SyncResult): void
+}
+
+class ModuleSyncDetector implements SynchronizationAwareness {
+  async detectChanges(file: File, changes: Change[]): Promise<DetectedChanges> {
+    const detected: DetectedChanges = {
+      sharedConstants: [],
+      typeDefinitions: [],
+      apiInterfaces: [],
+      configChanges: []
+    }
+
+    for (const change of changes) {
+      // 检测共享常量变更
+      if (this.isSharedConstant(change)) {
+        detected.sharedConstants.push({
+          name: change.identifier,
+          oldValue: change.oldValue,
+          newValue: change.newValue,
+          file: file.path
+        })
+      }
+
+      // 检测类型定义变更
+      if (this.isTypeDefinition(change)) {
+        detected.typeDefinitions.push({
+          typeName: change.identifier,
+          changeType: change.type, // 'add' | 'remove' | 'modify'
+          details: change.details,
+          file: file.path
+        })
+      }
+
+      // 检测API接口变更
+      if (this.isApiInterface(change)) {
+        detected.apiInterfaces.push({
+          interfaceName: change.identifier,
+          methodChanges: change.methodChanges,
+          file: file.path
+        })
+      }
+
+      // 检测配置变更
+      if (this.isConfigChange(change)) {
+        detected.configChanges.push({
+          configKey: change.identifier,
+          oldValue: change.oldValue,
+          newValue: change.newValue,
+          file: file.path
+        })
+      }
+    }
+
+    return detected
+  }
+
+  async analyzeImpact(changes: DetectedChanges, project: Project): Promise<ImpactAnalysis> {
+    const impact: ImpactAnalysis = {
+      directImpacts: [],
+      indirectImpacts: [],
+      severity: 'low',
+      confidence: 0
+    }
+
+    // 分析直接影响
+    for (const constant of changes.sharedConstants) {
+      const usages = await this.findUsages(project, constant.name, 'constant')
+      impact.directImpacts.push(...usages)
+    }
+
+    for (const typeDef of changes.typeDefinitions) {
+      const usages = await this.findUsages(project, typeDef.typeName, 'type')
+      impact.directImpacts.push(...usages)
+    }
+
+    // 分析间接影响（依赖链）
+    impact.indirectImpacts = await this.traceDependencyChain(impact.directImpacts)
+
+    // 计算严重程度
+    impact.severity = this.calculateSeverity(impact.directImpacts.length, impact.indirectImpacts.length)
+    impact.confidence = this.calculateConfidence(impact.directImpacts, impact.indirectImpacts)
+
+    return impact
+  }
+
+  private calculateSeverity(directCount: number, indirectCount: number): Severity {
+    const total = directCount + indirectCount
+    if (total >= 10) return 'critical'
+    if (total >= 5) return 'high'
+    if (total >= 2) return 'medium'
+    return 'low'
+  }
+
+  private calculateConfidence(directImpacts: Impact[], indirectImpacts: Impact[]): number {
+    // 基于直接影响的确定性和间接影响的推断性计算置信度
+    const directConfidence = Math.min(directImpacts.length * 0.1, 0.8)
+    const indirectConfidence = indirectImpacts.length * 0.05
+    return Math.min(directConfidence + indirectConfidence, 0.95)
+  }
+}
+```
+
+##### 实际应用场景 (Practical Scenarios)
+
+**场景1：共享常量修改引用**
+```
+用户修改: src/shared/constants.ts
+export const API_BASE_URL = 'https://new-api.example.com'
+
+智能同步感知:
+🔔 检测到共享常量变更
+
+📋 影响分析 (置信度: 92%):
+├── 🔴 src/services/apiService.ts:15 (直接使用API_BASE_URL)
+├── 🔴 src/components/ConfigPanel.tsx:23 (显示配置)
+├── 🔴 tests/api.test.ts:8 (测试mock数据)
+└── 🟡 src/utils/apiHelpers.ts:45 (可能受影响的辅助函数)
+
+⚡ 建议同步操作:
+1. 更新ApiService中的基础URL使用
+2. 更新配置面板的默认值显示
+3. 修改测试用例的mock数据
+4. 检查辅助函数是否需要更新
+
+🤖 自动化修复建议:
+- 批量替换API_BASE_URL的使用
+- 更新测试文件中的mock值
+```
+
+**场景2：类型定义变更引用**
+```
+用户修改: src/shared/types.ts
+export interface User {
+  id: string
+  name: string      // 新增
+  email: string
+  role: UserRole   // 新增
+}
+
+智能同步感知:
+🔔 检测到类型定义变更
+
+📋 影响分析 (置信度: 88%):
+├── 🔴 src/services/userService.ts (需要更新数据处理)
+├── 🔴 src/components/UserForm.tsx (需要添加输入字段)
+├── 🔴 src/api/userApi.ts (需要更新接口)
+├── 🔴 tests/user.test.ts (需要更新测试数据)
+└── 🟡 src/pages/UserProfile.tsx (可能需要UI更新)
+
+⚡ 建议同步操作:
+1. 更新UserService的数据验证逻辑
+2. 添加UserForm的新字段输入框
+3. 修改API接口以支持新字段
+4. 更新测试用例的数据结构
+5. 检查页面组件是否需要更新
+```
+
+##### 同步执行流程 (Synchronization Execution Flow)
+```typescript
+// 1. 检测变更
+const changes = await detector.detectChanges(file, codeChanges)
+
+// 2. 分析影响
+const impact = await detector.analyzeImpact(changes, project)
+
+// 3. 生成同步计划
+const plan = await detector.planSynchronization(impact)
+
+// 4. 生成智能提醒
+const reminders = await detector.generateReminders(plan)
+
+// 5. 用户确认后执行
+if (await userConfirms(reminders)) {
+  await executeSyncPlan(plan)
+}
+
+// 6. 学习优化
+await detector.learnFromSync(syncResult)
+```
+
+##### 学习和适应机制 (Learning & Adaptation Mechanisms)
+```json
+{
+  "sync_learning": {
+    "patterns": {
+      "shared_constants": {
+        "common_impacts": ["services", "components", "tests"],
+        "auto_fix_rate": 0.85,
+        "user_acceptance": 0.92
+      },
+      "type_definitions": {
+        "common_impacts": ["services", "components", "apis", "tests"],
+        "complexity_factor": 1.3,
+        "manual_review_rate": 0.65
+      }
+    },
+    "user_preferences": {
+      "preferred_order": ["critical", "high", "medium"],
+      "auto_fix_threshold": "high_confidence",
+      "reminder_style": "grouped_by_file"
+    },
+    "performance_metrics": {
+      "detection_accuracy": 0.94,
+      "false_positive_rate": 0.06,
+      "user_satisfaction": 0.89
+    }
+  }
+}
+```
+
 #### 性能监控系统 (Performance Monitoring System) ⭐ 新增
 
 基于生长文件夹的监控数据，提供全面的系统性能洞察：

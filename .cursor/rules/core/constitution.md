@@ -189,6 +189,32 @@ AI共生操作系统的运行逻辑 = **信号注入 → 协议调度 → 代理
 | **L3** | 代理层 (Agency Layer)      | 目标导向的自治单元 | ✅ Agent（智能体）<br>✅ Model（模型作为执行引擎）                    | • 每个Agent必须声明 sovereignty_boundary<br>• 计划生成必须输出 plan_rationale                            |
 | **L4** | 主权层 (Sovereignty Layer) | 人类决策的终极界面 | ✅ 道（哲学）<br>✅ 法（治理）<br>✅ 5D法则                            | • 每个Gate必须显示AI建议原文 + 依据信号快照<br>• 1个保守方案 / 1个激进方案<br>• "跳过此步"按钮旁标注风险 |
 
+### ⚠️ 第二章附则：双目录架构强制要求 (Dual Directory Architecture Mandatory Requirement)
+
+**所有系统组件必须严格遵守双目录架构设计原则，任何违反此原则的行为都构成违反宪法**：
+
+#### 📁 目录职责强制分离
+- **`.cursor/` 目录**: **绝对禁止**存储任何运行时生成的数据文件
+  - ❌ 禁止：日志文件、缓存文件、报告文件、临时文件
+  - ❌ 禁止：用户数据、学习记录、监控数据
+  - ✅ 允许：规则文件、脚本文件、配置文件、文档文件
+
+- **`.cursorGrowth/` 目录**: **必须**存储所有运行时生成的数据
+  - ✅ 必需：所有日志文件、缓存文件、报告文件
+  - ✅ 必需：用户学习数据、对话记录、监控数据
+  - ✅ 必需：项目特定配置和个性化数据
+
+#### 🔒 隐私保护强制要求
+- 所有用户数据必须存储在 `.cursorGrowth/` 目录
+- `.cursorGrowth/` 目录必须自动添加到 `.gitignore`
+- 禁止任何用户数据泄露到版本控制系统
+
+#### 🚫 违反后果
+任何在 `.cursor/` 目录中生成运行时数据的行为都构成：
+- **违反宪法第2条**：信号可信公理
+- **违反宪法第3条**：认知可审计公理
+- **严重安全违规**：可能导致用户数据泄露
+
 ## 第三章：六维交互协议 (Six-Dimensional Interaction Protocol)
 
 | API    | 名称                          | 输入（Human → OS）            | 输出（OS → Human）                                             | 设计目的                             | 防错机制                           |
@@ -247,6 +273,178 @@ const authRefactor = {
 - **依赖验证**：确保变更不会破坏现有依赖
 - **备份机制**：自动创建变更前的备份
 - **渐进执行**：支持分步骤执行和验证
+
+### D6.1 模块同步检测 (Module Synchronization Detection) ⭐ 新增
+
+**触发条件**：
+- **共享资源修改**：常量、类型定义、配置文件的变更
+- **接口变更**：API、函数签名、数据结构的修改
+- **依赖关系变化**：导入/导出关系的改变
+- **架构重构**：影响多个模块的结构调整
+
+**执行流程**：
+1. **变更前检测**：分析即将修改的内容对其他模块的影响
+2. **依赖链追踪**：识别所有需要同步更新的相关文件
+3. **同步提醒**：主动提示需要同步修改的文件和位置
+4. **确认机制**：确保所有相关修改都已完成
+
+#### 模块同步检测器接口 (Module Synchronization Detector Interface)
+```typescript
+interface ModuleSynchronizationDetector {
+  // 1. 变更影响分析
+  analyzeChangeImpact(changedFile: File, context: Context): ChangeImpact
+
+  // 2. 依赖链追踪
+  traceDependencyChain(file: File): DependencyChain
+
+  // 3. 同步需求评估
+  evaluateSynchronizationNeeds(impact: ChangeImpact): SyncRequirements
+
+  // 4. 智能提醒生成
+  generateSyncReminders(requirements: SyncRequirements): SyncReminder[]
+}
+
+interface ChangeImpact {
+  // 直接影响的文件
+  directImpacts: File[]
+
+  // 间接影响的文件
+  indirectImpacts: File[]
+
+  // 共享资源变更
+  sharedResourceChanges: SharedResource[]
+
+  // 接口变更
+  interfaceChanges: InterfaceChange[]
+}
+
+interface SharedResource {
+  type: 'constant' | 'type' | 'config' | 'utility'
+  name: string
+  usageLocations: FileLocation[]
+  requiredSyncActions: SyncAction[]
+}
+
+// 同步提醒数据结构
+interface SyncReminder {
+  // 同步类型
+  type: 'shared_constant' | 'type_definition' | 'api_interface' | 'config_change'
+
+  // 受影响文件
+  affectedFiles: FileLocation[]
+
+  // 具体同步操作
+  requiredActions: SyncAction[]
+
+  // 优先级
+  priority: 'critical' | 'high' | 'medium' | 'low'
+
+  // 自动化建议
+  autoFixSuggestions?: AutoFix[]
+}
+```
+
+#### 实际应用场景 (Practical Scenarios)
+
+**场景1：共享常量修改**
+```typescript
+// 用户修改 src/shared/constants.ts
+export const API_BASE_URL = 'https://new-api.example.com' // 从旧URL改为新URL
+```
+
+**AI自动响应**：
+```
+🔔 检测到共享常量变更 - 需要模块同步
+
+📋 影响分析：
+├── 🔴 src/services/apiService.ts (使用API_BASE_URL)
+├── 🔴 src/components/ConfigPanel.tsx (显示配置)
+├── 🔴 tests/api.test.ts (测试用例中的mock数据)
+└── 🔴 docs/api-reference.md (API文档)
+
+⚡ 建议同步操作：
+1. 更新ApiService中的基础URL使用
+2. 更新配置面板的默认值显示
+3. 修改测试用例的mock数据
+4. 更新API文档中的URL说明
+
+❓ 是否要我帮你逐个处理这些同步修改？
+```
+
+**场景2：类型定义变更**
+```typescript
+// 用户修改 src/shared/types.ts
+export interface User {
+  id: string
+  name: string          // 新增字段
+  email: string
+  role: UserRole       // 新增字段
+}
+```
+
+**AI自动响应**：
+```
+🔔 检测到类型定义变更 - 需要模块同步
+
+📋 影响分析：
+├── 🔴 src/services/userService.ts (需要更新数据处理逻辑)
+├── 🔴 src/components/UserForm.tsx (需要添加新字段输入)
+├── 🔴 src/api/userApi.ts (需要更新API接口)
+├── 🔴 tests/user.test.ts (需要更新测试数据)
+└── 🔴 docs/user-api.md (需要更新API文档)
+
+⚡ 建议同步操作：
+1. 更新UserService的数据验证逻辑
+2. 添加UserForm的新字段输入框
+3. 修改API接口以支持新字段
+4. 更新测试用例的mock数据
+5. 更新API文档说明
+```
+
+#### 同步执行流程 (Synchronization Execution Flow)
+```typescript
+// 变更前检测
+const impact = await detector.analyzeChangeImpact(changedFile, context);
+
+// 生成同步提醒
+const reminders = await detector.generateSyncReminders(impact.syncRequirements);
+
+// 强制用户确认所有同步任务完成
+await requireUserConfirmation(reminders);
+
+// 执行同步操作（用户确认后）
+for (const reminder of reminders) {
+  if (reminder.autoFixSuggestions) {
+    await applyAutoFixes(reminder.autoFixSuggestions);
+  } else {
+    await promptManualSync(reminder);
+  }
+}
+```
+
+#### 学习和进化 (Learning & Evolution)
+```json
+{
+  "sync_learning": {
+    "patterns": {
+      "shared_types_modified": {
+        "common_sync_targets": ["services", "components", "tests", "docs"],
+        "success_rate": 0.95,
+        "avg_sync_time": "8.5min"
+      },
+      "config_constants_changed": {
+        "common_sync_targets": ["services", "components", "tests"],
+        "success_rate": 0.98,
+        "avg_sync_time": "5.2min"
+      }
+    },
+    "user_preferences": {
+      "preferred_sync_order": ["types", "services", "components", "tests"],
+      "auto_fix_preference": "ask_first"
+    }
+  }
+}
+```
 
 ## 第四章：宪法适用原则 (Constitutional Application Principles)
 

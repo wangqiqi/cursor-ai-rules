@@ -4,14 +4,14 @@
 [![Version](https://img.shields.io/badge/version-4.3.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-18-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-19-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-3-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
-📚 **[使用指南](.cursor/docs/usage-guide.md)** | **[智能进化指南](.cursor/docs/intelligent-evolution-guide.md)** | **[Token压缩技术](.cursor/docs/token-compression-guide.md)** | **[系统信息指南](.cursor/docs/system-info-guide.md)** | **[团队规则示例](.cursor/docs/team-rules-example.md)** | **[远程规则导入](.cursor/docs/remote-rules-guide.md)**
+📚 **[使用指南](.cursor/docs/usage-guide.md)** | **[开发规范](.cursor/docs/development-guidelines.md)** | **[智能进化指南](.cursor/docs/intelligent-evolution-guide.md)** | **[Token压缩技术](.cursor/docs/token-compression-guide.md)** | **[系统信息指南](.cursor/docs/system-info-guide.md)** | **[团队规则示例](.cursor/docs/team-rules-example.md)** | **[远程规则导入](.cursor/docs/remote-rules-guide.md)**
 
 采用 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules) 定义的 AI 协作规范，结合单步多任务感知、智能缓存和规则系统，实现高效、安全的人机协作。
 
@@ -138,6 +138,7 @@ Cursor AI Rules 采用创新的双目录架构：
 | **evolution-governance** | 演进治理机制 - 规则演进的安全保障和质量控制 | 智能应用 | ✅ |
 | **collaboration** | 团队协作规则 - 多开发者环境的最佳实践 | 智能应用 | ✅ |
 | **conversation_intent_analyzer** | 会话意图分析器 - 智能理解用户需求和意图 | 始终应用 | ✅ |
+| **vibe-coding** | VIBE Coding开发原则 - 文档驱动、测试先行、前后端对齐 | 代码文件 | ✅ |
 | **javascript** | JavaScript/TypeScript开发规则 - 现代前端开发最佳实践 | 代码文件 | ✅ |
 | **python** | Python开发规则 - 后端开发和数据处理最佳实践 | 代码文件 | ✅ |
 

@@ -177,8 +177,11 @@ alwaysApply: true
 | `creation` | <0.5 | 提出澄清问题 | ❌ **禁止** |
 | `optimization` | >0.7 | 分析现有代码 + 优化建议 | ✅ 允许（针对现有项目） |
 | `analysis` | >0.7 | 执行分析 + 报告结果 | ✅ 允许（分析操作） |
+| `refactor_sync` | >0.7 | 检测同步需求 + 生成提醒 | ✅ 允许（同步分析操作） |
+| `refactor_sync` | 0.5-0.7 | 确认同步范围 + 初步分析 | ✅ 允许（需用户确认） |
+| `refactor_sync` | <0.5 | 澄清同步需求 + 范围界定 | ✅ 允许（范围界定操作） |
 
-**重要原则**：**项目创建意图必须经过需求讨论和方案确认阶段，绝不允许直接开始开发！**
+**重要原则**：**项目创建意图必须经过需求讨论和方案确认阶段，绝不允许直接开始开发！重构同步意图应优先进行影响分析，确保所有相关模块都得到适当更新。**
 
 ## 🏗️ 系统架构 (System Architecture)
 
@@ -248,6 +251,12 @@ intent_categories:
     keywords: ["学习", "了解", "掌握", "教程", "指南", "文档", "帮助", "指导"]
     confidence: 0.6
     description: "用户需要学习和技术指导"
+
+  # 重构同步意图 ⭐ 新增
+  refactor_sync:
+    keywords: ["同步修改", "关联更新", "级联修改", "批量更新", "重构同步", "模块同步", "联动修改", "连锁更新"]
+    confidence: 0.8
+    description: "用户需要同步修改多个相关文件和模块"
 ```
 
 #### 二级意图：技术领域 (Secondary Intent: Tech Domain)
@@ -334,6 +343,7 @@ class IntentMatcher:
             'analysis': 0,
             'deployment': 0,
             'learning': 0,
+            'refactor_sync': 0,
             'frontend': 0,
             'backend': 0,
             'data': 0,
@@ -478,6 +488,75 @@ class PersonalizedResponseGenerator:
 {{resource_recommendations}}
 
 你对哪个具体技术点感兴趣？🤔
+```
+
+### 重构同步模板 (Refactor Synchronization Templates) ⭐ 新增
+
+```markdown
+## 🤖 重构同步意图检测
+
+检测到你需要进行**模块同步修改**！
+
+### 📋 变更分析
+- **变更类型**: {{change_type}}
+- **受影响文件数**: {{affected_files_count}}
+- **置信度**: {{confidence_level}}
+
+### 🔍 同步影响分析
+
+#### 直接影响的文件
+{{direct_impacts}}
+
+#### 间接影响的文件
+{{indirect_impacts}}
+
+#### 推荐同步操作
+{{sync_actions}}
+
+### ⚡ 自动化修复建议
+{{auto_fix_suggestions}}
+
+### ❓ 确认操作
+你希望我按优先级顺序帮你处理这些同步修改吗？或者你想先手动检查某些文件？
+
+**建议优先级**: 关键影响 → 高影响 → 中等影响 🎯
+```
+
+**具体应用示例**：
+```markdown
+## 🤖 重构同步意图检测
+
+检测到你需要进行**模块同步修改**！
+
+### 📋 变更分析
+- **变更类型**: 类型定义修改
+- **受影响文件数**: 5个文件
+- **置信度**: 88%
+
+### 🔍 同步影响分析
+
+#### 直接影响的文件
+- 🔴 `src/services/userService.ts` - 需要更新数据处理逻辑
+- 🔴 `src/components/UserForm.tsx` - 需要添加新字段输入
+- 🔴 `src/api/userApi.ts` - 需要更新API接口
+
+#### 间接影响的文件
+- 🟡 `tests/user.test.ts` - 可能需要更新测试数据
+- 🟡 `src/pages/UserProfile.tsx` - 可能需要UI更新
+
+#### 推荐同步操作
+1. 更新UserService的数据验证逻辑
+2. 添加UserForm的新字段输入框
+3. 修改API接口以支持新字段
+4. 更新测试用例的数据结构
+
+### ⚡ 自动化修复建议
+- 自动添加类型导入语句
+- 批量更新接口定义
+- 生成测试数据更新脚本
+
+### ❓ 确认操作
+你希望我按优先级顺序帮你处理这些同步修改吗？
 ```
 
 ## 🎓 学习和进化系统 (Learning & Evolution System)

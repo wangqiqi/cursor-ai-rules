@@ -330,6 +330,80 @@
         "allow_failures": false
       }
     },
+    "vibe_coding": {
+      "description": "应用VIBE Coding开发原则 - 文档驱动、测试先行、前后端对齐",
+      "intents": [
+        "vibe",
+        "coding",
+        "文档驱动",
+        "测试驱动",
+        "前后端对齐",
+        "frontend-first",
+        "test-driven",
+        "alignment"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "我想用VIBE Coding方式开发项目",
+        "应用文档驱动开发",
+        "开始前后端对齐开发",
+        "使用测试驱动开发模式"
+      ],
+      "capabilities": {
+        "rules": [
+          "constitution",
+          "conversation_intent_analyzer",
+          "vibe-coding",
+          "generator"
+        ],
+        "skills": [
+          "webapp-testing",
+          "frontend-design",
+          "doc-coauthoring"
+        ],
+        "scripts": [
+          "core/init.sh",
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "project-init",
+          "frontend-dev",
+          "backend-dev",
+          "testing-phase",
+          "alignment-check"
+        ],
+        "hooks": [
+          "code-quality.sh",
+          "test-hooks.sh",
+          "security-audit.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows",
+        "hooks",
+        "skills"
+      ],
+      "parameters": {
+        "development_phases": [
+          "requirements",
+          "frontend-dev",
+          "backend-dev",
+          "testing",
+          "alignment"
+        ],
+        "alignment_checks": true,
+        "test_driven": true,
+        "documentation_first": true
+      },
+      "quality_gates": {
+        "documentation_complete": true,
+        "tests_written": true,
+        "alignment_verified": true,
+        "code_review_passed": true
+      }
+    },
     "deploy_application": {
       "description": "部署应用",
       "intents": [
