@@ -70,7 +70,7 @@ CUSTOM_ROOT_PATH="/path/to/project"
 
 运行测试脚本验证功能：
 
-系统信息获取器会自动通过 `cursor-adaptation-setup.sh` 进行变量替换，无需手动测试。
+系统信息获取器会自动通过 `init.sh` 进行变量替换，无需手动测试。
 
 ## 文件结构
 

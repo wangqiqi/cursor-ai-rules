@@ -44,7 +44,7 @@ analyze_user_intent() {
     elif echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
         intent_type="project_creation"
         confidence=90
-        actions=("env_check" "enable" "generator" "constitution")
+        actions=("env-perception" "init" "generator" "constitution")
     elif echo "$user_input" | grep -qiE "(优化|改进|重构|质量|检查)"; then
         intent_type="code_optimization"
         confidence=85
@@ -56,7 +56,7 @@ analyze_user_intent() {
     elif echo "$user_input" | grep -qiE "(部署|发布|上线|运维)"; then
         intent_type="deployment"
         confidence=75
-        actions=("env_check" "plugin_manager")
+        actions=("env-perception" "plugin_manager")
     elif echo "$user_input" | grep -qiE "(学习|了解|教程|指南)"; then
         intent_type="learning"
         confidence=70
@@ -140,7 +140,7 @@ make_decision() {
     case "$intent_type" in
         "project_creation")
             if [ "$project_type" = "unknown" ]; then
-                execution_plan=("env_check" "enable" "generator")
+                execution_plan=("env-perception" "init" "generator")
                 explanation="检测到项目创建意图，为新项目执行初始化流程"
             else
                 should_execute=false
@@ -152,7 +152,7 @@ make_decision() {
                 execution_plan=("check" "eslint")
                 explanation="为现有项目执行代码质量优化"
             else
-                execution_plan=("env_check" "enable")
+                execution_plan=("env-perception" "init")
                 explanation="项目环境未就绪，先进行环境准备"
             fi
             ;;
@@ -161,7 +161,7 @@ make_decision() {
             explanation="执行全面的项目状态分析"
             ;;
         "deployment")
-            execution_plan=("env_check" "plugin_manager")
+            execution_plan=("env-perception" "plugin_manager")
             explanation="准备项目部署环境"
             ;;
         "learning")
@@ -227,16 +227,16 @@ execute_action() {
     echo -e "${YELLOW}🚀 执行动作: ${CYAN}$action${NC}"
 
     case "$action" in
-        "env_check")
-            if [ -f "$CURSOR_DIR/scripts/env_check.sh" ]; then
-                bash "$CURSOR_DIR/scripts/env_check.sh"
+        "env-perception")
+            if [ -f "$CURSOR_DIR/core/env-perception.sh" ]; then
+                bash "$CURSOR_DIR/core/env-perception.sh"
             else
-                echo -e "${YELLOW}⚠️  未找到环境检查脚本${NC}"
+                echo -e "${YELLOW}⚠️  未找到环境感知脚本${NC}"
             fi
             ;;
-        "enable")
-            if [ -f "$CURSOR_DIR/scripts/enable.sh" ]; then
-                bash "$CURSOR_DIR/scripts/enable.sh"
+        "init")
+            if [ -f "$CURSOR_DIR/core/init.sh" ]; then
+                bash "$CURSOR_DIR/core/init.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到启用脚本${NC}"
             fi
@@ -247,9 +247,9 @@ execute_action() {
         "constitution")
             echo -e "${GREEN}✅ AI共生宪法已激活 (alwaysApply: true)${NC}"
             ;;
-        "check")
-            if [ -f "$CURSOR_DIR/scripts/check.sh" ]; then
-                bash "$CURSOR_DIR/scripts/check.sh"
+        "quality")
+            if [ -f "$CURSOR_DIR/quality/quality-manager.sh" ]; then
+                bash "$CURSOR_DIR/quality/quality-manager.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到代码检查脚本${NC}"
             fi
@@ -464,9 +464,9 @@ show_traditional_commands() {
     echo -e "${PURPLE}🔧 可用脚本命令 (Scripts):${NC}"
     echo -e "${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    echo -e "  🚀 ${CYAN}env_check.sh${NC} - 环境依赖检查脚本"
-    echo -e "  🚀 ${CYAN}enable.sh${NC} - 插件启用脚本"
-    echo -e "  🚀 ${CYAN}check.sh${NC} - 代码质量检查脚本"
+    echo -e "  🚀 ${CYAN}env-perception.sh${NC} - 统一环境感知引擎"
+    echo -e "  🚀 ${CYAN}init.sh${NC} - 统一初始化引擎"
+    echo -e "  🚀 ${CYAN}quality-manager.sh${NC} - 统一质量管理系统"
     echo -e "  🚀 ${CYAN}perception.sh${NC} - 智能感知分析脚本"
     echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本 (features/automation/scripts/)"
 

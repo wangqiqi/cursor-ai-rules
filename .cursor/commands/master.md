@@ -160,12 +160,11 @@ graph TD
 | 脚本 | 描述 | 执行方式 |
 |------|------|----------|
 | `quality-manager.sh` | 统一质量管理系统 | `bash .cursor/quality/quality-manager.sh` |
-| `enable.sh` | 插件启用脚本 | `bash .cursor/scripts/enable.sh` |
+| `init.sh` | 统一初始化引擎 | `bash .cursor/core/init.sh` |
 | `init.sh` | 统一初始化引擎 | `bash .cursor/init.sh` |
 | `config-manager.sh` | 统一配置管理器 | `bash .cursor/config/config-manager.sh` |
-| `env_check.sh` | 环境依赖检查脚本 | `bash .cursor/scripts/env_check.sh` |
-| `growth_init.sh` | 项目增长初始化脚本 | `bash .cursor/features/automation/scripts/growth_init.sh` |
 | `env-perception.sh` | 统一环境感知引擎 | `bash .cursor/core/env-perception.sh` |
+| `growth_init.sh` | 项目增长初始化脚本 | `bash .cursor/features/automation/scripts/growth_init.sh` |
 | `plugin_manager.sh` | 插件管理系统脚本 | `bash .cursor/features/automation/scripts/plugin_manager.sh` |
 
 ## 🎯 快速操作指南
@@ -176,12 +175,12 @@ graph TD
 # 初始化新项目环境
 @master script init.sh      # 🚀 一键完成所有初始化
 # 或者分别执行：
-@master script enable.sh    # 启用基础插件
-@master script env_check.sh # 检查环境依赖
+@master script init.sh      # 运行统一初始化
+@master script env-perception.sh # 运行统一环境感知
 @master rule generator      # 生成项目规则
 
 # 代码质量检查
-@master script check.sh     # 运行代码检查
+@master script quality-manager.sh # 运行质量检查
 @master rule eslint         # 启用ESLint检查
 
 # 智能演进管理
@@ -195,8 +194,8 @@ graph TD
 
 1. **环境准备**
    ```bash
-   @master script env_check.sh  # 检查环境依赖
-   @master script enable.sh     # 启用必要插件
+   @master script env-perception.sh  # 运行环境感知
+   @master script init.sh       # 运行项目初始化
    ```
 
 2. **规则配置**
@@ -208,7 +207,7 @@ graph TD
 3. **质量保障**
    ```bash
    @master rule eslint         # 启用代码检查
-   @master script check.sh     # 执行首次检查
+   @master script quality-manager.sh # 执行质量检查
    ```
 
 ## 🚀 智能执行引擎
@@ -434,16 +433,16 @@ execute_action() {
     echo -e "${YELLOW}🚀 执行动作: ${CYAN}$action${NC}"
 
     case "$action" in
-        "env_check")
-            if [ -f "$CURSOR_DIR/scripts/env_check.sh" ]; then
-                bash "$CURSOR_DIR/scripts/env_check.sh"
+        "env-perception")
+            if [ -f "$CURSOR_DIR/core/env-perception.sh" ]; then
+                bash "$CURSOR_DIR/core/env-perception.sh"
             else
-                echo -e "${YELLOW}⚠️  未找到环境检查脚本${NC}"
+                echo -e "${YELLOW}⚠️  未找到环境感知脚本${NC}"
             fi
             ;;
-        "enable")
-            if [ -f "$CURSOR_DIR/scripts/enable.sh" ]; then
-                bash "$CURSOR_DIR/scripts/enable.sh"
+        "init")
+            if [ -f "$CURSOR_DIR/core/init.sh" ]; then
+                bash "$CURSOR_DIR/core/init.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到启用脚本${NC}"
             fi
@@ -454,11 +453,11 @@ execute_action() {
         "constitution")
             echo -e "${GREEN}✅ AI共生宪法已激活 (alwaysApply: true)${NC}"
             ;;
-        "check")
-            if [ -f "$CURSOR_DIR/scripts/check.sh" ]; then
-                bash "$CURSOR_DIR/scripts/check.sh"
+        "quality")
+            if [ -f "$CURSOR_DIR/quality/quality-manager.sh" ]; then
+                bash "$CURSOR_DIR/quality/quality-manager.sh"
             else
-                echo -e "${YELLOW}⚠️  未找到代码检查脚本${NC}"
+                echo -e "${YELLOW}⚠️  未找到质量管理脚本${NC}"
             fi
             ;;
         "eslint")
@@ -708,9 +707,9 @@ show_traditional_commands() {
     echo -e "${PURPLE}🔧 可用脚本命令 (Scripts):${NC}"
     echo -e "${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    echo -e "  🚀 ${CYAN}env_check.sh${NC} - 环境依赖检查脚本"
-    echo -e "  🚀 ${CYAN}enable.sh${NC} - 插件启用脚本"
-    echo -e "  🚀 ${CYAN}check.sh${NC} - 代码质量检查脚本"
+    echo -e "  🚀 ${CYAN}env-perception.sh${NC} - 统一环境感知引擎"
+    echo -e "  🚀 ${CYAN}init.sh${NC} - 统一初始化引擎"
+    echo -e "  🚀 ${CYAN}quality-manager.sh${NC} - 统一质量管理系统"
     echo -e "  🚀 ${CYAN}env-perception.sh${NC} - 统一环境感知引擎"
     echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本 (features/automation/scripts/)"
 
@@ -739,7 +738,7 @@ main "$@"
 
 ```bash
 # 连续执行多个命令（需要在支持的环境中使用）
-@master rule eslint && @master script check.sh
+@master rule eslint && @master script quality-manager.sh
 ```
 
 ### 条件执行
@@ -805,7 +804,7 @@ ls -la .cursor/scripts/
 如果遇到问题：
 
 1. 运行 `@master list` 检查所有命令是否可用
-2. 运行 `@master script env_check.sh` 检查环境依赖
+2. 运行 `@master script env-perception.sh` 运行环境感知
 3. 查看具体的错误信息并参考对应命令的文档
 
 ## 🤝 贡献
