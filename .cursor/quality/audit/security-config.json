@@ -1,0 +1,128 @@
+{
+  "name": "Cursor AI Rules - 安全审计配置",
+  "version": "1.0.0",
+  "description": "统一安全审计配置，保障代码和依赖的安全性",
+
+  "audit_levels": {
+    "critical": {
+      "severity": "high",
+      "action": "block",
+      "description": "严重安全漏洞，必须立即修复"
+    },
+    "high": {
+      "severity": "high",
+      "action": "warn",
+      "description": "高风险安全问题，建议尽快修复"
+    },
+    "moderate": {
+      "severity": "medium",
+      "action": "warn",
+      "description": "中等风险问题，可评估后处理"
+    },
+    "low": {
+      "severity": "low",
+      "action": "info",
+      "description": "低风险问题，可选修复"
+    }
+  },
+
+  "scan_targets": {
+    "dependencies": {
+      "npm": {
+        "enabled": true,
+        "command": "npm audit --audit-level moderate",
+        "timeout": 300
+      },
+      "yarn": {
+        "enabled": true,
+        "command": "yarn audit --level moderate",
+        "timeout": 300
+      },
+      "pip": {
+        "enabled": true,
+        "command": "safety check --full-report",
+        "timeout": 180
+      }
+    },
+
+    "code": {
+      "secrets": {
+        "enabled": true,
+        "patterns": [
+          "password.*=",
+          "secret.*=",
+          "key.*=",
+          "token.*="
+        ],
+        "exclude_files": [
+          "*.log",
+          "*.tmp",
+          "node_modules/**"
+        ]
+      },
+
+      "sensitive_data": {
+        "enabled": true,
+        "patterns": [
+          "\\b\\d{4}[ -]?\\d{4}[ -]?\\d{4}[ -]?\\d{4}\\b",
+          "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b"
+        ]
+      }
+    },
+
+    "files": {
+      "permissions": {
+        "enabled": true,
+        "check_executables": true,
+        "max_size_mb": 100
+      },
+
+      "suspicious_files": {
+        "enabled": true,
+        "patterns": [
+          "*.exe",
+          "*.dll",
+          "*.so",
+          "*.dylib"
+        ],
+        "allowed_paths": [
+          "node_modules/**",
+          "vendor/**"
+        ]
+      }
+    }
+  },
+
+  "reporting": {
+    "format": "json",
+    "include_details": true,
+    "include_fixes": true,
+    "output_file": "security-audit-report.json"
+  },
+
+  "automated_fixes": {
+    "enabled": false,
+    "safe_fixes_only": true,
+    "backup_before_fix": true,
+    "fix_types": [
+      "dependency_updates",
+      "permission_fixes"
+    ]
+  },
+
+  "exclusions": {
+    "paths": [
+      "node_modules/**",
+      "vendor/**",
+      ".git/**",
+      "dist/**",
+      "build/**",
+      "*.log"
+    ],
+    "files": [
+      "package-lock.json",
+      "yarn.lock",
+      "poetry.lock"
+    ]
+  }
+}

@@ -1,0 +1,527 @@
+{
+  "version": "1.0.0",
+  "description": "🎯 统一能力映射表 - 将用户意图映射到具体的执行能力组合",
+  "last_updated": "2026-01-16",
+  "author": "wangqiqi",
+
+  "global_config": {
+    "default_execution_timeout": 300000,
+    "max_parallel_executions": 3,
+    "error_handling_strategy": "graceful_degradation",
+    "logging_level": "info",
+    "telemetry_enabled": false,
+    "learning_enabled": true
+  },
+
+  "mappings": {
+    "create_react_project": {
+      "description": "创建React项目",
+      "intents": ["create", "project", "react", "frontend"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "我想创建一个React项目",
+        "帮我搭建React应用",
+        "新建一个React TypeScript项目"
+      ],
+      "capabilities": {
+        "rules": ["conversation_intent_analyzer", "generator", "templates"],
+        "skills": ["react", "node", "typescript"],
+        "scripts": ["init.sh", "core/env-perception.sh", "config/config-manager.sh"],
+        "workflows": ["project-init", "dependency-install", "config-setup"],
+        "hooks": ["after-project-init"]
+      },
+      "execution_order": ["perception", "rules", "scripts", "skills", "workflows"],
+      "parameters": {
+        "project_type": "react",
+        "language": "typescript",
+        "template": "standard"
+      },
+      "validation_rules": {
+        "required_tools": ["node", "npm"],
+        "min_node_version": "16.0.0"
+      },
+      "fallback_strategies": ["scaffold-basic", "manual-guide"]
+    },
+
+    "create_vue_project": {
+      "description": "创建Vue项目",
+      "intents": ["create", "project", "vue", "frontend"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "我想创建一个Vue项目",
+        "帮我搭建Vue应用",
+        "新建一个Vue 3项目"
+      ],
+      "capabilities": {
+        "rules": ["conversation_intent_analyzer", "generator", "templates"],
+        "skills": ["vue", "node", "typescript"],
+        "scripts": ["init.sh", "core/env-perception.sh"],
+        "workflows": ["project-init", "dependency-install", "config-setup"],
+        "hooks": ["after-project-init"]
+      },
+      "execution_order": ["perception", "rules", "scripts", "skills", "workflows"],
+      "parameters": {
+        "project_type": "vue",
+        "language": "typescript",
+        "template": "vue3"
+      },
+      "validation_rules": {
+        "required_tools": ["node", "npm"],
+        "min_node_version": "16.0.0"
+      }
+    },
+
+    "create_python_api": {
+      "description": "创建Python API项目",
+      "intents": ["create", "project", "python", "api", "backend"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "我想创建一个Python API",
+        "帮我搭建FastAPI应用",
+        "新建一个Django REST项目"
+      ],
+      "capabilities": {
+        "rules": ["conversation_intent_analyzer", "generator", "templates"],
+        "skills": ["python", "fastapi", "django"],
+        "scripts": ["init.sh", "core/env-perception.sh"],
+        "workflows": ["project-init", "dependency-install", "config-setup"],
+        "hooks": ["after-project-init"]
+      },
+      "execution_order": ["perception", "rules", "scripts", "skills", "workflows"],
+      "parameters": {
+        "project_type": "python-api",
+        "framework": "fastapi",
+        "template": "rest-api"
+      },
+      "validation_rules": {
+        "required_tools": ["python3", "pip"],
+        "min_python_version": "3.8.0"
+      }
+    },
+
+    "check_code_quality": {
+      "description": "检查代码质量",
+      "intents": ["check", "quality", "code", "lint", "audit"],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "检查代码质量",
+        "运行代码检查",
+        "代码质量审计",
+        "修复代码问题"
+      ],
+      "capabilities": {
+        "rules": ["eslint", "intelligent_evolution"],
+        "skills": ["code-quality"],
+        "scripts": ["quality/quality-manager.sh"],
+        "workflows": ["lint", "audit", "report"],
+        "hooks": ["code-quality.sh"]
+      },
+      "execution_order": ["rules", "scripts", "hooks", "workflows"],
+      "parameters": {
+        "scope": "all",
+        "fix_issues": true,
+        "generate_report": true
+      },
+      "quality_gates": {
+        "max_warnings": 10,
+        "max_errors": 0,
+        "coverage_min": 80
+      }
+    },
+
+    "commit_code": {
+      "description": "提交代码到Git",
+      "intents": ["commit", "git", "save", "push"],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "提交代码",
+        "git commit",
+        "保存更改",
+        "推送代码"
+      ],
+      "capabilities": {
+        "rules": ["git-workflow"],
+        "scripts": ["git-commit.sh"],
+        "hooks": ["commit-msg-check.sh", "pre-commit.sh"],
+        "workflows": ["stage", "commit", "push"]
+      },
+      "execution_order": ["hooks", "scripts", "workflows"],
+      "parameters": {
+        "auto_stage": true,
+        "generate_message": true,
+        "push_after_commit": true
+      },
+      "validation_rules": {
+        "message_format": "type(scope): description",
+        "max_line_length": 72,
+        "require_tests": true
+      }
+    },
+
+    "run_tests": {
+      "description": "运行测试",
+      "intents": ["test", "testing", "unit", "integration"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "运行测试",
+        "执行单元测试",
+        "运行集成测试",
+        "测试覆盖率检查"
+      ],
+      "capabilities": {
+        "rules": ["testing-workflow"],
+        "skills": ["testing"],
+        "scripts": ["test-runner.sh"],
+        "workflows": ["unit-tests", "integration-tests", "coverage-report"],
+        "hooks": ["pre-test.sh", "post-test.sh"]
+      },
+      "execution_order": ["hooks", "scripts", "workflows"],
+      "parameters": {
+        "test_type": "all",
+        "parallel_execution": true,
+        "coverage_report": true
+      },
+      "quality_gates": {
+        "min_coverage": 80,
+        "max_test_duration": 300,
+        "allow_failures": false
+      }
+    },
+
+    "deploy_application": {
+      "description": "部署应用",
+      "intents": ["deploy", "release", "publish"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "部署应用",
+        "发布到生产环境",
+        "上线应用"
+      ],
+      "capabilities": {
+        "rules": ["deployment-workflow"],
+        "skills": ["docker", "kubernetes"],
+        "scripts": ["deploy.sh"],
+        "workflows": ["build", "test", "deploy", "verify"],
+        "hooks": ["pre-deploy.sh", "post-deploy.sh"]
+      },
+      "execution_order": ["workflows", "scripts", "hooks"],
+      "parameters": {
+        "environment": "production",
+        "rollback_enabled": true,
+        "health_checks": true
+      },
+      "validation_rules": {
+        "tests_passed": true,
+        "code_quality_ok": true,
+        "security_audit_passed": true
+      }
+    },
+
+    "analyze_project": {
+      "description": "分析项目现状",
+      "intents": ["analyze", "assess", "review", "status"],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "分析项目现状",
+        "项目健康检查",
+        "代码质量评估",
+        "技术债务分析"
+      ],
+      "capabilities": {
+        "rules": ["intelligent_evolution"],
+        "skills": ["code-quality", "security-audit"],
+        "scripts": ["core/env-perception.sh", "analysis.sh"],
+        "workflows": ["code-analysis", "security-scan", "performance-check"],
+        "hooks": ["analysis-complete.sh"]
+      },
+      "execution_order": ["perception", "scripts", "workflows", "rules"],
+      "parameters": {
+        "analysis_depth": "comprehensive",
+        "generate_report": true,
+        "include_recommendations": true
+      }
+    },
+
+    "setup_development_environment": {
+      "description": "设置开发环境",
+      "intents": ["setup", "environment", "dev", "install"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "设置开发环境",
+        "安装依赖",
+        "配置开发工具"
+      ],
+      "capabilities": {
+        "rules": ["platform_adapter", "system_info"],
+        "scripts": ["env-setup.sh", "dependency-install.sh"],
+        "workflows": ["tool-installation", "config-setup", "validation"],
+        "hooks": ["env-ready.sh"]
+      },
+      "execution_order": ["rules", "scripts", "workflows"],
+      "parameters": {
+        "auto_detect": true,
+        "install_missing": true,
+        "validate_setup": true
+      }
+    },
+
+    "optimize_performance": {
+      "description": "性能优化",
+      "intents": ["optimize", "performance", "speed", "efficiency"],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "优化性能",
+        "提升应用速度",
+        "性能分析和优化"
+      ],
+      "capabilities": {
+        "rules": ["intelligent_evolution"],
+        "skills": ["performance-analysis"],
+        "scripts": ["performance-check.sh", "optimization.sh"],
+        "workflows": ["profiling", "bottleneck-analysis", "optimization"],
+        "hooks": ["performance-optimized.sh"]
+      },
+      "execution_order": ["scripts", "workflows", "rules"],
+      "parameters": {
+        "analysis_type": "comprehensive",
+        "auto_fix": false,
+        "generate_report": true
+      }
+    },
+
+    "security_audit": {
+      "description": "安全审计",
+      "intents": ["security", "audit", "vulnerability", "safe"],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "安全审计",
+        "检查安全漏洞",
+        "安全评估"
+      ],
+      "capabilities": {
+        "rules": ["security-workflow"],
+        "skills": ["security-audit"],
+        "scripts": ["security-scan.sh"],
+        "workflows": ["vulnerability-scan", "dependency-check", "config-audit"],
+        "hooks": ["security-check-complete.sh"]
+      },
+      "execution_order": ["workflows", "scripts", "hooks"],
+      "parameters": {
+        "scan_depth": "deep",
+        "check_dependencies": true,
+        "generate_report": true
+      },
+      "quality_gates": {
+        "max_critical_vulnerabilities": 0,
+        "max_high_vulnerabilities": 2,
+        "dependency_vulnerabilities": "block"
+      }
+    },
+
+    "generate_documentation": {
+      "description": "生成文档",
+      "intents": ["document", "docs", "readme", "api"],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "生成文档",
+        "创建README",
+        "API文档生成"
+      ],
+      "capabilities": {
+        "rules": ["documentation-workflow"],
+        "skills": ["docx", "pdf"],
+        "scripts": ["doc-generator.sh"],
+        "workflows": ["api-doc", "readme-gen", "code-doc"],
+        "hooks": ["docs-generated.sh"]
+      },
+      "execution_order": ["workflows", "scripts", "skills"],
+      "parameters": {
+        "doc_types": ["readme", "api", "code"],
+        "auto_discover": true,
+        "include_examples": true
+      }
+    },
+
+    "learn_technology": {
+      "description": "学习新技术",
+      "intents": ["learn", "study", "tutorial", "guide"],
+      "confidence_threshold": 0.6,
+      "user_examples": [
+        "学习React",
+        "了解Docker",
+        "掌握TypeScript"
+      ],
+      "capabilities": {
+        "rules": ["learning-workflow", "i18n"],
+        "skills": ["learning-assistant"],
+        "scripts": ["learning-path.sh"],
+        "workflows": ["skill-assessment", "learning-plan", "practice-setup"],
+        "hooks": ["learning-progress.sh"]
+      },
+      "execution_order": ["rules", "scripts", "workflows"],
+      "parameters": {
+        "technology": "auto-detect",
+        "learning_style": "interactive",
+        "practice_projects": true
+      }
+    }
+  },
+
+  "intent_patterns": {
+    "project_creation": {
+      "keywords": ["创建", "开发", "构建", "搭建", "新建", "初始化"],
+      "tech_indicators": ["React", "Vue", "Python", "Java", "Node.js"],
+      "confidence_boosters": ["项目", "应用", "系统", "工具"]
+    },
+
+    "code_quality": {
+      "keywords": ["检查", "质量", "规范", "优化", "重构", "修复"],
+      "tech_indicators": ["ESLint", "Prettier", "测试", "覆盖率"],
+      "confidence_boosters": ["代码", "质量", "标准", "规范"]
+    },
+
+    "version_control": {
+      "keywords": ["提交", "推送", "拉取", "合并", "分支", "标签"],
+      "tech_indicators": ["Git", "commit", "push", "pull", "merge"],
+      "confidence_boosters": ["版本", "代码", "保存", "同步"]
+    },
+
+    "testing": {
+      "keywords": ["测试", "单元测试", "集成测试", "端到端测试"],
+      "tech_indicators": ["Jest", "Cypress", "Selenium", "测试覆盖率"],
+      "confidence_boosters": ["测试", "验证", "检查", "质量"]
+    },
+
+    "deployment": {
+      "keywords": ["部署", "发布", "上线", "交付"],
+      "tech_indicators": ["Docker", "Kubernetes", "AWS", "Vercel"],
+      "confidence_boosters": ["生产", "环境", "上线", "发布"]
+    },
+
+    "learning": {
+      "keywords": ["学习", "了解", "掌握", "教程", "文档"],
+      "tech_indicators": ["指南", "示例", "最佳实践", "入门"],
+      "confidence_boosters": ["学习", "了解", "掌握", "入门"]
+    }
+  },
+
+  "execution_presets": {
+    "fast_mode": {
+      "description": "快速执行模式，跳过非必要步骤",
+      "timeout_multiplier": 0.7,
+      "skip_optional_steps": true,
+      "parallel_execution": true
+    },
+
+    "thorough_mode": {
+      "description": "全面执行模式，包含所有验证步骤",
+      "timeout_multiplier": 1.5,
+      "skip_optional_steps": false,
+      "parallel_execution": false,
+      "additional_validations": true
+    },
+
+    "safe_mode": {
+      "description": "安全执行模式，包含回滚和备份",
+      "timeout_multiplier": 2.0,
+      "rollback_enabled": true,
+      "backup_before_execution": true,
+      "progress_confirmations": true
+    }
+  },
+
+  "error_handling": {
+    "strategies": {
+      "retry_on_failure": {
+        "max_attempts": 3,
+        "backoff_multiplier": 2,
+        "retryable_errors": ["timeout", "network", "resource_locked"]
+      },
+
+      "fallback_execution": {
+        "enabled": true,
+        "fallback_mappings": {
+          "check_code_quality": ["basic_lint"],
+          "run_tests": ["smoke_tests"],
+          "deploy_application": ["staging_deploy"]
+        }
+      },
+
+      "graceful_degradation": {
+        "enabled": true,
+        "degradation_levels": ["full", "partial", "minimal", "disabled"]
+      }
+    },
+
+    "recovery_actions": {
+      "rollback_changes": {
+        "git_reset": true,
+        "file_backup_restore": true,
+        "config_rollback": true
+      },
+
+      "cleanup_resources": {
+        "temp_files": true,
+        "cache_clear": true,
+        "process_kill": true
+      },
+
+      "notification_sending": {
+        "user_notification": true,
+        "error_logging": true,
+        "metric_reporting": true
+      }
+    }
+  },
+
+  "performance_optimization": {
+    "caching": {
+      "capability_maps": {
+        "enabled": true,
+        "ttl": 3600000,
+        "invalidation_events": ["capability_updated", "rule_changed"]
+      },
+
+      "execution_results": {
+        "enabled": true,
+        "ttl": 1800000,
+        "max_entries": 1000
+      }
+    },
+
+    "parallelization": {
+      "max_concurrent_executions": 3,
+      "resource_pooling": true,
+      "load_balancing": true
+    },
+
+    "lazy_loading": {
+      "capabilities": true,
+      "dependencies": true,
+      "resources": true
+    }
+  },
+
+  "monitoring_and_analytics": {
+    "execution_tracking": {
+      "enabled": true,
+      "metrics": ["execution_time", "success_rate", "error_types", "resource_usage"],
+      "retention_days": 90
+    },
+
+    "user_behavior_analysis": {
+      "enabled": true,
+      "track_patterns": ["common_intents", "success_rates", "failure_points"],
+      "privacy_compliant": true
+    },
+
+    "system_health_monitoring": {
+      "enabled": true,
+      "alerts": {
+        "high_error_rate": ">10%",
+        "slow_executions": ">300s",
+        "resource_exhaustion": ">90% usage"
+      }
+    }
+  }
+}

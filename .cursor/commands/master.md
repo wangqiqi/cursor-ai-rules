@@ -34,20 +34,41 @@ graph TD
 
 ## 🛠️ 智能使用方法
 
-### 🎯 核心用法：自然语言驱动
+### 🎯 核心用法：自然语言驱动（推荐）
 
 ```bash
-# 直接描述你的需求，AI自动感知并执行
-@master 我想创建一个React项目
-@master 需要优化代码质量检查
-@master 帮我分析项目现状
-@master 准备部署环境
-@master 学习新技术栈
+# 🎉 一键唤醒所有能力！只需描述需求，AI自动编排执行
+@master 我想创建一个React项目          # 自动激活规则+技能+脚本+工作流
+@master 需要优化代码质量检查            # 自动执行完整的质量检查流程
+@master 帮我分析项目现状                # 自动运行感知分析和报告生成
+@master 准备部署环境                    # 自动配置部署环境和验证
+@master 学习新技术栈                    # 自动生成学习路径和练习项目
 
-# 传统模式（仍然支持）
-@master list    # 查看所有可用命令
-@master help    # 查看智能使用指南
+# 高级用法：指定执行模式
+@master 我想创建一个React项目 --mode fast     # 快速模式
+@master 检查代码质量 --mode thorough          # 全面模式
+@master 部署应用 --mode safe                  # 安全模式（带回滚）
 ```
+
+### 🔄 统一命令架构
+
+**系统集成**: `@command-router` + `@capability-map.json`
+
+```mermaid
+graph TD
+    A[用户需求] --> B[智能感知]
+    B --> C[@command-router 意图解析]
+    C --> D[@capability-map.json 能力映射]
+    D --> E[自动编排执行]
+    E --> F[规则 + 技能 + 脚本 + 工作流]
+    F --> G[结果反馈]
+```
+
+**核心优势**:
+- 🧠 **零记忆**: 用户只需描述需求
+- ⚡ **全自动**: AI编排所有必要操作
+- 🎯 **精准**: 基于意图映射最佳组合
+- 📈 **进化**: 持续学习优化执行质量
 
 ### 🧠 智能感知引擎
 
@@ -65,6 +86,50 @@ graph TD
 3. **选择最佳方案** - 推荐最适合的技术栈和工具组合
 4. **执行操作序列** - 按正确顺序自动执行所需命令
 5. **提供反馈建议** - 实时反馈执行状态和后续建议
+
+### 🎯 统一命令路由系统
+
+**新架构**: `@command-router` + `@capability-map.json`
+
+#### 意图到能力的智能映射
+
+```json
+{
+  "create_react_project": {
+    "intents": ["create", "project", "react"],
+    "capabilities": {
+      "rules": ["conversation_intent_analyzer", "generator"],
+      "skills": ["react", "node", "typescript"],
+      "scripts": ["cursor-adaptation-setup.sh"],
+      "workflows": ["project-init", "dependency-install"]
+    }
+  }
+}
+```
+
+#### 执行模式选择
+
+| 模式 | 特点 | 适用场景 |
+|------|------|----------|
+| **fast** | 跳过可选步骤，并行执行 | 快速原型，日常开发 |
+| **thorough** | 包含所有验证步骤 | 生产部署，重要变更 |
+| **safe** | 带回滚和备份 | 高风险操作，生产环境 |
+
+#### 实时执行监控
+
+```bash
+# 执行状态实时反馈
+@master 创建React项目
+# 🤖 检测到项目创建意图
+# 📋 需求分析: React + TypeScript 前端项目
+# 🛠️ 激活能力: 规则(generator) + 技能(react,node) + 脚本(setup)
+# ⚡ 执行步骤: 环境检查 → 项目初始化 → 依赖安装 → 配置设置
+# ✅ 步骤1/4: 环境检查完成
+# ✅ 步骤2/4: 项目结构创建完成
+# ✅ 步骤3/4: 依赖安装完成
+# ✅ 步骤4/4: 配置设置完成
+# 🎉 项目创建成功！查看 README.md 获取使用指南
+```
 
 ## 📚 可用规则命令 (Rules)
 
@@ -94,12 +159,14 @@ graph TD
 
 | 脚本 | 描述 | 执行方式 |
 |------|------|----------|
-| `check.sh` | 代码质量检查脚本 | `bash .cursor/scripts/check.sh` |
+| `quality-manager.sh` | 统一质量管理系统 | `bash .cursor/quality/quality-manager.sh` |
 | `enable.sh` | 插件启用脚本 | `bash .cursor/scripts/enable.sh` |
+| `init.sh` | 统一初始化引擎 | `bash .cursor/init.sh` |
+| `config-manager.sh` | 统一配置管理器 | `bash .cursor/config/config-manager.sh` |
 | `env_check.sh` | 环境依赖检查脚本 | `bash .cursor/scripts/env_check.sh` |
-| `growth_init.sh` | 项目增长初始化脚本 | `bash .cursor/scripts/growth_init.sh` |
-| `perception.sh` | 智能感知分析脚本 | `bash .cursor/scripts/perception.sh` |
-| `plugin_manager.sh` | 插件管理系统脚本 | `bash .cursor/scripts/plugin_manager.sh` |
+| `growth_init.sh` | 项目增长初始化脚本 | `bash .cursor/features/automation/scripts/growth_init.sh` |
+| `env-perception.sh` | 统一环境感知引擎 | `bash .cursor/core/env-perception.sh` |
+| `plugin_manager.sh` | 插件管理系统脚本 | `bash .cursor/features/automation/scripts/plugin_manager.sh` |
 
 ## 🎯 快速操作指南
 
@@ -107,6 +174,8 @@ graph TD
 
 ```bash
 # 初始化新项目环境
+@master script init.sh      # 🚀 一键完成所有初始化
+# 或者分别执行：
 @master script enable.sh    # 启用基础插件
 @master script env_check.sh # 检查环境依赖
 @master rule generator      # 生成项目规则
@@ -116,7 +185,7 @@ graph TD
 @master rule eslint         # 启用ESLint检查
 
 # 智能演进管理
-@master script perception.sh    # 运行感知分析
+@master script env-perception.sh    # 运行统一环境感知
 @master rule intelligent_evolution  # 启用智能演进
 ```
 
@@ -396,15 +465,15 @@ execute_action() {
             echo -e "${GREEN}✅ ESLint规则已激活 (alwaysApply: true)${NC}"
             ;;
         "perception")
-            if [ -f "$CURSOR_DIR/scripts/perception.sh" ]; then
-                bash "$CURSOR_DIR/scripts/perception.sh"
+            if [ -f "$CURSOR_DIR/core/env-perception.sh" ]; then
+                bash "$CURSOR_DIR/core/env-perception.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到感知分析脚本${NC}"
             fi
             ;;
         "plugin_manager")
-            if [ -f "$CURSOR_DIR/scripts/plugin_manager.sh" ]; then
-                bash "$CURSOR_DIR/scripts/plugin_manager.sh"
+            if [ -f "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh" ]; then
+                bash "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到插件管理脚本${NC}"
             fi
@@ -427,7 +496,7 @@ execute_action() {
 # 🎯 Skills执行器
 execute_skill() {
     local skill_name="$1"
-    local skill_file="$PROJECT_ROOT/.cursor/extensions/skills/${skill_name}.md"
+    local skill_file="$PROJECT_ROOT/.cursor/skills/${skill_name}.md"
 
     echo -e "${PURPLE}🎯 调用Skills: ${CYAN}$skill_name${NC}"
 
@@ -439,8 +508,8 @@ execute_skill() {
         echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
 
         # 尝试自动发现和转换
-        if [ -f "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" ]; then
-            bash "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" load "$skill_name"
+        if [ -f "$PROJECT_ROOT/.cursor/skills/discovery.sh" ]; then
+            bash "$PROJECT_ROOT/.cursor/skills/discovery.sh" load "$skill_name"
         fi
     fi
 }
@@ -642,8 +711,8 @@ show_traditional_commands() {
     echo -e "  🚀 ${CYAN}env_check.sh${NC} - 环境依赖检查脚本"
     echo -e "  🚀 ${CYAN}enable.sh${NC} - 插件启用脚本"
     echo -e "  🚀 ${CYAN}check.sh${NC} - 代码质量检查脚本"
-    echo -e "  🚀 ${CYAN}perception.sh${NC} - 智能感知分析脚本"
-    echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本"
+    echo -e "  🚀 ${CYAN}env-perception.sh${NC} - 统一环境感知引擎"
+    echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本 (features/automation/scripts/)"
 
     echo ""
     echo -e "${YELLOW}💡 提示: 建议使用智能模式 '@master [需求描述]' 而非传统命令模式${NC}"

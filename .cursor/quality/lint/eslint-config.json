@@ -1,0 +1,58 @@
+{
+  "name": "Cursor AI Rules - ESLint 配置",
+  "version": "1.0.0",
+  "description": "统一ESLint配置，适用于JavaScript/TypeScript项目",
+
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+
+  "extends": [
+    "eslint:recommended",
+    "@typescript-eslint/recommended",
+    "prettier"
+  ],
+
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+
+  "rules": {
+    "prettier/prettier": "error",
+
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-console": "warn",
+    "no-debugger": "error",
+
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+
+    "semi": ["error", "always"],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "indent": ["error", 2],
+    "comma-dangle": ["error", "always-multiline"]
+  },
+
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "build/",
+    "*.min.js",
+    "*.config.js"
+  ]
+}

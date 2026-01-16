@@ -265,8 +265,8 @@ execute_action() {
             fi
             ;;
         "plugin_manager")
-            if [ -f "$CURSOR_DIR/scripts/plugin_manager.sh" ]; then
-                bash "$CURSOR_DIR/scripts/plugin_manager.sh"
+            if [ -f "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh" ]; then
+                bash "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到插件管理脚本${NC}"
             fi
@@ -468,7 +468,7 @@ show_traditional_commands() {
     echo -e "  🚀 ${CYAN}enable.sh${NC} - 插件启用脚本"
     echo -e "  🚀 ${CYAN}check.sh${NC} - 代码质量检查脚本"
     echo -e "  🚀 ${CYAN}perception.sh${NC} - 智能感知分析脚本"
-    echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本"
+    echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本 (features/automation/scripts/)"
 
     echo ""
     echo -e "${YELLOW}💡 提示: 建议使用智能模式 './cursor-master.sh [需求描述]' 而非传统命令模式${NC}"
@@ -477,7 +477,7 @@ show_traditional_commands() {
 # 🎯 Skills执行器
 execute_skill() {
     local skill_name="$1"
-    local skill_file="$PROJECT_ROOT/.cursor/extensions/skills/${skill_name}.md"
+    local skill_file="$PROJECT_ROOT/.cursor/skills/${skill_name}.md"
 
     echo -e "${PURPLE}🎯 调用Skills: ${CYAN}$skill_name${NC}"
 
@@ -489,8 +489,8 @@ execute_skill() {
         echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
 
         # 尝试自动发现和转换
-        if [ -f "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" ]; then
-            bash "$PROJECT_ROOT/.cursor/extensions/skills/discovery.sh" load "$skill_name"
+        if [ -f "$PROJECT_ROOT/.cursor/skills/discovery.sh" ]; then
+            bash "$PROJECT_ROOT/.cursor/skills/discovery.sh" load "$skill_name"
         fi
     fi
 }

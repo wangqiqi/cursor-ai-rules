@@ -1,0 +1,84 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "created_at": "2026-01-16T00:00:00Z",
+    "description": "Cursor AI Rules 系统默认配置",
+    "author": "System"
+  },
+  "system": {
+    "os": "auto-detect",
+    "log_level": "info",
+    "backup_enabled": false,
+    "auto_update": false,
+    "max_memory_mb": 256,
+    "max_concurrent_tasks": 2
+  },
+  "features": {
+    "automation": {
+      "enabled": false,
+      "hooks": false,
+      "scripts": false,
+      "scheduling": false
+    },
+    "skills": {
+      "enabled": false,
+      "auto_install": false,
+      "marketplace": false,
+      "custom_skills": false
+    },
+    "rules": {
+      "enabled": true,
+      "auto_activation": false,
+      "custom_rules": false,
+      "evolution": false
+    },
+    "intelligence": {
+      "enabled": false,
+      "learning": false,
+      "adaptation": false,
+      "prediction": false
+    }
+  },
+  "performance": {
+    "cache_enabled": false,
+    "cache_size_mb": 50,
+    "compression": false,
+    "lazy_loading": true,
+    "resource_limits": {
+      "cpu_percent": 25,
+      "memory_mb": 128,
+      "disk_mb": 50
+    }
+  },
+  "security": {
+    "input_validation": true,
+    "output_filtering": true,
+    "audit_logging": false,
+    "rate_limiting": {
+      "enabled": false,
+      "max_requests_per_minute": 30
+    },
+    "data_encryption": false,
+    "secure_defaults": true
+  },
+  "network": {
+    "connectivity_check": false,
+    "proxy_support": false,
+    "timeout_seconds": 15,
+    "retry_attempts": 1,
+    "trusted_domains": []
+  },
+  "ui": {
+    "theme": "auto",
+    "language": "auto",
+    "notifications": false,
+    "tooltips": false,
+    "shortcuts": false
+  },
+  "telemetry": {
+    "enabled": false,
+    "anonymized": true,
+    "error_reporting": false,
+    "usage_stats": false
+  }
+}

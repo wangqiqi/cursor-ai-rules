@@ -23,7 +23,7 @@ Cursor AI Rules 的钩子系统允许你在 AI 协作流程的关键节点自动
   "hooks": {
     "afterFileEdit": [
       {
-        "command": ".cursor/automation/hooks/code-quality.sh",
+        "command": ".cursor/features/hooks/code-quality.sh",
         "timeout": 5000,
         "working_directory": ".",
         "environment": {
@@ -107,7 +107,7 @@ exit 0
 
 ### 代码质量钩子
 
-**文件**: `.cursor/automation/hooks/code-quality.sh`
+**文件**: `.cursor/features/hooks/code-quality.sh`
 
 **功能**: 文件编辑后的代码质量检查和格式化
 
@@ -119,7 +119,7 @@ exit 0
 
 ### 安全审计钩子
 
-**文件**: `.cursor/automation/hooks/security-audit.sh`
+**文件**: `.cursor/features/hooks/security-audit.sh`
 
 **功能**: 命令执行前的安全检查
 
@@ -131,7 +131,7 @@ exit 0
 
 ### 命令日志钩子
 
-**文件**: `.cursor/automation/hooks/command-log.sh`
+**文件**: `.cursor/features/hooks/command-log.sh`
 
 **功能**: 命令执行后的日志记录
 
@@ -143,7 +143,7 @@ exit 0
 
 ### 提示安全钩子
 
-**文件**: `.cursor/automation/hooks/prompt-security.sh`
+**文件**: `.cursor/features/hooks/prompt-security.sh`
 
 **功能**: AI提示提交前的安全过滤
 
@@ -155,7 +155,7 @@ exit 0
 
 ### 规则使用跟踪钩子
 
-**文件**: `.cursor/automation/hooks/rule-usage-tracker.sh`
+**文件**: `.cursor/features/hooks/rule-usage-tracker.sh`
 
 **功能**: AI响应后的规则使用统计
 
@@ -167,7 +167,7 @@ exit 0
 
 ### 会话总结钩子
 
-**文件**: `.cursor/automation/hooks/session-summary.sh`
+**文件**: `.cursor/features/hooks/session-summary.sh`
 
 **功能**: 会话结束时的总结报告
 
@@ -184,8 +184,8 @@ exit 0
 1. **创建钩子脚本**
 ```bash
 # 创建自定义钩子
-mkdir -p .cursor/automation/hooks/custom
-cat > .cursor/automation/hooks/custom/my-hook.sh << 'EOF'
+mkdir -p .cursor/features/hooks/custom
+cat > .cursor/features/hooks/custom/my-hook.sh << 'EOF'
 #!/bin/bash
 # 自定义钩子脚本
 
@@ -201,7 +201,7 @@ esac
 exit 0
 EOF
 
-chmod +x .cursor/automation/hooks/custom/my-hook.sh
+chmod +x .cursor/features/hooks/custom/my-hook.sh
 ```
 
 2. **注册钩子**
@@ -212,7 +212,7 @@ chmod +x .cursor/automation/hooks/custom/my-hook.sh
   "hooks": {
     "customEvent": [
       {
-        "command": ".cursor/automation/hooks/custom/my-hook.sh"
+        "command": ".cursor/features/hooks/custom/my-hook.sh"
       }
     ]
   }
@@ -224,7 +224,7 @@ chmod +x .cursor/automation/hooks/custom/my-hook.sh
 # 手动触发测试
 CURSOR_HOOK_EVENT="customEvent" \
 CURSOR_HOOK_DATA='{"test": true}' \
-.cursor/automation/hooks/custom/my-hook.sh
+.cursor/features/hooks/custom/my-hook.sh
 ```
 
 ### 最佳实践
