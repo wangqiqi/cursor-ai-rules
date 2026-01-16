@@ -11,7 +11,7 @@
 
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
-📚 **[使用指南](.cursor/docs/usage-guide.md)** | **[开发规范](.cursor/docs/development-guidelines.md)** | **[智能进化指南](.cursor/docs/intelligent-evolution-guide.md)** | **[Token压缩技术](.cursor/docs/token-compression-guide.md)** | **[系统信息指南](.cursor/docs/system-info-guide.md)** | **[团队规则示例](.cursor/docs/team-rules-example.md)** | **[远程规则导入](.cursor/docs/remote-rules-guide.md)**
+📚 **[快速开始](.cursor/docs/quick-start.md)** | **[基础使用](.cursor/docs/user-guide/basic-usage.md)** | **[详细指南](.cursor/docs/usage-guide.md)** | **[高级配置](.cursor/docs/user-guide/advanced-config.md)** | **[开发规范](.cursor/docs/development-guidelines.md)**
 
 采用 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules) 定义的 AI 协作规范，结合单步多任务感知、智能缓存和规则系统，实现高效、安全的人机协作。
 
@@ -155,116 +155,42 @@ Cursor AI Rules 采用创新的双目录架构：
 
 ## 🚀 快速开始
 
-### 🎯 智能Master一键初始化 (强烈推荐)
+开始使用Cursor AI Rules的推荐方式：
 
 ```bash
 cd your-project
 # 将 .cursor 目录放入项目根目录
 
 # 🚀 智能Master - 自然语言驱动，AI自动编排所有操作
-@master 我想创建一个React项目     # AI自动感知并执行完整流程
-@master 需要优化代码质量           # 自动触发质量检查和修复
-@master 帮我分析项目现状           # 智能生成项目分析报告
-```
-
-**AI智能编排流程：**
-1. 🧠 **意图理解**: AI自动解析你的需求
-2. ⚡ **智能组合**: 自动选择规则+技能+脚本+工作流
-3. 🎯 **一键执行**: 零配置，AI自动处理所有细节
-4. 📊 **实时反馈**: 提供详细的执行报告和建议
-
-### 传统手动设置
-
-```bash
-# 统一初始化 (替代所有旧脚本)
-./.cursor/core/init.sh
-
-# 环境感知分析
-./.cursor/core/env-perception.sh
-
-# 质量检查管理
-./.cursor/quality/quality-manager.sh
-```
-
-## 🎛️ 智能功能
-
-### 自动感知系统
-- **技术栈识别**: JavaScript/TypeScript, Python, Go, Rust, Java, C/C++等
-- **团队动态分析**: 贡献者数量、提交频率统计
-- **项目规模评估**: 代码行数、文件数量分析
-- **开发阶段判断**: 概念验证→成长→成熟产品
-- **沟通模式学习**: 用户偏好智能识别
-- **系统环境感知**: 操作系统、版本、架构、工具链检测
-- **多语言支持**: 自动检测项目技术栈，无需手动配置
-
-### 性能优化
-- **单步执行**: 一次API调用完成所有分析
-- **智能缓存**: 文件变化时自动刷新
-- **Token节省**: 相比传统方法节省60%+
-
-### 质量工具
-```bash
-# 代码质量检查
-./.cursor/features/automation/scripts/plugin_manager.sh list      # 查看可用工具
-# 集成工具
-✅ ESLint代码质量检查 (已集成到规则系统)
-```
-
-## 📊 系统监控
-
-```bash
-# 智能帮助系统
-./.cursor/core/init.sh --help
-
-# 环境完整性检查
-./.cursor/core/env-perception.sh
-```
-
-## 💡 使用示例
-
-### 智能Master使用
-直接用自然语言描述你的需求：
-
-```bash
-# 在Cursor对话框中
 @master 我想创建一个React项目
-@master 需要优化代码质量
-@master 帮我分析项目现状
-
-# 或者在命令行中
-./cursor-master.sh "我想创建一个React项目"
 ```
 
-### 传统规则引用
-设置完成后，规则会自动应用。你也可以手动引用：
+**📖 [完整快速开始指南](.cursor/docs/quick-start.md)**
 
-```markdown
-@constitution - AI共生宪法
-@intelligent_evolution - 智能进化建议
-@system_info - 系统信息获取
-```
+## 🎛️ 核心特性
 
-### 实际应用场景
+### 🧠 统一智能入口
+`@master` 命令让AI自动理解你的意图，智能编排规则、技能和脚本。
 
-**代码审查时：**
-```
-基于项目技术栈(JavaScript)和当前阶段(概念验证阶段)，
-建议采用轻量级代码规范，重点关注基础语法正确性。
-```
+### 🎯 单步多任务感知
+一次分析完成所有项目感知，4层架构智能协作。
 
-**项目规划时：**
-```
-检测到单人开发模式，建议采用敏捷开发流程：
-- 每日代码提交
-- 简化文档要求
-- 快速原型验证
-```
+### ⚙️ 分层配置管理系统
+5层配置体系，支持动态配置和验证。
 
-**问题诊断时：**
-```
-智能感知显示项目规模小，复杂度低，
-推荐使用简单架构，避免过度设计。
-```
+### 🔧 统一质量保障
+分层质量检查(Lint/Format/Audit/Report)。
+
+### 🏗️ 4层架构重构
+Core/Config/Quality/Features清晰职责划分。
+
+### 💾 智能缓存系统
+基于文件变化的缓存机制。
+
+### 🛡️ 开箱即用
+支持任何项目、任何语言，无需配置。
+
+**📖 [详细功能介绍](.cursor/docs/user-guide/core-features.md)**
 
 ## 🔧 高级配置
 

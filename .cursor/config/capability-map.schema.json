@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cursor-ai-rules.com/schema/capability-map/v1.0.0",
+  "title": "Cursor AI Rules Capability Map Schema",
+  "description": "Schema for capability mapping configuration",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema reference for validation"
+    },
+    "version": {
+      "type": "string",
+      "description": "Configuration version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Configuration description"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Configuration metadata",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "description": "Configuration creation timestamp",
+          "format": "date-time"
+        },
+        "last_updated": {
+          "type": "string",
+          "description": "Configuration last update timestamp",
+          "format": "date-time"
+        },
+        "author": {
+          "type": "string",
+          "description": "Configuration author"
+        },
+        "compatibility": {
+          "type": "string",
+          "description": "Version compatibility requirement",
+          "pattern": "^>=\\d+\\.\\d+\\.\\d+$"
+        }
+      },
+      "required": ["created_at"]
+    },
+    "global_config": {
+      "type": "object",
+      "description": "Global execution configuration",
+      "properties": {
+        "default_execution_timeout": {
+          "type": "integer",
+          "description": "Default execution timeout in milliseconds",
+          "minimum": 1000,
+          "maximum": 3600000
+        },
+        "max_parallel_executions": {
+          "type": "integer",
+          "description": "Maximum number of parallel executions",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "error_handling_strategy": {
+          "type": "string",
+          "enum": ["graceful_degradation", "fail_fast", "retry"],
+          "description": "Error handling strategy"
+        },
+        "logging_level": {
+          "type": "string",
+          "enum": ["error", "warn", "info", "debug"],
+          "description": "Logging level"
+        },
+        "telemetry_enabled": {
+          "type": "boolean",
+          "description": "Whether telemetry is enabled"
+        },
+        "learning_enabled": {
+          "type": "boolean",
+          "description": "Whether learning features are enabled"
+        }
+      },
+      "required": ["default_execution_timeout", "max_parallel_executions"]
+    },
+    "mappings": {
+      "type": "object",
+      "description": "Capability mappings",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Mapping description"
+            },
+            "intents": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Intents that trigger this mapping"
+            },
+            "confidence_threshold": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Confidence threshold for activation"
+            },
+            "user_examples": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Example user inputs"
+            },
+            "capabilities": {
+              "type": "object",
+              "properties": {
+                "rules": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Rules to activate"
+                },
+                "skills": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Skills to invoke"
+                },
+                "scripts": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Scripts to execute"
+                },
+                "workflows": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Workflows to run"
+                },
+                "hooks": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Hooks to trigger"
+                }
+              }
+            },
+            "execution_order": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Order of execution"
+            },
+            "parameters": {
+              "type": "object",
+              "description": "Default parameters"
+            },
+            "validation_rules": {
+              "type": "object",
+              "description": "Validation rules for this mapping"
+            },
+            "fallback_strategies": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Fallback strategies"
+            }
+          },
+          "required": ["description", "intents", "capabilities"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["version", "mappings"],
+  "additionalProperties": false
+}

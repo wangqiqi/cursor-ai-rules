@@ -1,8 +1,13 @@
 {
+  "$schema": "../config/capability-map.schema.json",
   "version": "1.0.0",
   "description": "🎯 统一能力映射表 - 将用户意图映射到具体的执行能力组合",
-  "last_updated": "2026-01-16",
-  "author": "wangqiqi",
+  "metadata": {
+    "created_at": "2026-01-16T10:00:00Z",
+    "last_updated": "2026-01-16T10:00:00Z",
+    "author": "wangqiqi",
+    "compatibility": ">=4.0.0"
+  },
   "global_config": {
     "default_execution_timeout": 300000,
     "max_parallel_executions": 3,
@@ -256,9 +261,11 @@
         "rules": [
           "intelligent_evolution"
         ],
-        "scripts": [],
+        "scripts": [
+          "core/git-commit.sh"
+        ],
         "hooks": [
-          "code-quality.sh"
+          "features/hooks/code-quality.sh"
         ],
         "workflows": [
           "stage",
@@ -1863,6 +1870,344 @@
         "show_recommendations": true
       }
     },
+    "initialize_project": {
+      "description": "初始化项目",
+      "intents": [
+        "初始化项目",
+        "init",
+        "setup",
+        "initialize",
+        "项目初始化"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "初始化项目",
+        "项目初始化",
+        "setup project"
+      ],
+      "capabilities": {
+        "rules": [
+          "generator",
+          "templates"
+        ],
+        "scripts": [
+          "core/init.sh",
+          "features/automation/scripts/growth_init.sh"
+        ],
+        "workflows": [
+          "project-init"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "rules",
+        "workflows"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": [
+        "basic-init"
+      ]
+    },
+    "analyze_environment": {
+      "description": "分析环境",
+      "intents": [
+        "分析环境",
+        "环境分析",
+        "analyze environment",
+        "环境感知"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "分析环境",
+        "环境分析",
+        "检查环境"
+      ],
+      "capabilities": {
+        "rules": [
+          "system_info",
+          "platform_adapter"
+        ],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "rules"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "check_consistency": {
+      "description": "检查一致性",
+      "intents": [
+        "检查一致性",
+        "consistency check",
+        "一致性检查",
+        "系统检查"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "检查一致性",
+        "系统一致性检查",
+        "验证系统完整性"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/consistency-checker.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "architecture_check": {
+      "description": "架构检查",
+      "intents": [
+        "架构检查",
+        "architecture check",
+        "检查架构",
+        "架构合规"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "架构检查",
+        "检查架构合规性",
+        "架构分析"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/architecture-compliance-checker.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "growth_management": {
+      "description": "生长管理",
+      "intents": [
+        "生长管理",
+        "growth management",
+        "生长系统",
+        "AI生长"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "生长管理",
+        "管理生长系统",
+        "AI生长管理"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/growth-manager.sh",
+          "core/growth-recorder.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "performance_monitoring": {
+      "description": "性能监控",
+      "intents": [
+        "性能监控",
+        "performance monitoring",
+        "监控性能",
+        "性能分析"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "性能监控",
+        "监控系统性能",
+        "性能分析"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/performance-monitor.sh",
+          "core/performance-cache.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "system_optimization": {
+      "description": "系统优化",
+      "intents": [
+        "系统优化",
+        "system optimization",
+        "优化系统",
+        "系统调优"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "系统优化",
+        "优化系统性能",
+        "系统调优"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/optimizer.sh",
+          "core/token-compression.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "config_management": {
+      "description": "配置管理",
+      "intents": [
+        "配置管理",
+        "config management",
+        "管理配置",
+        "配置系统"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "配置管理",
+        "管理系统配置",
+        "配置系统"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "config/config-manager.sh",
+          "config/config-validator.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "quality_check": {
+      "description": "质量检查",
+      "intents": [
+        "质量检查",
+        "quality check",
+        "检查质量",
+        "代码质量"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "质量检查",
+        "检查代码质量",
+        "质量分析"
+      ],
+      "capabilities": {
+        "rules": [
+          "eslint"
+        ],
+        "scripts": [
+          "quality/quality-manager.sh",
+          "quality/report/quality-reporter.sh"
+        ],
+        "workflows": [
+          "lint",
+          "audit"
+        ],
+        "hooks": [
+          "code-quality.sh"
+        ]
+      },
+      "execution_order": [
+        "hooks",
+        "scripts",
+        "rules",
+        "workflows"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "isolation_debug": {
+      "description": "隔离调试",
+      "intents": [
+        "隔离调试",
+        "isolation debug",
+        "调试隔离",
+        "隔离调试器"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "隔离调试",
+        "使用隔离调试器",
+        "调试隔离模式"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "debug/isolation-debugger.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
+    "sync_cursor": {
+      "description": "同步Cursor对话",
+      "intents": [
+        "同步对话",
+        "sync cursor",
+        "同步Cursor",
+        "对话同步"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "同步Cursor对话",
+        "同步对话记录",
+        "Cursor同步"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/cursor-sync.sh"
+        ],
+        "workflows": [],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts"
+      ],
+      "validation_rules": {},
+      "fallback_strategies": []
+    },
 
     "monitoring_and_analytics": {
       "execution_tracking": {
@@ -1896,7 +2241,7 @@
     "version_info": {
       "current_version": "4.3.0",
       "last_updated": "2026-01-16",
-      "total_mappings": 21,
+      "total_mappings": 56,
       "supported_scenarios": [
         "project_creation",
         "code_quality",
@@ -1916,7 +2261,17 @@
         "containerization",
         "commit_code",
         "learn_project_patterns",
-        "show_growth_status"
+        "show_growth_status",
+        "initialize_project",
+        "analyze_environment",
+        "check_consistency",
+        "architecture_check",
+        "growth_management",
+        "performance_monitoring",
+        "system_optimization",
+        "config_management",
+        "quality_check",
+        "sync_cursor"
       ]
     }
   }

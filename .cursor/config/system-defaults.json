@@ -2,8 +2,10 @@
   "version": "1.0.0",
   "metadata": {
     "created_at": "2026-01-16T00:00:00Z",
+    "last_updated": "2026-01-16T10:00:00Z",
     "description": "Cursor AI Rules 系统默认配置",
-    "author": "System"
+    "author": "System",
+    "compatibility": ">=4.0.0"
   },
   "system": {
     "os": "auto-detect",

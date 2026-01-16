@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cursor-ai-rules.com/schema/config/v1.0.0",
+  "title": "Cursor AI Rules Configuration Schema",
+  "description": "Standardized configuration schema for Cursor AI Rules system",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema reference for validation",
+      "format": "uri"
+    },
+    "version": {
+      "type": "string",
+      "description": "Configuration version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Configuration metadata",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "description": "Configuration creation timestamp",
+          "format": "date-time"
+        },
+        "last_updated": {
+          "type": "string",
+          "description": "Configuration last update timestamp",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string",
+          "description": "Configuration description"
+        },
+        "author": {
+          "type": "string",
+          "description": "Configuration author"
+        },
+        "compatibility": {
+          "type": "string",
+          "description": "Version compatibility requirement",
+          "pattern": "^>=\\d+\\.\\d+\\.\\d+$"
+        }
+      },
+      "required": ["created_at", "description"]
+    },
+    "system": {
+      "type": "object",
+      "description": "System-level configuration",
+      "properties": {
+        "os": {
+          "type": "string",
+          "enum": ["auto-detect", "linux", "macos", "windows"],
+          "default": "auto-detect"
+        },
+        "log_level": {
+          "type": "string",
+          "enum": ["error", "warn", "info", "debug"],
+          "default": "info"
+        },
+        "backup_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "auto_update": {
+          "type": "boolean",
+          "default": false
+        },
+        "max_memory_mb": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 4096,
+          "default": 256
+        },
+        "max_concurrent_tasks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 2
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "description": "Feature toggles and configuration",
+      "properties": {
+        "automation": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "hooks": { "type": "boolean", "default": false },
+            "scripts": { "type": "boolean", "default": false },
+            "scheduling": { "type": "boolean", "default": false }
+          }
+        },
+        "skills": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "auto_install": { "type": "boolean", "default": false },
+            "marketplace": { "type": "boolean", "default": false },
+            "custom_skills": { "type": "boolean", "default": false }
+          }
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "auto_activation": { "type": "boolean", "default": false },
+            "custom_rules": { "type": "boolean", "default": false },
+            "evolution": { "type": "boolean", "default": false }
+          }
+        },
+        "intelligence": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "learning": { "type": "boolean", "default": false },
+            "adaptation": { "type": "boolean", "default": false },
+            "prediction": { "type": "boolean", "default": false }
+          }
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "description": "Performance optimization settings",
+      "properties": {
+        "cache_enabled": { "type": "boolean", "default": false },
+        "cache_size_mb": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 1000,
+          "default": 50
+        },
+        "compression": { "type": "boolean", "default": false },
+        "lazy_loading": { "type": "boolean", "default": true },
+        "resource_limits": {
+          "type": "object",
+          "properties": {
+            "cpu_percent": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 100,
+              "default": 25
+            },
+            "memory_mb": {
+              "type": "integer",
+              "minimum": 64,
+              "maximum": 2048,
+              "default": 128
+            },
+            "disk_mb": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 1024,
+              "default": 50
+            }
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "description": "Security and privacy settings",
+      "properties": {
+        "input_validation": { "type": "boolean", "default": true },
+        "output_filtering": { "type": "boolean", "default": true },
+        "audit_logging": { "type": "boolean", "default": false },
+        "rate_limiting": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "max_requests_per_minute": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 1000,
+              "default": 30
+            }
+          }
+        },
+        "data_encryption": { "type": "boolean", "default": false },
+        "secure_defaults": { "type": "boolean", "default": true }
+      }
+    },
+    "network": {
+      "type": "object",
+      "description": "Network and connectivity settings",
+      "properties": {
+        "connectivity_check": { "type": "boolean", "default": false },
+        "proxy_support": { "type": "boolean", "default": false },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 300,
+          "default": 15
+        },
+        "retry_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 1
+        },
+        "trusted_domains": {
+          "type": "array",
+          "items": { "type": "string", "format": "hostname" },
+          "maxItems": 50
+        }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "description": "User interface preferences",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": ["auto", "light", "dark"],
+          "default": "auto"
+        },
+        "language": {
+          "type": "string",
+          "enum": ["auto", "zh-CN", "en-US"],
+          "default": "auto"
+        },
+        "notifications": { "type": "boolean", "default": false },
+        "tooltips": { "type": "boolean", "default": false },
+        "shortcuts": { "type": "boolean", "default": false }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "description": "Telemetry and analytics settings",
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "anonymized": { "type": "boolean", "default": true },
+        "error_reporting": { "type": "boolean", "default": false },
+        "usage_stats": { "type": "boolean", "default": false }
+      }
+    }
+  },
+  "required": ["version", "metadata"],
+  "additionalProperties": false
+}

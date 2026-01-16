@@ -1,7 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/prettierrc",
   "name": "Cursor AI Rules - Prettier 配置",
   "version": "1.0.0",
   "description": "统一代码格式化配置，确保团队代码风格一致",
+  "metadata": {
+    "created_at": "2026-01-16T10:00:00Z",
+    "last_updated": "2026-01-16T10:00:00Z",
+    "author": "Cursor AI Rules Team",
+    "compatibility": ">=4.0.0"
+  },
 
   "semi": true,
   "singleQuote": true,

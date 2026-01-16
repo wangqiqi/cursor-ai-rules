@@ -1,7 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/eslintrc",
   "name": "Cursor AI Rules - ESLint 配置",
   "version": "1.0.0",
   "description": "统一ESLint配置，适用于JavaScript/TypeScript项目",
+  "metadata": {
+    "created_at": "2026-01-16T10:00:00Z",
+    "last_updated": "2026-01-16T10:00:00Z",
+    "author": "Cursor AI Rules Team",
+    "compatibility": ">=4.0.0"
+  },
 
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
