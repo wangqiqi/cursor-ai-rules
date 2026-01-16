@@ -129,9 +129,9 @@ tail -f ~/.cursor/logs/*.log
 ## 🎯 下一步
 
 ### 深入学习
-1. **基本使用**: 阅读 `basic-usage.md`
-2. **高级功能**: 阅读 `advanced-features.md`
-3. **故障排除**: 阅读 `troubleshooting.md`
+1. **基本使用**: 阅读 `../usage-guide.md`
+2. **高级功能**: 阅读 `../intelligent-evolution-guide.md`
+3. **故障排除**: 阅读 `../usage-guide.md#故障排除`
 
 ### 探索功能
 - 尝试不同的项目创建命令

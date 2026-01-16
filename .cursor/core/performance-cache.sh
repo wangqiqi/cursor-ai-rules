@@ -6,7 +6,7 @@
 set -e
 
 # 缓存配置
-CACHE_DIR=".cursor/cache"
+CACHE_DIR=".cursorGrowth/cache"
 CACHE_TTL=300  # 5分钟缓存有效期
 PERFORMANCE_LOG="$CACHE_DIR/performance.log"
 

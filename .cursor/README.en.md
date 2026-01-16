@@ -34,6 +34,29 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 - All system changes require explicit approval
 - Risk assessment for all suggestions
 
+## 🏗️ System Architecture
+
+### Dual Directory Design
+Cursor AI Rules adopts an innovative dual-directory architecture:
+
+- **`.cursor/`** 📁 **Project-Independent Configuration**
+  - Rules definitions, core scripts, documentation
+  - Can be safely copied to any project
+  - Supports version control and team sharing
+
+- **`.cursorGrowth/`** 🌱 **Project-Private Data**
+  - AI learning records, cache data, performance monitoring
+  - Each project grows independently, user data isolation
+  - Automatically added to `.gitignore` for privacy protection
+
+### Architecture Advantages
+- **🔄 Replicability**: `.cursor` directory can be copied between any projects
+- **🔒 Privacy Protection**: `.cursorGrowth` data is completely private and not shared
+- **👥 Collaboration-Friendly**: Teams share configuration, each person's data remains independent
+- **⚡ Performance Optimization**: Local cache and learning data improve response speed
+
+**📖 [Detailed Architecture Documentation](.cursor/docs/project-growth-architecture.md)**
+
 ## 🛠️ Development Guidelines
 
 ### Code Quality

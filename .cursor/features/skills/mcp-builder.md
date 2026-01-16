@@ -67,11 +67,11 @@ Key pages to review:
 - **MCP Best Practices**: [📋 View Best Practices](./reference/mcp_best_practices.md) - Core guidelines
 
 **For TypeScript (recommended):**
-- **TypeScript SDK**: Use WebFetch to load `https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/main/README.md`
+- **TypeScript SDK**: [📖 View SDK Documentation](./reference/typescript-sdk-README.md)
 - [⚡ TypeScript Guide](./reference/node_mcp_server.md) - TypeScript patterns and examples
 
 **For Python:**
-- **Python SDK**: Use WebFetch to load `https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/main/README.md`
+- **Python SDK**: [🐍 View SDK Documentation](./reference/python-sdk-README.md)
 - [🐍 Python Guide](./reference/python_mcp_server.md) - Python patterns and examples
 
 #### 1.4 Plan Your Implementation
@@ -117,7 +117,8 @@ See language-specific guides for detailed testing approaches and quality checkli
 Load these resources as needed during development:
 
 ### Core MCP Documentation (Load First)
-- **MCP Protocol**: Start with sitemap at `https://modelcontextprotocol.io/sitemap.xml`, then fetch specific pages with `.md` suffix
+- **MCP Protocol**: [🗺️ View Sitemap](./reference/mcp_sitemap.xml) - Complete site structure
+- **MCP Specification**: [📋 View Protocol Spec](./reference/mcp-specification.md) - Official protocol documentation
 - [📋 MCP Best Practices](./reference/mcp_best_practices.md) - Universal MCP guidelines including:
   - Server and tool naming conventions
   - Response format guidelines (JSON vs Markdown)
@@ -126,8 +127,8 @@ Load these resources as needed during development:
   - Security and error handling standards
 
 ### SDK Documentation (Load During Phase 1/2)
-- **Python SDK**: Fetch from `https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/main/README.md`
-- **TypeScript SDK**: Fetch from `https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/main/README.md`
+- **Python SDK**: [🐍 View SDK Documentation](./reference/python-sdk-README.md)
+- **TypeScript SDK**: [⚡ View SDK Documentation](./reference/typescript-sdk-README.md)
 
 ### Language-Specific Implementation Guides (Load During Phase 2)
 - [🐍 Python Implementation Guide](./reference/python_mcp_server.md) - Complete Python/FastMCP guide with:

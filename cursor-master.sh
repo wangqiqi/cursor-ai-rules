@@ -37,6 +37,9 @@ init_growth_directory() {
         mkdir -p "$GROWTH_DIR/debug"
         mkdir -p "$GROWTH_DIR/growth"
         mkdir -p "$GROWTH_DIR/personal"
+        mkdir -p "$GROWTH_DIR/cache"
+        mkdir -p "$GROWTH_DIR/monitoring"
+        mkdir -p "$GROWTH_DIR/optimization"
 
         # 🔒 主动管理 .gitignore 文件，确保隐私保护
         ensure_gitignore_protection

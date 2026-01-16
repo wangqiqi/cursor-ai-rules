@@ -47,9 +47,7 @@
           "dependency-install",
           "config-setup"
         ],
-        "hooks": [
-          "after-project-init"
-        ]
+        "hooks": []
       },
       "execution_order": [
         "perception",
@@ -109,9 +107,7 @@
           "dependency-install",
           "config-setup"
         ],
-        "hooks": [
-          "after-project-init"
-        ]
+        "hooks": []
       },
       "execution_order": [
         "perception",
@@ -167,9 +163,7 @@
           "dependency-install",
           "config-setup"
         ],
-        "hooks": [
-          "after-project-init"
-        ]
+        "hooks": []
       },
       "execution_order": [
         "perception",
@@ -213,7 +207,6 @@
           "intelligent_evolution"
         ],
         "skills": [
-          "code-quality"
         ],
         "scripts": [
           "quality/quality-manager.sh"
@@ -261,7 +254,7 @@
       ],
       "capabilities": {
         "rules": [
-          "git-workflow"
+          "intelligent_evolution"
         ],
         "scripts": [],
         "hooks": [
@@ -293,7 +286,7 @@
       "description": "运行测试",
       "intents": [
         "test",
-        "testing",
+        "webapp-testing",
         "unit",
         "integration"
       ],
@@ -306,10 +299,10 @@
       ],
       "capabilities": {
         "rules": [
-          "testing-workflow"
+          "intelligent_evolution"
         ],
         "skills": [
-          "testing"
+          "webapp-testing"
         ],
         "scripts": [],
         "workflows": [
@@ -352,12 +345,9 @@
       ],
       "capabilities": {
         "rules": [
-          "deployment-workflow"
+          "platform_adapter"
         ],
-        "skills": [
-          "docker",
-          "kubernetes"
-        ],
+        "skills": [],
         "scripts": [],
         "workflows": [
           "build",
@@ -404,10 +394,7 @@
         "rules": [
           "intelligent_evolution"
         ],
-        "skills": [
-          "code-quality",
-          "security-audit"
-        ],
+        "skills": [],
         "scripts": [
           "core/env-perception.sh"
         ],
@@ -537,7 +524,6 @@
           "security-workflow"
         ],
         "skills": [
-          "security-audit"
         ],
         "scripts": [],
         "workflows": [
@@ -909,7 +895,6 @@
           "eslint"
         ],
         "skills": [
-          "code-quality"
         ],
         "scripts": [
           "core/env-perception.sh"
@@ -974,7 +959,6 @@
           "intelligent_evolution"
         ],
         "skills": [
-          "code-quality"
         ],
         "scripts": [
           "core/env-perception.sh"
@@ -1044,7 +1028,6 @@
         ],
         "skills": [
           "node",
-          "docker"
         ],
         "scripts": [
           "core/init.sh",
@@ -1075,7 +1058,6 @@
       "validation_rules": {
         "required_tools": [
           "git",
-          "docker"
         ],
         "supported_providers": [
           "github-actions",
@@ -1177,7 +1159,6 @@
           "eslint"
         ],
         "skills": [
-          "code-quality"
         ],
         "scripts": [
           "quality/quality-manager.sh"
@@ -1223,7 +1204,7 @@
       "description": "编写测试",
       "intents": [
         "test",
-        "testing",
+        "webapp-testing",
         "unit",
         "integration",
         "coverage"
@@ -1426,7 +1407,7 @@
       "intents": [
         "docker",
         "container",
-        "kubernetes",
+,
         "deploy"
       ],
       "confidence_threshold": 0.8,
@@ -1441,7 +1422,6 @@
           "platform_adapter"
         ],
         "skills": [
-          "docker"
         ],
         "scripts": [
           "core/env-perception.sh"
@@ -1575,7 +1555,7 @@
         "deployment",
         "debugging",
         "performance",
-        "testing",
+        "webapp-testing",
         "api_development",
         "dependency_management",
         "security_audit",

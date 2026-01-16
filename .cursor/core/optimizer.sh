@@ -178,7 +178,7 @@ performance_analysis() {
     echo ""
     echo "💾 缓存状态"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    ls -la .cursor/cache/ 2>/dev/null | wc -l | xargs echo "缓存文件数量:"
+    ls -la .cursorGrowth/cache/ 2>/dev/null | wc -l | xargs echo "缓存文件数量:"
 
     echo ""
     echo "🎯 优化建议"
@@ -277,8 +277,8 @@ show_optimization_status() {
 
     echo ""
     echo "💾 缓存状态:"
-    local cache_files=$(find .cursor/cache -name "*.cache" 2>/dev/null | wc -l)
-    local cache_size=$(du -sh .cursor/cache 2>/dev/null | cut -f1)
+    local cache_files=$(find .cursorGrowth/cache -name "*.cache" 2>/dev/null | wc -l)
+    local cache_size=$(du -sh .cursorGrowth/cache 2>/dev/null | cut -f1)
     echo "  • 缓存文件: $cache_files 个"
     echo "  • 缓存大小: ${cache_size:-0B}"
 

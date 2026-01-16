@@ -6,33 +6,21 @@
 
 ```
 docs/
-├── user-guide/         # 用户指南
-│   ├── getting-started.md    # 快速开始
-│   ├── basic-usage.md        # 基本使用
-│   ├── advanced-features.md  # 高级功能
-│   └── troubleshooting.md    # 故障排除
-├── developer-guide/    # 开发者指南
-│   ├── architecture.md       # 系统架构
-│   ├── api-reference.md      # API参考
-│   ├── extension-guide.md    # 扩展开发
-│   └── contribution.md       # 贡献指南
-├── skills-manual/      # 技能手册
-│   ├── overview.md           # 技能总览
-│   ├── development.md        # 开发技能
-│   ├── creative.md           # 创意技能
-│   └── productivity.md       # 生产力技能
-├── technical-docs/     # 技术文档
-│   ├── config-system.md      # 配置系统
-│   ├── quality-system.md     # 质量系统
-│   ├── perception-engine.md  # 感知引擎
-│   └── command-router.md     # 命令路由器
-├── examples/           # 示例和模板
-│   ├── project-setup.md      # 项目设置示例
-│   ├── workflow-examples.md  # 工作流示例
-│   └── best-practices.md     # 最佳实践
-└── api/                # API文档
-    ├── hooks-api.md          # 钩子API
-    └── skills-api.md         # 技能API
+├── user-guide/              # 用户指南
+│   └── getting-started.md   # 快速开始
+├── developer-guide/         # 开发者指南
+│   └── architecture.md      # 系统架构
+├── usage-guide.md           # 使用指南
+├── intelligent-evolution-guide.md     # 智能进化指南
+├── system-info-guide.md     # 系统信息指南
+├── team-rules-example.md    # 团队规则示例
+├── remote-rules-guide.md    # 远程规则导入指南
+├── performance-optimization-guide.md  # 性能优化指南
+├── project-growth-architecture.md     # 项目生长架构
+└── api/                     # API文档
+    ├── hooks-api.md         # 钩子API
+    ├── skills-api.md        # 技能API
+    └── README.md            # API文档说明
 ```
 
 ## 🎯 文档定位
@@ -61,27 +49,27 @@ docs/
 
 ### 新用户
 1. 阅读 `user-guide/getting-started.md`
-2. 尝试 `user-guide/basic-usage.md` 中的示例
+2. 阅读 `usage-guide.md` 了解基本使用
 3. 根据需要查阅特定功能的文档
 
 ### 开发者
 1. 了解 `developer-guide/architecture.md` 的系统架构
-2. 阅读相关的API文档
-3. 参考 `examples/` 中的实际示例
+2. 阅读 `api/` 中的API文档
+3. 参考 `team-rules-example.md` 中的实际示例
 
 ## 🔍 文档导航
 
 ### 按任务查找
 - **项目初始化**: `user-guide/getting-started.md`
-- **代码质量**: `user-guide/advanced-features.md#quality`
-- **技能使用**: `skills-manual/`
-- **问题解决**: `user-guide/troubleshooting.md`
+- **代码质量**: `usage-guide.md#质量工具`
+- **技能使用**: `api/skills-api.md`
+- **问题解决**: `usage-guide.md#故障排除`
 
 ### 按组件查找
-- **配置系统**: `technical-docs/config-system.md`
-- **命令路由**: `technical-docs/command-router.md`
-- **感知引擎**: `technical-docs/perception-engine.md`
-- **质量系统**: `technical-docs/quality-system.md`
+- **配置系统**: `project-growth-architecture.md`
+- **命令路由**: `../commands/command-router.md`
+- **感知引擎**: `system-info-guide.md`
+- **质量系统**: `performance-optimization-guide.md`
 
 ## 📝 文档规范
 

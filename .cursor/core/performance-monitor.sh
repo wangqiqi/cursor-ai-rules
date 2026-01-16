@@ -6,7 +6,7 @@
 set -e
 
 # 配置
-MONITOR_DIR=".cursor/monitoring"
+MONITOR_DIR=".cursorGrowth/monitoring"
 METRICS_FILE="$MONITOR_DIR/metrics.json"
 TOKEN_LOG="$MONITOR_DIR/token_usage.log"
 PERFORMANCE_LOG="$MONITOR_DIR/performance.log"
@@ -223,7 +223,7 @@ health_check() {
     echo "🔍 系统健康检查"
 
     # 检查缓存目录
-    if [ ! -d ".cursor/cache" ]; then
+    if [ ! -d ".cursorGrowth/cache" ]; then
         echo "❌ 缓存目录不存在"
         issues=$((issues + 1))
     fi

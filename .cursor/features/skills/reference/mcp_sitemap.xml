@@ -1,0 +1,627 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    
+  <url>
+    <loc>https://modelcontextprotocol.io/clients</loc>
+    <lastmod>2026-01-16T01:19:03.854Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/community/antitrust</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/community/communication</loc>
+    <lastmod>2026-01-16T01:19:03.849Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/community/governance</loc>
+    <lastmod>2026-01-16T01:19:03.851Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/community/sep-guidelines</loc>
+    <lastmod>2026-01-16T01:19:03.850Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/community/working-interest-groups</loc>
+    <lastmod>2025-10-16T14:13:05.255Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/development/roadmap</loc>
+    <lastmod>2025-12-20T16:54:00.183Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/develop/build-client</loc>
+    <lastmod>2026-01-16T01:19:03.858Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/develop/build-server</loc>
+    <lastmod>2026-01-16T01:19:03.860Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/develop/connect-local-servers</loc>
+    <lastmod>2025-10-24T11:48:44.326Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/develop/connect-remote-servers</loc>
+    <lastmod>2026-01-16T01:19:03.853Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/getting-started/intro</loc>
+    <lastmod>2025-10-15T11:12:14.476Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/learn/architecture</loc>
+    <lastmod>2026-01-16T01:19:03.853Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/learn/client-concepts</loc>
+    <lastmod>2025-11-28T13:28:34.850Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/learn/server-concepts</loc>
+    <lastmod>2026-01-16T01:19:03.852Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/sdk</loc>
+    <lastmod>2025-09-08T22:07:03.818Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/tools/inspector</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/docs/tutorials/security/authorization</loc>
+    <lastmod>2026-01-16T01:19:03.859Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/examples</loc>
+    <lastmod>2025-12-06T15:52:58.490Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/architecture</loc>
+    <lastmod>2025-10-08T14:03:26.918Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic</loc>
+    <lastmod>2025-08-08T03:15:48.931Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle</loc>
+    <lastmod>2025-10-08T14:03:26.919Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic/messages</loc>
+    <lastmod>2025-10-08T14:03:26.917Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic/transports</loc>
+    <lastmod>2025-10-08T14:03:30.664Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/cancellation</loc>
+    <lastmod>2025-10-08T14:03:30.666Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/ping</loc>
+    <lastmod>2025-10-08T14:03:30.665Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/progress</loc>
+    <lastmod>2025-10-08T14:03:30.669Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/client/roots</loc>
+    <lastmod>2025-10-08T14:03:30.668Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/client/sampling</loc>
+    <lastmod>2025-10-08T14:03:30.667Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05</loc>
+    <lastmod>2025-08-14T18:58:43.731Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server</loc>
+    <lastmod>2025-08-08T03:15:49.055Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server/prompts</loc>
+    <lastmod>2025-10-08T14:03:30.670Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server/resources</loc>
+    <lastmod>2025-10-08T14:03:30.669Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server/tools</loc>
+    <lastmod>2025-10-08T14:03:35.760Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/completion</loc>
+    <lastmod>2025-10-08T14:03:35.758Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/logging</loc>
+    <lastmod>2025-10-08T14:03:35.759Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/pagination</loc>
+    <lastmod>2025-10-08T14:03:35.762Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/architecture</loc>
+    <lastmod>2025-10-08T14:03:35.765Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization</loc>
+    <lastmod>2025-10-08T14:03:35.769Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic</loc>
+    <lastmod>2025-10-08T14:03:35.761Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle</loc>
+    <lastmod>2025-10-08T14:03:35.766Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic/transports</loc>
+    <lastmod>2025-10-08T14:03:35.768Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/cancellation</loc>
+    <lastmod>2025-10-08T14:03:35.762Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping</loc>
+    <lastmod>2025-10-08T14:03:35.791Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/progress</loc>
+    <lastmod>2025-10-08T14:03:35.789Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/changelog</loc>
+    <lastmod>2025-08-08T03:15:49.239Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/client/roots</loc>
+    <lastmod>2025-10-08T14:03:35.792Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/client/sampling</loc>
+    <lastmod>2025-10-08T14:03:35.793Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26</loc>
+    <lastmod>2025-08-14T18:58:43.732Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server</loc>
+    <lastmod>2025-08-08T03:15:49.292Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server/prompts</loc>
+    <lastmod>2025-10-08T14:03:35.793Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server/resources</loc>
+    <lastmod>2025-11-24T22:13:35.369Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server/tools</loc>
+    <lastmod>2025-10-08T14:03:35.794Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/completion</loc>
+    <lastmod>2025-10-08T14:03:36.858Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/logging</loc>
+    <lastmod>2025-10-08T14:03:36.856Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/pagination</loc>
+    <lastmod>2025-10-08T14:03:36.857Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/architecture</loc>
+    <lastmod>2025-10-08T14:03:36.855Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization</loc>
+    <lastmod>2025-10-08T14:03:36.861Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic</loc>
+    <lastmod>2025-10-08T14:03:36.860Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle</loc>
+    <lastmod>2026-01-14T21:12:56.941Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices</loc>
+    <lastmod>2025-10-08T14:03:36.859Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/transports</loc>
+    <lastmod>2025-10-08T14:03:36.862Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation</loc>
+    <lastmod>2025-10-08T14:03:36.859Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping</loc>
+    <lastmod>2025-10-08T14:03:40.235Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress</loc>
+    <lastmod>2025-10-08T14:03:40.233Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/changelog</loc>
+    <lastmod>2025-08-08T03:15:49.493Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation</loc>
+    <lastmod>2025-10-08T14:03:40.236Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/client/roots</loc>
+    <lastmod>2025-10-08T14:03:40.232Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/client/sampling</loc>
+    <lastmod>2025-10-08T14:03:40.238Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18</loc>
+    <lastmod>2025-09-23T20:56:21.220Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/schema</loc>
+    <lastmod>2026-01-04T18:58:44.449Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server</loc>
+    <lastmod>2025-08-08T03:15:49.578Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server/prompts</loc>
+    <lastmod>2025-11-03T12:56:28.074Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server/resources</loc>
+    <lastmod>2025-11-24T22:13:35.370Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server/tools</loc>
+    <lastmod>2025-11-03T12:56:28.077Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/completion</loc>
+    <lastmod>2025-10-08T14:03:41.104Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging</loc>
+    <lastmod>2025-10-08T14:03:41.106Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/pagination</loc>
+    <lastmod>2025-10-08T14:03:41.105Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/architecture</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic</loc>
+    <lastmod>2026-01-15T15:56:26.805Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle</loc>
+    <lastmod>2026-01-14T21:12:56.942Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices</loc>
+    <lastmod>2025-12-17T04:19:58.963Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/transports</loc>
+    <lastmod>2025-11-25T21:26:06.913Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/changelog</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/client/roots</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/client/sampling</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/schema</loc>
+    <lastmod>2026-01-04T18:58:44.455Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server/prompts</loc>
+    <lastmod>2025-12-12T20:07:22.156Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server/resources</loc>
+    <lastmod>2025-12-12T20:07:22.158Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server/tools</loc>
+    <lastmod>2026-01-15T15:55:24.754Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination</loc>
+    
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/architecture</loc>
+    <lastmod>2025-10-08T14:03:41.107Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/authorization</loc>
+    <lastmod>2025-11-25T06:12:15.212Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic</loc>
+    <lastmod>2026-01-15T15:56:26.807Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/lifecycle</loc>
+    <lastmod>2026-01-14T21:12:56.940Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/security_best_practices</loc>
+    <lastmod>2026-01-15T23:45:39.402Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/transports</loc>
+    <lastmod>2026-01-05T11:31:48.530Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation</loc>
+    <lastmod>2025-11-14T22:45:32.085Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/utilities/ping</loc>
+    <lastmod>2025-10-08T14:03:41.886Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/utilities/progress</loc>
+    <lastmod>2025-11-14T22:45:32.635Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/basic/utilities/tasks</loc>
+    <lastmod>2025-11-24T16:12:50.010Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/changelog</loc>
+    <lastmod>2025-11-28T14:33:24.599Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/client/elicitation</loc>
+    <lastmod>2026-01-15T23:45:39.401Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/client/roots</loc>
+    <lastmod>2025-10-08T14:03:41.889Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/client/sampling</loc>
+    <lastmod>2026-01-14T19:46:24.204Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft</loc>
+    <lastmod>2025-08-14T18:58:43.813Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/schema</loc>
+    <lastmod>2026-01-15T23:45:39.413Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server</loc>
+    <lastmod>2025-08-08T03:15:49.853Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server/prompts</loc>
+    <lastmod>2025-12-12T20:07:22.161Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server/resources</loc>
+    <lastmod>2025-12-12T20:07:22.159Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server/tools</loc>
+    <lastmod>2026-01-15T15:55:24.752Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server/utilities/completion</loc>
+    <lastmod>2025-10-08T14:03:41.919Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server/utilities/logging</loc>
+    <lastmod>2025-10-08T14:03:41.920Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/draft/server/utilities/pagination</loc>
+    <lastmod>2025-12-21T03:12:14.675Z</lastmod>
+  </url>
+
+  <url>
+    <loc>https://modelcontextprotocol.io/specification/versioning</loc>
+    <lastmod>2025-12-03T23:00:59.939Z</lastmod>
+  </url>
+</urlset>
