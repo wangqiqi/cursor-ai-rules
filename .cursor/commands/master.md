@@ -6,7 +6,7 @@ alwaysApply: true
 
 # 🎯 智能总命令控制器 (Intelligent Master Command Controller)
 
-*版本: v4.2.0 | 最后更新: 2026-01-15 | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.3.0 | 最后更新: 2026-01-16 | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🧠 核心理念：智能感知 + 自动决策 + 自主执行
 
@@ -290,6 +290,10 @@ graph TD
 |------|------|------|
 | `constitution` | AI共生宪法 - 定义人机协作的核心原则和最高准则 | ✅ 总是启用 |
 | `conversation_intent_analyzer` | 对话意图分析器 - 基于用户对话内容理解需求并提供项目规划建议 | ✅ 总是启用 |
+| `vibe-coding` | VIBE Coding开发原则 - 文档驱动、测试先行、前后端对齐 | 🔄 按需启用 |
+| `rules-router` | 规则路由系统 - 智能分发和管理规则请求 | ✅ 总是启用 |
+| `javascript` | JavaScript/TypeScript开发规则 - 现代前端开发最佳实践 | 🔄 按需启用 |
+| `python` | Python开发规则 - 后端开发和数据处理最佳实践 | 🔄 按需启用 |
 | `eslint` | ESLint代码质量检查集成 - 自动检测和修复JavaScript代码问题 | ✅ 总是启用 |
 | `evolution-automation` | 自动化演进系统 - 基于感知数据的智能规则自动优化 | 🔄 按需启用 |
 | `evolution-governance` | 演进治理机制 - 规则演进的安全保障和质量控制体系 | 🔄 按需启用 |
@@ -830,7 +834,7 @@ show_intelligent_help() {
     echo "  • 决策优化 - 选择最合适的操作组合"
     echo "  • 自主执行 - 一键完成复杂任务"
     echo "  • 持续学习 - 从交互中改进决策"
-    echo "  • Skills扩展 - 集成16个专业技能库"
+    echo "  • Skills扩展 - 集成20个专业技能库"
     echo ""
     echo -e "${GREEN}🚀 现在就开始使用: @master [描述你的需求]${NC}"
 }

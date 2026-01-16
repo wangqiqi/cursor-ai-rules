@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-4.3.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-18-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-21-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-3-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -139,18 +139,20 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | **evolution-governance** | Evolution Governance - Security and quality control | Smart application | ✅ |
 | **collaboration** | Team Collaboration Rules - Best practices for multi-developer environments | Smart application | ✅ |
 | **conversation_intent_analyzer** | Conversation Intent Analyzer - Intelligent understanding of user needs | Always applied | ✅ |
+| **vibe-coding** | VIBE Coding Development Principles - Documentation-driven, test-first, frontend-backend alignment | Code files | ✅ |
+| **rules-router** | Rules Router System - Intelligent distribution and management of rule requests | Always applied | ✅ |
 | **javascript** | JavaScript/TypeScript Development Rules - Modern frontend development best practices | Code files | ✅ |
 | **python** | Python Development Rules - Backend development and data processing best practices | Code files | ✅ |
 
-### 🎯 Skills Extension System (16 Professional Skills)
+### 🎯 Skills Extension System (20 Professional Skills)
 
 | Skill Category | Count | Skills | Status |
 |----------------|-------|--------|--------|
 | **Document Processing** | 4 | docx, pdf, pptx, xlsx - Office document processing | ✅ Fully Integrated |
-| **Creative Design** | 4 | algorithmic-art, canvas-design, frontend-design, theme-factory | ✅ Fully Integrated |
-| **AI Integration** | 3 | mcp-builder, slack-gif-creator, skill-creator | ✅ Fully Integrated |
+| **Creative Design** | 5 | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator | ✅ Fully Integrated |
+| **AI Integration** | 5 | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification | ✅ Fully Integrated |
 | **Enterprise Collaboration** | 3 | brand-guidelines, internal-comms, doc-coauthoring | ✅ Fully Integrated |
-| **Testing & Development** | 2 | webapp-testing, web-artifacts-builder | ✅ Fully Integrated |
+| **Testing & Development** | 3 | webapp-testing, web-artifacts-builder, evaluation | ✅ Fully Integrated |
 
 ## 🚀 Quick Start
 

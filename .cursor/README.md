@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-4.3.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Rules](https://img.shields.io/badge/rules-19-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-21-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-3-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
@@ -139,18 +139,19 @@ Cursor AI Rules 采用创新的双目录架构：
 | **collaboration** | 团队协作规则 - 多开发者环境的最佳实践 | 智能应用 | ✅ |
 | **conversation_intent_analyzer** | 会话意图分析器 - 智能理解用户需求和意图 | 始终应用 | ✅ |
 | **vibe-coding** | VIBE Coding开发原则 - 文档驱动、测试先行、前后端对齐 | 代码文件 | ✅ |
+| **rules-router** | 规则路由系统 - 智能分发和管理规则请求 | 始终应用 | ✅ |
 | **javascript** | JavaScript/TypeScript开发规则 - 现代前端开发最佳实践 | 代码文件 | ✅ |
 | **python** | Python开发规则 - 后端开发和数据处理最佳实践 | 代码文件 | ✅ |
 
-### 🎯 Skills扩展系统 (16个专业技能)
+### 🎯 Skills扩展系统 (20个专业技能)
 
 | 技能分类 | 技能数量 | 功能描述 | 状态 |
 |----------|----------|----------|------|
 | **文档处理** | 4个 | docx, pdf, pptx, xlsx - Office文档处理和转换 | ✅ 全部集成 |
-| **创意设计** | 4个 | algorithmic-art, canvas-design, frontend-design, theme-factory | ✅ 全部集成 |
-| **AI集成** | 3个 | mcp-builder, slack-gif-creator, skill-creator | ✅ 全部集成 |
+| **创意设计** | 5个 | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator | ✅ 全部集成 |
+| **AI集成** | 5个 | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification | ✅ 全部集成 |
 | **企业协作** | 3个 | brand-guidelines, internal-comms, doc-coauthoring | ✅ 全部集成 |
-| **测试开发** | 2个 | webapp-testing, web-artifacts-builder | ✅ 全部集成 |
+| **测试开发** | 3个 | webapp-testing, web-artifacts-builder, evaluation | ✅ 全部集成 |
 
 ## 🚀 快速开始
 
@@ -408,7 +409,160 @@ ls -la .cursor/core/init.sh
 
 ---
 
+## 🌱 项目生长系统 (.cursorGrowth)
+
+### 🎯 智能生长目录
+
+系统会在项目根目录**首次使用时**自动创建 `.cursorGrowth` 目录，用于存储项目私有信息和生长数据。
+
+#### 🔒 自动隐私保护
+
+系统会**自动管理**项目根目录的 `.gitignore` 文件，确保生长数据不会被意外提交：
+
+- **新项目**: 自动创建包含隐私保护规则的 `.gitignore` 文件
+- **现有项目**: 在现有 `.gitignore` 文件开头添加 `.cursorGrowth/` 忽略规则
+- **验证生效**: 自动验证Git忽略规则是否正确生效
+
+**隐私保护条目**:
+```gitignore
+# Cursor AI 生长数据 - 自动感知和学习
+# 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
+.cursorGrowth/
+```
+
+```bash
+# 首次运行任何@master命令时自动创建
+@master 创建React项目
+
+# 系统自动创建目录结构：
+.cursorGrowth/
+├── README.md                     # 生长目录说明
+├── learning/                     # AI学习数据
+│   ├── profile.json             # 用户和项目学习档案
+│   └── master_interactions.json # 交互历史
+├── conversations/               # 对话记录
+│   └── session_*.json          # 每次对话的详细记录
+├── debug/                       # 调试信息
+│   └── error_*.json            # 错误和异常记录
+├── growth/                      # 生长指标
+│   └── metrics.json            # 项目生长统计
+└── personal/                    # 个性化数据
+    └── user_profile.json       # 用户偏好和习惯
+```
+
+### 📊 自动记录的数据类型
+
+#### **学习数据 (learning/)**
+- 用户意图识别模式和准确率
+- 成功执行的命令组合模式
+- 失败案例和改进建议
+- 个性化偏好学习
+
+#### **对话历史 (conversations/)**
+- 每次与AI助手的完整对话记录
+- 意图识别结果和决策过程
+- 执行结果和用户反馈
+- 项目上下文信息
+
+#### **调试信息 (debug/)**
+- 执行失败的详细错误信息
+- 系统异常和边界情况
+- 性能问题和瓶颈分析
+- 故障排除建议
+
+#### **生长指标 (growth/)**
+- 总交互次数统计
+- 成功率趋势
+- 意图类型分布分析
+- 每日活跃度跟踪
+
+#### **个性化资料 (personal/)**
+- 用户语言偏好自动检测
+- 常用意图类型统计
+- 交互风格和偏好分析
+
+### 🧠 智能学习机制
+
+#### **自动学习 (每次调用)**
+```bash
+# 每次使用@master命令时，系统自动：
+1. 📝 记录用户输入和意图识别结果
+2. 📊 更新学习统计和模式分析
+3. 👤 累积个性化偏好数据
+4. 📈 计算生长指标和趋势
+5. 🧠 优化未来响应策略
+```
+
+#### **主动学习 (指定命令)**
+```bash
+# 主动触发深度学习
+@master 学习项目模式     # 分析.cursorGrowth数据
+@master 优化我的偏好     # 基于历史数据调整AI行为
+@master 分析使用习惯     # 生成详细使用分析报告
+@master 显示生长状态     # 显示项目生长状态
+```
+
+### 🔒 隐私和安全
+
+#### **数据保护措施**
+- `.cursorGrowth` 目录**不会被提交**到版本控制
+- 所有数据存储在本地项目目录
+- 自动生成隐私保护说明
+- 符合隐私保护最佳实践
+
+#### **数据使用原则**
+- 数据仅用于改进AI助手服务质量
+- 不会上传到外部服务器
+- 用户可以随时查看、导出或删除数据
+- 支持数据匿名化和隐私模式
+
+### 📈 生长可视化
+
+#### **查看生长状态**
+```bash
+@master 显示生长状态    # 查看项目生长指标
+@master 分析学习进度    # 显示AI学习成果
+@master 生成成长报告    # 完整的生长分析报告
+```
+
+#### **生长指标示例**
+```
+🌱 项目生长状态 (2026-01-16)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 总交互次数: 45次
+✅ 成功率: 92%
+🎯 最常用意图: 项目创建 (40%), 代码优化 (35%)
+📈 学习改进: +15% 意图识别准确率
+👤 用户偏好: 中文界面, React技术栈
+📅 活跃天数: 12天
+```
+
+### 🎓 学习命令详解
+
+#### **@master 学习项目模式**
+- 分析.cursorGrowth/learning/中的数据
+- 识别用户行为模式和偏好
+- 优化未来命令响应准确性
+- 生成个性化使用建议
+
+#### **@master 优化我的偏好**
+- 分析用户交互历史
+- 根据用户偏好调整AI行为
+- 提升意图识别准确率
+- 个性化交互风格
+
+#### **@master 分析使用习惯**
+- 生成详细的使用统计报告
+- 识别效率提升机会
+- 提供使用优化建议
+- 预测未来使用趋势
+
+---
+
+*🌱 Cursor AI Rules v4.3.0 - 智能生长系统让AI助手持续进化，项目随着每次交互而生长！*
+
+*核心创新*: 从静态工具到动态生长实体，从单次交互到持续学习，从通用AI到个性化助手！
+
 *🚀 Cursor AI Rules v4.3.0 - 统一智能入口，4层架构重构，AI真正成为编程助手*
 *最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 *基于 Cursor 官方规范，集成智能感知、决策和进化系统*
-
