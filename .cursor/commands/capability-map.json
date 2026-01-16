@@ -14,7 +14,9 @@
     "error_handling_strategy": "graceful_degradation",
     "logging_level": "info",
     "telemetry_enabled": false,
-    "learning_enabled": true
+    "learning_enabled": true,
+    "mcp_priority_enabled": true,
+    "mcp_fallback_enabled": true
   },
   "mappings": {
     "create_react_project": {
