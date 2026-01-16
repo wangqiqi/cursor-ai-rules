@@ -12,21 +12,50 @@ alwaysApply: true
 
 **颠覆传统调用模式**：不再需要用户记忆各种规则、技能、脚本的调用语法，通过智能意图解析，自动路由到最合适的执行组合。
 
+### 🎯 MCP优先级路由机制
+
+**核心创新：MCP Tools 优先调用**
+
+```typescript
+// MCP优先级检查流程
+async function routeWithMCPPriority(intent: IntentAnalysis): Promise<ExecutionResult> {
+  // 1. 检测MCP工具可用性
+  const mcpAvailability = await checkMCPToolsAvailability(intent);
+
+  // 2. 如果有高优先级MCP工具，直接使用
+  if (mcpAvailability.hasHighPriorityTools()) {
+    return await executeMCPTools(mcpAvailability.getHighPriorityTools());
+  }
+
+  // 3. 否则回退到传统能力执行
+  return await executeTraditionalCapabilities(intent);
+}
+```
+
+**优先级策略：**
+- **高优先级 (High)**: Git操作、浏览器自动化、测试执行等确定性任务
+- **中优先级 (Medium)**: 数据处理、文档操作等半确定性任务
+- **低优先级 (Low)**: 通用AI推理、复杂决策等不确定性任务
+
 ### 🎯 工作原理
 
 ```mermaid
 graph TD
     A[用户输入] --> B[意图预解析]
-    B --> C[上下文感知]
-    C --> D[能力映射查询]
-    D --> E[执行编排]
-    E --> F[智能执行]
-    F --> G[结果反馈]
+    B --> C[MCP可用性检测]
+    C --> D[上下文感知]
+    D --> E[能力映射查询]
+    E --> F[MCP优先级路由]
+    F --> G{有可用MCP工具?}
+    G -->|是| H[MCP工具执行]
+    G -->|否| I[传统能力执行]
+    H --> J[结果反馈]
+    I --> J
 
-    H[规则系统] --> E
-    I[技能系统] --> E
-    J[脚本系统] --> E
-    K[钩子系统] --> E
+    K[规则系统] --> I
+    L[技能系统] --> I
+    M[脚本系统] --> I
+    N[钩子系统] --> I
 ```
 
 ## 🏗️ 系统架构
@@ -57,11 +86,20 @@ interface IntentAnalysis {
 }
 
 interface CapabilitySet {
+  mcp_tools: MCPTool[];        // MCP工具优先级列表
   rules: string[];             // 需要激活的规则
   skills: string[];            // 需要调用的技能
   scripts: string[];           // 需要执行的脚本
   hooks: string[];             // 需要触发的钩子
   workflows: string[];         // 需要执行的工作流
+}
+
+interface MCPTool {
+  intent: string;              // 意图标识
+  tool: string;                // MCP工具名称
+  server: string;              // MCP服务器名称
+  priority: 'high' | 'medium' | 'low'; // 优先级
+  available?: boolean;         // 是否可用
 }
 ```
 

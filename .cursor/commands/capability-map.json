@@ -2197,6 +2197,7 @@
         "Cursor同步"
       ],
       "capabilities": {
+        "mcp_tools": [],
         "rules": [],
         "scripts": [
           "core/cursor-sync.sh"
@@ -2209,6 +2210,82 @@
       ],
       "validation_rules": {},
       "fallback_strategies": []
+    },
+
+    "git_commit_mcp_priority": {
+      "description": "Git提交 (MCP优先级)",
+      "intents": [
+        "git",
+        "commit",
+        "提交代码",
+        "commit_code"
+      ],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "提交代码",
+        "git commit",
+        "commit changes"
+      ],
+      "capabilities": {
+        "mcp_tools": [
+          {
+            "intent": "git_status",
+            "tool": "mcp_git_git_status",
+            "server": "mcp-git",
+            "priority": "high"
+          },
+          {
+            "intent": "git_add",
+            "tool": "mcp_git_git_add",
+            "server": "mcp-git",
+            "priority": "high"
+          },
+          {
+            "intent": "git_diff",
+            "tool": "mcp_git_git_diff",
+            "server": "mcp-git",
+            "priority": "high"
+          },
+          {
+            "intent": "git_commit",
+            "tool": "mcp_git_git_commit",
+            "server": "mcp-git",
+            "priority": "high"
+          },
+          {
+            "intent": "git_push",
+            "tool": "mcp_git_git_push",
+            "server": "mcp-git",
+            "priority": "high"
+          }
+        ],
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/git-commit.sh"
+        ],
+        "hooks": [
+          "features/hooks/code-quality.sh"
+        ],
+        "workflows": [
+          "stage"
+        ]
+      },
+      "execution_order": [
+        "mcp_tools",
+        "rules",
+        "scripts",
+        "hooks",
+        "workflows"
+      ],
+      "validation_rules": {
+        "require_git_repo": true,
+        "check_uncommitted_changes": true
+      },
+      "fallback_strategies": [
+        "traditional_git_flow"
+      ]
     },
 
     "monitoring_and_analytics": {
