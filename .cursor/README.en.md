@@ -179,7 +179,7 @@ cd your-project
 ### Quality Tools
 ```bash
 # Code quality checks
-./.cursor/scripts/plugin_manager.sh list      # View available tools
+./.cursor/features/automation/scripts/plugin_manager.sh list      # View available tools
 # Integrated tools
 ✅ ESLint code quality checks (integrated into rules system)
 ```
@@ -188,10 +188,10 @@ cd your-project
 
 ```bash
 # Intelligent help system
-./.cursor/cursor-adaptation-setup.sh help
+./.cursor/core/init.sh --help
 
 # Environment integrity check
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 ```
 
 ## 💡 Usage Examples
@@ -250,10 +250,10 @@ simple architecture recommended, avoid over-engineering.
 ### Performance Tuning
 ```bash
 # Re-run perception analysis
-./.cursor/rules/intelligent_evolution/perception.sh
+./.cursor/core/env-perception.sh
 
 # Check environment
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 ```
 
 ## 📦 Distribution & Deployment
@@ -263,12 +263,12 @@ simple architecture recommended, avoid over-engineering.
 # Method 1: Copy .cursor directory to project root (recommended)
 cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
 cd /path/to/your-project
-./.cursor/cursor-adaptation-setup.sh
+./.cursor/core/init.sh
 
 # Method 2: Clone from Git repository (if published)
 # git clone <your-repo-url> cursor-ai-rules
 # cp -r cursor-ai-rules/.cursor your-project/
-# cd your-project && ./.cursor/cursor-adaptation-setup.sh
+# cd your-project && ./.cursor/core/init.sh
 ```
 
 **Features:**
@@ -283,7 +283,7 @@ cd /path/to/your-project
 for project in project1 project2 project3; do
   cp -r .cursor "$project/"
   cd "$project"
-  ./.cursor/cursor-adaptation-setup.sh
+  ./.cursor/core/init.sh
   cd ..
 done
 ```
@@ -298,10 +298,10 @@ done
 ### Intelligent Diagnostics
 ```bash
 # One-click diagnose all issues
-./.cursor/cursor-adaptation-setup.sh help
+./.cursor/core/init.sh --help
 
 # Environment integrity check
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 ```
 
 ### Common Issues
@@ -309,16 +309,16 @@ done
 **Q: Initialization failed?**
 ```bash
 # Check permissions and environment
-ls -la .cursor/cursor-adaptation-setup.sh
-./.cursor/scripts/env_check.sh
+ls -la .cursor/core/init.sh
+./.cursor/core/env-perception.sh
 ```
 
 **Q: Setup issues?**
 ```bash
 # Re-run environment check
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 # Re-run setup
-./.cursor/cursor-adaptation-setup.sh
+./.cursor/core/init.sh
 ```
 
 ## 🤝 Contribution Guidelines

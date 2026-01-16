@@ -79,7 +79,7 @@ interface CapabilitySet {
       "capabilities": {
         "rules": ["conversation_intent_analyzer", "generator", "templates"],
         "skills": ["react", "node", "typescript"],
-        "scripts": ["cursor-adaptation-setup.sh", "perception.sh"],
+        "scripts": ["init.sh", "env-perception.sh"],
         "workflows": ["project-init", "dependency-install", "config-setup"],
         "hooks": ["after-project-init"]
       },
@@ -93,7 +93,7 @@ interface CapabilitySet {
       "capabilities": {
         "rules": ["eslint", "intelligent_evolution"],
         "skills": ["code-quality"],
-        "scripts": ["check.sh"],
+        "scripts": ["quality-manager.sh"],
         "workflows": ["lint", "audit", "report"],
         "hooks": ["code-quality.sh"]
       },

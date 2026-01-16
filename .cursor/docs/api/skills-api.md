@@ -73,7 +73,7 @@ Cursor AI Rules 的技能系统提供了可扩展的 AI 能力增强机制，支
 
 ```bash
 # 初始化时自动安装
-.cursor/bootstrap/init.sh
+.cursor/core/init.sh
 
 # 系统会：
 # 1. 检测 package.json → 安装 nodejs 技能

@@ -100,7 +100,7 @@ graph TD
     "capabilities": {
       "rules": ["conversation_intent_analyzer", "generator"],
       "skills": ["react", "node", "typescript"],
-      "scripts": ["cursor-adaptation-setup.sh"],
+      "scripts": ["init.sh"],
       "workflows": ["project-init", "dependency-install"]
     }
   }
@@ -155,13 +155,12 @@ graph TD
 
 ## 🔧 可用脚本命令 (Scripts)
 
-以下是 `.cursor/scripts/` 目录下的所有可执行脚本：
+以下是系统中的所有可执行脚本（分布在不同目录中）：
 
 | 脚本 | 描述 | 执行方式 |
 |------|------|----------|
 | `quality-manager.sh` | 统一质量管理系统 | `bash .cursor/quality/quality-manager.sh` |
 | `init.sh` | 统一初始化引擎 | `bash .cursor/core/init.sh` |
-| `init.sh` | 统一初始化引擎 | `bash .cursor/init.sh` |
 | `config-manager.sh` | 统一配置管理器 | `bash .cursor/config/config-manager.sh` |
 | `env-perception.sh` | 统一环境感知引擎 | `bash .cursor/core/env-perception.sh` |
 | `growth_init.sh` | 项目增长初始化脚本 | `bash .cursor/features/automation/scripts/growth_init.sh` |
@@ -507,8 +506,8 @@ execute_skill() {
         echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
 
         # 尝试自动发现和转换
-        if [ -f "$PROJECT_ROOT/.cursor/skills/discovery.sh" ]; then
-            bash "$PROJECT_ROOT/.cursor/skills/discovery.sh" load "$skill_name"
+        if [ -f "$PROJECT_ROOT/.cursor/features/skills/discovery.sh" ]; then
+            bash "$PROJECT_ROOT/.cursor/features/skills/discovery.sh" load "$skill_name"
         fi
     fi
 }
@@ -787,7 +786,7 @@ ls -la .cursor/rules/
 ./cursor-master.sh script <script_name>
 
 # 检查脚本权限
-ls -la .cursor/scripts/
+ls -la .cursor/core/ .cursor/quality/ .cursor/features/automation/scripts/
 ```
 
 ## ❓ 帮助与支持
@@ -812,7 +811,10 @@ ls -la .cursor/scripts/
 如果您想添加新的规则或脚本：
 
 1. 在 `.cursor/rules/` 下添加新的 `.md` 规则文件
-2. 在 `.cursor/scripts/` 下添加新的 `.sh` 脚本文件
+2. 根据功能在相应目录下添加脚本：
+   - 核心功能：`.cursor/core/`
+   - 质量工具：`.cursor/quality/`
+   - 自动化脚本：`.cursor/features/automation/scripts/`
 3. 确保脚本有执行权限：`chmod +x script.sh`
 4. 总命令控制器会自动识别并显示新命令
 

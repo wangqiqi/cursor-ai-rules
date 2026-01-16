@@ -182,7 +182,7 @@ const workDir = await adapter.executeCommand('get_work_dir');
 
 **自动适配机制**：
 - 下载规则后，第一次使用时会自动扫描并替换所有硬编码信息
-- 支持 `scripts/cursor-adaptation-setup.sh` 脚本进行初始化配置
+- 支持 `../core/init.sh` 脚本进行初始化配置
 - 规则文件中的示例值会被替换为实际用户信息
 
 ### 条件逻辑 (Conditional Logic)

@@ -77,7 +77,7 @@ perform_environment_check() {
     # 目录结构检查
     echo ""
     echo "📁 目录结构检查:"
-    local required_dirs=(".cursor" ".cursor/rules" ".cursor/automation/scripts")
+    local required_dirs=(".cursor" ".cursor/rules" ".cursor/features/automation/scripts")
     local all_dirs_exist=true
 
     for dir in "${required_dirs[@]}"; do

@@ -176,7 +176,7 @@ cd your-project
 ### 质量工具
 ```bash
 # 代码质量检查
-./.cursor/scripts/plugin_manager.sh list      # 查看可用工具
+./.cursor/features/automation/scripts/plugin_manager.sh list      # 查看可用工具
 # 集成工具
 ✅ ESLint代码质量检查 (已集成到规则系统)
 ```
@@ -185,10 +185,10 @@ cd your-project
 
 ```bash
 # 智能帮助系统
-./.cursor/cursor-adaptation-setup.sh help
+./.cursor/core/init.sh --help
 
 # 环境完整性检查
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 ```
 
 ## 💡 使用示例
@@ -247,10 +247,10 @@ cd your-project
 ### 性能调优
 ```bash
 # 重新运行感知分析
-./.cursor/rules/intelligent_evolution/perception.sh
+./.cursor/core/env-perception.sh
 
 # 检查环境
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 ```
 
 ## 📦 分发与部署
@@ -260,12 +260,12 @@ cd your-project
 # 方法1：复制.cursor目录到项目根目录（推荐）
 cp -r /path/to/cursor-ai-rules/.cursor /path/to/your-project/
 cd /path/to/your-project
-./.cursor/cursor-adaptation-setup.sh
+./.cursor/core/init.sh
 
 # 方法2：从Git仓库克隆（如果已发布）
 # git clone <your-repo-url> cursor-ai-rules
 # cp -r cursor-ai-rules/.cursor your-project/
-# cd your-project && ./.cursor/cursor-adaptation-setup.sh
+# cd your-project && ./.cursor/core/init.sh
 ```
 
 **特点：**
@@ -280,7 +280,7 @@ cd /path/to/your-project
 for project in project1 project2 project3; do
   cp -r .cursor "$project/"
   cd "$project"
-  ./.cursor/cursor-adaptation-setup.sh
+  ./.cursor/core/init.sh
   cd ..
 done
 ```
@@ -295,10 +295,10 @@ done
 ### 智能诊断
 ```bash
 # 一键诊断所有问题
-./.cursor/cursor-adaptation-setup.sh help
+./.cursor/core/init.sh --help
 
 # 环境完整性检查
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 ```
 
 ### 常见问题
@@ -306,16 +306,16 @@ done
 **Q: 初始化失败？**
 ```bash
 # 检查权限和环境
-ls -la .cursor/cursor-adaptation-setup.sh
-./.cursor/scripts/env_check.sh
+ls -la .cursor/core/init.sh
+./.cursor/core/env-perception.sh
 ```
 
 **Q: 设置问题？**
 ```bash
 # 重新运行环境检查
-./.cursor/scripts/env_check.sh
+./.cursor/core/env-perception.sh
 # 重新运行设置
-./.cursor/cursor-adaptation-setup.sh
+./.cursor/core/init.sh
 ```
 
 ## 🤝 贡献指南

@@ -1008,16 +1008,16 @@ EOF
 ### 规则管理工具 (Rule Management Tools)
 ```bash
 # 查看环境状态
-./cursor/scripts/env_check.sh
+../core/env-perception.sh
 
 # 检查代码质量（针对JavaScript项目）
-./cursor/scripts/check.sh
+../quality/quality-manager.sh
 
 # 启用特定规则
-./cursor/scripts/enable.sh rule_name
+../core/init.sh rule_name
 
 # 管理插件（如果有的话）
-./cursor/scripts/plugin_manager.sh
+../features/automation/scripts/plugin_manager.sh
 ```
 
 #### 手动规则管理 (Manual Rule Management)

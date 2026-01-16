@@ -26,7 +26,7 @@
       "capabilities": {
         "rules": ["conversation_intent_analyzer", "generator", "templates"],
         "skills": ["react", "node", "typescript"],
-        "scripts": ["init.sh", "core/env-perception.sh", "config/config-manager.sh"],
+        "scripts": ["core/init.sh", "core/env-perception.sh", "config/config-manager.sh"],
         "workflows": ["project-init", "dependency-install", "config-setup"],
         "hooks": ["after-project-init"]
       },
@@ -55,7 +55,7 @@
       "capabilities": {
         "rules": ["conversation_intent_analyzer", "generator", "templates"],
         "skills": ["vue", "node", "typescript"],
-        "scripts": ["init.sh", "core/env-perception.sh"],
+        "scripts": ["core/init.sh", "core/env-perception.sh"],
         "workflows": ["project-init", "dependency-install", "config-setup"],
         "hooks": ["after-project-init"]
       },
@@ -83,7 +83,7 @@
       "capabilities": {
         "rules": ["conversation_intent_analyzer", "generator", "templates"],
         "skills": ["python", "fastapi", "django"],
-        "scripts": ["init.sh", "core/env-perception.sh"],
+        "scripts": ["core/init.sh", "core/env-perception.sh"],
         "workflows": ["project-init", "dependency-install", "config-setup"],
         "hooks": ["after-project-init"]
       },
@@ -141,8 +141,8 @@
       ],
       "capabilities": {
         "rules": ["git-workflow"],
-        "scripts": ["git-commit.sh"],
-        "hooks": ["commit-msg-check.sh", "pre-commit.sh"],
+        "scripts": [],
+        "hooks": ["code-quality.sh"],
         "workflows": ["stage", "commit", "push"]
       },
       "execution_order": ["hooks", "scripts", "workflows"],
@@ -171,9 +171,9 @@
       "capabilities": {
         "rules": ["testing-workflow"],
         "skills": ["testing"],
-        "scripts": ["test-runner.sh"],
+        "scripts": [],
         "workflows": ["unit-tests", "integration-tests", "coverage-report"],
-        "hooks": ["pre-test.sh", "post-test.sh"]
+        "hooks": ["test-hooks.sh"]
       },
       "execution_order": ["hooks", "scripts", "workflows"],
       "parameters": {
@@ -200,9 +200,9 @@
       "capabilities": {
         "rules": ["deployment-workflow"],
         "skills": ["docker", "kubernetes"],
-        "scripts": ["deploy.sh"],
+        "scripts": [],
         "workflows": ["build", "test", "deploy", "verify"],
-        "hooks": ["pre-deploy.sh", "post-deploy.sh"]
+        "hooks": ["security-audit.sh"]
       },
       "execution_order": ["workflows", "scripts", "hooks"],
       "parameters": {
@@ -230,9 +230,9 @@
       "capabilities": {
         "rules": ["intelligent_evolution"],
         "skills": ["code-quality", "security-audit"],
-        "scripts": ["core/env-perception.sh", "analysis.sh"],
+        "scripts": ["core/env-perception.sh"],
         "workflows": ["code-analysis", "security-scan", "performance-check"],
-        "hooks": ["analysis-complete.sh"]
+        "hooks": ["session-summary.sh"]
       },
       "execution_order": ["perception", "scripts", "workflows", "rules"],
       "parameters": {
@@ -253,9 +253,9 @@
       ],
       "capabilities": {
         "rules": ["platform_adapter", "system_info"],
-        "scripts": ["env-setup.sh", "dependency-install.sh"],
+        "scripts": ["core/init.sh"],
         "workflows": ["tool-installation", "config-setup", "validation"],
-        "hooks": ["env-ready.sh"]
+        "hooks": ["command-log.sh"]
       },
       "execution_order": ["rules", "scripts", "workflows"],
       "parameters": {
@@ -277,9 +277,9 @@
       "capabilities": {
         "rules": ["intelligent_evolution"],
         "skills": ["performance-analysis"],
-        "scripts": ["performance-check.sh", "optimization.sh"],
+        "scripts": ["core/env-perception.sh"],
         "workflows": ["profiling", "bottleneck-analysis", "optimization"],
-        "hooks": ["performance-optimized.sh"]
+        "hooks": ["rule-usage-tracker.sh"]
       },
       "execution_order": ["scripts", "workflows", "rules"],
       "parameters": {
@@ -301,9 +301,9 @@
       "capabilities": {
         "rules": ["security-workflow"],
         "skills": ["security-audit"],
-        "scripts": ["security-scan.sh"],
+        "scripts": [],
         "workflows": ["vulnerability-scan", "dependency-check", "config-audit"],
-        "hooks": ["security-check-complete.sh"]
+        "hooks": ["prompt-security.sh"]
       },
       "execution_order": ["workflows", "scripts", "hooks"],
       "parameters": {
@@ -330,9 +330,9 @@
       "capabilities": {
         "rules": ["documentation-workflow"],
         "skills": ["docx", "pdf"],
-        "scripts": ["doc-generator.sh"],
+        "scripts": [],
         "workflows": ["api-doc", "readme-gen", "code-doc"],
-        "hooks": ["docs-generated.sh"]
+        "hooks": ["code-quality.sh"]
       },
       "execution_order": ["workflows", "scripts", "skills"],
       "parameters": {
@@ -354,9 +354,9 @@
       "capabilities": {
         "rules": ["learning-workflow", "i18n"],
         "skills": ["learning-assistant"],
-        "scripts": ["learning-path.sh"],
+        "scripts": [],
         "workflows": ["skill-assessment", "learning-plan", "practice-setup"],
-        "hooks": ["learning-progress.sh"]
+        "hooks": ["session-summary.sh"]
       },
       "execution_order": ["rules", "scripts", "workflows"],
       "parameters": {

@@ -18,13 +18,13 @@ alwaysApply: false
 自动化演进系统基于直接的数据源感知，实现规则的自动优化。
 
 ### 数据源 (Data Sources)
-- **项目状态**: 直接调用 `../scripts/perception.sh` 脚本进行项目变化感知
+- **项目状态**: 直接调用 `../../core/env-perception.sh` 脚本进行项目变化感知
 - **用户行为**: 基于协作历史和使用模式分析
 - **系统指标**: 集成 `@evolution-governance` 的监控数据
 
 ### 感知触发 (Perception Triggers)
 系统通过以下方式获取感知数据：
-- 定时调用 `../scripts/perception.sh` 脚本进行项目状态扫描
+- 定时调用 `../../core/env-perception.sh` 脚本进行项目状态扫描
 - 分析用户协作模式和反馈数据
 - 集成 `@evolution-governance` 的实时监控指标
 

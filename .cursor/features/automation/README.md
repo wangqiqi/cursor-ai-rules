@@ -15,13 +15,8 @@ automation/
 │   ├── session-summary.sh  # 会话总结钩子
 │   └── test-hooks.sh       # 测试钩子
 └── scripts/       # 自动化脚本
-    ├── check.sh            # 代码检查脚本
     ├── convert_to_agent_skills.sh # 技能转换脚本
-    ├── cursor-adaptation-setup.sh # 环境适配脚本
-    ├── enable.sh           # 工具启用脚本
-    ├── env_check.sh        # 环境检查脚本
     ├── growth_init.sh      # 增长初始化脚本
-    ├── perception.sh       # 感知分析脚本
     └── plugin_manager.sh   # 插件管理脚本
 ```
 
@@ -59,10 +54,10 @@ automation/
 
 ```bash
 # 环境检查
-@master script env_check.sh
+@master script env-perception
 
 # 代码质量检查
-@master script check.sh
+@master script quality
 
 # 插件管理
 @master script plugin_manager.sh
