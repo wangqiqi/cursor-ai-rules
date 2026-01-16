@@ -61,71 +61,54 @@ init_growth_directory() {
     echo -e "${GREEN}✅ 生长目录初始化完成${NC}"
 }
 
-# 创建README文件
-create_readme_file() {
-    cat > "$GROWTH_DIR/README.md" << 'EOF'
-# 🌱 项目生长目录 (.cursorGrowth)
-
-此目录包含项目的AI学习数据和生长信息。
-这些数据不会被提交到版本控制，是项目私有的。
-
-## 📂 目录结构 (按数据类型组织)
-
-### 🎯 核心生长数据
-- **learning/** - AI学习数据
-  - `profile.json` - 用户学习档案
-  - `master_interactions.json` - @master交互历史
-  - `patterns.json` - 意图识别模式
-- **conversations/** - 对话记录
-  - `cursor_*.json` - Cursor IDE对话同步
-  - `initial_conversation.json` - 初始化对话
-
-### 📊 分析与统计
-- **growth/** - 生长指标
-  - `metrics.json` - 生长统计数据
-- **monitoring/** - 系统监控
-  - `metrics.json` - 性能指标
-  - `performance.log` - 性能日志
-  - `token_usage.log` - Token使用统计
-
-### 🔧 系统数据
-- **cache/** - 缓存优化
-  - `env_perception:*.cache` - 环境感知缓存
-  - `intent_analysis:*.cache` - 意图分析缓存
-- **logs/** - 系统日志
-  - 各种系统操作日志
-- **sync/** - 同步管理
-  - `cursor_sync_status.json` - Cursor数据同步状态
-
-### 🌐 外部集成
-- **mcps/** - MCP生态系统 *(28个资源文件)*
-  - `user-pdf-reader/` - PDF阅读器MCP资源
-  - 其他MCP服务的配置和资源
-- **compression/** - Token压缩数据 *(由optimizer.sh自动管理)*
-  - 压缩字典、缓存、性能数据
-- **personal/** - 个性化数据 *(按需生成)*
-- **debug/** - 调试信息 *(按需生成)*
-
-## 📈 当前数据统计
-
-| 目录 | 文件数 | 状态 | 说明 |
-|------|--------|------|------|
-| conversations | 8 | ✅ 活跃 | Cursor对话同步完整 |
-| learning | 3 | ✅ 活跃 | AI学习数据丰富 |
-| mcps/user-pdf-reader | 28 | ✅ 活跃 | MCP资源数据同步 |
-| monitoring | 4 | ✅ 活跃 | 系统监控数据完整 |
-| cache | 4 | ✅ 活跃 | 性能缓存有效 |
-| growth | 1 | ✅ 活跃 | 生长指标统计 |
-| sync | 1 | ✅ 活跃 | 同步状态跟踪 |
-| personal | 0 | ⏳ 待用 | 个性化功能预留 |
-| debug | 0 | ⏳ 待用 | 调试功能预留 |
-
-**总计: 50个数据文件，覆盖AI生长的各个方面**
-
----
-
-*此目录由 .cursor/core/growth-manager.sh 自动管理*
-EOF
+# 显示目录说明 (不创建静态文件)
+show_directory_info() {
+    echo "# 🌱 项目生长目录 (.cursorGrowth)"
+    echo ""
+    echo "此目录包含项目的AI学习数据和生长信息。"
+    echo "这些数据不会被提交到版本控制，是项目私有的。"
+    echo ""
+    echo "## 📂 目录结构 (按数据类型组织)"
+    echo ""
+    echo "### 🎯 核心生长数据"
+    echo "- **learning/** - AI学习数据"
+    echo "  - \`profile.json\` - 用户学习档案"
+    echo "  - \`master_interactions.json\` - @master交互历史"
+    echo "  - \`patterns.json\` - 意图识别模式"
+    echo "- **conversations/** - 对话记录"
+    echo "  - \`cursor_*.json\` - Cursor IDE对话同步"
+    echo "  - \`initial_conversation.json\` - 初始化对话"
+    echo ""
+    echo "### 📊 分析与统计"
+    echo "- **growth/** - 生长指标"
+    echo "  - \`metrics.json\` - 生长统计数据"
+    echo "- **monitoring/** - 系统监控"
+    echo "  - \`metrics.json\` - 性能指标"
+    echo "  - \`performance.log\` - 性能日志"
+    echo "  - \`token_usage.log\` - Token使用统计"
+    echo ""
+    echo "### 🔧 系统数据"
+    echo "- **cache/** - 缓存优化"
+    echo "  - \`env_perception:*.cache\` - 环境感知缓存"
+    echo "  - \`intent_analysis:*.cache\` - 意图分析缓存"
+    echo "- **logs/** - 系统日志"
+    echo "  - 各种系统操作日志"
+    echo "- **sync/** - 同步管理"
+    echo "  - \`cursor_sync_status.json\` - Cursor数据同步状态"
+    echo ""
+    echo "### 🌐 外部集成"
+    echo "- **mcps/** - MCP生态系统"
+    echo "  - \`user-pdf-reader/\` - PDF阅读器MCP资源"
+    echo "  - 其他MCP服务的配置和资源"
+    echo "- **compression/** - Token压缩数据 *(由optimizer.sh自动管理)*"
+    echo "  - 压缩字典、缓存、性能数据"
+    echo "- **personal/** - 个性化数据 *(按需生成)*"
+    echo "- **debug/** - 调试信息 *(按需生成)*"
+    echo ""
+    echo "---"
+    echo ""
+    echo "*此目录由 .cursor/core/growth-manager.sh 自动管理*"
+    echo "*不包含任何静态文档文件，保持项目私有性*"
 }
 
 # 创建初始配置文件
@@ -304,6 +287,12 @@ show_directory_stats() {
     echo -e "${CYAN}📊 生长目录统计报告${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+    # 显示目录说明
+    show_directory_info
+    echo ""
+    echo -e "${CYAN}📈 当前数据统计${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
     local total_files=0
     local total_size=0
 
@@ -410,6 +399,9 @@ main() {
         "verify")
             verify_directory_integrity
             ;;
+        "info")
+            show_directory_info
+            ;;
         "auto")
             # 自动维护：清理 + 优化 + 验证
             echo -e "${CYAN}🤖 执行自动维护...${NC}"
@@ -429,6 +421,7 @@ main() {
             echo "  $0 optimize      # 优化目录结构"
             echo "  $0 stats         # 显示目录统计"
             echo "  $0 verify        # 验证目录完整性"
+            echo "  $0 info          # 显示目录结构说明"
             echo "  $0 auto          # 自动维护 (清理+优化+验证)"
             echo "  $0 help          # 显示帮助"
             ;;

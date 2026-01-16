@@ -23,37 +23,17 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# 初始化生长目录
+# 初始化生长目录 - 通过生长管理器完成
 init_growth_if_needed() {
-    local needs_init=false
-
-    # 检查目录是否存在
-    if [ ! -d "$GROWTH_DIR" ]; then
-        echo -e "${CYAN}🌱 初始化项目生长目录...${NC}"
-        needs_init=true
+    # 调用生长管理器进行初始化和验证
+    if [ -f "$CURSOR_DIR/core/growth-manager.sh" ]; then
+        bash "$CURSOR_DIR/core/growth-manager.sh" init >/dev/null 2>&1
+        echo -e "${GREEN}✅ 生长目录已通过管理器初始化${NC}"
     else
-        # 检查必要的文件是否存在
-        if [ ! -f "$GROWTH_DIR/growth/metrics.json" ] || [ ! -f "$GROWTH_DIR/learning/profile.json" ]; then
-            echo -e "${YELLOW}⚠️  检测到缺失的生长文件，正在补充...${NC}"
-            needs_init=true
-        fi
-    fi
-
-    if [ "$needs_init" = true ]; then
-        # 创建目录结构
-        mkdir -p "$GROWTH_DIR/learning"
-        mkdir -p "$GROWTH_DIR/conversations"
-        mkdir -p "$GROWTH_DIR/debug"
-        mkdir -p "$GROWTH_DIR/growth"
-        mkdir -p "$GROWTH_DIR/personal"
-        mkdir -p "$GROWTH_DIR/cache"
-        mkdir -p "$GROWTH_DIR/monitoring"
-
-        # 创建初始文件
-        create_initial_files
+        echo -e "${YELLOW}⚠️  生长管理器未找到，使用备用初始化${NC}"
+        # 备用初始化逻辑（简化版）
+        mkdir -p "$GROWTH_DIR/learning" "$GROWTH_DIR/conversations" "$GROWTH_DIR/growth"
         ensure_gitignore_protection
-
-        echo -e "${GREEN}✅ 生长目录初始化/补充完成${NC}"
     fi
 }
 

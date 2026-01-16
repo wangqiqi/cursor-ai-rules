@@ -741,10 +741,16 @@ intelligent_master() {
         bash "$CURSOR_DIR/core/growth-recorder.sh" record "$user_input" "$decision_result" "$intent_type" 2>/dev/null || echo -e "${YELLOW}⚠️ 生长记录失败，但不影响主要功能${NC}"
     fi
 
-    # 同步Cursor IDE对话记录 (如果可用)
-    if [ -f "$CURSOR_DIR/core/cursor-sync.sh" ]; then
-        echo -e "${BLUE}🔄 同步Cursor IDE对话记录...${NC}"
+    # 同步Cursor IDE对话记录 (学习/分析/总结等场景)
+    if echo "$user_input" | grep -qiE "(学习|升级|总结|分析|同步|sync)" && [ -f "$CURSOR_DIR/core/cursor-sync.sh" ]; then
+        echo -e "${BLUE}🔄 检测到学习意图，自动同步Cursor对话数据...${NC}"
         bash "$CURSOR_DIR/core/cursor-sync.sh" sync 2>/dev/null || echo -e "${YELLOW}⚠️ Cursor对话同步失败${NC}"
+    fi
+
+    # 定期自动维护生长目录 (低频操作，避免影响性能)
+    if [ -f "$CURSOR_DIR/core/growth-manager.sh" ] && [ $((RANDOM % 10)) -eq 0 ]; then
+        echo -e "${BLUE}🔧 执行定期生长目录维护...${NC}"
+        bash "$CURSOR_DIR/core/growth-manager.sh" auto >/dev/null 2>&1 || true
     fi
 
     echo -e "${GREEN}✅ 智能执行完成！${NC}"
