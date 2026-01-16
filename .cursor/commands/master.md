@@ -745,6 +745,65 @@ execute_skill() {
     fi
 }
 
+# 🌱 自动初始化生长目录
+auto_init_growth_directory() {
+    local growth_dir="$PROJECT_ROOT/.cursorGrowth"
+
+    # 检查生长目录是否已存在
+    if [ -d "$growth_dir" ]; then
+        return 0  # 目录已存在，无需初始化
+    fi
+
+    echo -e "${CYAN}🌱 检测到首次使用，正在初始化生长目录...${NC}"
+
+    # 运行生长初始化脚本
+    if [ -f "$CURSOR_DIR/features/automation/scripts/growth_init.sh" ]; then
+        bash "$CURSOR_DIR/features/automation/scripts/growth_init.sh" >/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}✅ 生长目录初始化完成${NC}"
+        else
+            echo -e "${YELLOW}⚠️ 生长目录初始化失败，使用备用方案${NC}"
+            # 备用方案：创建基本目录结构
+            mkdir -p "$growth_dir"/{learning,conversations,growth,personal,cache,monitoring,debug,logs,sync}
+        fi
+    else
+        echo -e "${YELLOW}⚠️ 未找到生长初始化脚本，使用备用方案${NC}"
+        # 备用方案：创建基本目录结构
+        mkdir -p "$growth_dir"/{learning,conversations,growth,personal,cache,monitoring,debug,logs,sync}
+    fi
+
+    # 确保gitignore保护
+    ensure_gitignore_protection "$growth_dir"
+}
+
+# 🔒 确保gitignore保护生长目录
+ensure_gitignore_protection() {
+    local growth_dir="$1"
+    local gitignore_file="$PROJECT_ROOT/.gitignore"
+
+    # 检查是否存在.gitignore文件
+    if [ ! -f "$gitignore_file" ]; then
+        echo "# Cursor AI 生长数据 - 自动感知和学习" > "$gitignore_file"
+        echo "# 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪" >> "$gitignore_file"
+        echo ".cursorGrowth/" >> "$gitignore_file"
+        echo "" >> "$gitignore_file"
+        return 0
+    fi
+
+    # 检查是否已包含.cursorGrowth/规则
+    if ! grep -q "^\.cursorGrowth/" "$gitignore_file"; then
+        # 在文件开头添加保护规则
+        local temp_file=$(mktemp)
+        echo "# Cursor AI 生长数据 - 自动感知和学习" > "$temp_file"
+        echo "# 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪" >> "$temp_file"
+        echo ".cursorGrowth/" >> "$temp_file"
+        echo "" >> "$temp_file"
+        cat "$gitignore_file" >> "$temp_file"
+        mv "$temp_file" "$gitignore_file"
+        echo -e "${GREEN}✅ 已更新 .gitignore 文件保护生长数据${NC}"
+    fi
+}
+
 # 🎓 学习引擎 - 记录用户偏好
 learn_from_interaction() {
     local user_input="$1"
@@ -779,6 +838,9 @@ intelligent_master() {
 
     # 显示智能Logo
     show_intelligent_logo
+
+    # 🌱 自动初始化生长目录（如果不存在）
+    auto_init_growth_directory
 
     # 如果没有用户输入，显示帮助
     if [ -z "$user_input" ]; then
