@@ -119,9 +119,12 @@ cached_env_perception() {
     local start_time=$(date +%s)
 
     # 尝试从缓存读取
-    if read_cache "$cache_key"; then
+    if read_cache "$cache_key" >/dev/null 2>&1; then
+        # 缓存命中：读取并输出缓存内容
+        local cached_data=$(read_cache "$cache_key")
         local end_time=$(date +%s)
         log_performance "env_perception" "$start_time" "$end_time" "50" "true"
+        echo "$cached_data"
         return 0
     fi
 
@@ -173,9 +176,12 @@ cached_intent_analysis() {
     local start_time=$(date +%s)
 
     # 对于简单意图，直接使用缓存
-    if read_cache "$cache_key"; then
+    if read_cache "$cache_key" >/dev/null 2>&1; then
+        # 缓存命中：读取并输出缓存内容
+        local cached_data=$(read_cache "$cache_key")
         local end_time=$(date +%s)
         log_performance "intent_analysis" "$start_time" "$end_time" "30" "true"
+        echo "$cached_data"
         return 0
     fi
 

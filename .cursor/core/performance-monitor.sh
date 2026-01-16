@@ -65,8 +65,11 @@ log_performance_metric() {
     local cpu_usage_percent="$4"
     local status="${5:-success}"
 
+    # 统一使用5列格式，与cache.sh保持一致
+    # timestamp,operation,duration,token_estimate,cache_hit
+    local token_estimate=$(estimate_tokens "$operation" "${#status}")
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "$timestamp,$operation,$response_time_ms,$memory_usage_kb,$cpu_usage_percent,$status" >> "$PERFORMANCE_LOG"
+    echo "$timestamp,$operation,$response_time_ms,$token_estimate,$cpu_usage_percent" >> "$PERFORMANCE_LOG"
 }
 
 # 估算token消耗（基于操作类型）
@@ -125,48 +128,62 @@ get_cpu_usage() {
 
 # 更新监控指标
 update_metrics() {
-    if [ ! -f "$METRICS_FILE" ] || [ ! -f "$TOKEN_LOG" ] || [ ! -f "$PERFORMANCE_LOG" ]; then
+    if [ ! -f "$METRICS_FILE" ]; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: metrics.json file not found" >&2
         return 1
     fi
 
-    # 计算token统计
-    local total_tokens=$(awk -F',' '{sum += $3} END {print sum}' "$TOKEN_LOG" 2>/dev/null || echo "0")
-    local cached_tokens=$(awk -F',' '$5=="true" {sum += $3} END {print sum}' "$TOKEN_LOG" 2>/dev/null || echo "0")
+    # 计算token统计 (token_usage.log: timestamp,operation,tokens,cache_hit)
+    local total_tokens=0
+    local cached_tokens=0
+    if [ -f "$TOKEN_LOG" ] && [ -s "$TOKEN_LOG" ]; then
+        total_tokens=$(awk -F',' 'NF>=3 {sum += $3} END {print sum+0}' "$TOKEN_LOG" 2>/dev/null || echo "0")
+        cached_tokens=$(awk -F',' 'NF>=4 && $4=="true" {sum += $3} END {print sum+0}' "$TOKEN_LOG" 2>/dev/null || echo "0")
+    fi
     local cache_savings=$((total_tokens - cached_tokens))
 
-    # 计算性能统计
-    local total_requests=$(wc -l < "$PERFORMANCE_LOG" 2>/dev/null || echo "0")
-    local avg_response_time=$(awk -F',' '{sum += $3; count++} END {print count > 0 ? int(sum/count) : 0}' "$PERFORMANCE_LOG" 2>/dev/null || echo "0")
+    # 计算性能统计 (performance.log: timestamp,operation,duration,token_estimate,cache_hit)
+    local total_requests=0
+    local avg_response_time=0
+    if [ -f "$PERFORMANCE_LOG" ] && [ -s "$PERFORMANCE_LOG" ]; then
+        # 过滤掉注释行和空行
+        total_requests=$(grep -v '^#' "$PERFORMANCE_LOG" | grep -v '^$' | wc -l)
+        if [ "$total_requests" -gt 0 ]; then
+            avg_response_time=$(grep -v '^#' "$PERFORMANCE_LOG" | grep -v '^$' | awk -F',' '{sum += $3} END {print int(sum/NR)}' 2>/dev/null || echo "0")
+        fi
+    fi
 
-    # 计算缓存命中率
-    local cache_hits=$(awk -F',' '$6=="cache_hit" {count++} END {print count}' "$PERFORMANCE_LOG" 2>/dev/null || echo "0")
+    # 计算缓存命中率 (基于token日志)
     local cache_hit_rate=0
-    if [ "$total_requests" -gt 0 ]; then
-        cache_hit_rate=$((cache_hits * 100 / total_requests))
+    if [ "$total_tokens" -gt 0 ]; then
+        cache_hit_rate=$((cached_tokens * 100 / total_tokens))
     fi
 
-    # 计算错误率
-    local errors=$(awk -F',' '$6=="error" {count++} END {print count}' "$PERFORMANCE_LOG" 2>/dev/null || echo "0")
+    # 计算错误率 (暂时设为0，未来可以扩展)
     local error_rate=0
-    if [ "$total_requests" -gt 0 ]; then
-        error_rate=$((errors * 100 / total_requests))
-    fi
 
     # 更新指标文件
-    jq --arg total_tokens "$total_tokens" \
-       --arg cache_savings "$cache_savings" \
-       --arg total_requests "$total_requests" \
-       --arg avg_response_time "$avg_response_time" \
-       --arg cache_hit_rate "$cache_hit_rate" \
-       --arg error_rate "$error_rate" \
-       --arg current_time "$(date '+%Y-%m-%d %H:%M:%S')" \
-       '.total_interactions = ($total_requests | tonumber) |
-        .performance_metrics.average_response_time_ms = ($avg_response_time | tonumber) |
-        .performance_metrics.cache_hit_rate_percent = ($cache_hit_rate | tonumber) |
-        .performance_metrics.error_rate_percent = ($error_rate | tonumber) |
-        .token_economics.total_tokens_consumed = ($total_tokens | tonumber) |
-        .token_economics.tokens_saved_by_cache = ($cache_savings | tonumber) |
-        .system_health.last_health_check = $current_time' "$METRICS_FILE" > "${METRICS_FILE}.tmp" && mv "${METRICS_FILE}.tmp" "$METRICS_FILE"
+    if jq --arg total_tokens "$total_tokens" \
+          --arg cache_savings "$cache_savings" \
+          --arg total_requests "$total_requests" \
+          --arg avg_response_time "$avg_response_time" \
+          --arg cache_hit_rate "$cache_hit_rate" \
+          --arg error_rate "$error_rate" \
+          --arg current_time "$(date '+%Y-%m-%d %H:%M:%S')" \
+          '.total_interactions = ($total_requests | tonumber) |
+           .performance_metrics.average_response_time_ms = ($avg_response_time | tonumber) |
+           .performance_metrics.cache_hit_rate_percent = ($cache_hit_rate | tonumber) |
+           .performance_metrics.error_rate_percent = ($error_rate | tonumber) |
+           .token_economics.total_tokens_consumed = ($total_tokens | tonumber) |
+           .token_economics.tokens_saved_by_cache = ($cache_savings | tonumber) |
+           .system_health.last_health_check = $current_time' "$METRICS_FILE" > "${METRICS_FILE}.tmp" 2>/dev/null; then
+        mv "${METRICS_FILE}.tmp" "$METRICS_FILE"
+    else
+        # jq失败，清理临时文件并记录错误
+        rm -f "${METRICS_FILE}.tmp"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: Failed to update metrics.json" >&2
+        return 1
+    fi
 }
 
 # 显示性能报告
