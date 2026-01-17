@@ -18,7 +18,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-DEBUG_DIR="$SCRIPT_DIR"
+DEBUG_DIR="$PROJECT_ROOT/.cursor/debug"
 ANALYSIS_DIR="$PROJECT_ROOT/.cursorGrowth/debug/analysis"
 
 # 颜色定义
@@ -71,7 +71,7 @@ collect_error_logs() {
         "junit.xml"
         "coverage/lcov-report/*.html"
         "node_modules/.cache/*"
-        ".cursorGrowth/logs/*.log"
+        ".cursor/logs/*.log"
     )
 
     # 遍历日志源

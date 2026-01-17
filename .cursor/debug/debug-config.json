@@ -163,7 +163,7 @@
     "description": "调试安全规则",
     "backup_requirements": {
       "mandatory_backup": true,
-      "backup_location": ".cursorGrowth/debug/backups",
+      "backup_location": ".cursor/debug/backups",
       "backup_naming": "timestamped",
       "compression_enabled": false
     },
@@ -224,7 +224,7 @@
     "description": "性能优化设置",
     "caching": {
       "enabled": true,
-      "cache_location": ".cursorGrowth/debug/cache",
+      "cache_location": ".cursor/debug/cache",
       "cache_ttl_hours": 24,
       "max_cache_size_mb": 100
     },
@@ -243,7 +243,7 @@
   "reporting": {
     "description": "报告和日志配置",
     "report_formats": ["json", "text", "html"],
-    "report_location": ".cursorGrowth/debug/reports",
+    "report_location": ".cursor/debug/reports",
     "log_level": "info",
     "metrics_collection": {
       "enabled": true,

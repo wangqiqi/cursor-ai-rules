@@ -1,0 +1,160 @@
+{
+  "version": 3,
+  "description": "Cursor AI Rules 完整钩子配置文件 - 实现全面自动化",
+  "hooks": {
+    "onSessionStart": [
+      {
+        "name": "env-perception",
+        "description": "会话开始环境感知",
+        "command": "features/hooks/env-perception.sh",
+        "timeout": 5000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "session-optimizer",
+        "description": "会话开始系统优化",
+        "command": "features/hooks/session-optimizer.sh",
+        "timeout": 10000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "growth-directory-check",
+        "description": "会话开始时检查生长目录",
+        "command": "features/hooks/master-init.sh",
+        "timeout": 5000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "afterFileSave": [
+      {
+        "name": "consistency-check",
+        "description": "代码一致性自动检查",
+        "command": "features/hooks/consistency-check.sh",
+        "timeout": 10000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "architecture-check",
+        "description": "架构合规性检查",
+        "command": "features/hooks/architecture-check.sh",
+        "timeout": 8000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "code-quality",
+        "description": "代码质量检查",
+        "command": "features/hooks/code-quality.sh",
+        "timeout": 5000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "quality-check",
+        "description": "统一质量管理系统检查",
+        "command": "features/hooks/quality-check.sh",
+        "timeout": 15000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "config-validator",
+        "description": "配置文件自动验证",
+        "command": "features/hooks/config-validator.sh",
+        "timeout": 5000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "dependency-check",
+        "description": "依赖关系自动检查",
+        "command": "features/hooks/dependency-check.sh",
+        "timeout": 8000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "afterShellExecution": [
+      {
+        "name": "performance-monitor",
+        "description": "命令执行性能监控",
+        "command": "features/hooks/performance-monitor.sh",
+        "timeout": 3000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "command-log",
+        "description": "命令执行日志记录",
+        "command": "features/hooks/command-log.sh",
+        "timeout": 3000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "event-logger",
+        "description": "通用事件日志记录",
+        "command": "features/hooks/event-logger.sh",
+        "timeout": 2000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "name": "growth-recorder",
+        "description": "AI响应后生长记录",
+        "command": "features/hooks/growth-recorder.sh",
+        "timeout": 3000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "token-compression",
+        "description": "AI响应后Token压缩优化",
+        "command": "features/hooks/token-compression.sh",
+        "timeout": 5000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "name": "master-init",
+        "description": "Master命令自动初始化",
+        "command": "features/hooks/master-init.sh",
+        "timeout": 10000,
+        "async": false,
+        "enabled": true
+      },
+      {
+        "name": "prompt-security",
+        "description": "提示安全检查",
+        "command": "features/hooks/prompt-security.sh",
+        "timeout": 2000,
+        "async": false,
+        "enabled": true
+      }
+    ],
+    "onSessionEnd": [
+      {
+        "name": "cursor-sync",
+        "description": "会话结束时同步Cursor对话记录",
+        "command": "features/hooks/cursor-sync.sh",
+        "timeout": 10000,
+        "async": true,
+        "enabled": true
+      }
+    ]
+  },
+  "global_config": {
+    "max_execution_time": 30000,
+    "error_handling": "log_and_continue",
+    "logging_enabled": true,
+    "telemetry_enabled": false
+  }
+}

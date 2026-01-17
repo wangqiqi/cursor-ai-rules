@@ -17,7 +17,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-DEBUG_DIR="$PROJECT_ROOT/.cursorGrowth/debug"
+DEBUG_DIR="$PROJECT_ROOT/.cursor/debug"
 BACKUP_DIR="$DEBUG_DIR/backups"
 
 # 颜色定义

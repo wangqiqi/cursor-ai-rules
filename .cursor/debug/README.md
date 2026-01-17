@@ -194,13 +194,13 @@ chmod +x .cursor/debug/pattern-analyzer.sh
 
 ```bash
 # 查看所有调试报告
-ls .cursorGrowth/debug/reports/
+ls .cursor/debug/reports/
 
 # 查看备份文件
-ls .cursorGrowth/debug/backups/
+ls .cursor/debug/backups/
 
 # 查看分析数据
-ls .cursorGrowth/debug/analysis/
+ls .cursor/debug/analysis/
 ```
 
 ## 🎯 最佳实践

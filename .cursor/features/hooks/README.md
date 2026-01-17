@@ -25,6 +25,12 @@ hooks/
 - `beforeSubmitPrompt`: 提交提示前触发
 - `afterAgentResponse`: AI响应后触发
 
+### 初始化钩子
+- `master-init`: Master命令自动初始化（新增）
+  - 在用户使用 `/master` 命令时自动检测并初始化 `.cursorGrowth` 目录
+  - 支持备用初始化方案，确保可靠性
+  - 创建基本的学习和监控配置文件
+
 ### 会话管理钩子
 - `onSessionStart`: 会话开始时触发
 - `onSessionEnd`: 会话结束时触发
