@@ -272,14 +272,14 @@ graph TD
 
 #### VIBE质量门禁体系
 
-| 阶段 | 质量门禁 | 通过标准 | 验证工具 |
-|------|----------|----------|----------|
-| **需求分析** | 文档完整性 | PRD覆盖率 ≥ 90% | vibe-prd-validator |
-| **前端开发** | 组件完成度 | 功能实现 100% | vibe-frontend-checker |
-| **后端开发** | API实现度 | 接口覆盖率 ≥ 95% | vibe-backend-checker |
-| **测试验证** | 测试覆盖率 | 语句覆盖 ≥ 80% | vibe-test-validator |
-| **对齐检查** | 一致性评分 | 对齐率 ≥ 90% | vibe-alignment-checker |
-| **部署上线** | 生产就绪 | 全量测试通过 | vibe-deploy-checker |
+| 阶段         | 质量门禁   | 通过标准         | 验证工具               |
+| ------------ | ---------- | ---------------- | ---------------------- |
+| **需求分析** | 文档完整性 | PRD覆盖率 ≥ 90%  | vibe-prd-validator     |
+| **前端开发** | 组件完成度 | 功能实现 100%    | vibe-frontend-checker  |
+| **后端开发** | API实现度  | 接口覆盖率 ≥ 95% | vibe-backend-checker   |
+| **测试验证** | 测试覆盖率 | 语句覆盖 ≥ 80%   | vibe-test-validator    |
+| **对齐检查** | 一致性评分 | 对齐率 ≥ 90%     | vibe-alignment-checker |
+| **部署上线** | 生产就绪   | 全量测试通过     | vibe-deploy-checker    |
 
 #### 实时质量监控
 
@@ -348,13 +348,13 @@ graph TD
 
 #### 意图到VIBE服务的智能映射
 
-| 用户意图 | VIBE服务组合 | 执行流程 |
-|----------|--------------|----------|
-| **创建项目** | Context Manager + Code Generator + Doc Generator | 需求分析 → 项目初始化 → 文档生成 |
-| **开发功能** | Code Generator + Test Validator + Dependency Tracker | 代码生成 → 测试生成 → 依赖检查 |
-| **接口对齐** | Context Manager + Alignment Checker | 状态同步 → 对齐验证 → 问题修复 |
-| **质量检查** | Test Validator + Quality Manager | 测试执行 → 质量分析 → 问题报告 |
-| **部署上线** | Deployment Manager + Context Manager | 环境配置 → 部署执行 → 状态更新 |
+| 用户意图     | VIBE服务组合                                         | 执行流程                         |
+| ------------ | ---------------------------------------------------- | -------------------------------- |
+| **创建项目** | Context Manager + Code Generator + Doc Generator     | 需求分析 → 项目初始化 → 文档生成 |
+| **开发功能** | Code Generator + Test Validator + Dependency Tracker | 代码生成 → 测试生成 → 依赖检查   |
+| **接口对齐** | Context Manager + Alignment Checker                  | 状态同步 → 对齐验证 → 问题修复   |
+| **质量检查** | Test Validator + Quality Manager                     | 测试执行 → 质量分析 → 问题报告   |
+| **部署上线** | Deployment Manager + Context Manager                 | 环境配置 → 部署执行 → 状态更新   |
 
 ### 📚 VIBE学习资源
 

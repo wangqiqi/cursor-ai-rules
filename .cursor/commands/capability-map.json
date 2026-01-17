@@ -4,7 +4,7 @@
   "description": "🎯 统一能力映射表 - 将用户意图映射到具体的执行能力组合",
   "metadata": {
     "created_at": "2026-01-16T10:00:00Z",
-    "last_updated": "2026-01-16T10:00:00Z",
+    "last_updated": "2026-01-17T14:00:00Z",
     "author": "wangqiqi",
     "compatibility": ">=4.0.0"
   },
@@ -411,6 +411,213 @@
         "alignment_verified": true,
         "code_review_passed": true
       }
+    },
+    "vibe_command": {
+      "description": "VIBE Coding 智能开发总指挥 - 支持完整的VIBE开发生命周期",
+      "intents": [
+        "vibe",
+        "start",
+        "prd",
+        "code",
+        "test",
+        "deploy",
+        "align",
+        "check",
+        "stats",
+        "guide",
+        "example"
+      ],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "@vibe start 创建一个任务管理应用",
+        "@vibe prd 设计产品需求文档",
+        "@vibe code 生成用户登录模块",
+        "@vibe test 编写测试用例",
+        "@vibe deploy 配置部署环境",
+        "@vibe align 检查前后端对齐",
+        "@vibe check quality-gate 前端",
+        "@vibe stats show 开发统计",
+        "@vibe guide quick-start 快速入门"
+      ],
+      "capabilities": {
+        "rules": [
+          "conversation_intent_analyzer",
+          "vibe-coding",
+          "constitution"
+        ],
+        "skills": [
+          "webapp-testing",
+          "frontend-design",
+          "doc-coauthoring",
+          "brand-guidelines"
+        ],
+        "scripts": [
+          "core/vibe-services-integration.sh",
+          "core/vibe-alignment-checker.sh",
+          "core/init.sh",
+          "core/env-perception.sh",
+          "core/config-manager.sh"
+        ],
+        "workflows": [
+          "vibe-project-init",
+          "vibe-frontend-dev",
+          "vibe-backend-dev",
+          "vibe-testing",
+          "vibe-alignment",
+          "vibe-deployment"
+        ],
+        "hooks": [
+          "code-quality.sh",
+          "test-hooks.sh",
+          "security-audit.sh",
+          "quality-check.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "scripts",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "vibe_services": [
+          "context_manager",
+          "code_generator",
+          "dependency_tracker",
+          "test_validator",
+          "doc_generator",
+          "deployment_manager"
+        ],
+        "development_phases": [
+          "requirements_analysis",
+          "documentation",
+          "frontend_development",
+          "backend_development",
+          "testing_validation",
+          "alignment_verification",
+          "deployment_production"
+        ],
+        "quality_gates": [
+          "prd_complete",
+          "frontend_ready",
+          "backend_ready",
+          "tests_passed",
+          "alignment_verified",
+          "production_ready"
+        ]
+      },
+      "validation_rules": {
+        "required_services": [
+          "vibe-services-integration.sh",
+          "vibe-alignment-checker.sh"
+        ],
+        "min_quality_score": 80,
+        "alignment_threshold": 90
+      },
+      "fallback_strategies": [
+        "basic-vibe-workflow",
+        "manual-vibe-guide"
+      ]
+    },
+    "master_vibe_development": {
+      "description": "通过@master调用VIBE开发流程",
+      "intents": [
+        "使用VIBE开发项目",
+        "VIBE项目创建",
+        "VIBE需求分析",
+        "VIBE代码生成",
+        "VIBE测试驱动",
+        "VIBE接口对齐",
+        "VIBE质量检查",
+        "VIBE部署配置",
+        "vibe",
+        "VIBE开发"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "我想使用VIBE开发项目",
+        "用VIBE方式创建项目",
+        "VIBE需求分析和设计",
+        "VIBE代码生成",
+        "VIBE测试驱动开发",
+        "VIBE接口对齐检查",
+        "VIBE质量门禁验证",
+        "VIBE部署上线配置"
+      ],
+      "capabilities": {
+        "rules": [
+          "conversation_intent_analyzer",
+          "vibe-coding",
+          "constitution"
+        ],
+        "skills": [
+          "webapp-testing",
+          "frontend-design",
+          "doc-coauthoring",
+          "brand-guidelines"
+        ],
+        "scripts": [
+          "core/vibe-services-integration.sh",
+          "core/vibe-alignment-checker.sh",
+          "core/init.sh",
+          "core/env-perception.sh",
+          "core/config-manager.sh"
+        ],
+        "workflows": [
+          "vibe-project-init",
+          "vibe-frontend-dev",
+          "vibe-backend-dev",
+          "vibe-testing",
+          "vibe-alignment",
+          "vibe-deployment"
+        ],
+        "hooks": [
+          "code-quality.sh",
+          "test-hooks.sh",
+          "security-audit.sh",
+          "quality-check.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "scripts",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "vibe_services": [
+          "context_manager",
+          "code_generator",
+          "dependency_tracker",
+          "test_validator",
+          "doc_generator",
+          "deployment_manager"
+        ],
+        "development_phases": [
+          "requirements_analysis",
+          "documentation",
+          "frontend_development",
+          "backend_development",
+          "testing_validation",
+          "alignment_verification",
+          "deployment_production"
+        ]
+      },
+      "validation_rules": {
+        "required_services": [
+          "vibe-services-integration.sh",
+          "vibe-alignment-checker.sh"
+        ],
+        "min_quality_score": 80
+      },
+      "fallback_strategies": [
+        "vibe_command",
+        "basic-project-init"
+      ]
     },
     "deploy_application": {
       "description": "部署应用",

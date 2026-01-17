@@ -173,7 +173,7 @@ export CURSOR_LOG_LEVEL=debug
 - **[快速开始指南](quick-start.md)**: 基础安装和配置
 - **[基础使用指南](user-guide/basic-usage.md)**: 日常使用方法
 - **[高级配置指南](user-guide/advanced-config.md)**: 深度定制选项
-- **[系统信息指南](system-info-guide.md)**: 环境检测和系统信息
+- **[系统信息指南](guides/system-info-guide.md)**: 环境检测和系统信息
 - **[智能进化指南](intelligent-evolution-guide.md)**: AI学习和优化
 
 ---

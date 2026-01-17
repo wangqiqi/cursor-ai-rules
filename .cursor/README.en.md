@@ -6,16 +6,17 @@
 
 [![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Capabilities](https://img.shields.io/badge/capabilities-324-red?style=flat-square)]()
+[![Capabilities](https://img.shields.io/badge/capabilities-325-red?style=flat-square)]()
 [![Hooks](https://img.shields.io/badge/hooks-20-purple?style=flat-square)]()
+[![VIBE](https://img.shields.io/badge/vibe-6-green?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 324 Capability Mappings + 20 Automation Hooks**
+**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 325 Capability Mappings + 20 Automation Hooks + 6 VIBE Services**
 
-📚 **[Quick Start](docs/quick-start.md)** | **[Intelligent Agent Guide](docs/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/token-compression-guide.md)** | **[MCP Integration Guide](docs/mcp-integration-guide.md)** | **[VIBE Development Guide](docs/vibe-development-guide.md)**
+📚 **[Quick Start](docs/quick-start.md)** | **[Intelligent Agent Guide](docs/guides/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/guides/token-compression-guide.md)** | **[MCP Integration Guide](docs/mcp-integration-guide.md)** | **[VIBE Development Guide](docs/vibe-development-guide.md)**
 
-Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), an enterprise-level AI programming platform with **multi-agent collaboration + self-learning optimization + MCP ecosystem integration**, achieving end-to-end intelligent collaboration from concept to deployment.
+Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), an enterprise-level AI programming platform with **multi-agent collaboration + self-learning optimization + MCP ecosystem integration + VIBE development methodology**, achieving end-to-end intelligent collaboration from concept to deployment.
 
 ## 🤝 Core Collaboration Principles
 
@@ -85,6 +86,7 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 - **@vibe code**: Intelligent code generation and review
 - **@vibe test**: Automated test generation and execution
 - **@vibe deploy**: One-click deployment and environment configuration
+- **@master VIBExxx**: Smart orchestration of VIBE development flow via Master (New)
 
 ## 🏗️ System Architecture
 
@@ -248,7 +250,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | **Growth Intelligence**    | AI learning and personalization system            | Behavior patterns, A/B testing, continuous optimization                | ✅ Production Ready |
 | **Performance Monitoring** | Real-time system health and optimization          | Token tracking, caching, compression, dashboard reporting              | ✅ Production Ready |
 
-### 🎯 Skills Extension System (24 Professional Skills) + VIBE Services Ecosystem
+### 🎯 Skills Extension System (24 Professional Skills) + VIBE Services Ecosystem (6 VIBE Services)
 
 | Skill Category               | Count | Skills                                                                            | Status             |
 | ---------------------------- | ----- | --------------------------------------------------------------------------------- | ------------------ |
@@ -257,6 +259,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | **AI Integration**           | 5     | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification | ✅ Fully Integrated |
 | **Enterprise Collaboration** | 3     | brand-guidelines, internal-comms, doc-coauthoring                                 | ✅ Fully Integrated |
 | **Testing & Development**    | 3     | webapp-testing, web-artifacts-builder, evaluation                                 | ✅ Fully Integrated |
+| **VIBE Development**         | 6     | context-manager, code-generator, dependency-tracker, test-validator, doc-generator, deployment-manager | ✅ Fully Integrated |
 
 ## 🚀 Quick Start
 
@@ -292,15 +295,36 @@ cd your-project
 @vibe deploy production
 ```
 
+## Method 3: Master Smart Orchestration + VIBE Integration (New)
+```bash
+# 🎯 Smart VIBE development flow via @master
+@master Use VIBE development approach
+
+# 📋 VIBE-style project requirements analysis
+@master VIBE requirements analysis user management system
+
+# 💻 VIBE-driven code generation
+@master VIBE code generation login authentication feature
+
+# 🔗 Automatic frontend-backend alignment verification
+@master VIBE interface alignment
+
+# ✅ VIBE quality gate verification
+@master VIBE quality check
+
+# 🚀 VIBE production environment deployment
+@master VIBE deployment configuration
+```
+
 **AI Smart Orchestration Process:**
-1. 🧠 **Intent Understanding**: AI automatically parses your requirements using 90+ intent recognition system
-2. 🤖 **Agent Collaboration**: 8 intelligent agents work together: Planner→Generator→Tester→Deployer
-3. 🔌 **MCP Integration**: 25+ local tools auto-discovery and integration
-4. ⚡ **Token Optimization**: Context sharing and smart caching, 25-35% Token savings
-3. ⚡ **Smart Combination**: Auto-selects rules + skills + scripts + workflows + hooks
-4. 🎯 **One-Click Execution**: Zero configuration, AI handles all details with automation hooks
-5. 📊 **Real-time Feedback**: Provides detailed execution reports and recommendations
-6. 🌱 **Continuous Learning**: System learns from interactions and adapts behavior
+1. 🧠 **Intent Understanding**: AI automatically parses your requirements using 90+ intent recognition system + VIBE development intents
+2. 🤖 **Agent Collaboration**: 8 intelligent agents work together: Planner→Generator→Tester→Deployer + VIBE service orchestration
+3. 🔌 **MCP Integration**: 25+ local tools auto-discovery and integration + VIBE toolchain integration
+4. ⚡ **Token Optimization**: Context sharing and smart caching, 25-35% Token savings + VIBE context optimization
+5. ⚡ **Smart Combination**: Auto-selects rules + skills + scripts + workflows + hooks
+6. 🎯 **One-Click Execution**: Zero configuration, AI handles all details with automation hooks
+7. 📊 **Real-time Feedback**: Provides detailed execution reports and recommendations + VIBE quality scoring
+8. 🌱 **Continuous Learning**: System learns from interactions and adapts behavior + VIBE development patterns
 
 ### Traditional Manual Setup
 
@@ -792,6 +816,6 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 *🌱 Cursor AI Rules v5.0.0 - Intelligent growth system allows AI assistants to continuously evolve, projects grow with each interaction!*
 
-*🚀 2026 Enhanced Features*: 23 Rules, 24 Skills, 324 Capability Mappings, 20 Automation Hooks, Advanced Debug Suite, MCP Integration!
+*🚀 2026 Enhanced Features*: 23 Rules, 24 Skills, 325 Capability Mappings, 20 Automation Hooks, 6 VIBE Services, Advanced Debug Suite, MCP Integration!
 
-*Core Innovation*: From static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration and MCP ecosystem integration!
+*Core Innovation*: From static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration, MCP ecosystem integration, and VIBE development methodology for documentation-driven, test-first, frontend-backend aligned development!

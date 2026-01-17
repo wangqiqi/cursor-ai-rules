@@ -6,16 +6,17 @@
 
 [![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Capabilities](https://img.shields.io/badge/capabilities-324-red?style=flat-square)]()
+[![Capabilities](https://img.shields.io/badge/capabilities-325-red?style=flat-square)]()
 [![Hooks](https://img.shields.io/badge/hooks-20-purple?style=flat-square)]()
+[![VIBE](https://img.shields.io/badge/vibe-6-green?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 企业级AI编程协作平台 - 23个规则 + 24个技能 + 324个能力映射 + 20个自动化钩子**
+**🌟 企业级AI编程协作平台 - 23个规则 + 24个技能 + 325个能力映射 + 20个自动化钩子 + 6个VIBE服务**
 
-📚 **[快速开始](docs/quick-start.md)** | **[智能代理指南](docs/intelligent-evolution-guide.md)** | **[Token优化指南](docs/token-compression-guide.md)** | **[MCP集成指南](docs/mcp-integration-guide.md)** | **[VIBE开发指南](docs/vibe-development-guide.md)**
+📚 **[快速开始](docs/quick-start.md)** | **[智能代理指南](docs/guides/intelligent-evolution-guide.md)** | **[Token优化指南](docs/guides/token-compression-guide.md)** | **[MCP集成指南](docs/mcp-integration-guide.md)** | **[VIBE开发指南](docs/vibe-development-guide.md)**
 
-基于 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules)，构建的**多代理协作 + 自学习优化 + MCP生态集成**的企业级AI编程平台，实现从概念到部署的全流程智能化协作。
+基于 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules)，构建的**多代理协作 + 自学习优化 + MCP生态集成 + VIBE开发方法论**的企业级AI编程平台，实现从概念到部署的全流程智能化协作。
 
 ## 🤝 核心协作原则
 
@@ -85,6 +86,7 @@
 - **@vibe code**: 智能代码生成和审查
 - **@vibe test**: 自动化测试生成和执行
 - **@vibe deploy**: 一键部署和环境配置
+- **@master VIBExxx**: 通过智能Master编排VIBE开发流程 (新增)
 
 ## 🏗️ 系统架构
 
@@ -201,7 +203,7 @@ Cursor AI Rules 采用创新的双目录架构：
 | 💾 **智能缓存系统**     | 基于文件变化的缓存机制                         | **响应速度 5x提升**    |
 | 🛡️ **优雅降级**         | 环境检测和容错处理                             | **稳定性 99.9%**       |
 | 🔓 **开箱即用**         | 无需配置，复制即用                             | 支持任何项目、任何语言 |
-| 🪝 **自动化钩子系统**   | 20个生命周期钩子实现智能自动化                  | **100%流程自动化**     |
+| 🪝 **自动化钩子系统**   | 20个生命周期钩子实现智能自动化                 | **100%流程自动化**     |
 | 🔌 **MCP优先级系统**    | 智能MCP工具检测和执行优先级                    | **智能工具选择**       |
 | 🐛 **高级调试工具套件** | 隔离调试、模式分析、批量修复                   | **调试效率 300%↑**     |
 | 🎯 **324个能力映射**    | 全面的意图到行动映射系统，支持验证和降级策略   | **智能编排**           |
@@ -293,11 +295,33 @@ cd your-project
 @vibe deploy production
 ```
 
+## 方式三：Master智能编排 + VIBE集成 (全新)
+```bash
+# 🎯 通过@master智能调用VIBE开发流程
+@master 使用VIBE开发项目
+
+# 📋 VIBE风格的项目需求分析
+@master VIBE需求分析 用户管理系统
+
+# 💻 VIBE驱动的代码生成
+@master VIBE代码生成 登录认证功能
+
+# 🔗 自动前后端对齐验证
+@master VIBE接口对齐
+
+# ✅ VIBE质量门禁检查
+@master VIBE质量检查
+
+# 🚀 VIBE生产环境部署
+@master VIBE部署配置
+```
+
 **AI智能编排流程：**
-1. 🧠 **意图理解**：AI自动解析你的需求，使用90+意图识别系统
-2. 🤖 **代理协作**：8个智能代理协同工作，规划师→生成器→测试师→部署师
-3. 🔌 **MCP集成**：25+本地工具自动发现和集成
-4. ⚡ **Token优化**：上下文共享和智能缓存，节省25-35% Token
+1. 🧠 **意图理解**：AI自动解析你的需求，使用90+意图识别系统 + VIBE开发意图识别
+2. 🤖 **代理协作**：8个智能代理协同工作，规划师→生成器→测试师→部署师 + VIBE服务编排
+3. 🔌 **MCP集成**：25+本地工具自动发现和集成 + VIBE工具链集成
+4. ⚡ **Token优化**：上下文共享和智能缓存，节省25-35% Token + VIBE上下文优化
+5. 🎯 **VIBE保障**：文档驱动、测试先行、前后端对齐的质量保障流程
 4. 🎯 **一键执行**：零配置，AI处理所有细节并使用自动化钩子
 5. 📊 **实时反馈**：提供详细的执行报告和建议
 6. 🌱 **持续学习**：系统从交互中学习并适应行为

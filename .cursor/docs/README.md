@@ -6,34 +6,58 @@
 
 ```
 docs/
-├── user-guide/              # 用户指南
-│   └── getting-started.md   # 快速开始
-├── developer-guide/         # 开发者指南
-│   └── architecture.md      # 系统架构
-├── usage-guide.md           # 使用指南
-├── intelligent-evolution-guide.md     # 智能进化指南
-├── system-info-guide.md     # 系统信息指南
-├── team-rules-example.md    # 团队规则示例
-├── remote-rules-guide.md    # 远程规则导入指南
-├── performance-optimization-guide.md  # 性能优化指南
-├── project-growth-architecture.md     # 项目生长架构
-└── api/                     # API文档
-    ├── hooks-api.md         # 钩子API
-    ├── skills-api.md        # 技能API
-    └── README.md            # API文档说明
+├── guides/                  # 用户指南合集
+│   ├── quick-start.md       # 快速开始指南
+│   ├── usage-guide.md       # 使用指南
+│   ├── intelligent-evolution-guide.md  # 智能进化指南
+│   ├── system-info-guide.md # 系统信息指南
+│   ├── remote-rules-guide.md # 远程规则导入指南
+│   ├── performance-optimization-guide.md # 性能优化指南
+│   └── token-compression-guide.md # Token压缩指南
+├── user/                    # 用户相关文档
+│   ├── getting-started.md   # 新手入门
+│   ├── basic-usage.md       # 基础使用
+│   ├── core-features.md     # 核心功能
+│   └── advanced-config.md   # 高级配置
+├── config/                  # 配置相关文档
+│   ├── component-selection-guide.md # 组件选择指南
+│   ├── configuration-standards.md   # 配置标准
+│   └── README.md             # 配置文档说明
+├── development/             # 开发相关文档
+│   ├── architecture.md      # 系统架构
+│   └── development-guidelines.md # 开发指南
+├── architecture/            # 架构相关文档
+│   └── project-growth-architecture.md # 项目生长架构
+├── rules/                   # 规则相关文档
+│   └── team-rules-example.md # 团队规则示例
+├── skills/                  # 技能相关文档
+│   └── mcp-priority-system.md # MCP优先级系统
+├── hooks/                   # 钩子相关文档
+│   └── hooks-integration-guide.md # 钩子集成指南
+├── api/                     # API文档
+│   ├── hooks-api.md         # 钩子API
+│   ├── skills-api.md        # 技能API
+│   └── README.md            # API文档说明
+├── debug/                   # 调试相关文档
+│   └── README.md            # 调试文档说明
+├── growth/                  # 生长相关文档
+│   └── README.md            # 生长文档说明
+└── README.md               # 文档总览
 ```
 
 ## 🎯 文档定位
 
-### 用户指南 (User Guide)
+### 用户指南 (User Guides)
 - **目标读者**: 终端用户和项目开发者
-- **内容范围**: 如何使用系统功能，解决常见问题
-- **阅读顺序**: 从 `getting-started.md` 开始
+- **内容范围**: 如何使用系统功能，解决常见问题，性能优化，系统配置
+- **组织方式**: 按使用场景分类在 `guides/` 和 `user/` 文件夹中
+- **阅读顺序**: 从 `user/getting-started.md` 开始
 
-### 开发者指南 (Developer Guide)
+### 开发者指南 (Developer Guides)
 - **目标读者**: 系统扩展开发者和贡献者
-- **内容范围**: 系统架构、API使用、扩展开发
-- **阅读顺序**: 从 `architecture.md` 开始
+- **内容范围**: 系统架构、API使用、扩展开发、配置标准
+- **组织方式**: 按技术领域分类在 `development/`, `api/`, `config/` 文件夹中
+- **阅读顺序**: 从 `development/architecture.md` 开始
 
 ### 技能手册 (Skills Manual)
 - **目标读者**: 需要使用特定技能的用户
@@ -68,8 +92,8 @@ docs/
 ### 按组件查找
 - **配置系统**: `project-growth-architecture.md`
 - **命令路由**: `../commands/command-router.md`
-- **感知引擎**: `system-info-guide.md`
-- **质量系统**: `performance-optimization-guide.md`
+- **感知引擎**: `guides/system-info-guide.md`
+- **质量系统**: `guides/performance-optimization-guide.md`
 
 ## 📝 文档规范
 

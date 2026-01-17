@@ -130,7 +130,7 @@ tail -f ~/.cursor/logs/*.log
 
 ### 深入学习
 1. **基本使用**: 阅读 `../usage-guide.md`
-2. **高级功能**: 阅读 `../intelligent-evolution-guide.md`
+2. **高级功能**: 阅读 `../guides/intelligent-evolution-guide.md`
 3. **故障排除**: 阅读 `../usage-guide.md#故障排除`
 
 ### 探索功能
