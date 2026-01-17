@@ -17,7 +17,7 @@ if [[ -z "$response_text" ]]; then
 fi
 
 # 创建日志目录（如果不存在）
-mkdir -p "$CURSOR_GROWTH/logs
+mkdir -p "$CURSOR_GROWTH/logs"
 
 # 定义规则列表（基于项目中的规则文件）
 declare -a rules_list=(
@@ -66,7 +66,7 @@ response_length=${#response_text}
 word_count=$(echo "$response_text" | wc -w)
 
 # 检查是否包含代码块
-code_blocks=$(echo "$response_text" | grep -c "```")
+code_blocks=$(echo "$response_text" | grep -c '\`\`\`')
 
 # 检查是否包含列表
 lists=$(echo "$response_text" | grep -c "^[*-]")
@@ -76,7 +76,7 @@ tables=$(echo "$response_text" | grep -c "^|")
 
 # 记录质量指标
 quality_metrics="$timestamp|$conversation_id|length:$response_length|words:$word_count|code_blocks:$code_blocks|lists:$lists|tables:$tables"
-echo "$quality_metrics" >> $CURSOR_GROWTH/logs/response-quality.log"
+echo "$quality_metrics" >> $CURSOR_GROWTH/logs/response-quality.log
 
 # 分析规则应用模式
 if [[ "$response_text" == *"constitution"* ]] && [[ "$response_text" == *"安全"* ]]; then
@@ -97,7 +97,7 @@ if [[ $((usage_count % 100)) -eq 0 ]]; then
     echo "📈 生成使用统计摘要..." >> $CURSOR_GROWTH/logs/rule-usage.log
 
     # 计算最常用的规则
-    echo "# 规则使用统计 (最近$usage_count次响应)" > $CURSOR_GROWTH/logs/usage-summary.md
+    echo "# 规则使用统计 - 最近 $usage_count 次响应" > "$CURSOR_GROWTH/logs/usage-summary.md"
     echo "" >> $CURSOR_GROWTH/logs/usage-summary.md
     echo "| 规则 | 使用次数 | 使用率 |" >> $CURSOR_GROWTH/logs/usage-summary.md
     echo "|------|--------|-------|" >> $CURSOR_GROWTH/logs/usage-summary.md
@@ -109,7 +109,7 @@ if [[ $((usage_count % 100)) -eq 0 ]]; then
     done
 
     echo "" >> $CURSOR_GROWTH/logs/usage-summary.md
-    echo "*统计生成时间: $(date)*" >> $CURSOR_GROWTH/logs/usage-summary.md
+    echo "*Generated at: $(date)*" >> "$CURSOR_GROWTH/logs/usage-summary.md"
 fi
 
 exit 0

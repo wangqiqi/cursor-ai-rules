@@ -20,7 +20,7 @@ filename=$(basename "$file_path")
 extension="${filename##*.}"
 
 # 创建日志目录（如果不存在）
-mkdir -p "$CURSOR_GROWTH/logs
+mkdir -p "$CURSOR_GROWTH/logs"
 
 # 记录处理开始
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -134,7 +134,7 @@ elif [[ "$extension" =~ ^(c|cpp|cxx|cc|c\+\+|h|hpp)$ ]]; then
 
 # 其他文件类型
 else
-    echo "📄 文件类型: $extension (跳过自动处理)" >> $CURSOR_GROWTH/logs/code-quality.log
+    echo "📄 文件类型: $extension - 跳过自动处理" >> "$CURSOR_GROWTH/logs/code-quality.log"
 fi
 
 # 记录处理完成
