@@ -47,7 +47,7 @@
         "scripts": [
           "core/init.sh",
           "core/env-perception.sh",
-          "core/core/config/config-manager.sh"
+          "core/config-manager.sh"
         ],
         "workflows": [
           "project-init",
@@ -746,7 +746,7 @@
         "scripts": [
           "core/init.sh",
           "core/env-perception.sh",
-          "core/core/config/config-manager.sh"
+          "core/config-manager.sh"
         ],
         "workflows": [
           "project-init",
@@ -1483,7 +1483,7 @@
         "rules": [],
         "skills": [],
         "scripts": [
-          "core/core/config/config-manager.sh",
+          "core/config-manager.sh",
           "core/core/config/config-validator.sh"
         ],
         "workflows": [
@@ -4160,7 +4160,7 @@
       "capabilities": {
         "rules": [],
         "scripts": [
-          "core/core/config/config-manager.sh",
+          "core/config-manager.sh",
           "core/core/config/config-validator.sh"
         ],
         "workflows": [],

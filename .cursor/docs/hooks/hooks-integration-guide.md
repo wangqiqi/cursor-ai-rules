@@ -21,7 +21,7 @@ Cursor AI Rules 现在提供了完整的钩子系统，包含8个专业钩子脚
 12. **`config-validator.sh`** - 配置验证
 13. **`dependency-check.sh`** - 依赖检查
 
-这些钩子基于 `.cursor/core/` 和 `.cursor/config/config/config/` 中的核心脚本改造，适配了钩子系统的输入输出格式，实现了全面的自动化能力。
+这些钩子基于 `.cursor/core/` 和 `.cursor/config/` 中的核心脚本改造，适配了钩子系统的输入输出格式，实现了全面的自动化能力。
 
 ## 🚀 使用场景
 

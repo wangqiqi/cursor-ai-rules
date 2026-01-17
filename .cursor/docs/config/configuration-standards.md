@@ -22,7 +22,7 @@ Cursor AI Rules系统采用多层配置架构，确保配置的一致性、可�
 ├── 能力映射 (capability-map.json)
 ├── 钩子配置 (hooks.json)
 ├── 调试配置 (debug-config.json)
-├── 质量配置 (config/config/config/ - eslint, prettier)
+├── 质量配置 (config/ - eslint, prettier)
 └── 安全配置 (audit/security-config.json)
 ```
 

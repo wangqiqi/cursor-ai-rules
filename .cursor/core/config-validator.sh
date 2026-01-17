@@ -490,7 +490,7 @@ validate_component_dependencies() {
             # 检查rules间的依赖关系
             if [ -f "$PROJECT_ROOT/.cursor/rules/workflow/eslint.md" ]; then
                 # 检查ESLint规则是否引用了质量配置
-                if ! grep -q "config/config/config/" "$PROJECT_ROOT/.cursor/rules/workflow/eslint.md" 2>/dev/null; then
+                if ! grep -q "config/" "$PROJECT_ROOT/.cursor/rules/workflow/eslint.md" 2>/dev/null; then
                     dependency_issues+=("ESLint规则未引用质量配置")
                 fi
             fi

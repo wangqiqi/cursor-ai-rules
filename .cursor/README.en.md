@@ -6,12 +6,12 @@
 
 [![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Capabilities](https://img.shields.io/badge/capabilities-103-red?style=flat-square)]()
+[![Capabilities](https://img.shields.io/badge/capabilities-324-red?style=flat-square)]()
 [![Hooks](https://img.shields.io/badge/hooks-20-purple?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 103 Capability Mappings + 20 Automation Hooks**
+**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 324 Capability Mappings + 20 Automation Hooks**
 
 📚 **[Quick Start](docs/quick-start.md)** | **[Intelligent Agent Guide](docs/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/token-compression-guide.md)** | **[MCP Integration Guide](docs/mcp-integration-guide.md)** | **[VIBE Development Guide](docs/vibe-development-guide.md)**
 
@@ -48,7 +48,7 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 - **Learner**: Pattern learning, performance optimization, improvement suggestions
 - **Monitor**: Health checks, performance monitoring, alert handling
 
-### 🎯 103 Capability Mappings - Intent to Action System
+### 🎯 324 Capability Mappings - Intent to Action System
 - **Project Creation & Management**: React, Vue, Python API, environment setup (15+ mappings)
 - **Code Quality & Optimization**: ESLint, testing, performance analysis, refactoring (25+ mappings)
 - **Debug & Troubleshooting**: Isolation debugging, pattern analysis, error fixing (10+ mappings)
@@ -202,10 +202,10 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | 💾 **Intelligent Caching System**            | Cache mechanism based on file changes                                             | **5x Response Speed Improvement**     |
 | 🛡️ **Graceful Degradation**                  | Environment detection and error handling                                          | **99.9% Stability**                   |
 | 🔓 **Out-of-the-Box**                        | No configuration needed, copy and use                                             | Support for any project, any language |
-| 🪝 **Automated Hooks System**                | 15+ lifecycle hooks for intelligent automation                                    | **100% Process Automation**           |
+| 🪝 **Automated Hooks System**                | 20 lifecycle hooks for intelligent automation                                     | **100% Process Automation**           |
 | 🔌 **MCP Priority System**                   | Smart MCP tool detection and execution priority                                   | **Intelligent Tool Selection**        |
 | 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch fixes                                | **Debug Efficiency 300%↑**            |
-| 🎯 **103 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
+| 🎯 **324 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
 | 🪝 **20 Automation Hooks**                   | Lifecycle automation system for session, file, and command events                 | **100% Process Automation**           |
 | 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, and batch error fixing tools               | **Debug Efficiency 300%↑**            |
 | 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
@@ -239,14 +239,14 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 
 ### 🎯 Advanced Systems (2026 Enhanced)
 
-| System                     | Description                                       | Features                                                          | Status             |
-| -------------------------- | ------------------------------------------------- | ----------------------------------------------------------------- | ------------------ |
-| **Hooks Automation**       | Lifecycle automation system with 20 hooks         | Session/file/command events, intelligent triggers, async execution| ✅ Production Ready |
-| **MCP Priority System**    | Intelligent MCP tool detection and prioritization | 25+ local tools, auto-discovery, priority execution, fallback     | ✅ Production Ready |
-| **Debug Suite**            | Advanced debugging tools and workflows            | Isolation debugging, pattern analysis, batch error fixing, auto-commit| ✅ Production Ready |
-| **Capability Mapping**     | 103 comprehensive intent-action mappings          | Multi-layer analysis, confidence thresholds, execution ordering   | ✅ Production Ready |
-| **Growth Intelligence**    | AI learning and personalization system            | Behavior patterns, A/B testing, continuous optimization           | ✅ Production Ready |
-| **Performance Monitoring** | Real-time system health and optimization          | Token tracking, caching, compression, dashboard reporting        | ✅ Production Ready |
+| System                     | Description                                       | Features                                                               | Status             |
+| -------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
+| **Hooks Automation**       | Lifecycle automation system with 20 hooks         | Session/file/command events, intelligent triggers, async execution     | ✅ Production Ready |
+| **MCP Priority System**    | Intelligent MCP tool detection and prioritization | 25+ local tools, auto-discovery, priority execution, fallback          | ✅ Production Ready |
+| **Debug Suite**            | Advanced debugging tools and workflows            | Isolation debugging, pattern analysis, batch error fixing, auto-commit | ✅ Production Ready |
+| **Capability Mapping**     | 103 comprehensive intent-action mappings          | Multi-layer analysis, confidence thresholds, execution ordering        | ✅ Production Ready |
+| **Growth Intelligence**    | AI learning and personalization system            | Behavior patterns, A/B testing, continuous optimization                | ✅ Production Ready |
+| **Performance Monitoring** | Real-time system health and optimization          | Token tracking, caching, compression, dashboard reporting              | ✅ Production Ready |
 
 ### 🎯 Skills Extension System (24 Professional Skills) + VIBE Services Ecosystem
 
@@ -590,15 +590,15 @@ ls -la .cursor/core/init.sh
 | Initialization Time    | ~30s     | ~5s      | ~3s         | **90%↑**                       |
 | Perception Time        | ~10s     | ~1s      | ~0.5s       | **95%↑**                       |
 | Token Savings          | Baseline | 60%↓     | 70%↓        | **70%↑**                       |
-| Component Count        | 42       | 42       | 38          | **9.5%↓**                      |
-| Total Files            | 100+     | 77       | 171         | **122%↑**                      |
+| Component Count        | 42       | 42       | 161         | **283%↑**                      |
+| Total Files            | 100+     | 77       | 161         | **109%↑**                      |
 | Config Flexibility     | Basic    | Medium   | High        | **95%↑**                       |
 | Maintainability        | Baseline | +60%     | +75%        | **Significant Improvement**    |
 | Extensibility          | Limited  | Infinite | Intelligent | **AI-driven**                  |
 | **New Metrics (2026)** | -        | -        | -           | -                              |
-| Automation Hooks       | -        | -        | 15+         | **100% Process Automation**    |
+| Automation Hooks       | -        | -        | 20          | **100% Process Automation**    |
 | MCP Integrations       | -        | -        | 10+         | **Intelligent Tool Selection** |
-| Capability Mappings    | -        | -        | 103         | **Comprehensive Coverage**     |
+| Capability Mappings    | -        | -        | 324         | **Comprehensive Coverage**     |
 | Debug Efficiency       | Baseline | +100%    | +300%       | **300%↑**                      |
 | Learning Accuracy      | -        | -        | 92%         | **Continuous Improvement**     |
 | System Stability       | 95%      | 99%      | 99.9%       | **99.9% Uptime**               |
@@ -792,6 +792,6 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 *🌱 Cursor AI Rules v5.0.0 - Intelligent growth system allows AI assistants to continuously evolve, projects grow with each interaction!*
 
-*🚀 2026 Enhanced Features*: 23 Rules, 24 Skills, 103 Capability Mappings, 20 Automation Hooks, Advanced Debug Suite, MCP Integration!
+*🚀 2026 Enhanced Features*: 23 Rules, 24 Skills, 324 Capability Mappings, 20 Automation Hooks, Advanced Debug Suite, MCP Integration!
 
 *Core Innovation*: From static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration and MCP ecosystem integration!
