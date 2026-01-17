@@ -1,7 +1,11 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 🔄 Cursor AI 生长文件夹初始化脚本
-# 初始化.cursorGrowth目录结构和基础配置文件
+# 初始化$CURSOR_GROWTH目录结构和基础配置文件
 
 set -e
 
@@ -10,7 +14,7 @@ echo "================================"
 
 # 获取项目根目录
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-GROWTH_DIR="${PROJECT_ROOT}/.cursorGrowth"
+GROWTH_DIR="${PROJECT_ROOT}/$CURSOR_GROWTH"
 
 echo "📁 项目根目录: $PROJECT_ROOT"
 echo "🌳 生长文件夹: $GROWTH_DIR"

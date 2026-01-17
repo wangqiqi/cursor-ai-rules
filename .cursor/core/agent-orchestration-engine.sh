@@ -7,12 +7,14 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/context-pool-manager.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 代理编排配置
-AGENT_CONFIG_DIR=".cursorGrowth/agents"
+AGENT_CONFIG_DIR="$CURSOR_GROWTH/agents"
 AGENT_COMMUNICATION_LOG="$AGENT_CONFIG_DIR/communication.log"
 AGENT_PERFORMANCE_METRICS="$AGENT_CONFIG_DIR/performance.json"
 

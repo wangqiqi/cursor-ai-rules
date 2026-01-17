@@ -1,4 +1,9 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
+
 
 # 🌟 Cursor AI Rules - 注释大法：智能隔离调试器
 # 基于用户经验实现模块隔离调试，支持安全备份和渐进式测试
@@ -16,7 +21,6 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DEBUG_DIR="$PROJECT_ROOT/.cursor/debug"
 BACKUP_DIR="$DEBUG_DIR/backups"
 

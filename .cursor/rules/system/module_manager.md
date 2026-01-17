@@ -1011,7 +1011,7 @@ EOF
 ../core/env-perception.sh
 
 # 检查代码质量（针对JavaScript项目）
-../quality/quality-manager.sh
+../core/quality-manager.sh
 
 # 启用特定规则
 ../core/init.sh rule_name

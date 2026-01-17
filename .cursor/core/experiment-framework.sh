@@ -7,12 +7,14 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/adaptive-optimization-engine.sh"
 source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 实验框架配置
-EXPERIMENT_DIR=".cursorGrowth/experiments"
+EXPERIMENT_DIR="$CURSOR_GROWTH/experiments"
 EXPERIMENT_CONFIG_DIR="$EXPERIMENT_DIR/config"
 EXPERIMENT_DATA_DIR="$EXPERIMENT_DIR/data"
 EXPERIMENT_RESULTS_DIR="$EXPERIMENT_DIR/results"

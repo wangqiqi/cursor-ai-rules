@@ -7,12 +7,14 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/self-learning-engine.sh"
 source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 优化引擎配置
-OPTIMIZATION_DIR=".cursorGrowth/optimization"
+OPTIMIZATION_DIR="$CURSOR_GROWTH/optimization"
 OPTIMIZATION_CONFIG_DIR="$OPTIMIZATION_DIR/config"
 OPTIMIZATION_EXPERIMENTS_DIR="$OPTIMIZATION_DIR/experiments"
 OPTIMIZATION_BACKUPS_DIR="$OPTIMIZATION_DIR/backups"

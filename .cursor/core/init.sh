@@ -1,4 +1,9 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
+
 
 # 🚀 Cursor AI Rules - 核心初始化引导器
 # 基础的初始化引导功能，专注于核心系统设置
@@ -6,7 +11,6 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -90,8 +94,8 @@ verify_system_integrity() {
 
     local critical_files=(
         "core/env-perception.sh"
-        "config/config-manager.sh"
-        "quality/quality-manager.sh"
+        "core/core/config/config-manager.sh"
+        "core/quality-manager.sh"
         "commands/master.md"
         "commands/command-router.md"
         "commands/capability-map.json"

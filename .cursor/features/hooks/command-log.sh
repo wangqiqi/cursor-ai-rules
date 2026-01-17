@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 # 📊 命令日志Hook - 记录所有shell命令执行结果
 # 用于审计和性能监控
 
@@ -32,23 +36,23 @@ elif [[ "$command" =~ ^(\./|\.cursor/scripts/) ]]; then
 fi
 
 # 记录详细日志
-mkdir -p .cursorGrowth/logs
+mkdir -p "$CURSOR_GROWTH/logs
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 log_entry="$timestamp|$conversation_id|$command_type|$command|$duration|$output_length|$cwd"
 
-echo "$log_entry" >> .cursorGrowth/logs/command-execution.log
+echo "$log_entry" >> $CURSOR_GROWTH/logs/command-execution.log
 
 # 如果执行时间过长，记录警告
 if [[ $duration -gt 10000 ]]; then
-    mkdir -p .cursorGrowth/logs
-    echo "[$timestamp] SLOW_COMMAND: $command took ${duration}ms" >> .cursorGrowth/logs/performance-warnings.log
+    mkdir -p "$CURSOR_GROWTH/logs
+    echo "[$timestamp] SLOW_COMMAND: $command took ${duration}ms" >> $CURSOR_GROWTH/logs/performance-warnings.log
 fi
 
 # 如果命令失败（可以从输出中检测），记录错误
 if [[ "$output" == *"error"* ]] || [[ "$output" == *"Error"* ]] || [[ "$output" == *"ERROR"* ]]; then
-    mkdir -p .cursorGrowth/logs
-    echo "[$timestamp] COMMAND_ERROR: $command" >> .cursorGrowth/logs/command-errors.log
-    echo "Error output: $output" >> .cursorGrowth/logs/command-errors.log
+    mkdir -p "$CURSOR_GROWTH/logs
+    echo "[$timestamp] COMMAND_ERROR: $command" >> $CURSOR_GROWTH/logs/command-errors.log
+    echo "Error output: $output" >> $CURSOR_GROWTH/logs/command-errors.log
 fi
 
 # 保持简洁的输出

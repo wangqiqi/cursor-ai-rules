@@ -7,13 +7,15 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/agent-orchestration-engine.sh"
 source "$SCRIPT_DIR/vibe-services-integration.sh"
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # VIBE命令配置
-VIBE_COMMAND_DIR=".cursorGrowth/vibe_commands"
+VIBE_COMMAND_DIR="$CURSOR_GROWTH/vibe_commands"
 VIBE_SESSIONS_DIR="$VIBE_COMMAND_DIR/sessions"
 VIBE_PROJECTS_DIR="$VIBE_COMMAND_DIR/projects"
 
@@ -265,7 +267,7 @@ handle_vibe_start() {
     smart_echo "✅ VIBE会话已启动!" "success"
     smart_echo "📋 项目ID: $project_id" "info"
     smart_echo "🔄 会话ID: $session_id" "info"
-    smart_echo "📁 项目目录: .cursorGrowth/vibe_commands/projects/$project_id" "info"
+    smart_echo "📁 项目目录: $CURSOR_GROWTH/vibe_commands/projects/$project_id" "info"
     smart_echo "" "info"
     smart_echo "💡 接下来你可以运行:" "info"
     smart_echo "   @vibe prd [需求描述]  - 生成产品需求文档" "info"

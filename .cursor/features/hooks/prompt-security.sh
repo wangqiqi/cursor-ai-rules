@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 # 🔒 Prompt安全检查Hook - 检查用户输入是否包含敏感信息
 # 防止意外泄露API密钥、密码等敏感信息
 
@@ -13,7 +17,7 @@ if [[ -z "$prompt" ]]; then
 fi
 
 # 创建日志目录（如果不存在）
-mkdir -p .cursorGrowth/logs
+mkdir -p "$CURSOR_GROWTH/logs
 
 # 定义敏感信息模式
 sensitive_patterns=(
@@ -52,7 +56,7 @@ done
 # 记录安全检查
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 if [[ "$is_sensitive" == true ]]; then
-    echo "[$timestamp] SENSITIVE_CONTENT_DETECTED: ${detected_patterns%,}" >> .cursorGrowth/logs/prompt-security.log
+    echo "[$timestamp] SENSITIVE_CONTENT_DETECTED: ${detected_patterns%,}" >> $CURSOR_GROWTH/logs/prompt-security.log
 
     # 阻止包含敏感信息的prompt
     cat << EOF
@@ -63,7 +67,7 @@ if [[ "$is_sensitive" == true ]]; then
 EOF
     exit 0
 else
-    echo "[$timestamp] PROMPT_CHECKED: clean" >> .cursorGrowth/logs/prompt-security.log
+    echo "[$timestamp] PROMPT_CHECKED: clean" >> $CURSOR_GROWTH/logs/prompt-security.log
 fi
 
 # 检查附件是否包含敏感文件
@@ -77,7 +81,7 @@ if [[ "$attachments" != "[]" ]]; then
 
         # 检查是否是敏感文件
         if [[ "$file_path" =~ (\.env|config\.json|secrets\.|credentials\.) ]]; then
-            echo "[$timestamp] SENSITIVE_FILE_ATTACHED: $file_path" >> .cursorGrowth/logs/prompt-security.log
+            echo "[$timestamp] SENSITIVE_FILE_ATTACHED: $file_path" >> $CURSOR_GROWTH/logs/prompt-security.log
 
             cat << EOF
 {

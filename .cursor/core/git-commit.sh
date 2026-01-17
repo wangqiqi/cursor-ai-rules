@@ -1,4 +1,9 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
+
 
 # 🚀 Cursor AI Rules - 智能Git提交助手
 # 自动分析变更、生成提交信息、执行安全提交
@@ -6,7 +11,6 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # 颜色定义
 RED='\033[0;31m'

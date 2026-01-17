@@ -7,11 +7,13 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # MCP集成配置
-MCP_INTEGRATION_DIR=".cursorGrowth/mcp_integration"
+MCP_INTEGRATION_DIR="$CURSOR_GROWTH/mcp_integration"
 MCP_SERVERS_DIR="$MCP_INTEGRATION_DIR/servers"
 MCP_CONFIG_DIR="$MCP_INTEGRATION_DIR/config"
 MCP_CACHE_DIR="$MCP_INTEGRATION_DIR/cache"

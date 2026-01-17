@@ -1,4 +1,9 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
+
 
 # 🌟 Cursor AI Rules - 一致性检查器
 # 自动化验证系统一致性、引用完整性和配置有效性
@@ -6,7 +11,6 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -93,8 +97,8 @@ check_config_consistency() {
         local config_files=(
             "$SCRIPT_DIR/../config/global.json"
             "$SCRIPT_DIR/../config/system-defaults.json"
-            "$SCRIPT_DIR/../quality/lint/eslint-config.json"
-            "$SCRIPT_DIR/../quality/format/prettier-config.json"
+            "$SCRIPT_DIR/../config/config/config/lint/eslint-config.json"
+            "$SCRIPT_DIR/../config/config/config/format/prettier-config.json"
             "$SCRIPT_DIR/../commands/capability-map.json"
         )
 
@@ -238,12 +242,12 @@ check_code_quality_consistency() {
     log_header "🔧 检查代码质量配置一致性"
 
     # 检查ESLint和Prettier配置
-    if [ -f "$SCRIPT_DIR/../quality/lint/eslint-config.json" ] && [ -f "$SCRIPT_DIR/../quality/format/prettier-config.json" ]; then
+    if [ -f "$SCRIPT_DIR/../config/config/config/lint/eslint-config.json" ] && [ -f "$SCRIPT_DIR/../config/config/config/format/prettier-config.json" ]; then
         TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
 
         # 检查分号配置是否一致（ESLint的always等价于Prettier的true）
-        local eslint_semi=$(jq -r '.rules."semi"[1]' "$SCRIPT_DIR/../quality/lint/eslint-config.json" 2>/dev/null)
-        local prettier_semi=$(jq -r '.semi' "$SCRIPT_DIR/../quality/format/prettier-config.json" 2>/dev/null)
+        local eslint_semi=$(jq -r '.rules."semi"[1]' "$SCRIPT_DIR/../config/config/config/lint/eslint-config.json" 2>/dev/null)
+        local prettier_semi=$(jq -r '.semi' "$SCRIPT_DIR/../config/config/config/format/prettier-config.json" 2>/dev/null)
 
         if [ "$eslint_semi" = "always" ] && [ "$prettier_semi" = "true" ]; then
             log_success "ESLint和Prettier分号配置一致"
@@ -258,8 +262,8 @@ check_code_quality_consistency() {
     fi
 
     # 检查缩进配置
-    local eslint_indent=$(jq -r '.rules."indent"[1]' "$SCRIPT_DIR/../quality/lint/eslint-config.json" 2>/dev/null)
-    local prettier_tabwidth=$(jq -r '.tabWidth' "$SCRIPT_DIR/../quality/format/prettier-config.json" 2>/dev/null)
+    local eslint_indent=$(jq -r '.rules."indent"[1]' "$SCRIPT_DIR/../config/config/config/lint/eslint-config.json" 2>/dev/null)
+    local prettier_tabwidth=$(jq -r '.tabWidth' "$SCRIPT_DIR/../config/config/config/format/prettier-config.json" 2>/dev/null)
 
     if [ "$eslint_indent" = "$prettier_tabwidth" ]; then
         log_success "ESLint和Prettier缩进配置一致 ($eslint_indent)"

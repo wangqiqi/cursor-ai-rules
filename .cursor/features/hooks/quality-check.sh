@@ -13,7 +13,7 @@ if [[ "$event_type" == "afterFileSave" ]] && [[ -n "$file_path" ]]; then
 
     # 获取脚本目录
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    CORE_SCRIPT="$SCRIPT_DIR/../../quality/quality-manager.sh"
+    CORE_SCRIPT="$SCRIPT_DIR/../../core/quality-manager.sh"
 
     # 检查核心脚本是否存在
     if [ ! -f "$CORE_SCRIPT" ]; then

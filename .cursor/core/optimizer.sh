@@ -7,6 +7,8 @@ set -e
 
 # 加载所有优化模块
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 source "$SCRIPT_DIR/batch-executor.sh"
@@ -197,7 +199,7 @@ performance_analysis() {
     echo ""
     echo "💾 缓存状态"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    ls -la .cursorGrowth/cache/ 2>/dev/null | wc -l | xargs echo "缓存文件数量:"
+    ls -la $CURSOR_GROWTH/cache/ 2>/dev/null | wc -l | xargs echo "缓存文件数量:"
 
     echo ""
     echo "🎯 优化建议"
@@ -296,8 +298,8 @@ show_optimization_status() {
 
     echo ""
     echo "💾 缓存状态:"
-    local cache_files=$(find .cursorGrowth/cache -name "*.cache" 2>/dev/null | wc -l)
-    local cache_size=$(du -sh .cursorGrowth/cache 2>/dev/null | cut -f1)
+    local cache_files=$(find $CURSOR_GROWTH/cache -name "*.cache" 2>/dev/null | wc -l)
+    local cache_size=$(du -sh $CURSOR_GROWTH/cache 2>/dev/null | cut -f1)
     echo "  • 缓存文件: $cache_files 个"
     echo "  • 缓存大小: ${cache_size:-0B}"
 

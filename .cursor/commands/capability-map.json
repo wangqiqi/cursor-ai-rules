@@ -47,7 +47,7 @@
         "scripts": [
           "core/init.sh",
           "core/env-perception.sh",
-          "config/config-manager.sh"
+          "core/core/config/config-manager.sh"
         ],
         "workflows": [
           "project-init",
@@ -215,7 +215,7 @@
         ],
         "skills": [],
         "scripts": [
-          "quality/quality-manager.sh"
+          "core/quality-manager.sh"
         ],
         "workflows": [
           "lint",
@@ -746,7 +746,7 @@
         "scripts": [
           "core/init.sh",
           "core/env-perception.sh",
-          "config/config-manager.sh"
+          "core/core/config/config-manager.sh"
         ],
         "workflows": [
           "project-init",
@@ -937,8 +937,8 @@
         ],
         "scripts": [
           "core/env-perception.sh",
-          "debug/isolation-debugger.sh",
-          "debug/pattern-analyzer.sh"
+          "core/isolation-debugger.sh",
+          "core/pattern-analyzer.sh"
         ],
         "workflows": [
           "error-analysis",
@@ -989,7 +989,7 @@
         ],
         "skills": [],
         "scripts": [
-          "quality/quality-manager.sh"
+          "core/quality-manager.sh"
         ],
         "workflows": [
           "code-analysis",
@@ -1242,8 +1242,8 @@
           "debug-assistant"
         ],
         "scripts": [
-          "debug/isolation-debugger.sh",
-          "debug/pattern-analyzer.sh"
+          "core/isolation-debugger.sh",
+          "core/pattern-analyzer.sh"
         ],
         "workflows": [
           "problem-analysis",
@@ -1483,8 +1483,8 @@
         "rules": [],
         "skills": [],
         "scripts": [
-          "config/config-manager.sh",
-          "config/config-validator.sh"
+          "core/core/config/config-manager.sh",
+          "core/core/config/config-validator.sh"
         ],
         "workflows": [
           "config-analysis",
@@ -2736,7 +2736,7 @@
         "skills": [],
         "scripts": [
           "core/consistency-checker.sh",
-          "quality/quality-manager.sh"
+          "core/quality-manager.sh"
         ],
         "workflows": [
           "standards-audit",
@@ -3082,7 +3082,7 @@
           "debug-assistant"
         ],
         "scripts": [
-          "debug/isolation-debugger.sh"
+          "core/isolation-debugger.sh"
         ],
         "workflows": [
           "isolation-test",
@@ -3152,7 +3152,7 @@
           "debug-assistant"
         ],
         "scripts": [
-          "debug/pattern-analyzer.sh"
+          "core/pattern-analyzer.sh"
         ],
         "workflows": [
           "error-collection",
@@ -3219,8 +3219,8 @@
           "debug-assistant"
         ],
         "scripts": [
-          "debug/pattern-analyzer.sh",
-          "debug/isolation-debugger.sh"
+          "core/pattern-analyzer.sh",
+          "core/isolation-debugger.sh"
         ],
         "workflows": [
           "batch-fix-validation",
@@ -3290,8 +3290,8 @@
           "debug-assistant"
         ],
         "scripts": [
-          "debug/isolation-debugger.sh",
-          "debug/pattern-analyzer.sh"
+          "core/isolation-debugger.sh",
+          "core/pattern-analyzer.sh"
         ],
         "workflows": [
           "debug-workflow-selection",
@@ -3553,7 +3553,7 @@
         ],
         "skills": [],
         "scripts": [
-          "quality/quality-manager.sh"
+          "core/quality-manager.sh"
         ],
         "workflows": [
           "code-analysis",
@@ -4160,8 +4160,8 @@
       "capabilities": {
         "rules": [],
         "scripts": [
-          "config/config-manager.sh",
-          "config/config-validator.sh"
+          "core/core/config/config-manager.sh",
+          "core/core/config/config-validator.sh"
         ],
         "workflows": [],
         "hooks": []
@@ -4191,8 +4191,8 @@
           "eslint"
         ],
         "scripts": [
-          "quality/quality-manager.sh",
-          "quality/report/quality-reporter.sh"
+          "core/quality-manager.sh",
+          "core/quality-reporter.sh"
         ],
         "workflows": [
           "lint",
@@ -4228,7 +4228,7 @@
       "capabilities": {
         "rules": [],
         "scripts": [
-          "debug/isolation-debugger.sh"
+          "core/isolation-debugger.sh"
         ],
         "workflows": [],
         "hooks": []

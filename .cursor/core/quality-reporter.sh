@@ -1,4 +1,9 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
+
 
 # 📊 Cursor AI Rules - 质量报告生成器
 # 生成详细的质量检查报告和可视化图表
@@ -7,7 +12,6 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 QUALITY_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 # 颜色定义
 RED='\033[0;31m'

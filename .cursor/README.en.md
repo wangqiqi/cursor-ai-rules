@@ -4,14 +4,14 @@
 [![Version](https://img.shields.io/badge/version-5.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
-[![Intent Types](https://img.shields.io/badge/intent_types-90+-blue?style=flat-square)]()
-[![Agents](https://img.shields.io/badge/agents-8-orange?style=flat-square)]()
-[![MCP Tools](https://img.shields.io/badge/mcp_tools-25+-red?style=flat-square)]()
-[![Token Savings](https://img.shields.io/badge/token_savings-25--35%25-purple?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
+[![Capabilities](https://img.shields.io/badge/capabilities-103-red?style=flat-square)]()
+[![Hooks](https://img.shields.io/badge/hooks-20-purple?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 Enterprise AI Programming Collaboration Platform - 8 Intelligent Agents + 90+ Intent Recognition + 25+ Local Tool Integration**
+**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 103 Capability Mappings + 20 Automation Hooks**
 
 📚 **[Quick Start](docs/quick-start.md)** | **[Intelligent Agent Guide](docs/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/token-compression-guide.md)** | **[MCP Integration Guide](docs/mcp-integration-guide.md)** | **[VIBE Development Guide](docs/vibe-development-guide.md)**
 
@@ -48,12 +48,13 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 - **Learner**: Pattern learning, performance optimization, improvement suggestions
 - **Monitor**: Health checks, performance monitoring, alert handling
 
-### 🎯 90+ Intent Smart Recognition
-- **Project Management**: Initialization, configuration, operations, optimization, documentation (20 intents)
-- **Development Tasks**: Feature development, bug fixing, refactoring, testing, performance optimization (25 intents)
-- **Learning Guidance**: Technology learning, code explanation, best practices, troubleshooting (15 intents)
-- **System Maintenance**: Health checks, configuration optimization, backup recovery, monitoring setup (10 intents)
-- **Collaboration Communication**: Team collaboration, communication standards, review processes, knowledge sharing (8 intents)
+### 🎯 103 Capability Mappings - Intent to Action System
+- **Project Creation & Management**: React, Vue, Python API, environment setup (15+ mappings)
+- **Code Quality & Optimization**: ESLint, testing, performance analysis, refactoring (25+ mappings)
+- **Debug & Troubleshooting**: Isolation debugging, pattern analysis, error fixing (10+ mappings)
+- **Deployment & DevOps**: CI/CD setup, containerization, monitoring (15+ mappings)
+- **Learning & Documentation**: Technology guides, code explanation, best practices (20+ mappings)
+- **Collaboration & Communication**: Team workflows, review processes, knowledge sharing (10+ mappings)
 
 ### 🛠️ 25+ Local Tool MCP Integration
 - **Version Control**: Git, Git LFS
@@ -204,9 +205,9 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | 🪝 **Automated Hooks System**                | 15+ lifecycle hooks for intelligent automation                                    | **100% Process Automation**           |
 | 🔌 **MCP Priority System**                   | Smart MCP tool detection and execution priority                                   | **Intelligent Tool Selection**        |
 | 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch fixes                                | **Debug Efficiency 300%↑**            |
-| 🎯 **90+ Intent Recognition**                | Multi-layer intent analysis and intelligent mapping system                        | **Accuracy 85%+**                     |
-| 🤖 **8 Intelligent Agents**                  | Multi-agent collaboration and task orchestration system                           | **Collaboration Efficiency 50%↑**     |
-| 🛠️ **25+ Local MCP Tools**                   | Local tool auto-discovery and integration                                         | **Development Efficiency 200%↑**      |
+| 🎯 **103 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
+| 🪝 **20 Automation Hooks**                   | Lifecycle automation system for session, file, and command events                 | **100% Process Automation**           |
+| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, and batch error fixing tools               | **Debug Efficiency 300%↑**            |
 | 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
 | 📊 **Performance Monitoring**                | Real-time system metrics and optimization                                         | **System Health Tracking**            |
 
@@ -240,12 +241,12 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 
 | System                     | Description                                       | Features                                                          | Status             |
 | -------------------------- | ------------------------------------------------- | ----------------------------------------------------------------- | ------------------ |
-| **Hooks Automation**       | Lifecycle automation system with 15+ hooks        | Session start/end, file save, shell execution, AI response        | ✅ Production Ready |
-| **MCP Priority System**    | Intelligent MCP tool detection and prioritization | Auto-detect MCP servers, priority execution, graceful fallback    | ✅ Production Ready |
-| **Debug Suite**            | Advanced debugging tools and workflows            | Isolation debugging, pattern analysis, batch error fixing         | ✅ Production Ready |
-| **Capability Mapping**     | 100 comprehensive intent-action mappings          | Natural language to system actions, validation rules, fallbacks   | ✅ Production Ready |
-| **Growth Intelligence**    | AI learning and personalization system            | User behavior analysis, preference learning, continuous evolution | ✅ Production Ready |
-| **Performance Monitoring** | Real-time system health and optimization          | Execution tracking, resource monitoring, intelligent caching      | ✅ Production Ready |
+| **Hooks Automation**       | Lifecycle automation system with 20 hooks         | Session/file/command events, intelligent triggers, async execution| ✅ Production Ready |
+| **MCP Priority System**    | Intelligent MCP tool detection and prioritization | 25+ local tools, auto-discovery, priority execution, fallback     | ✅ Production Ready |
+| **Debug Suite**            | Advanced debugging tools and workflows            | Isolation debugging, pattern analysis, batch error fixing, auto-commit| ✅ Production Ready |
+| **Capability Mapping**     | 103 comprehensive intent-action mappings          | Multi-layer analysis, confidence thresholds, execution ordering   | ✅ Production Ready |
+| **Growth Intelligence**    | AI learning and personalization system            | Behavior patterns, A/B testing, continuous optimization           | ✅ Production Ready |
+| **Performance Monitoring** | Real-time system health and optimization          | Token tracking, caching, compression, dashboard reporting        | ✅ Production Ready |
 
 ### 🎯 Skills Extension System (24 Professional Skills) + VIBE Services Ecosystem
 
@@ -311,7 +312,7 @@ cd your-project
 ./.cursor/core/env-perception.sh
 
 # Quality check management
-./.cursor/quality/quality-manager.sh
+./.cursor/core/quality-manager.sh
 ```
 
 ## 🎛️ Intelligent Features
@@ -482,10 +483,10 @@ Performance monitoring detected bottlenecks in:
 ### Debug Suite Configuration
 ```bash
 # Isolation debugging
-./.cursor/debug/isolation-debugger.sh --help
+./.cursor/core/isolation-debugger.sh --help
 
 # Pattern analysis
-./.cursor/debug/pattern-analyzer.sh --analyze
+./.cursor/core/pattern-analyzer.sh --analyze
 
 # Configure debug preferences in debug-config.json
 ```
@@ -597,7 +598,7 @@ ls -la .cursor/core/init.sh
 | **New Metrics (2026)** | -        | -        | -           | -                              |
 | Automation Hooks       | -        | -        | 15+         | **100% Process Automation**    |
 | MCP Integrations       | -        | -        | 10+         | **Intelligent Tool Selection** |
-| Capability Mappings    | -        | -        | 100         | **Comprehensive Coverage**     |
+| Capability Mappings    | -        | -        | 103         | **Comprehensive Coverage**     |
 | Debug Efficiency       | Baseline | +100%    | +300%       | **300%↑**                      |
 | Learning Accuracy      | -        | -        | 92%         | **Continuous Improvement**     |
 | System Stability       | 95%      | 99%      | 99.9%       | **99.9% Uptime**               |
@@ -791,6 +792,6 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 *🌱 Cursor AI Rules v5.0.0 - Intelligent growth system allows AI assistants to continuously evolve, projects grow with each interaction!*
 
-*🚀 2026 Enhanced Features*: 8 Intelligent Agents, 90+ Intent Recognition, 25+ MCP Tools, Token Optimization (25-35% savings), VIBE Conversational Development!
+*🚀 2026 Enhanced Features*: 23 Rules, 24 Skills, 103 Capability Mappings, 20 Automation Hooks, Advanced Debug Suite, MCP Integration!
 
 *Core Innovation*: From static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration and MCP ecosystem integration!

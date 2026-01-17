@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 🌟 Cursor AI Rules - 标准日志和错误处理库
 # 提供统一的日志记录和错误处理功能
@@ -23,7 +27,7 @@ LOG_LEVEL_FATAL=4
 CURRENT_LOG_LEVEL=${LOG_LEVEL_INFO}
 
 # 日志文件路径
-LOG_DIR=".cursorGrowth/logs"
+LOG_DIR="$CURSOR_GROWTH/logs"
 LOG_FILE="$LOG_DIR/cursor.log"
 
 # 📁 确保日志目录存在

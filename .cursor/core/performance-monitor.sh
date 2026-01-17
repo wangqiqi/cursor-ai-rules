@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 📊 Cursor AI Rules - 性能监控和Token统计系统
 # 实时监控系统性能，优化资源使用
@@ -6,7 +10,7 @@
 set -e
 
 # 配置
-MONITOR_DIR=".cursorGrowth/monitoring"
+MONITOR_DIR="$CURSOR_GROWTH/monitoring"
 METRICS_FILE="$MONITOR_DIR/metrics.json"
 TOKEN_LOG="$MONITOR_DIR/token_usage.log"
 PERFORMANCE_LOG="$MONITOR_DIR/performance.log"
@@ -240,7 +244,7 @@ health_check() {
     echo "🔍 系统健康检查"
 
     # 检查缓存目录
-    if [ ! -d ".cursorGrowth/cache" ]; then
+    if [ ! -d "$CURSOR_GROWTH/cache" ]; then
         echo "❌ 缓存目录不存在"
         issues=$((issues + 1))
     fi

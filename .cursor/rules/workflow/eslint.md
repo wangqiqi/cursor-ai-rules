@@ -52,13 +52,13 @@ alwaysApply: true
 ### 手动检查
 ```bash
 # 检查当前目录
-../../quality/quality-manager.sh
+../../core/quality-manager.sh
 
 # 检查指定文件
-../../quality/quality-manager.sh file.js
+../../core/quality-manager.sh file.js
 
 # 自动修复
-../../quality/quality-manager.sh --fix
+../../core/quality-manager.sh --fix
 ```
 
 ## 📊 报告格式

@@ -6,11 +6,13 @@ set -euo pipefail
 
 # 获取脚本所在目录的绝对路径
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 # 生长目录（系统生长数据存储位置）
-GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+GROWTH_DIR="$PROJECT_ROOT/$CURSOR_GROWTH"
 
 # 导入通用函数
 source "$SCRIPT_DIR/common.sh"

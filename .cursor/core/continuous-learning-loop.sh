@@ -7,6 +7,8 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/self-learning-engine.sh"
 source "$SCRIPT_DIR/adaptive-optimization-engine.sh"
 source "$SCRIPT_DIR/experiment-framework.sh"
@@ -14,7 +16,7 @@ source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 持续学习配置
-CONTINUOUS_LEARNING_DIR=".cursorGrowth/continuous_learning"
+CONTINUOUS_LEARNING_DIR="$CURSOR_GROWTH/continuous_learning"
 LEARNING_BUFFER_DIR="$CONTINUOUS_LEARNING_DIR/buffer"
 MODEL_CHECKPOINTS_DIR="$CONTINUOUS_LEARNING_DIR/checkpoints"
 LEARNING_METRICS_DIR="$CONTINUOUS_LEARNING_DIR/metrics"

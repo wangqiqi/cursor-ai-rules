@@ -1,11 +1,15 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 🎯 Cursor AI Rules - 生长目录路径验证脚本
-# 确保所有脚本都正确使用 .cursorGrowth 目录
+# 确保所有脚本都正确使用 $CURSOR_GROWTH 目录
 
 set -e
 
-echo "🔍 验证优化脚本是否正确使用 .cursorGrowth 目录"
+echo "🔍 验证优化脚本是否正确使用 $CURSOR_GROWTH 目录"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 需要检查的脚本列表
@@ -43,20 +47,20 @@ check_script() {
         return 1
     fi
 
-    # 检查是否正确使用了 .cursorGrowth/ 路径
-    local growth_paths=$(grep -c "\.cursorGrowth/" "$script" || true)
+    # 检查是否正确使用了 $CURSOR_GROWTH/ 路径
+    local growth_paths=$(grep -c "\$CURSOR_GROWTH/" "$script" || true)
 
     if [ "$growth_paths" -gt 0 ]; then
-        echo "✅ $script_name: 正确使用 .cursorGrowth/ 路径 ($growth_paths 处)"
+        echo "✅ $script_name: 正确使用 $CURSOR_GROWTH/ 路径 ($growth_paths 处)"
         return 0
     else
-        # 如果没有 .cursorGrowth/ 路径，检查是否需要
+        # 如果没有 $CURSOR_GROWTH/ 路径，检查是否需要
         local needs_growth=$(grep -c "CACHE_DIR\|MONITOR_DIR\|cache\|monitoring" "$script" || true)
         if [ "$needs_growth" -gt 0 ]; then
             echo "⚠️  $script_name: 可能需要检查路径配置"
             return 1
         else
-            echo "✅ $script_name: 无需 .cursorGrowth/ 路径"
+            echo "✅ $script_name: 无需 $CURSOR_GROWTH/ 路径"
             return 0
         fi
     fi
@@ -72,16 +76,16 @@ for script in "${SCRIPTS_TO_CHECK[@]}"; do
     echo ""
 done
 
-# 检查 .cursorGrowth 目录结构
-echo "🏗️  检查 .cursorGrowth 目录结构..."
+# 检查 $CURSOR_GROWTH 目录结构
+echo "🏗️  检查 $CURSOR_GROWTH 目录结构..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 REQUIRED_DIRS=(
-    ".cursorGrowth/cache"
-    ".cursorGrowth/monitoring"
-    ".cursorGrowth/learning"
-    ".cursorGrowth/conversations"
-    ".cursorGrowth/personal"
+    "$CURSOR_GROWTH/cache"
+    "$CURSOR_GROWTH/monitoring"
+    "$CURSOR_GROWTH/learning"
+    "$CURSOR_GROWTH/conversations"
+    "$CURSOR_GROWTH/personal"
 )
 
 for dir in "${REQUIRED_DIRS[@]}"; do
@@ -102,7 +106,7 @@ echo "❌ 失败: $FAILED"
 
 if [ $FAILED -eq 0 ]; then
     echo ""
-    echo "🎉 所有检查通过！优化系统已正确配置使用 .cursorGrowth 目录"
+    echo "🎉 所有检查通过！优化系统已正确配置使用 $CURSOR_GROWTH 目录"
     exit 0
 else
     echo ""

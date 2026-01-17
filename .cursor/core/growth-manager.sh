@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 🌱 Cursor AI Rules - 生长目录自动管理器
-# 自动管理 .cursorGrowth 目录的所有操作，与项目和用户无关
+# 自动管理 $CURSOR_GROWTH 目录的所有操作，与项目和用户无关
 #
 # 使用方法:
 #   ./growth-manager.sh init          # 初始化生长目录
@@ -13,8 +13,9 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -63,7 +64,7 @@ init_growth_directory() {
 
 # 显示目录说明 (不创建静态文件)
 show_directory_info() {
-    echo "# 🌱 项目生长目录 (.cursorGrowth)"
+    echo "# 🌱 项目生长目录 ($CURSOR_GROWTH)"
     echo ""
     echo "此目录包含项目的AI学习数据和生长信息。"
     echo "这些数据不会被提交到版本控制，是项目私有的。"
@@ -122,7 +123,7 @@ create_readme_file() {
     fi
 
     cat > "$readme_file" << 'EOF'
-# 🌱 项目生长目录 (.cursorGrowth)
+# 🌱 项目生长目录 ($CURSOR_GROWTH)
 
 此目录包含项目的AI学习数据和生长信息。
 这些数据不会被提交到版本控制，是项目私有的。
@@ -219,7 +220,7 @@ ensure_gitignore_protection() {
         cat > "$gitignore_file" << 'EOF'
 # Cursor AI 生长数据 - 自动感知和学习
 # 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
-.cursorGrowth/
+$CURSOR_GROWTH/
 
 # 个人信息和本地配置
 *.local
@@ -272,15 +273,15 @@ coverage/
 # Cursor AI Rules - 通用规则保持跟踪
 !.cursor/
 !.cursor/**# 保留生长文件夹的占位符
-!.cursorGrowth/.gitkeep
+!$CURSOR_GROWTH/.gitkeep
 EOF
-    elif ! grep -q ".cursorGrowth/" "$gitignore_file" 2>/dev/null; then
+    elif ! grep -q "$CURSOR_GROWTH/" "$gitignore_file" 2>/dev/null; then
         # 在文件开头添加保护规则
         local temp_file=$(mktemp)
         cat > "$temp_file" << 'EOF'
 # Cursor AI 生长数据 - 自动感知和学习
 # 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
-.cursorGrowth/
+$CURSOR_GROWTH/
 
 EOF
         cat "$gitignore_file" >> "$temp_file"
@@ -472,7 +473,7 @@ main() {
         "help"|"-h"|"--help")
             echo "🌱 Cursor AI Rules - 生长目录管理器"
             echo ""
-            echo "自动管理 .cursorGrowth 目录的所有操作"
+            echo "自动管理 $CURSOR_GROWTH 目录的所有操作"
             echo ""
             echo "使用方法:"
             echo "  $0 init          # 初始化生长目录"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 🎯 Cursor AI Rules - Cursor对话记录同步器
-# 将Cursor IDE的对话记录同步到 .cursorGrowth 目录
+# 将Cursor IDE的对话记录同步到 $CURSOR_GROWTH 目录
 #
 # 使用方法:
 #   ./cursor-sync.sh sync              # 同步最新对话记录
@@ -12,8 +12,9 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -551,7 +552,7 @@ main() {
         "help"|"-h"|"--help")
             echo "🎯 Cursor AI Rules - Cursor对话记录同步器"
             echo ""
-            echo "将Cursor IDE的对话记录同步到 .cursorGrowth 目录"
+            echo "将Cursor IDE的对话记录同步到 $CURSOR_GROWTH 目录"
             echo ""
             echo "使用方法:"
             echo "  $0 sync              # 同步最新对话记录"

@@ -157,7 +157,7 @@ validate_directory_structure() {
     echo "📁 验证目录结构..."
 
     # 检查 .cursor/ 是否干净
-    if find ".cursor" -name "*.log" -o -name "*.json" -o -name "*[0-9]*.txt" | grep -v quality/ | grep -v config/ | grep -v monitoring/metrics.json; then
+    if find ".cursor" -name "*.log" -o -name "*.json" -o -name "*[0-9]*.txt" | grep -v config/config/config/ | grep -v config/ | grep -v monitoring/metrics.json; then
         echo "❌ 发现 .cursor/ 目录中的运行时文件"
         return 1
     fi

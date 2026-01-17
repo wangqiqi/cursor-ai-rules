@@ -686,8 +686,8 @@ execute_action() {
             echo -e "${GREEN}✅ AI共生宪法已激活 (alwaysApply: true)${NC}"
             ;;
         "quality")
-            if [ -f "$CURSOR_DIR/quality/quality-manager.sh" ]; then
-                bash "$CURSOR_DIR/quality/quality-manager.sh"
+            if [ -f "$CURSOR_DIR/core/quality-manager.sh" ]; then
+                bash "$CURSOR_DIR/core/quality-manager.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到质量管理脚本${NC}"
             fi
@@ -1107,7 +1107,7 @@ ls -la .cursor/rules/
 ./cursor-master.sh script <script_name>
 
 # 检查脚本权限
-ls -la .cursor/core/ .cursor/quality/ .cursor/features/automation/scripts/
+ls -la .cursor/core/ .cursor/config/config/config/ .cursor/features/automation/scripts/
 ```
 
 ## ❓ 帮助与支持
@@ -1134,7 +1134,7 @@ ls -la .cursor/core/ .cursor/quality/ .cursor/features/automation/scripts/
 1. 在 `.cursor/rules/` 下添加新的 `.md` 规则文件
 2. 根据功能在相应目录下添加脚本：
    - 核心功能：`.cursor/core/`
-   - 质量工具：`.cursor/quality/`
+   - 质量工具：`.cursor/config/config/config/`
    - 自动化脚本：`.cursor/features/automation/scripts/`
 3. 确保脚本有执行权限：`chmod +x script.sh`
 4. 总命令控制器会自动识别并显示新命令

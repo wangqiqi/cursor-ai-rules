@@ -7,13 +7,15 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/context-pool-manager.sh"
 source "$SCRIPT_DIR/agent-orchestration-engine.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # VIBE服务配置
-VIBE_SERVICES_DIR=".cursorGrowth/vibe_services"
+VIBE_SERVICES_DIR="$CURSOR_GROWTH/vibe_services"
 VIBE_CONFIG_FILE="$VIBE_SERVICES_DIR/config.json"
 VIBE_SERVICES_STATUS="$VIBE_SERVICES_DIR/status.json"
 

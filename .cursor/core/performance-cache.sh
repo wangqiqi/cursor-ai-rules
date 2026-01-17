@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 🚀 Cursor AI Rules - 性能缓存系统
 # 提升对话速度，降低token消耗
@@ -6,7 +10,7 @@
 set -e
 
 # 缓存配置
-CACHE_DIR=".cursorGrowth/cache"
+CACHE_DIR="$CURSOR_GROWTH/cache"
 CACHE_TTL=300  # 5分钟缓存有效期
 PERFORMANCE_LOG="$CACHE_DIR/performance.log"
 

@@ -327,10 +327,10 @@ enum ErrorCode {
 @master script core/env-perception.sh perception
 
 # 配置管理调用
-@master script config/config-manager.sh get .system.log_level
+@master script core/core/config/config-manager.sh get .system.log_level
 
 # 质量检查调用
-@master script quality/quality-manager.sh lint
+@master script core/quality-manager.sh lint
 ```
 
 ### 错误处理示例

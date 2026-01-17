@@ -30,7 +30,7 @@ cd your-project
 ./.cursor/core/env-perception.sh
 
 # 质量检查管理
-./.cursor/quality/quality-manager.sh
+./.cursor/core/quality-manager.sh
 ```
 
 ## 📋 验证安装

@@ -6,11 +6,8 @@ set -euo pipefail
 
 # 导入通用函数
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/common.sh"
-
-# 配置
-SCRIPT_VERSION="1.0.0"
-PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -80,9 +77,9 @@ check_growth_dir_usage() {
 check_mixed_paths() {
     local file="$1"
 
-    # 检查是否同时使用了 .cursor/ 和 .cursorGrowth/
-    if grep -q "\.cursor/" "$file" && grep -q "\.cursorGrowth/" "$file"; then
-        log_violation "$file" "N/A" "MIXED_PATHS" "同时使用 .cursor/ 和 .cursorGrowth/ 路径，可能存在配置混乱"
+    # 检查是否同时使用了 .cursor/ 和 $CURSOR_GROWTH/
+    if grep -q "\.cursor/" "$file" && grep -q "\$CURSOR_GROWTH/" "$file"; then
+        log_violation "$file" "N/A" "MIXED_PATHS" "同时使用 .cursor/ 和 $CURSOR_GROWTH/ 路径，可能存在配置混乱"
         ((mixed_path_violations++))
         return 1
     fi
@@ -117,10 +114,10 @@ check_rule_file() {
     local has_violations=false
 
     # 规则文件通常不应该生成运行时数据，但要检查是否有硬编码路径
-    if grep -n "\.cursor/.*>\|\.cursorGrowth/.*>" "$file" 2>/dev/null; then
+    if grep -n "\.cursor/.*>\|\$CURSOR_GROWTH/.*>" "$file" 2>/dev/null; then
         while IFS=: read -r line content; do
             log_violation "$file" "$line" "RULE_DATA_WRITE" "规则文件中包含数据写入操作，可能不合适"
-        done < <(grep -n "\.cursor/.*>\|\.cursorGrowth/.*>" "$file")
+        done < <(grep -n "\.cursor/.*>\|\$CURSOR_GROWTH/.*>" "$file")
         has_violations=true
     fi
 
@@ -155,9 +152,9 @@ scan_project() {
 # 生成报告
 generate_report() {
     local timestamp=$(date '+%Y%m%d_%H%M%S')
-    local report_file="$PROJECT_ROOT/.cursorGrowth/compliance_reports/architecture_check_$timestamp.json"
+    local report_file="$CURSOR_GROWTH/compliance_reports/architecture_check_$timestamp.json"
 
-    mkdir -p "$PROJECT_ROOT/.cursorGrowth/compliance_reports"
+    mkdir -p "$CURSOR_GROWTH/compliance_reports"
 
     cat > "$report_file" << EOF
 {

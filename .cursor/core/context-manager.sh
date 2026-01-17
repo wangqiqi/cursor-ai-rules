@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 🎯 Cursor AI Rules - 智能上下文管理系统
 # 实现分层加载、相关性评分、预测性预加载等高级上下文管理技术
@@ -12,7 +16,7 @@ source "$SCRIPT_DIR/token-compression.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 上下文配置
-CONTEXT_CACHE_DIR=".cursorGrowth/context"
+CONTEXT_CACHE_DIR="$CURSOR_GROWTH/context"
 CONTEXT_DEPENDENCY_FILE="$CONTEXT_CACHE_DIR/dependencies.json"
 CONTEXT_RELEVANCE_FILE="$CONTEXT_CACHE_DIR/relevance.json"
 CONTEXT_PREDICTION_FILE="$CONTEXT_CACHE_DIR/predictions.json"
@@ -31,10 +35,10 @@ init_context_manager() {
 
     # 创建必要的目录结构
     mkdir -p "$CONTEXT_CACHE_DIR"
-    mkdir -p ".cursorGrowth/context"
-    mkdir -p ".cursorGrowth/learning"
-    mkdir -p ".cursorGrowth/conversations"
-    mkdir -p ".cursorGrowth/personal"
+    mkdir -p "$CURSOR_GROWTH/context"
+    mkdir -p "$CURSOR_GROWTH/learning"
+    mkdir -p "$CURSOR_GROWTH/conversations"
+    mkdir -p "$CURSOR_GROWTH/personal"
 
     # 初始化上下文数据文件
     [[ ! -f "$CONTEXT_DEPENDENCY_FILE" ]] && echo "{}" > "$CONTEXT_DEPENDENCY_FILE"
@@ -42,8 +46,8 @@ init_context_manager() {
     [[ ! -f "$CONTEXT_PREDICTION_FILE" ]] && echo "{}" > "$CONTEXT_PREDICTION_FILE"
 
     # 初始化其他必要文件
-    [[ ! -f ".cursorGrowth/learning/patterns.json" ]] && echo "[]" > ".cursorGrowth/learning/patterns.json"
-    [[ ! -f ".cursorGrowth/personal/user_profile.json" ]] && echo "{}" > ".cursorGrowth/personal/user_profile.json"
+    [[ ! -f "$CURSOR_GROWTH/learning/patterns.json" ]] && echo "[]" > "$CURSOR_GROWTH/learning/patterns.json"
+    [[ ! -f "$CURSOR_GROWTH/personal/user_profile.json" ]] && echo "{}" > "$CURSOR_GROWTH/personal/user_profile.json"
 
     smart_echo "智能上下文管理系统初始化完成" "success"
 }

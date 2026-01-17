@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 # 📊 规则使用追踪Hook - 监控AI规则系统使用情况
 # 用于优化和改进Cursor AI Rules系统
 
@@ -13,7 +17,7 @@ if [[ -z "$response_text" ]]; then
 fi
 
 # 创建日志目录（如果不存在）
-mkdir -p .cursorGrowth/logs
+mkdir -p "$CURSOR_GROWTH/logs
 
 # 定义规则列表（基于项目中的规则文件）
 declare -a rules_list=(
@@ -50,11 +54,11 @@ rules_used=${rules_used%,}
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 if [[ -n "$rules_used" ]]; then
     log_entry="$timestamp|$conversation_id|USED:$rules_used"
-    echo "$log_entry" >> .cursorGrowth/logs/rule-usage.log
-    echo "📋 检测到规则使用: $rules_used" >> .cursorGrowth/logs/rule-usage.log
+    echo "$log_entry" >> $CURSOR_GROWTH/logs/rule-usage.log
+    echo "📋 检测到规则使用: $rules_used" >> $CURSOR_GROWTH/logs/rule-usage.log
 else
     log_entry="$timestamp|$conversation_id|NO_RULES_DETECTED"
-    echo "$log_entry" >> .cursorGrowth/logs/rule-usage.log
+    echo "$log_entry" >> $CURSOR_GROWTH/logs/rule-usage.log
 fi
 
 # 分析响应质量指标
@@ -72,40 +76,40 @@ tables=$(echo "$response_text" | grep -c "^|")
 
 # 记录质量指标
 quality_metrics="$timestamp|$conversation_id|length:$response_length|words:$word_count|code_blocks:$code_blocks|lists:$lists|tables:$tables"
-echo "$quality_metrics" >> .cursorGrowth/logs/response-quality.log"
+echo "$quality_metrics" >> $CURSOR_GROWTH/logs/response-quality.log"
 
 # 分析规则应用模式
 if [[ "$response_text" == *"constitution"* ]] && [[ "$response_text" == *"安全"* ]]; then
-    echo "$timestamp|$conversation_id|PATTERN:security_focus" >> .cursorGrowth/logs/rule-patterns.log
+    echo "$timestamp|$conversation_id|PATTERN:security_focus" >> $CURSOR_GROWTH/logs/rule-patterns.log
 fi
 
 if [[ "$response_text" == *"system_info"* ]] && [[ "$response_text" == *"时间"* ]]; then
-    echo "$timestamp|$conversation_id|PATTERN:context_awareness" >> .cursorGrowth/logs/rule-patterns.log
+    echo "$timestamp|$conversation_id|PATTERN:context_awareness" >> $CURSOR_GROWTH/logs/rule-patterns.log
 fi
 
 if [[ "$response_text" == *"generator"* ]] && [[ "$response_text" == *"配置"* ]]; then
-    echo "$timestamp|$conversation_id|PATTERN:configuration_generation" >> .cursorGrowth/logs/rule-patterns.log
+    echo "$timestamp|$conversation_id|PATTERN:configuration_generation" >> $CURSOR_GROWTH/logs/rule-patterns.log
 fi
 
 # 生成使用统计摘要（每100次响应更新一次）
-usage_count=$(wc -l < .cursorGrowth/logs/rule-usage.log)
+usage_count=$(wc -l < $CURSOR_GROWTH/logs/rule-usage.log)
 if [[ $((usage_count % 100)) -eq 0 ]]; then
-    echo "📈 生成使用统计摘要..." >> .cursorGrowth/logs/rule-usage.log
+    echo "📈 生成使用统计摘要..." >> $CURSOR_GROWTH/logs/rule-usage.log
 
     # 计算最常用的规则
-    echo "# 规则使用统计 (最近$usage_count次响应)" > .cursorGrowth/logs/usage-summary.md
-    echo "" >> .cursorGrowth/logs/usage-summary.md
-    echo "| 规则 | 使用次数 | 使用率 |" >> .cursorGrowth/logs/usage-summary.md
-    echo "|------|--------|-------|" >> .cursorGrowth/logs/usage-summary.md
+    echo "# 规则使用统计 (最近$usage_count次响应)" > $CURSOR_GROWTH/logs/usage-summary.md
+    echo "" >> $CURSOR_GROWTH/logs/usage-summary.md
+    echo "| 规则 | 使用次数 | 使用率 |" >> $CURSOR_GROWTH/logs/usage-summary.md
+    echo "|------|--------|-------|" >> $CURSOR_GROWTH/logs/usage-summary.md
 
     for rule in "${rules_list[@]}"; do
-        count=$(grep -c "$rule" .cursorGrowth/logs/rule-usage.log)
+        count=$(grep -c "$rule" $CURSOR_GROWTH/logs/rule-usage.log)
         percentage=$((count * 100 / usage_count))
-        echo "| $rule | $count | ${percentage}% |" >> .cursorGrowth/logs/usage-summary.md
+        echo "| $rule | $count | ${percentage}% |" >> $CURSOR_GROWTH/logs/usage-summary.md
     done
 
-    echo "" >> .cursorGrowth/logs/usage-summary.md
-    echo "*统计生成时间: $(date)*" >> .cursorGrowth/logs/usage-summary.md
+    echo "" >> $CURSOR_GROWTH/logs/usage-summary.md
+    echo "*统计生成时间: $(date)*" >> $CURSOR_GROWTH/logs/usage-summary.md
 fi
 
 exit 0

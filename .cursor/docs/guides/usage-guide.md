@@ -100,13 +100,13 @@ ls -la .cursor/core/init.sh
 #### 配置冲突
 ```bash
 # 验证配置一致性
-./.cursor/config/config-manager.sh validate
+./.cursor/core/core/config/config-manager.sh validate
 
 # 查看配置状态
-./.cursor/config/config-manager.sh status
+./.cursor/core/core/config/config-manager.sh status
 
 # 重置配置
-./.cursor/config/config-manager.sh init
+./.cursor/core/core/config/config-manager.sh init
 ```
 
 #### 性能问题
@@ -162,10 +162,10 @@ export CURSOR_LOG_LEVEL=debug
 #### 隔离测试
 ```bash
 # 创建测试环境
-./.cursor/debug/isolation-debugger.sh create-test-env
+./.cursor/core/isolation-debugger.sh create-test-env
 
 # 运行隔离测试
-./.cursor/debug/isolation-debugger.sh run-tests
+./.cursor/core/core/debug/isolation-debugger.sh run-tests
 ```
 
 ## 📚 相关资源

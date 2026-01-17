@@ -7,6 +7,7 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
@@ -40,11 +41,11 @@ init_compression() {
     smart_echo "初始化Token压缩系统..." "processing"
 
     # 创建压缩缓存目录
-    mkdir -p ".cursorGrowth/compression"
+    mkdir -p "$CURSOR_GROWTH/compression"
 
     # 初始化数据模式文件
     [[ ! -f "$SCRIPT_DIR/patterns.json" ]] && echo "{}" > "$SCRIPT_DIR/patterns.json"
-    [[ ! -f ".cursorGrowth/compression_strategies.json" ]] && echo "{}" > ".cursorGrowth/compression_strategies.json"
+    [[ ! -f "$CURSOR_GROWTH/compression_strategies.json" ]] && echo "{}" > "$CURSOR_GROWTH/compression_strategies.json"
 
     # 初始化流式输出缓冲
     STREAM_BUFFER=""

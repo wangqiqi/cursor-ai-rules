@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 # 🧪 Hooks系统测试脚本
 # 用于验证所有hooks是否正常工作
 
@@ -38,9 +42,9 @@ echo
 
 # 测试3: 检查日志目录
 echo "📊 测试3: 检查日志目录..."
-if [[ -d ".cursorGrowth/logs" ]]; then
+if [[ -d "$CURSOR_GROWTH/logs" ]]; then
     echo "✅ 日志目录存在"
-    log_files=$(ls .cursorGrowth/logs/*.log 2>/dev/null | wc -l)
+    log_files=$(ls $CURSOR_GROWTH/logs/*.log 2>/dev/null | wc -l)
     echo "   现有日志文件: $log_files"
 else
     echo "⚠️  日志目录不存在（将在首次使用时自动创建）"
@@ -64,5 +68,5 @@ echo "🎉 Hooks系统测试完成！"
 echo
 echo "💡 使用提示:"
 echo "   - 重启Cursor以使hooks生效"
-echo "   - 查看 .cursorGrowth/logs/ 目录了解hooks活动"
+echo "   - 查看 $CURSOR_GROWTH/logs/ 目录了解hooks活动"
 echo "   - 如有问题，请检查脚本执行权限"

@@ -17,9 +17,11 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
 DEBUG_DIR="$PROJECT_ROOT/.cursor/debug"
-ANALYSIS_DIR="$PROJECT_ROOT/.cursorGrowth/debug/analysis"
+ANALYSIS_DIR="$PROJECT_ROOT/$CURSOR_GROWTH/debug/analysis"
 
 # 颜色定义
 RED='\033[0;31m'

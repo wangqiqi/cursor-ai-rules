@@ -7,13 +7,15 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/context-manager.sh"
 source "$SCRIPT_DIR/token-compression.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 上下文池配置
-CONTEXT_POOL_DIR=".cursorGrowth/context_pool"
+CONTEXT_POOL_DIR="$CURSOR_GROWTH/context_pool"
 CONTEXT_POOL_INDEX="$CONTEXT_POOL_DIR/pool_index.json"
 CONTEXT_POOL_STATS="$CONTEXT_POOL_DIR/pool_stats.json"
 CONTEXT_POOL_SHARED="$CONTEXT_POOL_DIR/shared_contexts"

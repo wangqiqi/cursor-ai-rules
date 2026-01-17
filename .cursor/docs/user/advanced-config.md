@@ -32,19 +32,19 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 
 ```bash
 # 查看配置状态
-./.cursor/config/config-manager.sh status
+./.cursor/core/core/config/config-manager.sh status
 
 # 获取配置值
-./.cursor/config/config-manager.sh get .system.log_level
+./.cursor/core/core/config/config-manager.sh get .system.log_level
 
 # 设置配置值
-./.cursor/config/config-manager.sh set .features.automation.enabled true
+./.cursor/core/core/config/config-manager.sh set .features.automation.enabled true
 
 # 验证配置一致性
-./.cursor/config/config-manager.sh validate
+./.cursor/core/core/config/config-manager.sh validate
 
 # 生成配置报告
-./.cursor/config/config-manager.sh report
+./.cursor/core/core/config/config-manager.sh report
 ```
 
 ## 📋 自定义规则开发
@@ -139,7 +139,7 @@ alwaysApply: false
 ./.cursor/core/performance-monitor.sh memory
 
 # 调整内存限制
-./.cursor/config/config-manager.sh set .performance.resource_limits.memory_mb 512
+./.cursor/core/core/config/config-manager.sh set .performance.resource_limits.memory_mb 512
 ```
 
 ## 🔒 安全配置

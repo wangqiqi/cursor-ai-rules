@@ -91,10 +91,10 @@ cd /path/to/your-project
 如需自定义：
 ```bash
 # 查看当前配置
-./.cursor/config/config-manager.sh status
+./.cursor/core/core/config/config-manager.sh status
 
 # 修改配置
-./.cursor/config/config-manager.sh set .system.log_level debug
+./.cursor/core/core/config/config-manager.sh set .system.log_level debug
 ```
 
 ## 🚨 常见问题
@@ -120,7 +120,7 @@ ls -la .cursor/init.sh
 ### 功能不工作
 ```bash
 # 检查配置
-./.cursor/config/config-manager.sh validate
+./.cursor/core/core/config/config-manager.sh validate
 
 # 查看日志（如果有）
 tail -f ~/.cursor/logs/*.log

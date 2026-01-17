@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 # 🚨 安全审计Hook - 阻止危险命令执行
 # 基于Cursor AI Rules的安全协作原则
 
@@ -54,9 +58,9 @@ for pattern in "${dangerous_patterns[@]}"; do
         echo "🚫 检测到危险命令，已阻止: $pattern" >&2
 
     # 记录安全事件
-    mkdir -p .cursorGrowth/logs
+    mkdir -p "$CURSOR_GROWTH/logs
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] SECURITY_BLOCK: $command (pattern: $pattern)" >> .cursorGrowth/logs/security-events.log
+    echo "[$timestamp] SECURITY_BLOCK: $command (pattern: $pattern)" >> $CURSOR_GROWTH/logs/security-events.log
 
         cat << EOF
 {
@@ -118,9 +122,9 @@ EOF
 fi
 
 # 记录审计日志
-mkdir -p .cursorGrowth/logs
+mkdir -p "$CURSOR_GROWTH/logs
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-echo "[$timestamp] ALLOWED: $command (cwd: $cwd)" >> .cursorGrowth/logs/command-audit.log
+echo "[$timestamp] ALLOWED: $command (cwd: $cwd)" >> $CURSOR_GROWTH/logs/command-audit.log
 
 # 允许执行
 cat << EOF

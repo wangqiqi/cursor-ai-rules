@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🎯 Master命令初始化Hook - 自动初始化.cursorGrowth目录
+# 🎯 Master命令初始化Hook - 自动初始化$CURSOR_GROWTH目录
 # 当用户使用/master命令时自动触发
 
 # 读取输入参数
@@ -12,10 +12,11 @@ if [[ "$command_text" =~ "/master" ]] || [[ "$prompt_text" =~ "/master" ]] || [[
 
     # 获取项目根目录
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-    GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+# 加载统一路径配置
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+    GROWTH_DIR="$CURSOR_GROWTH"
 
-    # 检查.cursorGrowth目录是否存在
+    # 检查$CURSOR_GROWTH目录是否存在
     if [ ! -d "$GROWTH_DIR" ]; then
         echo "🌱 检测到首次使用Master命令，正在初始化生长目录..." >&2
 

@@ -1,4 +1,8 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
 
 # 🎯 Cursor AI Rules - 精简输出系统
 # 减少token消耗，提升响应速度
@@ -194,7 +198,7 @@ toggle_compact_mode() {
 # 自动模式选择（基于用户偏好或系统负载）
 auto_select_mode() {
     # 检查用户偏好
-    local user_pref_file=".cursorGrowth/personal/user_profile.json"
+    local user_pref_file="$CURSOR_GROWTH/personal/user_profile.json"
     if [ -f "$user_pref_file" ]; then
         local pref=$(jq -r '.preferences.output_mode // "detailed"' "$user_pref_file" 2>/dev/null || echo "detailed")
         case "$pref" in

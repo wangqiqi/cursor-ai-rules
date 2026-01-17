@@ -52,13 +52,13 @@
 ### 自动化检查
 ```bash
 # 代码质量检查
-./.cursor/quality/quality-manager.sh lint
+./.cursor/core/quality-manager.sh lint
 
 # 格式化代码
-./.cursor/quality/quality-manager.sh format
+./.cursor/core/quality-manager.sh format
 
 # 安全审计
-./.cursor/quality/quality-manager.sh audit
+./.cursor/core/quality-manager.sh audit
 ```
 
 ### 质量工具集成

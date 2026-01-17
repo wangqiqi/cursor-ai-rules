@@ -1,4 +1,9 @@
 #!/bin/bash
+# 加载统一路径配置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+GROWTH_DIR="$CURSOR_GROWTH"
+
 
 # 🎯 Skills发现和加载器 - 扁平化版本
 
@@ -7,7 +12,6 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 
 # 获取正确的路径
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 
 # 检查扁平化目录结构
 echo "📁 技能目录: $SCRIPT_DIR"

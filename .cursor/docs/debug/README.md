@@ -24,12 +24,12 @@
 
 ```bash
 # 1. 确保脚本有执行权限
-chmod +x .cursor/debug/isolation-debugger.sh
-chmod +x .cursor/debug/pattern-analyzer.sh
+chmod +x .cursor/core/core/debug/isolation-debugger.sh
+chmod +x .cursor/core/core/debug/pattern-analyzer.sh
 
 # 2. 查看帮助信息
-.cursor/debug/isolation-debugger.sh help
-.cursor/debug/pattern-analyzer.sh help
+.cursor/core/core/debug/isolation-debugger.sh help
+.cursor/core/core/debug/pattern-analyzer.sh help
 ```
 
 ### 基本使用流程
@@ -54,28 +54,28 @@ chmod +x .cursor/debug/pattern-analyzer.sh
 #### 自动隔离调试
 ```bash
 # 隔离可疑的JavaScript文件
-.cursor/debug/isolation-debugger.sh isolate src/utils.js
+.cursor/core/core/debug/isolation-debugger.sh isolate src/utils.js
 
 # 指定隔离深度和测试命令
-.cursor/debug/isolation-debugger.sh isolate src/utils.js --depth 3 --test-cmd "npm run test:unit"
+.cursor/core/core/debug/isolation-debugger.sh isolate src/utils.js --depth 3 --test-cmd "npm run test:unit"
 
 # 使用条件编译隔离
-.cursor/debug/isolation-debugger.sh isolate config.js --type conditional
+.cursor/core/core/debug/isolation-debugger.sh isolate config.js --type conditional
 ```
 
 #### 恢复隔离的文件
 ```bash
 # 恢复最新的备份
-.cursor/debug/isolation-debugger.sh restore src/utils.js
+.cursor/core/core/debug/isolation-debugger.sh restore src/utils.js
 
 # 恢复指定时间点的备份
-.cursor/debug/isolation-debugger.sh restore src/utils.js --backup 20260116_143000
+.cursor/core/core/debug/isolation-debugger.sh restore src/utils.js --backup 20260116_143000
 ```
 
 #### 分析文件结构
 ```bash
 # 查看文件可隔离的代码块
-.cursor/debug/isolation-debugger.sh analyze src/complex-module.js
+.cursor/core/core/debug/isolation-debugger.sh analyze src/complex-module.js
 ```
 
 ### 2. 同类项合并法详解
@@ -83,53 +83,53 @@ chmod +x .cursor/debug/pattern-analyzer.sh
 #### 错误模式分析
 ```bash
 # 分析当前项目的错误模式
-.cursor/debug/pattern-analyzer.sh analyze
+.cursor/core/core/debug/pattern-analyzer.sh analyze
 
 # 分析特定目录
-.cursor/debug/pattern-analyzer.sh analyze --source src/
+.cursor/core/core/debug/pattern-analyzer.sh analyze --source src/
 
 # 保存分析结果
-.cursor/debug/pattern-analyzer.sh analyze --output error_analysis.json
+.cursor/core/core/debug/pattern-analyzer.sh analyze --output error_analysis.json
 ```
 
 #### 批量修复相似错误
 ```bash
 # 修复调试日志 (安全操作)
-.cursor/debug/pattern-analyzer.sh batch-fix "console.log"
+.cursor/core/core/debug/pattern-analyzer.sh batch-fix "console.log"
 
 # 修复TODO注释
-.cursor/debug/pattern-analyzer.sh batch-fix "TODO"
+.cursor/core/core/debug/pattern-analyzer.sh batch-fix "TODO"
 
 # 预览修复效果 (不实际修改)
-.cursor/debug/pattern-analyzer.sh batch-fix "console.log" --dry-run
+.cursor/core/core/debug/pattern-analyzer.sh batch-fix "console.log" --dry-run
 
 # 限制修复文件数量
-.cursor/debug/pattern-analyzer.sh batch-fix "undefined" --max-files 5
+.cursor/core/core/debug/pattern-analyzer.sh batch-fix "undefined" --max-files 5
 ```
 
 #### 生成分析报告
 ```bash
 # 生成HTML格式的详细报告
-.cursor/debug/pattern-analyzer.sh report error_analysis.json --format html
+.cursor/core/core/debug/pattern-analyzer.sh report error_analysis.json --format html
 
 # 生成文本格式的简洁报告
-.cursor/debug/pattern-analyzer.sh report error_analysis.json --format text
+.cursor/core/core/debug/pattern-analyzer.sh report error_analysis.json --format text
 ```
 
 #### 验证修复效果
 ```bash
 # 验证修复的实际效果
-.cursor/debug/pattern-analyzer.sh validate-fix "console.log"
+.cursor/core/core/debug/pattern-analyzer.sh validate-fix "console.log"
 
 # 使用自定义测试命令
-.cursor/debug/pattern-analyzer.sh validate-fix "undefined" --test-cmd "jest --coverage"
+.cursor/core/core/debug/pattern-analyzer.sh validate-fix "undefined" --test-cmd "jest --coverage"
 ```
 
 ## 🔧 高级配置
 
 ### 调试系统配置
 
-编辑 `.cursor/debug/debug-config.json` 来调整系统行为：
+编辑 `.cursor/config/debug-config.json` 来调整系统行为：
 
 ```json
 {
@@ -246,7 +246,7 @@ graph TD
 #### 备份文件过多
 ```bash
 # 清理7天前的备份
-.cursor/debug/isolation-debugger.sh cleanup --retention 7
+.cursor/core/core/debug/isolation-debugger.sh cleanup --retention 7
 ```
 
 #### 语法验证失败
@@ -273,7 +273,7 @@ ls -la [target_file]
 启用详细日志来诊断问题：
 ```bash
 # 修改配置启用调试日志
-# 编辑 .cursor/debug/debug-config.json
+# 编辑 .cursor/config/debug-config.json
 {
   "reporting": {
     "log_level": "debug"
@@ -309,7 +309,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Debug Analysis
-        run: .cursor/debug/pattern-analyzer.sh analyze --output debug-report.json
+        run: .cursor/core/core/debug/pattern-analyzer.sh analyze --output debug-report.json
       - name: Upload Debug Report
         uses: actions/upload-artifact@v3
         with:
@@ -328,12 +328,12 @@ jobs:
     {
       "name": "isolate-debug",
       "description": "隔离调试当前文件",
-      "command": ".cursor/debug/isolation-debugger.sh isolate $FILE"
+      "command": ".cursor/core/core/debug/isolation-debugger.sh isolate $FILE"
     },
     {
       "name": "pattern-analyze",
       "description": "分析错误模式",
-      "command": ".cursor/debug/pattern-analyzer.sh analyze"
+      "command": ".cursor/core/core/debug/pattern-analyzer.sh analyze"
     }
   ]
 }
