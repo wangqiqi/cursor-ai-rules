@@ -967,7 +967,7 @@ get_system_health() {
         fi
     done
 
-    local health_score=$(( idle_agents * 100 / agent_count ))
+    local health_score=$(( agent_count > 0 ? idle_agents * 100 / agent_count : 0 ))
 
     cat <<EOF
 {
