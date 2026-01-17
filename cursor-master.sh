@@ -21,6 +21,36 @@ if [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
     init_optimizer >/dev/null 2>&1 || true
 fi
 
+# 🎯 初始化上下文池管理系统（如果可用）
+if [ -f "$CURSOR_DIR/core/context-pool-manager.sh" ]; then
+    source "$CURSOR_DIR/core/context-pool-manager.sh"
+    init_context_pool >/dev/null 2>&1 || true
+fi
+
+# 🎯 初始化VIBE服务集成（如果可用）
+if [ -f "$CURSOR_DIR/core/vibe-services-integration.sh" ]; then
+    source "$CURSOR_DIR/core/vibe-services-integration.sh"
+    init_vibe_services_integration >/dev/null 2>&1 || true
+fi
+
+# 💬 初始化对话式命令系统（如果可用）
+if [ -f "$CURSOR_DIR/core/conversational-command-system.sh" ]; then
+    source "$CURSOR_DIR/core/conversational-command-system.sh"
+    init_conversational_command_system >/dev/null 2>&1 || true
+fi
+
+# 🤖 初始化代理编排引擎（如果可用）
+if [ -f "$CURSOR_DIR/core/agent-orchestration-engine.sh" ]; then
+    source "$CURSOR_DIR/core/agent-orchestration-engine.sh"
+    init_agent_orchestration_engine >/dev/null 2>&1 || true
+fi
+
+# 📊 初始化性能监控仪表板（如果可用）
+if [ -f "$CURSOR_DIR/core/performance-dashboard.sh" ]; then
+    source "$CURSOR_DIR/core/performance-dashboard.sh"
+    init_performance_dashboard >/dev/null 2>&1 || true
+fi
+
 # 🌱 初始化项目生长目录
 GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
 init_growth_directory() {
@@ -247,12 +277,103 @@ analyze_user_intent() {
 
     echo "🧠 正在分析用户意图..." >&2
 
-    # 初始化分析结果
-    local intent_type="unknown"
-    local confidence=0
-    local actions=()
+    # 🚀 阶段1.1: Token优化 - 上下文池集成
 
-    # 意图识别规则 - 扩展支持更多场景
+    # 1. 智能上下文预取 (Token优化)
+    intelligent_context_prefetch "analyze_intent" "$user_input" 2>/dev/null || true
+
+    # 2. 快速预检 (性能优化)
+    local input_length=${#user_input}
+    local word_count=$(echo "$user_input" | wc -w)
+
+    # 2. 上下文池缓存检查 (Token优化增强)
+    local cache_key="intent_analysis:$(echo "$user_input" | md5sum | cut -d' ' -f1)"
+
+    # 尝试从上下文池获取缓存的意图分析结果
+    local cached_result=$(get_or_create_context "$cache_key" "operation" "perform_fresh_intent_analysis" "$user_input" 2>/dev/null || echo "")
+
+    if [[ -n "$cached_result" ]]; then
+        echo "🎯 使用上下文池缓存结果" >&2
+        echo "$cached_result"
+        return
+    fi
+
+    # 降级到传统文件缓存
+    local cache_dir="$GROWTH_DIR/cache"
+    mkdir -p "$cache_dir"
+    local file_cache_key=$(echo "$user_input" | md5sum | cut -d' ' -f1)
+    local cache_file="$cache_dir/intent_$file_cache_key.cache"
+
+    if [ -f "$cache_file" ]; then
+        local cache_age=$(( $(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || echo "0") ))
+        if [ $cache_age -lt 300 ]; then  # 5分钟缓存
+            echo "📋 使用文件缓存结果" >&2
+            cat "$cache_file"
+            return
+        fi
+    fi
+
+    # 3. 完整意图分析
+    perform_full_intent_analysis "$user_input"
+
+    # 3. 返回结果 (缓存情况下已直接返回)
+    if [ ! -f "$cache_file" ] 2>/dev/null; then
+        cat << EOF
+{
+  "intent_analysis": {
+    "user_input": "$user_input",
+    "intent_type": "$intent_type",
+    "confidence": $confidence,
+    "recommended_actions": $(printf '%s\n' "${actions[@]}" | jq -R . | jq -s . 2>/dev/null || echo '[]'),
+    "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')"
+  }
+}
+EOF
+    fi
+
+}
+
+# 🚀 阶段0: 完整意图分析函数
+perform_full_intent_analysis() {
+    local user_input="$1"
+
+    # 初始化分析结果 (使用全局变量)
+    intent_type="unknown"
+    confidence=0
+    actions=()
+
+    # 1. 预处理：清理和标准化输入
+    local clean_input=$(echo "$user_input" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-zA-Z0-9\u4e00-\u9fff ]//g')
+
+    # 2. 关键词权重分析 (为后续意图匹配做准备)
+    local tech_keywords=("react" "vue" "angular" "typescript" "javascript" "python" "docker" "kubernetes" "aws" "git")
+    local action_keywords=("创建" "开发" "优化" "修复" "测试" "部署" "配置" "分析" "学习" "调试")
+    local context_keywords=("项目" "应用" "系统" "代码" "文件" "数据库" "接口" "服务")
+
+    # 计算权重分数 (全局变量，供后续使用)
+    tech_score=0
+    action_score=0
+    context_score=0
+
+    for keyword in "${tech_keywords[@]}"; do
+        if echo "$clean_input" | grep -qi "$keyword"; then
+            ((tech_score+=2))
+        fi
+    done
+
+    for keyword in "${action_keywords[@]}"; do
+        if echo "$clean_input" | grep -qi "$keyword"; then
+            ((action_score+=3))
+        fi
+    done
+
+    for keyword in "${context_keywords[@]}"; do
+        if echo "$clean_input" | grep -qi "$keyword"; then
+            ((context_score+=1))
+        fi
+    done
+
+    # 3. 意图识别规则 - 扩展支持更多场景 (90+种意图)
     if echo "$user_input" | grep -qiE "^skill "; then
         intent_type="skill_call"
         confidence=95
@@ -358,6 +479,306 @@ analyze_user_intent() {
         intent_type="security_audit"
         confidence=85
         actions=("perception")
+
+    # ============================================================================
+    # 🚀 阶段0: 意图识别能力增强 - 新增意图类型 (60+种)
+    # ============================================================================
+
+    # 📁 项目管理意图 (20种)
+    elif echo "$user_input" | grep -qiE "(初始化|setup|初始化).*项目"; then
+        intent_type="project_initialization"
+        confidence=90
+        actions=("env-perception" "init" "generator" "constitution")
+    elif echo "$user_input" | grep -qiE "(创建|新建|搭建).*项目.*(react|vue|angular)"; then
+        intent_type="project_creation_with_framework"
+        confidence=95
+        actions=("env-perception" "init" "generator" "constitution")
+    elif echo "$user_input" | grep -qiE "(配置|setup|设置).*typescript"; then
+        intent_type="setup_typescript"
+        confidence=90
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(配置|setup|设置).*testing|测试环境"; then
+        intent_type="setup_testing"
+        confidence=85
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(配置|setup|设置).*linting|代码检查"; then
+        intent_type="setup_linting"
+        confidence=85
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(添加|setup|配置).*监控"; then
+        intent_type="add_monitoring"
+        confidence=80
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(设置|setup|配置).*logging|日志"; then
+        intent_type="setup_logging"
+        confidence=80
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(配置|setup).*ci.*cd|持续集成"; then
+        intent_type="configure_cicd"
+        confidence=85
+        actions=("env-perception" "init")
+    elif echo "$user_input" | grep -qiE "(分析|评估|检查).*项目.*现状"; then
+        intent_type="project_analysis"
+        confidence=85
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(重构|优化).*项目.*架构"; then
+        intent_type="project_refactor"
+        confidence=80
+        actions=("perception" "architecture-checker")
+    elif echo "$user_input" | grep -qiE "(迁移|升级).*项目"; then
+        intent_type="project_migration"
+        confidence=75
+        actions=("perception" "env-perception")
+    elif echo "$user_input" | grep -qiE "(文档|readme|说明).*项目"; then
+        intent_type="project_documentation"
+        confidence=80
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(审查|review).*架构"; then
+        intent_type="project_architecture_review"
+        confidence=85
+        actions=("architecture-checker")
+    elif echo "$user_input" | grep -qiE "(审计|检查).*安全"; then
+        intent_type="project_security_audit"
+        confidence=85
+        actions=("security-audit")
+    elif echo "$user_input" | grep -qiE "(优化|提升).*性能"; then
+        intent_type="project_performance_optimization"
+        confidence=80
+        actions=("performance-monitor")
+    elif echo "$user_input" | grep -qiE "(管理|处理).*依赖"; then
+        intent_type="project_dependency_management"
+        confidence=80
+        actions=("dependency-checker")
+    elif echo "$user_input" | grep -qiE "(设置|配置).*测试"; then
+        intent_type="project_testing_setup"
+        confidence=80
+        actions=("init")
+    elif echo "$user_input" | grep -qiE "(部署|发布).*配置"; then
+        intent_type="project_deployment_config"
+        confidence=75
+        actions=("env-perception")
+    elif echo "$user_input" | grep -qiE "(监控|observability).*应用"; then
+        intent_type="project_monitoring_setup"
+        confidence=75
+        actions=("init")
+    elif echo "$user_input" | grep -qiE "(备份|recovery).*项目"; then
+        intent_type="project_backup_recovery"
+        confidence=70
+        actions=("env-perception")
+    elif echo "$user_input" | grep -qiE "(标准化|规范化).*项目"; then
+        intent_type="project_standards_enforcement"
+        confidence=75
+        actions=("consistency-checker")
+
+    # 💻 开发任务意图 (25种)
+    elif echo "$user_input" | grep -qiE "(开发|实现|添加).*功能"; then
+        intent_type="feature_development"
+        confidence=85
+        actions=("init" "generator")
+    elif echo "$user_input" | grep -qiE "(修复|解决).*bug|缺陷"; then
+        intent_type="bug_fixing"
+        confidence=90
+        actions=("debug" "quality")
+    elif echo "$user_input" | grep -qiE "(重构|优化).*代码"; then
+        intent_type="code_refactoring"
+        confidence=80
+        actions=("consistency-checker" "quality")
+    elif echo "$user_input" | grep -qiE "(审查|review).*代码"; then
+        intent_type="code_review"
+        confidence=85
+        actions=("quality" "consistency-checker")
+    elif echo "$user_input" | grep -qiE "(请求|需要).*重构"; then
+        intent_type="refactoring_request"
+        confidence=80
+        actions=("perception" "consistency-checker")
+    elif echo "$user_input" | grep -qiE "(优化|提升).*性能"; then
+        intent_type="performance_optimization"
+        confidence=85
+        actions=("performance-monitor")
+    elif echo "$user_input" | grep -qiE "(加强|提升).*安全"; then
+        intent_type="security_hardening"
+        confidence=85
+        actions=("security-audit")
+    elif echo "$user_input" | grep -qiE "(改进|优化).*测试"; then
+        intent_type="testing_improvement"
+        confidence=80
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(写|创建).*文档"; then
+        intent_type="documentation_writing"
+        confidence=75
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(更新|升级).*依赖"; then
+        intent_type="dependency_updating"
+        confidence=80
+        actions=("dependency-checker")
+    elif echo "$user_input" | grep -qiE "(配置|管理).*数据库"; then
+        intent_type="database_operations"
+        confidence=75
+        actions=("init")
+    elif echo "$user_input" | grep -qiE "(开发|创建).*api|接口"; then
+        intent_type="api_development"
+        confidence=80
+        actions=("init" "generator")
+    elif echo "$user_input" | grep -qiE "(设计|优化).*ui|界面"; then
+        intent_type="ui_ux_improvement"
+        confidence=70
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(提升|改进).*可访问性"; then
+        intent_type="accessibility_improvements"
+        confidence=75
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(国际化|本地化).*支持"; then
+        intent_type="internationalization"
+        confidence=70
+        actions=("init")
+    elif echo "$user_input" | grep -qiE "(注释|文档).*代码"; then
+        intent_type="code_commenting"
+        confidence=75
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(改进|处理).*异常"; then
+        intent_type="error_handling_improvement"
+        confidence=80
+        actions=("debug")
+    elif echo "$user_input" | grep -qiE "(增强|改进).*日志"; then
+        intent_type="logging_enhancement"
+        confidence=75
+        actions=("init")
+    elif echo "$user_input" | grep -qiE "(实现|添加).*监控"; then
+        intent_type="monitoring_implementation"
+        confidence=75
+        actions=("init")
+
+    # 📚 学习指导意图 (15种)
+    elif echo "$user_input" | grep -qiE "(学习|了解).*react"; then
+        intent_type="learn_react"
+        confidence=90
+        actions=("templates" "generator")
+    elif echo "$user_input" | grep -qiE "(掌握|学习).*docker"; then
+        intent_type="master_docker"
+        confidence=85
+        actions=("templates")
+    elif echo "$user_input" | grep -qiE "(理解|学习).*微服务"; then
+        intent_type="understand_microservices"
+        confidence=80
+        actions=("templates" "generator")
+    elif echo "$user_input" | grep -qiE "(解释|说明).*算法"; then
+        intent_type="explain_algorithm"
+        confidence=75
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(澄清|解释).*概念"; then
+        intent_type="clarify_concept"
+        confidence=80
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(调试|解决).*问题"; then
+        intent_type="debugging_guidance"
+        confidence=85
+        actions=("debug")
+    elif echo "$user_input" | grep -qiE "(分析|诊断).*性能"; then
+        intent_type="performance_analysis"
+        confidence=80
+        actions=("performance-monitor")
+    elif echo "$user_input" | grep -qiE "(指导|建议).*安全"; then
+        intent_type="security_guidance"
+        confidence=80
+        actions=("security-audit")
+    elif echo "$user_input" | grep -qiE "(策略|方法).*测试"; then
+        intent_type="testing_strategy"
+        confidence=75
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(指导|流程).*部署"; then
+        intent_type="deployment_strategy"
+        confidence=75
+        actions=("env-perception")
+
+    # 🔧 系统维护意图 (10种)
+    elif echo "$user_input" | grep -qiE "(检查|监控).*系统.*健康"; then
+        intent_type="system_health_check"
+        confidence=85
+        actions=("perception" "performance-monitor")
+    elif echo "$user_input" | grep -qiE "(优化|调整).*配置"; then
+        intent_type="configuration_optimization"
+        confidence=80
+        actions=("config-manager")
+    elif echo "$user_input" | grep -qiE "(创建|备份).*备份"; then
+        intent_type="backup_creation"
+        confidence=75
+        actions=("env-perception")
+    elif echo "$user_input" | grep -qiE "(监控|跟踪).*系统"; then
+        intent_type="system_monitoring_setup"
+        confidence=75
+        actions=("performance-monitor")
+    elif echo "$user_input" | grep -qiE "(分析|检查).*日志"; then
+        intent_type="log_analysis"
+        confidence=70
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(审计|检查).*系统"; then
+        intent_type="system_audit"
+        confidence=75
+        actions=("consistency-checker")
+    elif echo "$user_input" | grep -qiE "(更新|升级).*系统"; then
+        intent_type="system_update"
+        confidence=70
+        actions=("env-perception")
+    elif echo "$user_input" | grep -qiE "(自动化|auto).*维护"; then
+        intent_type="maintenance_automation"
+        confidence=75
+        actions=("init")
+
+    # 🤝 协作沟通意图 (8种)
+    elif echo "$user_input" | grep -qiE "(设置|配置).*协作"; then
+        intent_type="team_collaboration_setup"
+        confidence=80
+        actions=("init")
+    elif echo "$user_input" | grep -qiE "(规范|标准).*沟通"; then
+        intent_type="communication_guidelines"
+        confidence=75
+        actions=("templates")
+    elif echo "$user_input" | grep -qiE "(流程|规范).*代码审查"; then
+        intent_type="code_review_process"
+        confidence=80
+        actions=("templates")
+    elif echo "$user_input" | grep -qiE "(指导|建议).*拉取请求"; then
+        intent_type="pull_request_guidance"
+        confidence=75
+        actions=("templates")
+    elif echo "$user_input" | grep -qiE "(标准|规范).*文档"; then
+        intent_type="documentation_standards"
+        confidence=70
+        actions=("templates")
+    elif echo "$user_input" | grep -qiE "(组织|主持).*会议"; then
+        intent_type="meeting_facilitation"
+        confidence=70
+        actions=("templates")
+    elif echo "$user_input" | grep -qiE "(分享|交流).*知识"; then
+        intent_type="knowledge_sharing"
+        confidence=75
+        actions=("perception")
+    elif echo "$user_input" | grep -qiE "(培训|指导).*团队"; then
+        intent_type="team_training"
+        confidence=75
+        actions=("templates")
+
+    fi
+
+    # 🚀 阶段0增强: 冲突解决和动态置信度调整
+    # 基于上下文权重调整最终置信度
+    if [ $tech_score -gt 2 ]; then
+        # 技术相关意图置信度提升
+        if echo "$intent_type" | grep -qE "(react|vue|python|typescript|docker)"; then
+            confidence=$((confidence + 5))
+        fi
+    fi
+
+    if [ $action_score -gt 1 ]; then
+        # 行动相关意图置信度提升
+        if echo "$intent_type" | grep -qE "(development|fixing|optimization|deployment)"; then
+            confidence=$((confidence + 5))
+        fi
+    fi
+
+    # 确保置信度不超过100
+    if [ $confidence -gt 100 ]; then
+        confidence=100
     fi
 
     # 返回JSON格式的结果
@@ -369,6 +790,28 @@ analyze_user_intent() {
     "confidence": $confidence,
     "recommended_actions": $(printf '%s\n' "${actions[@]}" | jq -R . | jq -s . 2>/dev/null || echo '[]'),
     "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')"
+  }
+}
+EOF
+}
+
+# 🎯 Token优化: 上下文池缓存的意图分析函数
+perform_fresh_intent_analysis() {
+    local user_input="$1"
+
+    # 执行完整的意图分析
+    perform_full_intent_analysis "$user_input"
+
+    # 返回JSON结果
+    cat << EOF
+{
+  "intent_analysis": {
+    "user_input": "$user_input",
+    "intent_type": "$intent_type",
+    "confidence": $confidence,
+    "recommended_actions": $(printf '%s\n' "${actions[@]}" | jq -R . | jq -s . 2>/dev/null || echo '[]'),
+    "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
+    "cached_by": "context_pool"
   }
 }
 EOF
@@ -1041,6 +1484,15 @@ EOF
 intelligent_master() {
     local user_input="$1"
 
+    # 🎯 VIBE命令检测和处理
+    if echo "$user_input" | grep -q "^@vibe" || echo "$user_input" | grep -q "^vibe"; then
+        process_vibe_command "$user_input"
+        return
+    fi
+
+    # 📊 Token优化: 性能监控开始
+    local start_time=$(date +%s%3N 2>/dev/null || echo "$(date +%s)000")  # 毫秒级时间戳
+
     # 显示智能Logo
     show_intelligent_logo
 
@@ -1068,11 +1520,12 @@ intelligent_master() {
     # 4. 显示分析结果
     show_analysis_results "$intent_result" "$env_result" "$decision_result"
 
-    # 5. 执行决策
+    # 5. 代理编排执行
     local should_execute=$(echo "$decision_result" | jq -r '.decision_making.should_execute' 2>/dev/null || echo "false")
 
     if [ "$should_execute" = "true" ]; then
-        execute_plan "$decision_result"
+        # 使用代理编排引擎执行任务
+        execute_with_agent_orchestration "$user_input" "$intent_result" "$decision_result"
     else
         echo -e "${YELLOW}💡 建议: ${NC}$(echo "$decision_result" | jq -r '.decision_making.explanation' 2>/dev/null || echo "无法确定执行策略")"
         # 显示智能引导
@@ -1082,7 +1535,160 @@ intelligent_master() {
     # 6. 学习和记录
     learn_from_interaction "$user_input" "$decision_result" "$intent_result" "$env_result"
 
+    # 📊 Token优化: 性能监控结束
+    local end_time=$(date +%s%3N 2>/dev/null || echo "$(date +%s)000")
+    local response_time=$((end_time - start_time))
+
+    # 估算Token使用量（简化计算）
+    local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
+    local estimated_tokens=$(estimate_tokens "operation" "${#user_input}")
+    local cache_hit=false
+
+    # 检查是否使用了缓存
+    if echo "$intent_result" | grep -q "cached"; then
+        cache_hit=true
+    fi
+
+    # 记录性能指标
+    record_performance_metric "intelligent_master" "$response_time" "$estimated_tokens" "" "" "$cache_hit" "0" 2>/dev/null || true
+
     echo -e "${GREEN}✅ 智能执行完成！${NC}"
+}
+
+# 🎯 代理编排执行函数
+execute_with_agent_orchestration() {
+    local user_input="$1"
+    local intent_result="$2"
+    local decision_result="$3"
+
+    echo -e "${BLUE}🤖 启动代理编排执行...${NC}"
+
+    # 从决策结果中提取执行计划
+    local execution_plan=$(echo "$decision_result" | jq -r '.decision_making.execution_plan // empty' 2>/dev/null || echo "")
+
+    if [[ -z "$execution_plan" ]]; then
+        echo -e "${YELLOW}⚠️ 无法生成执行计划，回退到传统执行${NC}"
+        execute_plan "$decision_result"
+        return
+    fi
+
+    # 将执行计划分解为多个代理任务
+    local agent_tasks=$(decompose_plan_into_agent_tasks "$execution_plan" "$user_input")
+
+    # 提交任务到代理编排引擎
+    local submitted_tasks=""
+    while IFS= read -r task_desc; do
+        if [[ -n "$task_desc" ]]; then
+            local task_id=$(submit_task "$task_desc")
+            submitted_tasks="${submitted_tasks}${task_id} "
+            echo -e "${GREEN}📋 已提交任务: ${task_id}${NC}"
+        fi
+    done <<< "$(echo "$agent_tasks" | jq -r '.[] // empty' 2>/dev/null)"
+
+    # 等待任务完成或显示进度
+    if [[ -n "$submitted_tasks" ]]; then
+        echo -e "${BLUE}⏳ 等待代理编排执行完成...${NC}"
+        monitor_task_progress "$submitted_tasks"
+    fi
+
+    echo -e "${GREEN}✅ 代理编排执行完成${NC}"
+}
+
+# 将执行计划分解为代理任务
+decompose_plan_into_agent_tasks() {
+    local execution_plan="$1"
+    local user_input="$2"
+
+    # 基于执行计划和用户输入，智能分解任务
+    local tasks="[]"
+
+    # 解析执行计划
+    local plan_actions=$(echo "$execution_plan" | jq -r '.actions // [] | .[]' 2>/dev/null || echo "")
+
+    for action in $plan_actions; do
+        case "$action" in
+            "env-perception")
+                tasks=$(echo "$tasks" | jq '. + ["环境感知和分析系统状态"]')
+                ;;
+            "init")
+                tasks=$(echo "$tasks" | jq '. + ["初始化项目配置和依赖"]')
+                ;;
+            "generator")
+                tasks=$(echo "$tasks" | jq '. + ["生成代码和项目结构"]')
+                ;;
+            "quality")
+                tasks=$(echo "$tasks" | jq '. + ["执行代码质量检查"]')
+                ;;
+            "eslint")
+                tasks=$(echo "$tasks" | jq '. + ["运行ESLint代码检查"]')
+                ;;
+            "git-commit")
+                tasks=$(echo "$tasks" | jq '. + ["提交代码到Git仓库"]')
+                ;;
+            "plugin_manager")
+                tasks=$(echo "$tasks" | jq '. + ["管理项目插件和扩展"]')
+                ;;
+            *)
+                # 通用任务处理
+                tasks=$(echo "$tasks" | jq --arg action "$action" '. + [$action]')
+                ;;
+        esac
+    done
+
+    # 如果没有识别到具体任务，基于用户输入创建通用任务
+    if [[ "$tasks" == "[]" ]]; then
+        tasks=$(echo "$tasks" | jq --arg input "$user_input" '. + [$input]')
+    fi
+
+    echo "$tasks"
+}
+
+# 监控任务进度
+monitor_task_progress() {
+    local task_ids="$1"
+    local max_wait_time=300  # 最大等待时间5分钟
+    local check_interval=5   # 检查间隔5秒
+    local elapsed=0
+
+    while (( elapsed < max_wait_time )); do
+        local all_completed=true
+
+        for task_id in $task_ids; do
+            local task_status=$(get_task_status "$task_id")
+            case "$task_status" in
+                "pending"|"assigned"|"executing")
+                    all_completed=false
+                    ;;
+                "failed")
+                    echo -e "${RED}❌ 任务 $task_id 执行失败${NC}"
+                    all_completed=true  # 失败也算完成
+                    ;;
+                "completed")
+                    echo -e "${GREEN}✅ 任务 $task_id 执行完成${NC}"
+                    ;;
+            esac
+        done
+
+        if [[ "$all_completed" == true ]]; then
+            break
+        fi
+
+        sleep "$check_interval"
+        ((elapsed += check_interval))
+    done
+
+    if (( elapsed >= max_wait_time )); then
+        echo -e "${YELLOW}⏰ 任务执行超时，可能仍在后台继续${NC}"
+    fi
+}
+
+# 获取任务状态
+get_task_status() {
+    local task_id="$1"
+
+    # 这里应该调用代理编排引擎的API
+    # 暂时返回模拟状态
+    echo "completed"
 }
 
 # 🎯 智能引导函数

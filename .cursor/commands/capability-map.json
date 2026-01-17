@@ -213,8 +213,7 @@
           "eslint",
           "intelligent_evolution"
         ],
-        "skills": [
-        ],
+        "skills": [],
         "scripts": [
           "quality/quality-manager.sh"
         ],
@@ -606,8 +605,7 @@
         "rules": [
           "security-workflow"
         ],
-        "skills": [
-        ],
+        "skills": [],
         "scripts": [],
         "workflows": [
           "vulnerability-scan",
@@ -722,6 +720,2045 @@
         "technology": "auto-detect",
         "learning_style": "interactive",
         "practice_projects": true
+      }
+    },
+    "project_initialization": {
+      "description": "项目初始化",
+      "intents": [
+        "初始化",
+        "setup",
+        "初始化项目",
+        "项目初始化"
+      ],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "初始化项目",
+        "设置新项目",
+        "项目初始化配置"
+      ],
+      "capabilities": {
+        "rules": [
+          "env-perception",
+          "generator",
+          "constitution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/init.sh",
+          "core/env-perception.sh",
+          "config/config-manager.sh"
+        ],
+        "workflows": [
+          "project-init",
+          "dependency-install",
+          "config-setup"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "project_type": "auto-detect",
+        "include_git": true,
+        "create_readme": true
+      },
+      "validation_rules": {
+        "check_existing_project": true
+      }
+    },
+    "project_analysis": {
+      "description": "项目现状分析",
+      "intents": [
+        "分析",
+        "评估",
+        "检查",
+        "项目现状",
+        "项目健康"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "分析项目现状",
+        "项目健康检查",
+        "代码质量评估"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "code-analysis",
+          "security-scan",
+          "performance-check"
+        ],
+        "hooks": [
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "scripts",
+        "workflows",
+        "rules"
+      ],
+      "parameters": {
+        "analysis_depth": "comprehensive",
+        "generate_report": true,
+        "include_recommendations": true
+      }
+    },
+    "project_refactor": {
+      "description": "项目架构重构",
+      "intents": [
+        "重构",
+        "优化",
+        "架构",
+        "项目重构",
+        "架构优化"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "重构项目架构",
+        "优化项目结构",
+        "架构重构"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "architecture-checker"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "architecture-analysis",
+          "refactoring-plan",
+          "impact-assessment"
+        ],
+        "hooks": [
+          "architecture-check.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "refactor_scope": "selective",
+        "backup_changes": true,
+        "safety_level": "high"
+      },
+      "validation_rules": {
+        "maintain_functionality": true,
+        "test_coverage_preserved": true
+      }
+    },
+    "feature_development": {
+      "description": "功能开发",
+      "intents": [
+        "开发",
+        "实现",
+        "添加",
+        "功能",
+        "新功能"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "开发新功能",
+        "实现用户需求",
+        "添加功能模块"
+      ],
+      "capabilities": {
+        "rules": [
+          "generator",
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "feature-planning",
+          "implementation",
+          "testing-integration"
+        ],
+        "hooks": [
+          "code-quality.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "feature_type": "auto-detect",
+        "include_tests": true,
+        "documentation": true
+      },
+      "validation_rules": {
+        "requirements_clear": true,
+        "feasibility_assessed": true
+      }
+    },
+    "bug_fixing": {
+      "description": "缺陷修复",
+      "intents": [
+        "修复",
+        "解决",
+        "bug",
+        "缺陷",
+        "错误"
+      ],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "修复这个bug",
+        "解决代码错误",
+        "调试问题"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "eslint"
+        ],
+        "skills": [
+          "debug-assistant"
+        ],
+        "scripts": [
+          "core/env-perception.sh",
+          "debug/isolation-debugger.sh",
+          "debug/pattern-analyzer.sh"
+        ],
+        "workflows": [
+          "error-analysis",
+          "bug-fixing",
+          "regression-testing"
+        ],
+        "hooks": [
+          "command-log.sh",
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "scripts",
+        "skills",
+        "workflows",
+        "rules"
+      ],
+      "parameters": {
+        "debug_level": "comprehensive",
+        "include_stack_trace": true,
+        "create_test_case": true
+      },
+      "validation_rules": {
+        "reproduce_issue": true,
+        "fix_verified": true
+      }
+    },
+    "code_refactoring": {
+      "description": "代码重构",
+      "intents": [
+        "重构",
+        "优化",
+        "代码",
+        "清理",
+        "改进"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "重构这段代码",
+        "优化代码结构",
+        "清理技术债务"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "eslint"
+        ],
+        "skills": [],
+        "scripts": [
+          "quality/quality-manager.sh"
+        ],
+        "workflows": [
+          "code-analysis",
+          "refactoring-suggestions",
+          "impact-assessment"
+        ],
+        "hooks": [
+          "code-quality.sh",
+          "rule-usage-tracker.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "scripts",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "refactor_scope": "selective",
+        "safety_level": "high",
+        "backup_changes": true,
+        "test_coverage_check": true
+      },
+      "validation_rules": {
+        "maintain_functionality": true,
+        "improve_metrics": [
+          "readability",
+          "maintainability",
+          "performance"
+        ]
+      }
+    },
+    "learn_react": {
+      "description": "学习React",
+      "intents": [
+        "学习",
+        "了解",
+        "React",
+        "前端框架"
+      ],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "学习React",
+        "了解React框架",
+        "React入门教程"
+      ],
+      "capabilities": {
+        "rules": [
+          "learning-workflow",
+          "templates",
+          "generator"
+        ],
+        "skills": [
+          "frontend-design"
+        ],
+        "scripts": [],
+        "workflows": [
+          "react-tutorial",
+          "practice-projects",
+          "best-practices-guide"
+        ],
+        "hooks": [
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "skills",
+        "scripts"
+      ],
+      "parameters": {
+        "skill_level": "beginner",
+        "include_advanced": false,
+        "practice_projects": true
+      }
+    },
+    "master_docker": {
+      "description": "掌握Docker",
+      "intents": [
+        "学习",
+        "掌握",
+        "Docker",
+        "容器化"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "学习Docker",
+        "掌握容器化技术",
+        "Docker教程"
+      ],
+      "capabilities": {
+        "rules": [
+          "learning-workflow",
+          "templates"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "docker-basics",
+          "containerization-guide",
+          "deployment-practices"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "focus_area": "development",
+        "include_production": true,
+        "hands_on_exercises": true
+      }
+    },
+    "understand_microservices": {
+      "description": "理解微服务架构",
+      "intents": [
+        "学习",
+        "理解",
+        "微服务",
+        "架构",
+        "分布式"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "了解微服务",
+        "学习微服务架构",
+        "分布式系统设计"
+      ],
+      "capabilities": {
+        "rules": [
+          "learning-workflow",
+          "templates",
+          "generator"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "architecture-overview",
+          "design-patterns",
+          "implementation-guide"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "theory_practice_ratio": "70-30",
+        "include_examples": true,
+        "case_studies": true
+      }
+    },
+    "explain_algorithm": {
+      "description": "算法解释",
+      "intents": [
+        "解释",
+        "说明",
+        "算法",
+        "数据结构"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "解释这个算法",
+        "算法原理说明",
+        "数据结构讲解"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "algorithm-explanation",
+          "code-examples",
+          "complexity-analysis"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "detail_level": "intermediate",
+        "include_code": true,
+        "performance_analysis": true
+      }
+    },
+    "clarify_concept": {
+      "description": "概念澄清",
+      "intents": [
+        "澄清",
+        "解释",
+        "概念",
+        "原理"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "澄清这个概念",
+        "解释技术原理",
+        "概念理解"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "concept-explanation",
+          "examples-demonstration",
+          "related-concepts"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "context_provided": true,
+        "examples_needed": true,
+        "practical_application": true
+      }
+    },
+    "debugging_guidance": {
+      "description": "调试指导",
+      "intents": [
+        "调试",
+        "解决",
+        "问题",
+        "故障排除"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "调试这个错误",
+        "如何解决问题",
+        "故障排除指南"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "debug-assistant"
+        ],
+        "scripts": [
+          "debug/isolation-debugger.sh",
+          "debug/pattern-analyzer.sh"
+        ],
+        "workflows": [
+          "problem-analysis",
+          "debugging-steps",
+          "solution-verification"
+        ],
+        "hooks": [
+          "command-log.sh"
+        ]
+      },
+      "execution_order": [
+        "scripts",
+        "skills",
+        "workflows",
+        "rules"
+      ],
+      "parameters": {
+        "debug_approach": "systematic",
+        "include_tools": true,
+        "step_by_step": true
+      }
+    },
+    "performance_analysis": {
+      "description": "性能分析",
+      "intents": [
+        "分析",
+        "诊断",
+        "性能",
+        "优化"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "分析性能问题",
+        "诊断系统性能",
+        "性能瓶颈识别"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/performance-monitor.sh"
+        ],
+        "workflows": [
+          "performance-profiling",
+          "bottleneck-analysis",
+          "optimization-recommendations"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows",
+        "rules"
+      ],
+      "parameters": {
+        "analysis_type": "comprehensive",
+        "time_range": "recent",
+        "include_recommendations": true
+      }
+    },
+    "security_guidance": {
+      "description": "安全指导",
+      "intents": [
+        "指导",
+        "建议",
+        "安全",
+        "最佳实践"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "安全最佳实践",
+        "安全编码指南",
+        "安全配置建议"
+      ],
+      "capabilities": {
+        "rules": [
+          "security-workflow"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "security-assessment",
+          "best-practices-guide",
+          "implementation-advice"
+        ],
+        "hooks": [
+          "prompt-security.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "security_level": "standard",
+        "include_examples": true,
+        "compliance_focus": false
+      }
+    },
+    "testing_strategy": {
+      "description": "测试策略",
+      "intents": [
+        "策略",
+        "方法",
+        "测试",
+        "测试计划"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "测试策略制定",
+        "测试方法选择",
+        "测试覆盖率规划"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "webapp-testing"
+        ],
+        "scripts": [],
+        "workflows": [
+          "test-strategy-design",
+          "coverage-planning",
+          "test-implementation"
+        ],
+        "hooks": [
+          "test-hooks.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "project_type": "auto-detect",
+        "testing_framework": "recommended",
+        "coverage_target": 80
+      }
+    },
+    "deployment_strategy": {
+      "description": "部署策略",
+      "intents": [
+        "指导",
+        "流程",
+        "部署",
+        "发布策略"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "部署策略指导",
+        "发布流程设计",
+        "部署最佳实践"
+      ],
+      "capabilities": {
+        "rules": [
+          "platform_adapter"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "deployment-planning",
+          "environment-setup",
+          "rollback-strategy"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "deployment_type": "continuous",
+        "environment_strategy": "staging-production",
+        "rollback_plan": true
+      }
+    },
+    "system_health_check": {
+      "description": "系统健康检查",
+      "intents": [
+        "检查",
+        "监控",
+        "系统",
+        "健康",
+        "状态"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "系统健康检查",
+        "监控系统状态",
+        "健康诊断"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/performance-monitor.sh",
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "health-assessment",
+          "resource-monitoring",
+          "alerts-check"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "check_type": "comprehensive",
+        "include_metrics": true,
+        "generate_report": true
+      }
+    },
+    "configuration_optimization": {
+      "description": "配置优化",
+      "intents": [
+        "优化",
+        "调整",
+        "配置",
+        "调优"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "优化系统配置",
+        "调整性能参数",
+        "配置调优"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "config/config-manager.sh",
+          "config/config-validator.sh"
+        ],
+        "workflows": [
+          "config-analysis",
+          "optimization-recommendations",
+          "performance-tuning"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "config_type": "auto-detect",
+        "optimization_focus": "performance",
+        "backup_configs": true
+      }
+    },
+    "backup_creation": {
+      "description": "备份创建",
+      "intents": [
+        "创建",
+        "备份",
+        "数据保护",
+        "恢复"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "创建系统备份",
+        "数据备份",
+        "备份策略"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "backup-planning",
+          "data-backup",
+          "verification"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "backup_type": "full",
+        "compression": true,
+        "encryption": false,
+        "retention_policy": "30-days"
+      }
+    },
+    "log_analysis": {
+      "description": "日志分析",
+      "intents": [
+        "分析",
+        "检查",
+        "日志",
+        "错误日志"
+      ],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "分析系统日志",
+        "检查错误日志",
+        "日志诊断"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/performance-monitor.sh"
+        ],
+        "workflows": [
+          "log-collection",
+          "error-pattern-analysis",
+          "insights-generation"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "log_type": "all",
+        "time_range": "24h",
+        "error_focus": true
+      }
+    },
+    "system_audit": {
+      "description": "系统审计",
+      "intents": [
+        "审计",
+        "检查",
+        "系统",
+        "合规"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "系统审计",
+        "合规性检查",
+        "系统评估"
+      ],
+      "capabilities": {
+        "rules": [],
+        "scripts": [
+          "core/consistency-checker.sh",
+          "core/architecture-compliance-checker.sh"
+        ],
+        "workflows": [
+          "compliance-check",
+          "security-audit",
+          "performance-audit"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "audit_scope": "comprehensive",
+        "standards_check": true,
+        "generate_report": true
+      }
+    },
+    "maintenance_automation": {
+      "description": "维护自动化",
+      "intents": [
+        "自动化",
+        "维护",
+        "自动",
+        "调度"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "自动化维护任务",
+        "设置自动备份",
+        "维护调度"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/growth-manager.sh"
+        ],
+        "workflows": [
+          "automation-setup",
+          "schedule-configuration",
+          "monitoring-setup"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "automation_type": "maintenance",
+        "schedule_frequency": "daily",
+        "notification_enabled": true
+      }
+    },
+    "team_collaboration_setup": {
+      "description": "团队协作设置",
+      "intents": [
+        "设置",
+        "配置",
+        "协作",
+        "团队"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "设置团队协作",
+        "配置协作工具",
+        "团队开发环境"
+      ],
+      "capabilities": {
+        "rules": [
+          "collaboration"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "collaboration-setup",
+          "access-control",
+          "communication-channels"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "team_size": "auto-detect",
+        "collaboration_tools": [
+          "git",
+          "project-management",
+          "communication"
+        ],
+        "access_level": "standard"
+      }
+    },
+    "communication_guidelines": {
+      "description": "沟通规范",
+      "intents": [
+        "规范",
+        "标准",
+        "沟通",
+        "协作"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "沟通规范制定",
+        "协作标准设置",
+        "团队沟通指南"
+      ],
+      "capabilities": {
+        "rules": [
+          "collaboration"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "guidelines-creation",
+          "documentation",
+          "training-materials"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "guidelines_type": "communication",
+        "include_templates": true,
+        "training_required": false
+      }
+    },
+    "code_review_process": {
+      "description": "代码审查流程",
+      "intents": [
+        "流程",
+        "规范",
+        "代码审查",
+        "review"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "代码审查流程",
+        "review规范",
+        "代码检查标准"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "eslint"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "review-process-design",
+          "checklist-creation",
+          "automation-setup"
+        ],
+        "hooks": [
+          "code-quality.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "review_type": "standard",
+        "automation_level": "high",
+        "mandatory_reviews": true
+      }
+    },
+    "pull_request_guidance": {
+      "description": "拉取请求指导",
+      "intents": [
+        "指导",
+        "建议",
+        "拉取请求",
+        "PR"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "PR指导",
+        "拉取请求最佳实践",
+        "代码提交指南"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "pr-template-creation",
+          "guidelines-documentation",
+          "reviewer-assignment"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "template_required": true,
+        "size_limits": true,
+        "reviewer_count": 2
+      }
+    },
+    "documentation_standards": {
+      "description": "文档标准",
+      "intents": [
+        "标准",
+        "规范",
+        "文档",
+        "文档化"
+      ],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "文档标准制定",
+        "文档规范",
+        "文档化要求"
+      ],
+      "capabilities": {
+        "rules": [
+          "documentation-workflow"
+        ],
+        "skills": [
+          "docx",
+          "pdf"
+        ],
+        "scripts": [],
+        "workflows": [
+          "standards-definition",
+          "template-creation",
+          "compliance-check"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "skills"
+      ],
+      "parameters": {
+        "doc_types": [
+          "readme",
+          "api",
+          "code",
+          "architecture"
+        ],
+        "format_standards": true,
+        "automation_tools": true
+      }
+    },
+    "meeting_facilitation": {
+      "description": "会议主持",
+      "intents": [
+        "组织",
+        "主持",
+        "会议",
+        "团队会议"
+      ],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "主持团队会议",
+        "会议组织",
+        "会议流程设计"
+      ],
+      "capabilities": {
+        "rules": [
+          "collaboration"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "meeting-preparation",
+          "agenda-creation",
+          "facilitation-guide"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows"
+      ],
+      "parameters": {
+        "meeting_type": "auto-detect",
+        "participant_count": "auto-detect",
+        "agenda_required": true
+      }
+    },
+    "knowledge_sharing": {
+      "description": "知识分享",
+      "intents": [
+        "分享",
+        "交流",
+        "知识",
+        "经验"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "知识分享",
+        "经验交流",
+        "技术分享"
+      ],
+      "capabilities": {
+        "rules": [
+          "learning-workflow"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "knowledge-base-setup",
+          "sharing-platform-config",
+          "content-organization"
+        ],
+        "hooks": [
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "sharing_format": "multiple",
+        "audience_level": "mixed",
+        "interactive_elements": true
+      }
+    },
+    "team_training": {
+      "description": "团队培训",
+      "intents": [
+        "培训",
+        "指导",
+        "团队",
+        "技能提升"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "团队培训",
+        "技能指导",
+        "团队能力提升"
+      ],
+      "capabilities": {
+        "rules": [
+          "learning-workflow",
+          "collaboration"
+        ],
+        "skills": [
+          "learning-assistant"
+        ],
+        "scripts": [],
+        "workflows": [
+          "training-needs-analysis",
+          "curriculum-design",
+          "progress-tracking"
+        ],
+        "hooks": [
+          "session-summary.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "training_type": "technical",
+        "team_size": "auto-detect",
+        "assessment_required": true
+      }
+    },
+    "setup_typescript": {
+      "description": "TypeScript设置",
+      "intents": [
+        "配置",
+        "setup",
+        "设置",
+        "TypeScript"
+      ],
+      "confidence_threshold": 0.9,
+      "user_examples": [
+        "配置TypeScript",
+        "设置TypeScript环境",
+        "TypeScript项目初始化"
+      ],
+      "capabilities": {
+        "rules": [
+          "generator",
+          "javascript"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "typescript-setup",
+          "config-generation",
+          "dependency-install"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "typescript_version": "latest",
+        "strict_mode": true,
+        "include_types": true
+      }
+    },
+    "setup_testing": {
+      "description": "测试环境设置",
+      "intents": [
+        "配置",
+        "setup",
+        "设置",
+        "testing",
+        "测试环境"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "配置测试环境",
+        "设置单元测试",
+        "测试框架配置"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "webapp-testing"
+        ],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "testing-setup",
+          "framework-selection",
+          "config-generation"
+        ],
+        "hooks": [
+          "test-hooks.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "testing_framework": "auto-detect",
+        "test_types": [
+          "unit",
+          "integration"
+        ],
+        "coverage_tools": true
+      }
+    },
+    "setup_linting": {
+      "description": "代码检查设置",
+      "intents": [
+        "配置",
+        "setup",
+        "设置",
+        "linting",
+        "代码检查"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "配置代码检查",
+        "设置ESLint",
+        "代码规范配置"
+      ],
+      "capabilities": {
+        "rules": [
+          "eslint"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "linting-setup",
+          "rules-configuration",
+          "integration-setup"
+        ],
+        "hooks": [
+          "code-quality.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "linting_tool": "eslint",
+        "extends_config": "recommended",
+        "auto_fix": true
+      }
+    },
+    "add_monitoring": {
+      "description": "添加监控",
+      "intents": [
+        "添加",
+        "setup",
+        "配置",
+        "监控"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "添加应用监控",
+        "配置性能监控",
+        "监控系统设置"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/performance-monitor.sh",
+          "core/init.sh"
+        ],
+        "workflows": [
+          "monitoring-setup",
+          "metrics-collection",
+          "alerts-configuration"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "monitoring_type": "application",
+        "metrics_level": "standard",
+        "alerts_enabled": true
+      }
+    },
+    "setup_logging": {
+      "description": "日志系统设置",
+      "intents": [
+        "设置",
+        "setup",
+        "配置",
+        "logging",
+        "日志"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "配置日志系统",
+        "设置应用日志",
+        "日志管理配置"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "logging-setup",
+          "log-levels-config",
+          "log-rotation-setup"
+        ],
+        "hooks": [
+          "command-log.sh"
+        ]
+      },
+      "execution_order": [
+        "scripts",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "logging_framework": "auto-detect",
+        "log_levels": [
+          "error",
+          "warn",
+          "info",
+          "debug"
+        ],
+        "structured_logging": true
+      }
+    },
+    "configure_cicd": {
+      "description": "CI/CD配置",
+      "intents": [
+        "配置",
+        "setup",
+        "ci",
+        "cd",
+        "持续集成"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "配置CI/CD",
+        "设置持续集成",
+        "自动化部署配置"
+      ],
+      "capabilities": {
+        "rules": [
+          "platform_adapter"
+        ],
+        "skills": [
+          "node"
+        ],
+        "scripts": [
+          "core/init.sh",
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "ci-setup",
+          "cd-pipeline",
+          "testing-integration",
+          "deployment-config"
+        ],
+        "hooks": [
+          "security-audit.sh"
+        ]
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "scripts",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "ci_provider": "auto-detect",
+        "cd_strategy": "blue-green",
+        "test_stages": [
+          "unit",
+          "integration",
+          "e2e"
+        ]
+      },
+      "validation_rules": {
+        "supported_providers": [
+          "github-actions",
+          "gitlab-ci",
+          "jenkins",
+          "circle-ci"
+        ]
+      }
+    },
+    "project_migration": {
+      "description": "项目迁移",
+      "intents": [
+        "迁移",
+        "升级",
+        "项目",
+        "迁移升级"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "项目迁移",
+        "技术栈升级",
+        "框架迁移"
+      ],
+      "capabilities": {
+        "rules": [
+          "platform_adapter",
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "migration-planning",
+          "compatibility-check",
+          "data-migration",
+          "testing-validation"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "workflows",
+        "scripts"
+      ],
+      "parameters": {
+        "migration_type": "technology-stack",
+        "backup_strategy": "full",
+        "rollback_plan": true,
+        "testing_comprehensive": true
+      },
+      "validation_rules": {
+        "compatibility_verified": true,
+        "data_integrity_maintained": true
+      }
+    },
+    "project_documentation": {
+      "description": "项目文档",
+      "intents": [
+        "文档",
+        "readme",
+        "说明",
+        "项目文档"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "生成项目文档",
+        "创建README",
+        "项目文档编写"
+      ],
+      "capabilities": {
+        "rules": [
+          "documentation-workflow"
+        ],
+        "skills": [
+          "docx",
+          "pdf"
+        ],
+        "scripts": [],
+        "workflows": [
+          "documentation-generation",
+          "readme-creation",
+          "api-docs",
+          "architecture-docs"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "skills"
+      ],
+      "parameters": {
+        "doc_types": [
+          "readme",
+          "api",
+          "architecture",
+          "deployment"
+        ],
+        "auto_discover": true,
+        "include_diagrams": true
+      }
+    },
+    "project_architecture_review": {
+      "description": "架构审查",
+      "intents": [
+        "审查",
+        "review",
+        "架构",
+        "架构审查"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "架构审查",
+        "代码架构分析",
+        "架构合规检查"
+      ],
+      "capabilities": {
+        "rules": [
+          "architecture-checker",
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/architecture-compliance-checker.sh"
+        ],
+        "workflows": [
+          "architecture-analysis",
+          "design-pattern-review",
+          "scalability-assessment"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "review_depth": "comprehensive",
+        "include_recommendations": true,
+        "generate_report": true
+      }
+    },
+    "project_security_audit": {
+      "description": "项目安全审计",
+      "intents": [
+        "审计",
+        "检查",
+        "安全",
+        "安全审计"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "安全审计",
+        "项目安全检查",
+        "安全漏洞扫描"
+      ],
+      "capabilities": {
+        "rules": [
+          "security-workflow"
+        ],
+        "skills": [],
+        "scripts": [],
+        "workflows": [
+          "security-assessment",
+          "vulnerability-scan",
+          "code-security-review",
+          "dependency-audit"
+        ],
+        "hooks": [
+          "prompt-security.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "audit_scope": "comprehensive",
+        "severity_levels": [
+          "critical",
+          "high",
+          "medium",
+          "low"
+        ],
+        "include_dependencies": true
+      },
+      "quality_gates": {
+        "max_critical_vulnerabilities": 0,
+        "max_high_vulnerabilities": 2
+      }
+    },
+    "project_performance_optimization": {
+      "description": "项目性能优化",
+      "intents": [
+        "优化",
+        "提升",
+        "性能",
+        "性能优化"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "性能优化",
+        "提升应用性能",
+        "性能调优"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/performance-monitor.sh"
+        ],
+        "workflows": [
+          "performance-profiling",
+          "bottleneck-analysis",
+          "optimization-implementation",
+          "validation-testing"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows",
+        "rules"
+      ],
+      "parameters": {
+        "optimization_focus": [
+          "response_time",
+          "memory_usage",
+          "cpu_usage",
+          "throughput"
+        ],
+        "benchmarking": true,
+        "rollback_capability": true
+      }
+    },
+    "project_dependency_management": {
+      "description": "项目依赖管理",
+      "intents": [
+        "管理",
+        "处理",
+        "依赖",
+        "依赖管理"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "依赖管理",
+        "解决依赖冲突",
+        "依赖升级"
+      ],
+      "capabilities": {
+        "rules": [
+          "platform_adapter"
+        ],
+        "skills": [
+          "node",
+          "python"
+        ],
+        "scripts": [],
+        "workflows": [
+          "dependency-analysis",
+          "conflict-resolution",
+          "version-updates",
+          "security-scanning"
+        ],
+        "hooks": [
+          "security-audit.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "update_strategy": "conservative",
+        "resolve_conflicts": true,
+        "security_scan": true,
+        "compatibility_check": true
+      }
+    },
+    "project_testing_setup": {
+      "description": "项目测试设置",
+      "intents": [
+        "设置",
+        "配置",
+        "测试",
+        "测试环境"
+      ],
+      "confidence_threshold": 0.8,
+      "user_examples": [
+        "设置测试环境",
+        "配置测试框架",
+        "测试基础设施搭建"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [
+          "webapp-testing"
+        ],
+        "scripts": [
+          "core/init.sh"
+        ],
+        "workflows": [
+          "testing-infrastructure",
+          "framework-setup",
+          "ci-integration",
+          "coverage-setup"
+        ],
+        "hooks": [
+          "test-hooks.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows",
+        "skills",
+        "hooks"
+      ],
+      "parameters": {
+        "testing_types": [
+          "unit",
+          "integration",
+          "e2e"
+        ],
+        "framework_preference": "auto-detect",
+        "coverage_target": 80
+      }
+    },
+    "project_deployment_config": {
+      "description": "项目部署配置",
+      "intents": [
+        "部署",
+        "发布",
+        "配置",
+        "部署配置"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "配置部署环境",
+        "设置发布流程",
+        "部署配置管理"
+      ],
+      "capabilities": {
+        "rules": [
+          "platform_adapter"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "deployment-planning",
+          "environment-setup",
+          "configuration-management",
+          "rollback-strategy"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "perception",
+        "rules",
+        "workflows",
+        "scripts"
+      ],
+      "parameters": {
+        "deployment_strategy": "blue-green",
+        "environment_count": 3,
+        "rollback_enabled": true,
+        "health_checks": true
+      }
+    },
+    "project_monitoring_setup": {
+      "description": "项目监控设置",
+      "intents": [
+        "监控",
+        "observability",
+        "应用",
+        "监控设置"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "设置应用监控",
+        "配置可观测性",
+        "监控系统搭建"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/performance-monitor.sh",
+          "core/init.sh"
+        ],
+        "workflows": [
+          "monitoring-infrastructure",
+          "metrics-collection",
+          "alerts-setup",
+          "dashboards-config"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "monitoring_stack": "prometheus-grafana",
+        "metrics_types": [
+          "application",
+          "infrastructure",
+          "business"
+        ],
+        "alerting_rules": true
+      }
+    },
+    "project_backup_recovery": {
+      "description": "项目备份恢复",
+      "intents": [
+        "备份",
+        "recovery",
+        "项目",
+        "数据保护"
+      ],
+      "confidence_threshold": 0.7,
+      "user_examples": [
+        "项目备份",
+        "数据恢复策略",
+        "备份系统配置"
+      ],
+      "capabilities": {
+        "rules": [],
+        "skills": [],
+        "scripts": [
+          "core/env-perception.sh"
+        ],
+        "workflows": [
+          "backup-strategy",
+          "automation-setup",
+          "recovery-testing",
+          "documentation"
+        ],
+        "hooks": []
+      },
+      "execution_order": [
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "backup_frequency": "daily",
+        "retention_period": "30-days",
+        "encryption_enabled": true,
+        "offsite_storage": false
+      }
+    },
+    "project_standards_enforcement": {
+      "description": "项目标准执行",
+      "intents": [
+        "标准化",
+        "规范化",
+        "项目",
+        "标准执行"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "项目标准化",
+        "执行编码规范",
+        "标准合规检查"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "eslint",
+          "consistency-checker"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/consistency-checker.sh",
+          "quality/quality-manager.sh"
+        ],
+        "workflows": [
+          "standards-audit",
+          "compliance-check",
+          "automation-setup",
+          "monitoring-config"
+        ],
+        "hooks": [
+          "code-quality.sh"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows",
+        "hooks"
+      ],
+      "parameters": {
+        "standards_type": "comprehensive",
+        "automation_level": "high",
+        "reporting_enabled": true,
+        "remediation_auto": false
       }
     }
   },
@@ -977,8 +3014,7 @@
           "intelligent_evolution",
           "eslint"
         ],
-        "skills": [
-        ],
+        "skills": [],
         "scripts": [
           "core/env-perception.sh"
         ],
@@ -1316,8 +3352,7 @@
         "rules": [
           "intelligent_evolution"
         ],
-        "skills": [
-        ],
+        "skills": [],
         "scripts": [
           "core/env-perception.sh"
         ],
@@ -1516,8 +3551,7 @@
           "intelligent_evolution",
           "eslint"
         ],
-        "skills": [
-        ],
+        "skills": [],
         "scripts": [
           "quality/quality-manager.sh"
         ],
@@ -1778,8 +3812,7 @@
         "rules": [
           "platform_adapter"
         ],
-        "skills": [
-        ],
+        "skills": [],
         "scripts": [
           "core/env-perception.sh"
         ],
@@ -1821,10 +3854,15 @@
         "manual-setup"
       ]
     },
-
     "learn_project_patterns": {
       "description": "学习项目模式",
-      "intents": ["learn", "study", "analyze", "patterns", "growth"],
+      "intents": [
+        "learn",
+        "study",
+        "analyze",
+        "patterns",
+        "growth"
+      ],
       "confidence_threshold": 0.8,
       "user_examples": [
         "学习项目模式",
@@ -1833,12 +3871,19 @@
         "分析项目生长数据"
       ],
       "capabilities": {
-        "rules": ["intelligent_evolution"],
+        "rules": [
+          "intelligent_evolution"
+        ],
         "scripts": [],
-        "workflows": ["analyze-growth-data", "generate-learning-insights"],
+        "workflows": [
+          "analyze-growth-data",
+          "generate-learning-insights"
+        ],
         "hooks": []
       },
-      "execution_order": ["workflows"],
+      "execution_order": [
+        "workflows"
+      ],
       "parameters": {
         "analysis_depth": "comprehensive",
         "include_historical_data": true,
@@ -1848,12 +3893,20 @@
         "growth_data_exists": true,
         "minimum_interactions": 5
       },
-      "fallback_strategies": ["basic-analysis", "data-collection"]
+      "fallback_strategies": [
+        "basic-analysis",
+        "data-collection"
+      ]
     },
-
     "show_growth_status": {
       "description": "显示生长状态",
-      "intents": ["show", "display", "status", "growth", "metrics"],
+      "intents": [
+        "show",
+        "display",
+        "status",
+        "growth",
+        "metrics"
+      ],
       "confidence_threshold": 0.8,
       "user_examples": [
         "显示生长状态",
@@ -1863,10 +3916,14 @@
       ],
       "capabilities": {
         "scripts": [],
-        "workflows": ["display-growth-metrics"],
+        "workflows": [
+          "display-growth-metrics"
+        ],
         "hooks": []
       },
-      "execution_order": ["workflows"],
+      "execution_order": [
+        "workflows"
+      ],
       "parameters": {
         "include_trends": true,
         "show_recommendations": true
@@ -2211,7 +4268,6 @@
       "validation_rules": {},
       "fallback_strategies": []
     },
-
     "git_commit_mcp_priority": {
       "description": "Git提交 (MCP优先级)",
       "intents": [
@@ -2287,7 +4343,6 @@
         "traditional_git_flow"
       ]
     },
-
     "monitoring_and_analytics": {
       "description": "Monitoring and analytics configuration",
       "execution_tracking": {
@@ -2322,8 +4377,8 @@
   "version_info": {
     "description": "Version information and system metadata",
     "current_version": "4.3.0",
-    "last_updated": "2026-01-16",
-    "total_mappings": 57,
+    "last_updated": "2026-01-17",
+    "total_mappings": 100,
     "supported_scenarios": [
       "project_creation",
       "code_quality",
@@ -2354,7 +4409,37 @@
       "system_optimization",
       "config_management",
       "quality_check",
-      "sync_cursor"
+      "sync_cursor",
+      "project_initialization",
+      "project_analysis",
+      "project_refactor",
+      "feature_development",
+      "bug_fixing",
+      "code_refactoring",
+      "learn_react",
+      "master_docker",
+      "understand_microservices",
+      "explain_algorithm",
+      "clarify_concept",
+      "debugging_guidance",
+      "performance_analysis",
+      "security_guidance",
+      "testing_strategy",
+      "deployment_strategy",
+      "system_health_check",
+      "configuration_optimization",
+      "backup_creation",
+      "log_analysis",
+      "system_audit",
+      "maintenance_automation",
+      "team_collaboration_setup",
+      "communication_guidelines",
+      "code_review_process",
+      "pull_request_guidance",
+      "documentation_standards",
+      "meeting_facilitation",
+      "knowledge_sharing",
+      "team_training"
     ]
   }
 }
