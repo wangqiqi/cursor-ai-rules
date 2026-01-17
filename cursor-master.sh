@@ -39,6 +39,12 @@ if [ -f "$CURSOR_DIR/core/conversational-command-system.sh" ]; then
     init_conversational_command_system >/dev/null 2>&1 || true
 fi
 
+# 🔗 初始化本地MCP集成系统（如果可用）
+if [ -f "$CURSOR_DIR/core/local-mcp-integration.sh" ]; then
+    source "$CURSOR_DIR/core/local-mcp-integration.sh"
+    init_local_mcp_integration >/dev/null 2>&1 || true
+fi
+
 # 🤖 初始化代理编排引擎（如果可用）
 if [ -f "$CURSOR_DIR/core/agent-orchestration-engine.sh" ]; then
     source "$CURSOR_DIR/core/agent-orchestration-engine.sh"
@@ -49,6 +55,24 @@ fi
 if [ -f "$CURSOR_DIR/core/performance-dashboard.sh" ]; then
     source "$CURSOR_DIR/core/performance-dashboard.sh"
     init_performance_dashboard >/dev/null 2>&1 || true
+fi
+
+# 🧠 初始化自学习引擎（如果可用）
+if [ -f "$CURSOR_DIR/core/self-learning-engine.sh" ]; then
+    source "$CURSOR_DIR/core/self-learning-engine.sh"
+    init_self_learning_engine >/dev/null 2>&1 || true
+fi
+
+# ⚡ 初始化自适应优化引擎（如果可用）
+if [ -f "$CURSOR_DIR/core/adaptive-optimization-engine.sh" ]; then
+    source "$CURSOR_DIR/core/adaptive-optimization-engine.sh"
+    init_adaptive_optimization_engine >/dev/null 2>&1 || true
+fi
+
+# 🔄 初始化持续学习循环（如果可用）
+if [ -f "$CURSOR_DIR/core/continuous-learning-loop.sh" ]; then
+    source "$CURSOR_DIR/core/continuous-learning-loop.sh"
+    init_continuous_learning_loop >/dev/null 2>&1 || true
 fi
 
 # 🌱 初始化项目生长目录
@@ -1552,6 +1576,9 @@ intelligent_master() {
     # 记录性能指标
     record_performance_metric "intelligent_master" "$response_time" "$estimated_tokens" "" "" "$cache_hit" "0" 2>/dev/null || true
 
+    # 🧠 自学习: 基于本次交互进行学习和优化
+    trigger_learning_from_interaction "$user_input" "$intent_result" "$decision_result" "$response_time" "$estimated_tokens" 2>/dev/null || true
+
     echo -e "${GREEN}✅ 智能执行完成！${NC}"
 }
 
@@ -1689,6 +1716,57 @@ get_task_status() {
     # 这里应该调用代理编排引擎的API
     # 暂时返回模拟状态
     echo "completed"
+}
+
+# 🧠 触发学习从交互
+trigger_learning_from_interaction() {
+    local user_input="$1"
+    local intent_result="$2"
+    local decision_result="$3"
+    local response_time="$4"
+    local token_usage="$5"
+
+    # 提取学习相关的数据
+    local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type // "unknown"' 2>/dev/null)
+    local confidence=$(echo "$intent_result" | jq -r '.intent_analysis.confidence // 0' 2>/dev/null)
+    local decision_made=$(echo "$decision_result" | jq -r '.decision_making.should_execute // false' 2>/dev/null)
+
+    # 构建学习数据
+    local learning_data=$(cat <<EOF
+{
+  "interaction_type": "user_command",
+  "timestamp": "$(date -Iseconds)",
+  "user_input": "$user_input",
+  "intent_type": "$intent_type",
+  "confidence": $confidence,
+  "decision_made": $decision_made,
+  "response_time": $response_time,
+  "token_usage": $token_usage,
+  "success": $([ "$decision_made" = "true" ] && echo "true" || echo "false")
+}
+EOF
+)
+
+    # 触发学习引擎处理
+    if command -v process_learning_data >/dev/null 2>&1; then
+        echo "$learning_data" | process_learning_data >/dev/null 2>&1 || true
+    fi
+}
+
+# 🧠 处理学习数据（由学习引擎调用）
+process_learning_data() {
+    # 从stdin读取学习数据
+    local learning_data=$(cat)
+
+    # 这里可以实现学习数据的处理逻辑
+    # 目前只是简单地记录数据供学习引擎使用
+
+    # 保存到学习数据目录
+    local learning_dir=".cursorGrowth/learning/data"
+    mkdir -p "$learning_dir"
+
+    local data_file="$learning_dir/interaction_$(date +%Y%m%d_%H%M%S_%N).json"
+    echo "$learning_data" > "$data_file"
 }
 
 # 🎯 智能引导函数
