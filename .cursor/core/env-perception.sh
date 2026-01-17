@@ -5,8 +5,21 @@
 
 set -e
 
-# 加载标准日志库
+# 依赖检查函数
+check_dependencies() {
+    # 检查必需的依赖文件
+    if [ ! -f "$SCRIPT_DIR/logging.sh" ]; then
+        echo "❌ 缺少必需的依赖文件: logging.sh" >&2
+        echo "请确保 logging.sh 文件存在于 $SCRIPT_DIR 目录中" >&2
+        exit 1
+    fi
+}
+
+# 获取脚本目录并检查依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+check_dependencies
+
+# 加载标准日志库
 source "$SCRIPT_DIR/logging.sh"
 init_logging "INFO" "env-perception"
 

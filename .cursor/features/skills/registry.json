@@ -256,6 +256,24 @@
         "dependencies": [],
         "source": "reference"
       },
+      "debug-assistant": {
+        "name": "智能调试助手",
+        "description": "使用隔离和模式分析技术的智能调试助手",
+        "category": "development",
+        "auto_install": false,
+        "path": "debug-assistant.md",
+        "conditions": {
+          "dependencies": [
+            "bash",
+            "coreutils"
+          ]
+        },
+        "dependencies": [
+          "bash",
+          "coreutils"
+        ],
+        "source": "cursor-ai-rules"
+      },
       "evaluation": {
         "name": "技能评估框架",
         "description": "MCP技能质量评估和测试框架",

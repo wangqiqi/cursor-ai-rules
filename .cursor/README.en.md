@@ -11,7 +11,7 @@
 
 **🌟 Revolutionary AI Programming Collaboration Experience - Let AI Truly Understand Your Project and Needs**
 
-📚 **[Usage Guide](.cursor/docs/usage-guide.md)** | **[Intelligent Evolution Guide](.cursor/docs/intelligent-evolution-guide.md)** | **[Token Compression Guide](.cursor/docs/token-compression-guide.md)** | **[System Info Guide](.cursor/docs/system-info-guide.md)** | **[Team Rules Example](.cursor/docs/team-rules-example.md)** | **[Remote Rules Import](.cursor/docs/remote-rules-guide.md)**
+📚 **[Usage Guide](docs/usage-guide.md)** | **[Intelligent Evolution Guide](docs/intelligent-evolution-guide.md)** | **[Token Compression Guide](docs/token-compression-guide.md)** | **[System Info Guide](docs/system-info-guide.md)** | **[Team Rules Example](docs/team-rules-example.md)** | **[Remote Rules Import](docs/remote-rules-guide.md)**
 
 Adopting the AI collaboration specifications defined by the [Cursor Rules System](https://cursor.com/docs/context/rules), combined with single-step multi-task perception, intelligent caching, and rule system to achieve efficient and secure human-AI collaboration.
 
@@ -55,7 +55,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 - **👥 Collaboration-Friendly**: Teams share configuration, each person's data remains independent
 - **⚡ Performance Optimization**: Local cache and learning data improve response speed
 
-**📖 [Detailed Architecture Documentation](.cursor/docs/project-growth-architecture.md)**
+**📖 [Detailed Architecture Documentation](docs/project-growth-architecture.md)**
 
 ## 🛠️ Development Guidelines
 
@@ -144,7 +144,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | **javascript** | JavaScript/TypeScript Development Rules - Modern frontend development best practices | Code files | ✅ |
 | **python** | Python Development Rules - Backend development and data processing best practices | Code files | ✅ |
 
-### 🎯 Skills Extension System (20 Professional Skills)
+### 🎯 Skills Extension System (24 Professional Skills)
 
 | Skill Category | Count | Skills | Status |
 |----------------|-------|--------|--------|
@@ -364,7 +364,7 @@ ls -la .cursor/core/init.sh
 
 ## 📊 Technical Metrics
 
-| Metric | v1.0 | v4.2.0 | v4.3.0 | Improvement |
+| Metric | v1.0 | v4.3.0 | v4.3.0 | Improvement |
 |--------|------|--------|---------|-------------|
 | Initialization Time | ~30s | ~5s | ~3s | **90%↑** |
 | Perception Time | ~10s | ~1s | ~0.5s | **95%↑** |

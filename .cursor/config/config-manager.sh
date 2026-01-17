@@ -103,7 +103,7 @@ get_config_path() {
             echo "$CONFIG_DIR/global.json"
             ;;
         "project")
-            echo "$CONFIG_DIR/project.json"
+            echo "$CONFIG_DIR/project.json.template"
             ;;
         "user")
             echo "$HOME/.cursor/config/user.json"

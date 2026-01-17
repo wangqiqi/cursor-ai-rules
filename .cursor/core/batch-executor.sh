@@ -5,8 +5,31 @@
 
 set -e
 
-# 加载依赖
+# 依赖检查函数
+check_dependencies() {
+    local missing_deps=()
+
+    # 检查必需的依赖文件
+    if [ ! -f "$SCRIPT_DIR/compact-output.sh" ]; then
+        missing_deps+=("compact-output.sh")
+    fi
+
+    if [ ! -f "$SCRIPT_DIR/performance-cache.sh" ]; then
+        missing_deps+=("performance-cache.sh")
+    fi
+
+    if [ ${#missing_deps[@]} -ne 0 ]; then
+        echo "❌ 缺少必需的依赖文件: ${missing_deps[*]}" >&2
+        echo "请确保所有依赖文件都存在于 $SCRIPT_DIR 目录中" >&2
+        exit 1
+    fi
+}
+
+# 获取脚本目录并检查依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+check_dependencies
+
+# 加载依赖
 source "$SCRIPT_DIR/compact-output.sh"
 source "$SCRIPT_DIR/performance-cache.sh"
 

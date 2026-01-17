@@ -6,7 +6,7 @@ alwaysApply: false
 
 # 👥 团队协作规则
 
-*版本: v4.2.0 | 最后更新: 2026-01-15 | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.3.0 | 最后更新: 2026-01-15 | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 🎯 适用场景
 

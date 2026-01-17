@@ -85,16 +85,16 @@ Cursor AI Rules 的技能系统提供了可扩展的 AI 能力增强机制，支
 
 ```bash
 # 查看可用技能
-.cursor/automation/scripts/skill-list.sh
+.cursor/features/automation/scripts/skill-list.sh
 
 # 安装特定技能
-.cursor/automation/scripts/skill-install.sh nodejs
+.cursor/features/automation/scripts/skill-install.sh nodejs
 
 # 批量安装
-.cursor/automation/scripts/skill-install.sh react vue testing
+.cursor/features/automation/scripts/skill-install.sh react vue testing
 
 # 强制重新安装
-.cursor/automation/scripts/skill-install.sh --force nodejs
+.cursor/features/automation/scripts/skill-install.sh --force nodejs
 ```
 
 ### 技能激活
@@ -343,7 +343,7 @@ EOF
 4. **测试技能**
 ```bash
 # 安装技能
-.cursor/automation/scripts/skill-install.sh react-components
+.cursor/features/automation/scripts/skill-install.sh react-components
 
 # 验证安装
 ls -la .cursor/skills/active/react-components*
@@ -356,40 +356,40 @@ echo "Test React component development" | cursor-chat
 
 ### 技能列表
 ```bash
-.cursor/automation/scripts/skill-list.sh
+.cursor/features/automation/scripts/skill-list.sh
 # 显示所有可用技能
 
-.cursor/automation/scripts/skill-list.sh --installed
+.cursor/features/automation/scripts/skill-list.sh --installed
 # 显示已安装的技能
 
-.cursor/automation/scripts/skill-list.sh --category tech
+.cursor/features/automation/scripts/skill-list.sh --category tech
 # 显示技术类技能
 ```
 
 ### 技能状态检查
 ```bash
-.cursor/automation/scripts/skill-status.sh
+.cursor/features/automation/scripts/skill-status.sh
 # 检查技能安装状态和健康情况
 
-.cursor/automation/scripts/skill-status.sh nodejs
+.cursor/features/automation/scripts/skill-status.sh nodejs
 # 检查特定技能状态
 ```
 
 ### 技能更新
 ```bash
-.cursor/automation/scripts/skill-update.sh
+.cursor/features/automation/scripts/skill-update.sh
 # 更新所有已安装的技能
 
-.cursor/automation/scripts/skill-update.sh nodejs
+.cursor/features/automation/scripts/skill-update.sh nodejs
 # 更新特定技能
 ```
 
 ### 技能卸载
 ```bash
-.cursor/automation/scripts/skill-remove.sh unused-skill
+.cursor/features/automation/scripts/skill-remove.sh unused-skill
 # 卸载不需要的技能
 
-.cursor/automation/scripts/skill-cleanup.sh
+.cursor/features/automation/scripts/skill-cleanup.sh
 # 清理未使用的技能文件
 ```
 
@@ -402,7 +402,7 @@ echo "Test React component development" | cursor-chat
 cat .cursor/logs/skill-usage.json
 
 # 生成使用报告
-.cursor/automation/scripts/skill-report.sh
+.cursor/features/automation/scripts/skill-report.sh
 ```
 
 统计信息包括：

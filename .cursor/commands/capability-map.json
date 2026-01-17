@@ -2323,7 +2323,7 @@
     "description": "Version information and system metadata",
     "current_version": "4.3.0",
     "last_updated": "2026-01-16",
-    "total_mappings": 56,
+    "total_mappings": 57,
     "supported_scenarios": [
       "project_creation",
       "code_quality",
@@ -2333,6 +2333,7 @@
       "pattern_analysis",
       "batch_error_fix",
       "debug_assistant",
+      "learn_project_patterns",
       "performance",
       "webapp-testing",
       "api_development",

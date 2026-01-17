@@ -11,7 +11,7 @@
 
 **🌟 颠覆性的AI编程协作体验 - 让AI真正理解你的项目和需求**
 
-📚 **[快速开始](.cursor/docs/quick-start.md)** | **[基础使用](.cursor/docs/user-guide/basic-usage.md)** | **[详细指南](.cursor/docs/usage-guide.md)** | **[高级配置](.cursor/docs/user-guide/advanced-config.md)** | **[开发规范](.cursor/docs/development-guidelines.md)**
+📚 **[快速开始](docs/quick-start.md)** | **[基础使用](docs/user-guide/basic-usage.md)** | **[详细指南](docs/usage-guide.md)** | **[高级配置](docs/user-guide/advanced-config.md)** | **[开发规范](docs/development-guidelines.md)**
 
 采用 [Cursor 规则系统](https://cursor.com/cn/docs/context/rules) 定义的 AI 协作规范，结合单步多任务感知、智能缓存和规则系统，实现高效、安全的人机协作。
 
@@ -55,7 +55,7 @@ Cursor AI Rules 采用创新的双目录架构：
 - **👥 协作友好**: 团队共享配置，每个人的数据都是独立的
 - **⚡ 性能优化**: 本地缓存和学习数据提升响应速度
 
-**📖 [详细架构说明](.cursor/docs/project-growth-architecture.md)**
+**📖 [详细架构说明](docs/project-growth-architecture.md)**
 
 ## 🛠️ 开发指南
 
@@ -106,52 +106,52 @@ Cursor AI Rules 采用创新的双目录架构：
 
 ## ⚡ 核心特性
 
-| 特性 | 说明 | 效果 |
-|------|------|------|
-| 🧠 **统一智能命令入口** | `@master` 一键唤醒所有能力，自然语言驱动AI协作 | **零记忆负担** |
-| 🎯 **单步多任务感知** | 一次性完成所有项目分析，4层架构智能编排 | **Token节省 60%** |
-| ⚙️ **分层配置管理系统** | 5层配置体系，支持动态配置和验证 | **配置灵活性 95%↑** |
-| 🔧 **统一质量保障体系** | 分层质量检查(Lint/Format/Audit/Report) | **代码质量 80%↑** |
-| 🏗️ **4层架构重构** | Core/Config/Quality/Features清晰职责划分 | **维护性 75%↑** |
-| 💾 **智能缓存系统** | 基于文件变化的缓存机制 | **响应速度 5x提升** |
-| 🛡️ **优雅降级** | 环境检测和容错处理 | **稳定性 99.9%** |
-| 🔓 **开箱即用** | 无需配置，复制即用 | 支持任何项目、任何语言 |
+| 特性                   | 说明                                           | 效果                   |
+| ---------------------- | ---------------------------------------------- | ---------------------- |
+| 🧠 **统一智能命令入口** | `@master` 一键唤醒所有能力，自然语言驱动AI协作 | **零记忆负担**         |
+| 🎯 **单步多任务感知**   | 一次性完成所有项目分析，4层架构智能编排        | **Token节省 60%**      |
+| ⚙️ **分层配置管理系统** | 5层配置体系，支持动态配置和验证                | **配置灵活性 95%↑**    |
+| 🔧 **统一质量保障体系** | 分层质量检查(Lint/Format/Audit/Report)         | **代码质量 80%↑**      |
+| 🏗️ **4层架构重构**      | Core/Config/Quality/Features清晰职责划分       | **维护性 75%↑**        |
+| 💾 **智能缓存系统**     | 基于文件变化的缓存机制                         | **响应速度 5x提升**    |
+| 🛡️ **优雅降级**         | 环境检测和容错处理                             | **稳定性 99.9%**       |
+| 🔓 **开箱即用**         | 无需配置，复制即用                             | 支持任何项目、任何语言 |
 
 ## 📋 智能规则系统
 
-| 规则 | 描述 | 应用方式 | 状态 |
-|------|------|----------|------|
-| **master** | 智能Master控制器 - 自动感知需求并智能执行内部命令 | 始终应用 | ✅ |
-| **constitution** | AI共生宪法 - 人机协作核心原则 | 始终应用 | ✅ |
-| **philosophy** | 交流哲学与协作模式 | 始终应用 | ✅ |
-| **intelligent_evolution** | 智能演进系统 - 统一协调感知和进化 | 智能应用 | ✅ |
-| **generator** | 项目规则生成器 - 自动化生成个性化规则配置 | 代码文件 | ✅ |
-| **system_info** | 系统信息获取器 - 自动获取时间、路径、作者信息 | 始终应用 | ✅ |
-| **templates** | 配置模板 - 自动化生成项目初始化配置 | 配置文件 | ✅ |
-| **i18n** | 国际化支持系统 - 自动检测语言偏好并切换沟通 | 始终应用 | ✅ |
-| **platform_adapter** | 跨平台适配器 - 统一管理不同OS间的命令、路径和环境 | 始终应用 | ✅ |
-| **module_manager** | 规则管理系统 - 管理规则依赖关系、激活控制和扩展机制 | 始终应用 | ✅ |
-| **eslint** | ESLint代码质量检查 - 自动检测和修复JavaScript代码问题 | 始终应用 | ✅ |
-| **evolution-philosophy** | 演进哲学 - 规则演进的核心理念和原则 | 智能应用 | ✅ |
-| **evolution-manual** | 手动演进流程 - 人工触发的规则演进管理 | 智能应用 | ✅ |
-| **evolution-automation** | 自动化演进系统 - 基于感知数据的智能优化 | 智能应用 | ✅ |
-| **evolution-governance** | 演进治理机制 - 规则演进的安全保障和质量控制 | 智能应用 | ✅ |
-| **collaboration** | 团队协作规则 - 多开发者环境的最佳实践 | 智能应用 | ✅ |
-| **conversation_intent_analyzer** | 会话意图分析器 - 智能理解用户需求和意图 | 始终应用 | ✅ |
-| **vibe-coding** | VIBE Coding开发原则 - 文档驱动、测试先行、前后端对齐 | 代码文件 | ✅ |
-| **rules-router** | 规则路由系统 - 智能分发和管理规则请求 | 始终应用 | ✅ |
-| **javascript** | JavaScript/TypeScript开发规则 - 现代前端开发最佳实践 | 代码文件 | ✅ |
-| **python** | Python开发规则 - 后端开发和数据处理最佳实践 | 代码文件 | ✅ |
+| 规则                             | 描述                                                  | 应用方式 | 状态 |
+| -------------------------------- | ----------------------------------------------------- | -------- | ---- |
+| **master**                       | 智能Master控制器 - 自动感知需求并智能执行内部命令     | 始终应用 | ✅    |
+| **constitution**                 | AI共生宪法 - 人机协作核心原则                         | 始终应用 | ✅    |
+| **philosophy**                   | 交流哲学与协作模式                                    | 始终应用 | ✅    |
+| **intelligent_evolution**        | 智能演进系统 - 统一协调感知和进化                     | 智能应用 | ✅    |
+| **generator**                    | 项目规则生成器 - 自动化生成个性化规则配置             | 代码文件 | ✅    |
+| **system_info**                  | 系统信息获取器 - 自动获取时间、路径、作者信息         | 始终应用 | ✅    |
+| **templates**                    | 配置模板 - 自动化生成项目初始化配置                   | 配置文件 | ✅    |
+| **i18n**                         | 国际化支持系统 - 自动检测语言偏好并切换沟通           | 始终应用 | ✅    |
+| **platform_adapter**             | 跨平台适配器 - 统一管理不同OS间的命令、路径和环境     | 始终应用 | ✅    |
+| **module_manager**               | 规则管理系统 - 管理规则依赖关系、激活控制和扩展机制   | 始终应用 | ✅    |
+| **eslint**                       | ESLint代码质量检查 - 自动检测和修复JavaScript代码问题 | 始终应用 | ✅    |
+| **evolution-philosophy**         | 演进哲学 - 规则演进的核心理念和原则                   | 智能应用 | ✅    |
+| **evolution-manual**             | 手动演进流程 - 人工触发的规则演进管理                 | 智能应用 | ✅    |
+| **evolution-automation**         | 自动化演进系统 - 基于感知数据的智能优化               | 智能应用 | ✅    |
+| **evolution-governance**         | 演进治理机制 - 规则演进的安全保障和质量控制           | 智能应用 | ✅    |
+| **collaboration**                | 团队协作规则 - 多开发者环境的最佳实践                 | 智能应用 | ✅    |
+| **conversation_intent_analyzer** | 会话意图分析器 - 智能理解用户需求和意图               | 始终应用 | ✅    |
+| **vibe-coding**                  | VIBE Coding开发原则 - 文档驱动、测试先行、前后端对齐  | 代码文件 | ✅    |
+| **rules-router**                 | 规则路由系统 - 智能分发和管理规则请求                 | 始终应用 | ✅    |
+| **javascript**                   | JavaScript/TypeScript开发规则 - 现代前端开发最佳实践  | 代码文件 | ✅    |
+| **python**                       | Python开发规则 - 后端开发和数据处理最佳实践           | 代码文件 | ✅    |
 
-### 🎯 Skills扩展系统 (20个专业技能)
+### 🎯 Skills扩展系统 (24个专业技能)
 
-| 技能分类 | 技能数量 | 功能描述 | 状态 |
-|----------|----------|----------|------|
-| **文档处理** | 4个 | docx, pdf, pptx, xlsx - Office文档处理和转换 | ✅ 全部集成 |
-| **创意设计** | 5个 | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator | ✅ 全部集成 |
-| **AI集成** | 5个 | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification | ✅ 全部集成 |
-| **企业协作** | 3个 | brand-guidelines, internal-comms, doc-coauthoring | ✅ 全部集成 |
-| **测试开发** | 3个 | webapp-testing, web-artifacts-builder, evaluation | ✅ 全部集成 |
+| 技能分类     | 技能数量 | 功能描述                                                                          | 状态       |
+| ------------ | -------- | --------------------------------------------------------------------------------- | ---------- |
+| **文档处理** | 4个      | docx, pdf, pptx, xlsx - Office文档处理和转换                                      | ✅ 全部集成 |
+| **创意设计** | 5个      | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator | ✅ 全部集成 |
+| **AI集成**   | 5个      | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification | ✅ 全部集成 |
+| **企业协作** | 3个      | brand-guidelines, internal-comms, doc-coauthoring                                 | ✅ 全部集成 |
+| **测试开发** | 3个      | webapp-testing, web-artifacts-builder, evaluation                                 | ✅ 全部集成 |
 
 ## 🚀 快速开始
 
@@ -165,32 +165,7 @@ cd your-project
 @master 我想创建一个React项目
 ```
 
-**📖 [完整快速开始指南](.cursor/docs/quick-start.md)**
-
-## 🎛️ 核心特性
-
-### 🧠 统一智能入口
-`@master` 命令让AI自动理解你的意图，智能编排规则、技能和脚本。
-
-### 🎯 单步多任务感知
-一次分析完成所有项目感知，4层架构智能协作。
-
-### ⚙️ 分层配置管理系统
-5层配置体系，支持动态配置和验证。
-
-### 🔧 统一质量保障
-分层质量检查(Lint/Format/Audit/Report)。
-
-### 🏗️ 4层架构重构
-Core/Config/Quality/Features清晰职责划分。
-
-### 💾 智能缓存系统
-基于文件变化的缓存机制。
-
-### 🛡️ 开箱即用
-支持任何项目、任何语言，无需配置。
-
-**📖 [详细功能介绍](.cursor/docs/user-guide/core-features.md)**
+**📖 [完整快速开始指南](docs/quick-start.md)**
 
 ## 🔧 高级配置
 
@@ -287,16 +262,16 @@ ls -la .cursor/core/init.sh
 
 ## 📊 技术指标
 
-| 指标 | v1.0 | v4.2.0 | v4.3.0 | 提升 |
-|------|------|------|-------|------|
-| 初始化时间 | ~30s | ~5s | ~3s | **90%↑** |
-| 感知耗时 | ~10s | ~1s | ~0.5s | **95%↑** |
-| Token节省 | 基准 | 60%↓ | 70%↓ | **70%↑** |
-| 组件数量 | 42个 | 42个 | 38个 | **9.5%↓** |
-| 文件总数 | 100+ | 77个 | 171个 | **122%↑** |
-| 配置灵活性 | 基础 | 中等 | 高 | **95%↑** |
-| 维护性 | 基准 | +60% | +75% | **显著提升** |
-| 扩展性 | 有限 | 无限 | 智能 | **AI驱动** |
+| 指标       | v1.0 | v4.3.0 | v4.3.0 | 提升         |
+| ---------- | ---- | ------ | ------ | ------------ |
+| 初始化时间 | ~30s | ~5s    | ~3s    | **90%↑**     |
+| 感知耗时   | ~10s | ~1s    | ~0.5s  | **95%↑**     |
+| Token节省  | 基准 | 60%↓   | 70%↓   | **70%↑**     |
+| 组件数量   | 42个 | 42个   | 38个   | **9.5%↓**    |
+| 文件总数   | 100+ | 77个   | 171个  | **122%↑**    |
+| 配置灵活性 | 基础 | 中等   | 高     | **95%↑**     |
+| 维护性     | 基准 | +60%   | +75%   | **显著提升** |
+| 扩展性     | 有限 | 无限   | 智能   | **AI驱动**   |
 
 ## 📋 环境要求
 

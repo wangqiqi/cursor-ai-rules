@@ -206,7 +206,7 @@ chmod +x .cursor/features/hooks/custom/my-hook.sh
 
 2. **注册钩子**
 ```json
-// 编辑 .cursor/automation/config.json
+// 编辑 .cursor/config/global.json
 {
   "version": 1,
   "hooks": {

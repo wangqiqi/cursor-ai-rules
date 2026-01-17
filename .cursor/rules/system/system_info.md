@@ -7,7 +7,7 @@ alwaysApply: true
 
 # 🔧 系统信息获取器 (System Information Manager)
 
-*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 核心功能概述 (Core Functions)
 

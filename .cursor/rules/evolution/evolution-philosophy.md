@@ -6,7 +6,7 @@ alwaysApply: false
 
 # 🧠 演进哲学 (Evolution Philosophy)
 
-*版本: v4.2.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
+*版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
 ## 核心理念 (Core Philosophy)
 
