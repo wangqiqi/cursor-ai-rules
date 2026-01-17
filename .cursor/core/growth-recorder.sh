@@ -60,8 +60,8 @@ EOF
     fi
 
     # 初始配置文件 (只有在不存在时创建)
-    if [ ! -f "$GROWTH_DIR/learning/profile.json" ]; then
-        cat > "$GROWTH_DIR/learning/profile.json" << EOF
+    if [ ! -f "$GROWTH_DIR/ai-profile.json" ]; then
+        cat > "$GROWTH_DIR/ai-profile.json" << EOF
 {
   "profile": {
     "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -229,7 +229,7 @@ EOF
 )
 
     # 追加到学习文件
-    local learning_file="$GROWTH_DIR/learning/master_interactions.json"
+    local learning_file="$GROWTH_DIR/ai-master-interactions.json"
     echo "$interaction_record" >> "$learning_file"
     echo -e "${GREEN}✅ 交互数据已记录${NC}"
 
@@ -242,7 +242,7 @@ update_statistics() {
     local success="$1"
     local intent_type="$2"
 
-    local profile_file="$GROWTH_DIR/learning/profile.json"
+    local profile_file="$GROWTH_DIR/ai-profile.json"
     local metrics_file="$GROWTH_DIR/growth/metrics.json"
 
     if [ -f "$profile_file" ] && [ -f "$metrics_file" ]; then
@@ -300,7 +300,7 @@ learn_from_input() {
 EOF
 )
 
-    echo "$learning_record" >> "$GROWTH_DIR/learning/patterns.json"
+    echo "$learning_record" >> "$GROWTH_DIR/ai-patterns.json"
     echo -e "${GREEN}✅ 学习数据已记录${NC}"
 }
 
@@ -324,7 +324,7 @@ show_stats() {
     if [ -f "$GROWTH_DIR/learning/profile.json" ]; then
         echo ""
         echo -e "${PURPLE}🎯 最常使用的意图:${NC}"
-        jq -r '.profile.common_intents | to_entries | sort_by(.value) | reverse[] | "  \(.key): \(.value)次"' "$GROWTH_DIR/learning/profile.json" 2>/dev/null || echo "  无数据"
+        jq -r '.profile.common_intents | to_entries | sort_by(.value) | reverse[] | "  \(.key): \(.value)次"' "$GROWTH_DIR/ai-profile.json" 2>/dev/null || echo "  无数据"
     fi
 
     echo ""

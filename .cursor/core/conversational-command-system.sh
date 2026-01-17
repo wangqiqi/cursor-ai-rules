@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # VIBE命令配置
-VIBE_COMMAND_DIR="$CURSOR_GROWTH/vibe_commands"
+VIBE_COMMAND_DIR="$SERVICES_DIR"
 VIBE_SESSIONS_DIR="$VIBE_COMMAND_DIR/sessions"
 VIBE_PROJECTS_DIR="$VIBE_COMMAND_DIR/projects"
 
@@ -465,7 +465,8 @@ EOF
 
     # 更新项目索引
     local temp_index=$(mktemp)
-    jq --arg id "$project_id" --arg name "$project_name" --arg template "$template" '.projects[$id] = {"name": $name, "template": $template, "created_at": "'$(date -Iseconds)'"} | .total_projects += 1' "$VIBE_PROJECTS_DIR/index.json" > "$temp_index"
+    local current_time="$(date -Iseconds)"
+    jq --arg id "$project_id" --arg name "$project_name" --arg template "$template" --arg timestamp "$current_time" '.projects[$id] = {"name": $name, "template": $template, "created_at": $timestamp} | .total_projects += 1' "$VIBE_PROJECTS_DIR/index.json" > "$temp_index"
     mv "$temp_index" "$VIBE_PROJECTS_DIR/index.json"
 
     echo "$project_id"
@@ -495,7 +496,8 @@ EOF
 
     # 更新会话索引
     local temp_index=$(mktemp)
-    jq --arg id "$session_id" --arg project "$project_id" '.sessions[$id] = {"project_id": $project, "created_at": "'$(date -Iseconds)'", "status": "active"} | .total_sessions += 1' "$VIBE_SESSIONS_DIR/index.json" > "$temp_index"
+    local current_time="$(date -Iseconds)"
+    jq --arg id "$session_id" --arg project "$project_id" --arg timestamp "$current_time" '.sessions[$id] = {"project_id": $project, "created_at": $timestamp, "status": "active"} | .total_sessions += 1' "$VIBE_SESSIONS_DIR/index.json" > "$temp_index"
     mv "$temp_index" "$VIBE_SESSIONS_DIR/index.json"
 
     echo "$session_id"

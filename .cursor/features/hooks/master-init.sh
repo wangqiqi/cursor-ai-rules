@@ -41,17 +41,17 @@ source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
         mkdir -p "$GROWTH_DIR/monitoring"
 
         # 创建学习配置文件
-        cat > "$GROWTH_DIR/learning/profile.json" << 'EOF'
+        cat > "$GROWTH_DIR/ai-profile.json" << EOF
 {
   "version": "1.0.0",
-  "created_at": "'$(date '+%Y-%m-%d %H:%M:%S')'",
+  "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
   "user_profile": {
     "learning_style": "adaptive",
     "communication_preference": "natural_language",
     "expertise_level": "intermediate"
   },
   "project_profile": {
-    "name": "'$(basename "$PROJECT_ROOT")'",
+    "name": "$(basename "$PROJECT_ROOT")",
     "type": "unknown",
     "development_stage": "initialization"
   }
@@ -59,9 +59,9 @@ source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 EOF
 
         # 创建监控配置文件
-        cat > "$GROWTH_DIR/monitoring/metrics.json" << 'EOF'
+        cat > "$GROWTH_DIR/analytics-monitoring-metrics.json" << EOF
 {
-  "monitoring_start": "'$(date '+%Y-%m-%d %H:%M:%S')'",
+  "monitoring_start": "'"$(date '+%Y-%m-%d %H:%M:%S')"'",
   "total_interactions": 0,
   "performance_metrics": {
     "average_response_time_ms": 0,

@@ -128,11 +128,11 @@ create_system_defaults() {
     if [ ! -f "$config_file" ]; then
         echo "📝 创建系统默认配置..."
 
-        cat > "$config_file" << 'EOF'
+        cat > "$config_file" << EOF
 {
   "version": "1.0.0",
   "metadata": {
-    "created_at": "'$(date '+%Y-%m-%d %H:%M:%S')'",
+    "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
     "description": "Cursor AI Rules 系统默认配置",
     "author": "System"
   },

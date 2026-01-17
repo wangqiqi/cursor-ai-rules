@@ -13,10 +13,10 @@ source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/context-pool-manager.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 代理编排配置
-AGENT_CONFIG_DIR="$CURSOR_GROWTH/agents"
-AGENT_COMMUNICATION_LOG="$AGENT_CONFIG_DIR/communication.log"
-AGENT_PERFORMANCE_METRICS="$AGENT_CONFIG_DIR/performance.json"
+# 代理编排配置 (合并到ai目录)
+AGENT_CONFIG_DIR="$AI_DIR"
+AGENT_COMMUNICATION_LOG="$AGENT_CONFIG_DIR/ai-agent-communication.log"
+AGENT_PERFORMANCE_METRICS="$AGENT_CONFIG_DIR/ai-agent-performance.json"
 
 # 8个核心代理定义
 declare -A AGENT_ARCHITECTURE=(
@@ -52,11 +52,8 @@ declare -A TASK_STATES=(
 init_agent_orchestration_engine() {
     smart_echo "初始化代理编排引擎..." "processing"
 
-    # 创建代理目录结构
+    # 创建代理目录结构 (只创建一级目录)
     mkdir -p "$AGENT_CONFIG_DIR"
-    mkdir -p "$AGENT_CONFIG_DIR/agents"
-    mkdir -p "$AGENT_CONFIG_DIR/tasks"
-    mkdir -p "$AGENT_CONFIG_DIR/workflows"
 
     # 初始化代理配置文件
     init_agent_configs
@@ -78,7 +75,7 @@ init_agent_configs() {
     smart_echo "初始化代理配置..." "info"
 
     for agent_id in "${!AGENT_ARCHITECTURE[@]}"; do
-        agent_config="$AGENT_CONFIG_DIR/agents/${agent_id}.json"
+        agent_config="$AGENT_CONFIG_DIR/ai-agent-${agent_id}.json"
 
         if [[ ! -f "$agent_config" ]]; then
             cat > "$agent_config" <<EOF
@@ -227,7 +224,7 @@ get_agent_communication_channels() {
 init_task_queue() {
     smart_echo "初始化任务队列..." "info"
 
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
 
     if [[ ! -f "$task_queue_file" ]]; then
         cat > "$task_queue_file" <<EOF
@@ -347,7 +344,7 @@ EOF
 add_task_to_queue() {
     local task_object="$1"
 
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
 
     # 更新队列
     local temp_queue=$(mktemp)
@@ -389,7 +386,7 @@ trigger_task_assignment() {
 
 # 获取待处理任务
 get_pending_tasks() {
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
     jq '.queue | map(select(.status == "pending"))' "$task_queue_file"
 }
 
@@ -432,7 +429,7 @@ calculate_agent_task_match() {
     local task_type="$3"
     local required_capabilities="$4"
 
-    local agent_config="$AGENT_CONFIG_DIR/agents/${agent_id}.json"
+    local agent_config="$AGENT_CONFIG_DIR/ai-agent-${agent_id}.json"
 
     # 能力匹配度 (权重: 40%)
     local capability_match=$(calculate_capability_match "$agent_config" "$required_capabilities")
@@ -529,7 +526,7 @@ calculate_load_match() {
     local agent_id="$1"
 
     # 检查代理当前是否有任务在执行
-    local active_tasks=$(jq '.active_tasks | keys | length' "$AGENT_CONFIG_DIR/tasks/queue.json" 2>/dev/null || echo "0")
+    local active_tasks=$(jq '.active_tasks | keys | length' "$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json" 2>/dev/null || echo "0")
 
     # 如果代理当前有任务在执行，降低优先级
     if (( active_tasks > 0 )); then
@@ -565,12 +562,13 @@ update_task_status() {
     local new_status="$2"
     local assigned_agent="${3:-}"
 
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
     temp_file=$(mktemp)
 
     jq --arg task_id "$task_id" --arg status "$new_status" --arg agent "$assigned_agent" '
         if $agent != "" then
-            .queue = (.queue | map(if .task_id == $task_id then .status = $status | .assigned_agent = $agent | .assigned_at = "'$(date -Iseconds)'" else . end))
+            local current_time="$(date -Iseconds)"
+            .queue = (.queue | map(if .task_id == $task_id then .status = $status | .assigned_agent = $agent | .assigned_at = $current_time else . end))
         else
             .queue = (.queue | map(if .task_id == $task_id then .status = $status else . end))
         end
@@ -584,7 +582,7 @@ update_agent_status() {
     local agent_id="$1"
     local new_status="$2"
 
-    agent_config="$AGENT_CONFIG_DIR/agents/${agent_id}.json"
+    agent_config="$AGENT_CONFIG_DIR/ai-agent-${agent_id}.json"
     temp_config=$(mktemp)
 
     jq --arg status "$new_status" --arg timestamp "$(date -Iseconds)" '.status = $status | .last_active = $timestamp' "$agent_config" > "$temp_config"
@@ -711,7 +709,7 @@ fail_task() {
 move_task_to_completed() {
     local task_id="$1"
 
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
     temp_file=$(mktemp)
 
     # 获取完成的任务
@@ -732,7 +730,7 @@ move_task_to_failed() {
     local task_id="$1"
     local error_message="$2"
 
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
     temp_file=$(mktemp)
 
     # 获取失败的任务
@@ -756,7 +754,7 @@ update_agent_performance() {
     local agent_id="$1"
     local result="$2"
 
-    agent_config="$AGENT_CONFIG_DIR/agents/${agent_id}.json"
+    agent_config="$AGENT_CONFIG_DIR/ai-agent-${agent_id}.json"
     temp_config=$(mktemp)
 
     if [[ "$result" == "success" ]]; then
@@ -811,7 +809,7 @@ log_agent_communication() {
 get_task_details() {
     local task_id="$1"
 
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
     jq --arg task_id "$task_id" '.queue[] | select(.task_id == $task_id) // (.completed_tasks[] | select(.task_id == $task_id)) // (.failed_tasks[] | select(.task_id == $task_id)) // {}' "$task_queue_file"
 }
 
@@ -929,7 +927,7 @@ get_agents_status() {
 
 # 获取任务队列状态
 get_task_queue_status() {
-    task_queue_file="$AGENT_CONFIG_DIR/tasks/queue.json"
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
 
     if [[ ! -f "$task_queue_file" ]]; then
         echo "{}"

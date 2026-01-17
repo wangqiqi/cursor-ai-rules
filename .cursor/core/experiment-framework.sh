@@ -13,11 +13,11 @@ source "$SCRIPT_DIR/adaptive-optimization-engine.sh"
 source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 实验框架配置
-EXPERIMENT_DIR="$CURSOR_GROWTH/experiments"
-EXPERIMENT_CONFIG_DIR="$EXPERIMENT_DIR/config"
-EXPERIMENT_DATA_DIR="$EXPERIMENT_DIR/data"
-EXPERIMENT_RESULTS_DIR="$EXPERIMENT_DIR/results"
+# 实验框架配置 (合并到research目录)
+EXPERIMENT_DIR="$RESEARCH_DIR"
+EXPERIMENT_CONFIG_FILE="$EXPERIMENT_DIR/research-experiment-config.json"
+EXPERIMENT_DATA_FILE="$EXPERIMENT_DIR/research-experiment-data.json"
+EXPERIMENT_RESULTS_FILE="$EXPERIMENT_DIR/research-experiment-results.json"
 
 # 实验参数
 DEFAULT_EXPERIMENT_DURATION="${DEFAULT_EXPERIMENT_DURATION:-3600}"  # 1小时默认实验时长
@@ -47,10 +47,8 @@ declare -A EXPERIMENT_STATES=(
 init_experiment_framework() {
     smart_echo "初始化实验框架..." "processing"
 
-    # 创建实验目录结构
-    mkdir -p "$EXPERIMENT_CONFIG_DIR"
-    mkdir -p "$EXPERIMENT_DATA_DIR"
-    mkdir -p "$EXPERIMENT_RESULTS_DIR"
+    # 创建实验目录结构 (只创建一级目录)
+    mkdir -p "$EXPERIMENT_DIR"
 
     # 初始化实验配置
     init_experiment_config
@@ -69,7 +67,7 @@ init_experiment_framework() {
 
 # 初始化实验配置
 init_experiment_config() {
-    local config_file="$EXPERIMENT_CONFIG_DIR/framework_config.json"
+    local config_file="$EXPERIMENT_DIR/research-experiment-framework_config.json"
 
     if [[ ! -f "$config_file" ]]; then
         cat > "$config_file" <<EOF
@@ -228,7 +226,7 @@ EOF
 )
 
     # 保存实验配置
-    echo "$experiment_record" > "$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
+    echo "$experiment_record" > "$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
 
     # 添加到实验队列
     add_experiment_to_queue "$experiment_id"
@@ -352,7 +350,7 @@ start_experiment() {
 
     smart_echo "启动实验: $experiment_id" "processing"
 
-    local exp_config="$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
+    local exp_config="$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
 
     if [[ ! -f "$exp_config" ]]; then
         smart_echo "实验配置不存在: $experiment_id" "error"
@@ -383,7 +381,7 @@ start_experiment() {
 init_experiment_data_collection() {
     local experiment_id="$1"
 
-    local data_file="$EXPERIMENT_DATA_DIR/${experiment_id}_data.json"
+    local data_file="$EXPERIMENT_DIR/research-experiment-data-${experiment_id}_data.json"
 
     cat > "$data_file" <<EOF
 {
@@ -418,7 +416,7 @@ get_active_experiments() {
 collect_experiment_data() {
     local experiment_id="$1"
 
-    local data_file="$EXPERIMENT_DATA_DIR/${experiment_id}_data.json"
+    local data_file="$EXPERIMENT_DIR/research-experiment-data-${experiment_id}_data.json"
     local current_metrics=$(get_realtime_performance_stats)
     local timestamp=$(date -Iseconds)
 
@@ -432,20 +430,21 @@ collect_experiment_data() {
 check_experiment_completion() {
     local experiment_id="$1"
 
-    local exp_config="$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
-    local data_file="$EXPERIMENT_DATA_DIR/${experiment_id}_data.json"
+    local exp_config="$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
+    local data_file="$EXPERIMENT_DIR/research-experiment-data-${experiment_id}_data.json"
 
     # 检查样本大小
     local sample_size=$(jq -r '.total_samples // 0' "$data_file")
-    local min_samples=$(jq -r '.parameters.min_sample_size // '$MIN_SAMPLE_SIZE'' "$exp_config")
+    local min_samples=$(jq -r ".parameters.min_sample_size // $MIN_SAMPLE_SIZE" "$exp_config")
 
     if (( sample_size < min_samples )); then
         return  # 样本不足，继续收集
     fi
 
     # 检查实验时长
-    local start_time=$(jq -r '.actual_start // "'$(date -Iseconds)'"' "$exp_config")
-    local duration=$(jq -r '.duration_seconds // '$DEFAULT_EXPERIMENT_DURATION'' "$exp_config")
+    local current_time="$(date -Iseconds)"
+    local start_time=$(jq -r '.actual_start // "'"$current_time"'"' "$exp_config")
+    local duration=$(jq -r ".duration_seconds // $DEFAULT_EXPERIMENT_DURATION" "$exp_config")
     local elapsed=$(( $(date +%s) - $(date -d "$start_time" +%s 2>/dev/null || echo "$(date +%s)") ))
 
     if (( elapsed >= duration )); then
@@ -468,8 +467,8 @@ complete_experiment() {
 
     # 记录完成时间
     local temp_config=$(mktemp)
-    jq --arg end_time "$(date -Iseconds)" '.completed_at = $end_time' "$EXPERIMENT_CONFIG_DIR/${experiment_id}.json" > "$temp_config"
-    mv "$temp_config" "$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
+    jq --arg end_time "$(date -Iseconds)" '.completed_at = $end_time' "$EXPERIMENT_DIR/research-experiment-${experiment_id}.json" > "$temp_config"
+    mv "$temp_config" "$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
 
     # 清理实验数据（可选）
     cleanup_experiment_data "$experiment_id"
@@ -483,8 +482,8 @@ analyze_experiment_results() {
 
     smart_echo "分析实验结果: $experiment_id" "info"
 
-    local exp_config="$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
-    local data_file="$EXPERIMENT_DATA_DIR/${experiment_id}_data.json"
+    local exp_config="$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
+    local data_file="$EXPERIMENT_DIR/research-experiment-data-${experiment_id}_data.json"
 
     # 提取实验数据
     local baseline_metrics=$(jq -r '.baseline_metrics' "$exp_config")
@@ -494,7 +493,7 @@ analyze_experiment_results() {
     local analysis_result=$(perform_statistical_analysis "$baseline_metrics" "$experiment_data")
 
     # 保存分析结果
-    local results_file="$EXPERIMENT_RESULTS_DIR/${experiment_id}_results.json"
+    local results_file="$EXPERIMENT_DIR/research-experiment-results-${experiment_id}_results.json"
     echo "$analysis_result" > "$results_file"
 
     # 更新实验配置中的结果
@@ -612,9 +611,10 @@ check_experiment_timeouts() {
     local current_time=$(date +%s)
 
     for exp_id in $running_experiments; do
-        local exp_config="$EXPERIMENT_CONFIG_DIR/${exp_id}.json"
-        local start_time_str=$(jq -r '.actual_start // "'$(date -Iseconds)'"' "$exp_config")
-        local duration=$(jq -r '.duration_seconds // '$DEFAULT_EXPERIMENT_DURATION'' "$exp_config")
+        local exp_config="$EXPERIMENT_DIR/research-experiment-${exp_id}.json"
+        local current_time="$(date -Iseconds)"
+        local start_time_str=$(jq -r '.actual_start // "'"$current_time"'"' "$exp_config")
+        local duration=$(jq -r ".duration_seconds // $DEFAULT_EXPERIMENT_DURATION" "$exp_config")
 
         local start_time=$(date -d "$start_time_str" +%s 2>/dev/null || echo "$current_time")
         local elapsed=$((current_time - start_time))
@@ -631,7 +631,7 @@ evaluate_experiment_results() {
     local completed_experiments=$(find "$EXPERIMENT_CONFIG_DIR" -name "*.json" -exec jq -r 'select(.status == "completed") | .experiment_id' {} \; 2>/dev/null)
 
     for exp_id in $completed_experiments; do
-        local results_file="$EXPERIMENT_RESULTS_DIR/${exp_id}_results.json"
+        local results_file="$EXPERIMENT_DIR/research-experiment-results-${exp_id}_results.json"
 
         if [[ -f "$results_file" ]]; then
             # 检查是否满足成功标准
@@ -656,8 +656,8 @@ fail_experiment() {
     update_experiment_status "$experiment_id" "failed"
 
     local temp_config=$(mktemp)
-    jq --arg reason "$reason" --arg end_time "$(date -Iseconds)" '.failure_reason = $reason | .completed_at = $end_time' "$EXPERIMENT_CONFIG_DIR/${experiment_id}.json" > "$temp_config"
-    mv "$temp_config" "$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
+    jq --arg reason "$reason" --arg end_time "$(date -Iseconds)" '.failure_reason = $reason | .completed_at = $end_time' "$EXPERIMENT_DIR/research-experiment-${experiment_id}.json" > "$temp_config"
+    mv "$temp_config" "$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
 
     smart_echo "实验失败: $experiment_id ($reason)" "error"
 }
@@ -667,7 +667,7 @@ update_experiment_status() {
     local experiment_id="$1"
     local new_status="$2"
 
-    local exp_config="$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
+    local exp_config="$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
     local temp_config=$(mktemp)
 
     jq --arg status "$new_status" ".status = \"$new_status\"" "$exp_config" > "$temp_config"
@@ -679,7 +679,7 @@ cleanup_experiment_data() {
     local experiment_id="$1"
 
     # 可选：删除实验数据文件以节省空间
-    # rm -f "$EXPERIMENT_DATA_DIR/${experiment_id}_data.json"
+    # rm -f "$EXPERIMENT_DIR/research-experiment-data-${experiment_id}_data.json"
     true
 }
 
@@ -691,7 +691,7 @@ get_experiment_status() {
 
     if [[ -n "$experiment_id" ]]; then
         # 获取特定实验状态
-        local exp_config="$EXPERIMENT_CONFIG_DIR/${experiment_id}.json"
+        local exp_config="$EXPERIMENT_DIR/research-experiment-${experiment_id}.json"
         if [[ -f "$exp_config" ]]; then
             cat "$exp_config"
         else

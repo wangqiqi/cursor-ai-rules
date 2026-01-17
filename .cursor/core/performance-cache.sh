@@ -10,7 +10,7 @@ source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 set -e
 
 # 缓存配置
-CACHE_DIR="$CURSOR_GROWTH/cache"
+CACHE_DIR="$ANALYTICS_DIR"
 CACHE_TTL=300  # 5分钟缓存有效期
 PERFORMANCE_LOG="$CACHE_DIR/performance.log"
 

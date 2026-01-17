@@ -58,7 +58,7 @@ for pattern in "${dangerous_patterns[@]}"; do
         echo "🚫 检测到危险命令，已阻止: $pattern" >&2
 
     # 记录安全事件
-    mkdir -p "$CURSOR_GROWTH/logs"
+    mkdir -p "$ANALYTICS_DIR"
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
     echo "[$timestamp] SECURITY_BLOCK: $command (pattern: $pattern)" >> "$CURSOR_GROWTH/logs/security-events.log"
 

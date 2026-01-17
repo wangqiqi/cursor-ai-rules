@@ -42,7 +42,7 @@ echo
 
 # 测试3: 检查日志目录
 echo "📊 测试3: 检查日志目录..."
-if [[ -d "$CURSOR_GROWTH/logs" ]]; then
+if [[ -d "$ANALYTICS_DIR" ]]; then
     echo "✅ 日志目录存在"
     log_files=$(ls $CURSOR_GROWTH/logs/*.log 2>/dev/null | wc -l)
     echo "   现有日志文件: $log_files"

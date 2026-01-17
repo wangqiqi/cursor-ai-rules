@@ -17,7 +17,7 @@ if [[ -z "$response_text" ]]; then
 fi
 
 # 创建日志目录（如果不存在）
-mkdir -p "$CURSOR_GROWTH/logs"
+mkdir -p "$ANALYTICS_DIR"
 
 # 定义规则列表（基于项目中的规则文件）
 declare -a rules_list=(

@@ -17,7 +17,7 @@ if [[ -z "$prompt" ]]; then
 fi
 
 # 创建日志目录（如果不存在）
-mkdir -p "$CURSOR_GROWTH/logs"
+mkdir -p "$ANALYTICS_DIR"
 
 # 定义敏感信息模式
 sensitive_patterns=(

@@ -44,13 +44,13 @@ echo "$log_entry" >> $CURSOR_GROWTH/logs/command-execution.log
 
 # 如果执行时间过长，记录警告
 if [[ $duration -gt 10000 ]]; then
-    mkdir -p "$CURSOR_GROWTH/logs"
+    mkdir -p "$ANALYTICS_DIR"
     echo "[$timestamp] SLOW_COMMAND: $command took ${duration}ms" >> $CURSOR_GROWTH/logs/performance-warnings.log
 fi
 
 # 如果命令失败（可以从输出中检测），记录错误
 if [[ "$output" == *"error"* ]] || [[ "$output" == *"Error"* ]] || [[ "$output" == *"ERROR"* ]]; then
-    mkdir -p "$CURSOR_GROWTH/logs"
+    mkdir -p "$ANALYTICS_DIR"
     echo "[$timestamp] COMMAND_ERROR: $command" >> $CURSOR_GROWTH/logs/command-errors.log
     echo "Error output: $output" >> $CURSOR_GROWTH/logs/command-errors.log
 fi

@@ -154,7 +154,7 @@ generate_report() {
     local timestamp=$(date '+%Y%m%d_%H%M%S')
     local report_file="$CURSOR_GROWTH/compliance_reports/architecture_check_$timestamp.json"
 
-    mkdir -p "$CURSOR_GROWTH/compliance_reports"
+    mkdir -p "$ANALYTICS_DIR"
 
     cat > "$report_file" << EOF
 {

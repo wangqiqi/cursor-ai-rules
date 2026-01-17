@@ -13,7 +13,7 @@ loop_count=$(echo "$input" | jq -r '.loop_count // 0')
 conversation_id=$(echo "$input" | jq -r '.conversation_id // empty')
 
 # 创建日志目录（如果不存在）
-mkdir -p "$CURSOR_GROWTH/logs"
+mkdir -p "$ANALYTICS_DIR"
 
 # 记录会话结束
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')

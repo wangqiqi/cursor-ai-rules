@@ -44,6 +44,14 @@ export CONFIG_DIR="$CURSOR_DIR/config"
 export CORE_DIR="$CURSOR_DIR/core"
 export DOCS_DIR="$CURSOR_DIR/docs"
 
+# 新增合并目录路径变量
+export AI_DIR="$CURSOR_GROWTH/ai"
+export SERVICES_DIR="$CURSOR_GROWTH/services"
+export ANALYTICS_DIR="$CURSOR_GROWTH/analytics"
+export RESEARCH_DIR="$CURSOR_GROWTH/research"
+export INTEGRATIONS_DIR="$CURSOR_GROWTH/integrations"
+export CONFIG_DATA_DIR="$CURSOR_GROWTH/config"
+
 # 调试信息 (仅在DEBUG=1时显示)
 if [[ "${DEBUG:-0}" == "1" ]]; then
     echo "🔍 Path Config Debug:"
@@ -54,5 +62,11 @@ if [[ "${DEBUG:-0}" == "1" ]]; then
     echo "  CONFIG_DIR: $CONFIG_DIR"
     echo "  CORE_DIR: $CORE_DIR"
     echo "  DOCS_DIR: $DOCS_DIR"
+    echo "  AI_DIR: $AI_DIR"
+    echo "  SERVICES_DIR: $SERVICES_DIR"
+    echo "  ANALYTICS_DIR: $ANALYTICS_DIR"
+    echo "  RESEARCH_DIR: $RESEARCH_DIR"
+    echo "  INTEGRATIONS_DIR: $INTEGRATIONS_DIR"
+    echo "  CONFIG_DATA_DIR: $CONFIG_DATA_DIR"
     echo ""
 fi

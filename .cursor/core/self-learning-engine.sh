@@ -14,7 +14,7 @@ source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # 学习引擎配置
-LEARNING_DIR="$CURSOR_GROWTH/learning"
+LEARNING_DIR="$AI_DIR"
 LEARNING_MODELS_DIR="$LEARNING_DIR/models"
 LEARNING_DATA_DIR="$LEARNING_DIR/data"
 LEARNING_METRICS_DIR="$LEARNING_DIR/metrics"
@@ -294,13 +294,13 @@ collect_learning_data() {
     smart_echo "收集学习数据..." "info"
 
     # 从性能监控系统收集数据
-    local performance_data=$(get_realtime_performance_stats)
+    local performance_data=$(get_realtime_performance_stats 2>/dev/null || echo "{}")
 
     # 从代理编排引擎收集数据
-    local orchestration_data=$(get_orchestration_status)
+    local orchestration_data=$(get_orchestration_status || echo "{}")
 
     # 从上下文池收集数据
-    local context_data=$(get_pool_performance_stats)
+    local context_data=$(get_pool_performance_stats || echo "{}")
 
     # 从用户交互收集数据
     local interaction_data=$(collect_user_interaction_data)
@@ -355,6 +355,8 @@ calculate_data_quality_score() {
 
     # 计算综合质量分数
     local quality_score=$(echo "scale=2; ($completeness + $consistency + $timeliness) / 3" | bc 2>/dev/null || echo "0.8")
+    # 确保输出格式正确
+    quality_score=$(printf "%.2f" "$quality_score" 2>/dev/null || echo "0.80")
 
     echo "$quality_score"
 }
@@ -664,7 +666,8 @@ get_data_quality_summary() {
 
 # 获取下次学习周期时间
 get_next_learning_cycle_time() {
-    local last_cycle=$(jq -r '.learning_cycles.last_cycle // "'$(date -Iseconds)'"' "$LEARNING_METRICS_DIR/learning_metrics.json" 2>/dev/null)
+    local current_time="$(date -Iseconds)"
+    local last_cycle=$(jq -r '.learning_cycles.last_cycle // "'"$current_time"'"' "$LEARNING_METRICS_DIR/learning_metrics.json" 2>/dev/null)
     local next_cycle=$(date -d "$last_cycle + $ADAPTATION_CYCLE seconds" -Iseconds 2>/dev/null || date -Iseconds)
 
     echo "\"$next_cycle\""

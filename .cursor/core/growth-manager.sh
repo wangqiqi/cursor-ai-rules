@@ -174,8 +174,8 @@ EOF
 # 创建初始配置文件
 create_initial_configs() {
     # 创建初始学习档案（如果不存在）
-    if [ ! -f "$GROWTH_DIR/learning/profile.json" ]; then
-        cat > "$GROWTH_DIR/learning/profile.json" << EOF
+    if [ ! -f "$GROWTH_DIR/ai-profile.json" ]; then
+        cat > "$GROWTH_DIR/ai-profile.json" << EOF
 {
   "profile": {
     "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -415,7 +415,7 @@ verify_directory_integrity() {
     # 检查关键文件
     local critical_files=(
         "README.md"
-        "learning/profile.json"
+        "ai-profile.json"
         "growth/metrics.json"
     )
 

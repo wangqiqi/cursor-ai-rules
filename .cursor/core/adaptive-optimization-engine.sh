@@ -13,11 +13,11 @@ source "$SCRIPT_DIR/self-learning-engine.sh"
 source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 优化引擎配置
-OPTIMIZATION_DIR="$CURSOR_GROWTH/optimization"
-OPTIMIZATION_CONFIG_DIR="$OPTIMIZATION_DIR/config"
-OPTIMIZATION_EXPERIMENTS_DIR="$OPTIMIZATION_DIR/experiments"
-OPTIMIZATION_BACKUPS_DIR="$OPTIMIZATION_DIR/backups"
+# 优化引擎配置 (合并到research目录)
+OPTIMIZATION_DIR="$RESEARCH_DIR"
+OPTIMIZATION_CONFIG_FILE="$OPTIMIZATION_DIR/research-optimization-config.json"
+OPTIMIZATION_EXPERIMENTS_FILE="$OPTIMIZATION_DIR/research-optimization-experiments.json"
+OPTIMIZATION_BACKUPS_FILE="$OPTIMIZATION_DIR/research-optimization-backups.json"
 
 # 优化参数
 OPTIMIZATION_CYCLE="${OPTIMIZATION_CYCLE:-7200}"  # 2小时优化周期
@@ -37,10 +37,8 @@ declare -A OPTIMIZATION_STRATEGIES=(
 init_adaptive_optimization_engine() {
     smart_echo "初始化自适应优化引擎..." "processing"
 
-    # 创建优化目录结构
-    mkdir -p "$OPTIMIZATION_CONFIG_DIR"
-    mkdir -p "$OPTIMIZATION_EXPERIMENTS_DIR"
-    mkdir -p "$OPTIMIZATION_BACKUPS_DIR"
+    # 创建优化目录结构 (只创建一级目录)
+    mkdir -p "$OPTIMIZATION_DIR"
 
     # 初始化优化配置
     init_optimization_config
@@ -59,7 +57,7 @@ init_adaptive_optimization_engine() {
 
 # 初始化优化配置
 init_optimization_config() {
-    local config_file="$OPTIMIZATION_CONFIG_DIR/optimization_config.json"
+    local config_file="$OPTIMIZATION_DIR/research-optimization-optimization_config.json"
 
     if [[ ! -f "$config_file" ]]; then
         cat > "$config_file" <<EOF
@@ -117,7 +115,7 @@ EOF
 
 # 初始化实验框架
 init_experiment_framework() {
-    local experiment_config="$OPTIMIZATION_CONFIG_DIR/experiment_framework.json"
+    local experiment_config="$OPTIMIZATION_DIR/research-optimization-experiment_framework.json"
 
     if [[ ! -f "$experiment_config" ]]; then
         cat > "$experiment_config" <<EOF
@@ -224,7 +222,7 @@ execute_optimization_cycle() {
 
 # 检查自动优化是否启用
 is_auto_optimization_enabled() {
-    jq -r '.auto_optimization // false' "$OPTIMIZATION_CONFIG_DIR/optimization_config.json" 2>/dev/null || echo "false"
+    jq -r '.auto_optimization // false' "$OPTIMIZATION_DIR/research-optimization-optimization_config.json" 2>/dev/null || echo "false"
 }
 
 # 识别优化机会
@@ -380,14 +378,14 @@ execute_optimization_experiment() {
   "strategy_area": "$strategy_area",
   "start_time": "$(date -Iseconds)",
   "status": "running",
-  "baseline_metrics": $(get_realtime_performance_stats),
-  "expected_improvement": $(echo "$strategy" | jq -r '.expected_benefit // 0')
+  "baseline_metrics": $(get_realtime_performance_stats || echo "{}"),
+  "expected_improvement": $(echo "$strategy" | jq -r '.expected_benefit // 0' 2>/dev/null || echo "0")
 }
 EOF
 )
 
     # 保存实验记录
-    echo "$experiment_record" > "$OPTIMIZATION_EXPERIMENTS_DIR/${experiment_id}.json"
+    echo "$experiment_record" > "$OPTIMIZATION_DIR/research-optimization-experiments-${experiment_id}.json"
 
     # 执行具体优化策略
     case "$strategy_type" in
@@ -474,7 +472,7 @@ monitor_optimization_results() {
     local active_experiments=$(find "$OPTIMIZATION_EXPERIMENTS_DIR" -name "*.json" -exec jq -r 'select(.status == "running") | .experiment_id' {} \; 2>/dev/null)
 
     for exp_id in $active_experiments; do
-        local exp_file="$OPTIMIZATION_EXPERIMENTS_DIR/${exp_id}.json"
+        local exp_file="$OPTIMIZATION_DIR/research-optimization-experiments-${exp_id}.json"
 
         if [[ -f "$exp_file" ]]; then
             # 获取当前指标
@@ -492,7 +490,7 @@ monitor_optimization_results() {
                 apply_optimization "$exp_id"
             else
                 # 检查实验是否超时
-                local start_time=$(jq -r '.start_time // "'$(date -Iseconds)'"' "$exp_file")
+                local start_time=$(jq -r '.start_time // "'"$(date -Iseconds)"'"' "$exp_file")
                 local elapsed_seconds=$(( $(date +%s) - $(date -d "$start_time" +%s 2>/dev/null || echo "$(date +%s)") ))
 
                 if (( elapsed_seconds > 3600 )); then  # 1小时超时
@@ -529,7 +527,7 @@ complete_experiment() {
     local status="$2"
     local improvement="$3"
 
-    local exp_file="$OPTIMIZATION_EXPERIMENTS_DIR/${exp_id}.json"
+    local exp_file="$OPTIMIZATION_DIR/research-optimization-experiments-${exp_id}.json"
 
     # 更新实验状态
     local temp_exp=$(mktemp)
@@ -572,7 +570,7 @@ rollback_optimization() {
 
 # 创建配置备份
 backup_current_configuration() {
-    local backup_file="$OPTIMIZATION_BACKUPS_DIR/config_backup_$(date +%Y%m%d_%H%M%S).tar.gz"
+    local backup_file="$OPTIMIZATION_DIR/research-optimization-backups-config_backup_$(date +%Y%m%d_%H%M%S).tar.gz"
 
     # 备份关键配置文件
     tar -czf "$backup_file" -C "$SCRIPT_DIR" ../commands/capability-map.json ../core/ 2>/dev/null || true

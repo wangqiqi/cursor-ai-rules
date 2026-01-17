@@ -14,11 +14,11 @@ source "$SCRIPT_DIR/experiment-framework.sh"
 source "$SCRIPT_DIR/performance-dashboard.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 配置常量
-CONTINUOUS_LEARNING_DIR="$CURSOR_GROWTH/continuous_learning"
-LEARNING_BUFFER_DIR="$CONTINUOUS_LEARNING_DIR/buffer"
-MODEL_CHECKPOINTS_DIR="$CONTINUOUS_LEARNING_DIR/checkpoints"
-LEARNING_METRICS_DIR="$CONTINUOUS_LEARNING_DIR/metrics"
+# 配置常量 (合并到ai目录)
+CONTINUOUS_LEARNING_DIR="$AI_DIR"
+LEARNING_BUFFER_FILE="$CONTINUOUS_LEARNING_DIR/ai-learning-buffer.json"
+MODEL_CHECKPOINTS_FILE="$CONTINUOUS_LEARNING_DIR/ai-model-checkpoints.json"
+LEARNING_METRICS_FILE="$CONTINUOUS_LEARNING_DIR/ai-learning-metrics.json"
 LEARNING_RATE=0.01
 MODEL_UPDATE_INTERVAL=3600  # 1小时
 LEARNING_BUFFER_SIZE=1000
@@ -27,11 +27,8 @@ LEARNING_BUFFER_SIZE=1000
 init_continuous_learning_loop() {
     smart_echo "初始化持续学习循环..." "info"
 
-    # 创建目录结构
+    # 创建目录结构 (只创建一级目录)
     mkdir -p "$CONTINUOUS_LEARNING_DIR"
-    mkdir -p "$LEARNING_BUFFER_DIR"
-    mkdir -p "$MODEL_CHECKPOINTS_DIR"
-    mkdir -p "$LEARNING_METRICS_DIR"
 
     # 初始化各个组件
     init_learning_buffer
@@ -43,7 +40,7 @@ init_continuous_learning_loop() {
 
 # 初始化学习缓冲区
 init_learning_buffer() {
-    local buffer_file="$LEARNING_BUFFER_DIR/learning_buffer.json"
+    local buffer_file="$LEARNING_BUFFER_FILE"
 
     if [[ ! -f "$buffer_file" ]]; then
         cat > "$buffer_file" <<EOF
@@ -66,7 +63,7 @@ EOF
 
 # 初始化学习指标
 init_learning_metrics() {
-    local metrics_file="$LEARNING_METRICS_DIR/learning_metrics.json"
+    local metrics_file="$LEARNING_METRICS_FILE"
 
     if [[ ! -f "$metrics_file" ]]; then
         cat > "$metrics_file" <<EOF
@@ -90,7 +87,7 @@ EOF
 
 # 初始化模型检查点
 init_model_checkpoints() {
-    local manifest_file="$MODEL_CHECKPOINTS_DIR/checkpoint_manifest.json"
+    local manifest_file="$MODEL_CHECKPOINTS_FILE"
 
     if [[ ! -f "$manifest_file" ]]; then
         cat > "$manifest_file" <<EOF
@@ -135,7 +132,7 @@ get_next_learning_iteration() {
 
 # 获取学习缓冲区状态
 get_learning_buffer_status() {
-    local buffer_file="$LEARNING_BUFFER_DIR/learning_buffer.json"
+    local buffer_file="$LEARNING_BUFFER_FILE"
 
     if [[ -f "$buffer_file" ]]; then
         jq -r '{
@@ -170,7 +167,7 @@ get_learning_model_status() {
 
 # 获取学习性能指标
 get_learning_performance_metrics() {
-    local metrics_file="$LEARNING_METRICS_DIR/learning_metrics.json"
+    local metrics_file="$LEARNING_METRICS_FILE"
 
     if [[ -f "$metrics_file" ]]; then
         jq -r '.learning_loop_stats // {}' "$metrics_file"

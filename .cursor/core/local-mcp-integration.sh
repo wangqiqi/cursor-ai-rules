@@ -12,11 +12,11 @@ source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# MCP集成配置
-MCP_INTEGRATION_DIR="$CURSOR_GROWTH/mcp_integration"
-MCP_SERVERS_DIR="$MCP_INTEGRATION_DIR/servers"
-MCP_CONFIG_DIR="$MCP_INTEGRATION_DIR/config"
-MCP_CACHE_DIR="$MCP_INTEGRATION_DIR/cache"
+# MCP集成配置 (合并到integrations目录)
+MCP_INTEGRATION_DIR="$INTEGRATIONS_DIR"
+MCP_SERVERS_FILE="$MCP_INTEGRATION_DIR/integrations-mcp-servers.json"
+MCP_CONFIG_FILE="$MCP_INTEGRATION_DIR/integrations-mcp-config.json"
+MCP_CACHE_FILE="$MCP_INTEGRATION_DIR/integrations-mcp-cache.json"
 
 # 支持的本地MCP工具分类
 declare -A LOCAL_MCP_CATEGORIES=(
@@ -90,10 +90,8 @@ declare -A LOCAL_MCP_TOOLS=(
 init_local_mcp_integration() {
     smart_echo "初始化本地MCP集成系统..." "processing"
 
-    # 创建目录结构
-    mkdir -p "$MCP_SERVERS_DIR"
-    mkdir -p "$MCP_CONFIG_DIR"
-    mkdir -p "$MCP_CACHE_DIR"
+    # 创建目录结构 (只创建一级目录)
+    mkdir -p "$MCP_INTEGRATION_DIR"
 
     # 初始化工具检测配置
     init_tool_detection_config
@@ -112,7 +110,7 @@ init_local_mcp_integration() {
 
 # 初始化工具检测配置
 init_tool_detection_config() {
-    local detection_config="$MCP_CONFIG_DIR/tool_detection.json"
+    local detection_config="$MCP_INTEGRATION_DIR/integrations-config-tool_detection.json"
 
     if [[ ! -f "$detection_config" ]]; then
         cat > "$detection_config" <<EOF
@@ -170,7 +168,7 @@ get_tool_categories_json() {
 
 # 初始化MCP服务器配置
 init_mcp_servers_config() {
-    local servers_config="$MCP_CONFIG_DIR/servers_config.json"
+    local servers_config="$MCP_INTEGRATION_DIR/integrations-config-servers_config.json"
 
     if [[ ! -f "$servers_config" ]]; then
         cat > "$servers_config" <<EOF
@@ -191,7 +189,7 @@ EOF
 
 # 初始化集成缓存
 init_integration_cache() {
-    local cache_config="$MCP_CACHE_DIR/cache_config.json"
+    local cache_config="$MCP_INTEGRATION_DIR/integrations-cache-cache_config.json"
 
     if [[ ! -f "$cache_config" ]]; then
         cat > "$cache_config" <<EOF
@@ -431,7 +429,7 @@ update_servers_config() {
     local detected_tools="$1"
     local total_count="$2"
 
-    local servers_config="$MCP_CONFIG_DIR/servers_config.json"
+    local servers_config="$MCP_INTEGRATION_DIR/integrations-config-servers_config.json"
     local temp_config=$(mktemp)
 
     jq --argjson tools "$detected_tools" --arg count "$total_count" --arg timestamp "$(date -Iseconds)" '
@@ -452,7 +450,7 @@ register_mcp_server() {
 
     smart_echo "注册MCP服务器: $server_name" "info"
 
-    local server_dir="$MCP_SERVERS_DIR/$server_name"
+    local server_dir="$MCP_INTEGRATION_DIR/integrations-mcp-$server_name"
     mkdir -p "$server_dir"
 
     # 保存服务器配置
@@ -472,7 +470,7 @@ create_server_startup_script() {
     local server_name="$1"
     local server_type="$2"
 
-    local script_file="$MCP_SERVERS_DIR/$server_name/start.sh"
+    local script_file="$MCP_INTEGRATION_DIR/integrations-mcp-$server_name/start.sh"
 
     cat > "$script_file" <<EOF
 #!/bin/bash
@@ -519,7 +517,7 @@ update_server_registry() {
     local server_name="$1"
     local server_type="$2"
 
-    local servers_config="$MCP_CONFIG_DIR/servers_config.json"
+    local servers_config="$MCP_INTEGRATION_DIR/integrations-config-servers_config.json"
     local temp_config=$(mktemp)
 
     jq --arg server "$server_name" --arg type "$server_type" --arg timestamp "$(date -Iseconds)" '
@@ -539,7 +537,7 @@ start_mcp_server() {
 
     smart_echo "启动MCP服务器: $server_name" "processing"
 
-    local server_dir="$MCP_SERVERS_DIR/$server_name"
+    local server_dir="$MCP_INTEGRATION_DIR/integrations-mcp-$server_name"
     local start_script="$server_dir/start.sh"
 
     if [[ -f "$start_script" ]]; then
@@ -574,7 +572,7 @@ update_server_status() {
     local server_name="$1"
     local status="$2"
 
-    local servers_config="$MCP_CONFIG_DIR/servers_config.json"
+    local servers_config="$MCP_INTEGRATION_DIR/integrations-config-servers_config.json"
     local temp_config=$(mktemp)
 
     jq --arg server "$server_name" --arg status "$status" --arg timestamp "$(date -Iseconds)" '
@@ -629,7 +627,7 @@ call_mcp_service() {
 get_server_status() {
     local server_name="$1"
 
-    jq -r ".servers.\"$server_name\".status // \"not_found\"" "$MCP_CONFIG_DIR/servers_config.json" 2>/dev/null || echo "not_found"
+    jq -r ".servers.\"$server_name\".status // \"not_found\"" "$MCP_INTEGRATION_DIR/integrations-config-servers_config.json" 2>/dev/null || echo "not_found"
 }
 
 # Git服务处理
@@ -816,9 +814,9 @@ get_mcp_integration_status() {
 {
   "integration_status": {
     "total_tools_supported": ${#LOCAL_MCP_TOOLS[@]},
-    "tools_detected": $(jq -r '.integration_stats.total_tools_detected // 0' "$MCP_CONFIG_DIR/servers_config.json" 2>/dev/null || echo "0"),
-    "active_servers": $(jq -r '.active_servers | length' "$MCP_CONFIG_DIR/servers_config.json" 2>/dev/null || echo "0"),
-    "last_scan": $(jq -r '.integration_stats.last_scan_time // "never"' "$MCP_CONFIG_DIR/servers_config.json" 2>/dev/null || echo '"never"')
+    "tools_detected": $(jq -r '.integration_stats.total_tools_detected // 0' "$MCP_INTEGRATION_DIR/integrations-config-servers_config.json" 2>/dev/null || echo "0"),
+    "active_servers": $(jq -r '.active_servers | length' "$MCP_INTEGRATION_DIR/integrations-config-servers_config.json" 2>/dev/null || echo "0"),
+    "last_scan": $(jq -r '.integration_stats.last_scan_time // "never"' "$MCP_INTEGRATION_DIR/integrations-config-servers_config.json" 2>/dev/null || echo '"never"')
   },
   "categories": $(get_integration_categories_status),
   "health": $(get_integration_health_status),
@@ -859,7 +857,7 @@ get_integration_categories_status() {
 # 获取集成健康状态
 get_integration_health_status() {
     # 简化的健康状态计算
-    local detected_tools=$(jq -r '.integration_stats.total_tools_detected // 0' "$MCP_CONFIG_DIR/servers_config.json" 2>/dev/null || echo "0")
+    local detected_tools=$(jq -r '.integration_stats.total_tools_detected // 0' "$MCP_INTEGRATION_DIR/integrations-config-servers_config.json" 2>/dev/null || echo "0")
     local total_tools=${#LOCAL_MCP_TOOLS[@]}
 
     local health_score=0

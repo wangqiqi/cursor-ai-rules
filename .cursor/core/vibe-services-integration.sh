@@ -14,10 +14,10 @@ source "$SCRIPT_DIR/context-pool-manager.sh"
 source "$SCRIPT_DIR/agent-orchestration-engine.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# VIBE服务配置
-VIBE_SERVICES_DIR="$CURSOR_GROWTH/vibe_services"
-VIBE_CONFIG_FILE="$VIBE_SERVICES_DIR/config.json"
-VIBE_SERVICES_STATUS="$VIBE_SERVICES_DIR/status.json"
+# VIBE服务配置 (合并到services目录)
+VIBE_SERVICES_DIR="$SERVICES_DIR"
+VIBE_CONFIG_FILE="$VIBE_SERVICES_DIR/services-services-config.json"
+VIBE_SERVICES_STATUS="$VIBE_SERVICES_DIR/services-services-status.json"
 
 # VIBE服务定义
 declare -A VIBE_SERVICES=(
@@ -42,14 +42,8 @@ declare -A SERVICE_STATES=(
 init_vibe_services_integration() {
     smart_echo "初始化VIBE服务集成框架..." "processing"
 
-    # 创建服务目录结构
+    # 创建服务目录结构 (只创建一级目录)
     mkdir -p "$VIBE_SERVICES_DIR"
-    mkdir -p "$VIBE_SERVICES_DIR/context_manager"
-    mkdir -p "$VIBE_SERVICES_DIR/code_generator"
-    mkdir -p "$VIBE_SERVICES_DIR/dependency_tracker"
-    mkdir -p "$VIBE_SERVICES_DIR/test_validator"
-    mkdir -p "$VIBE_SERVICES_DIR/doc_generator"
-    mkdir -p "$VIBE_SERVICES_DIR/deployment_manager"
 
     # 初始化服务配置
     init_vibe_services_config
@@ -283,12 +277,12 @@ start_context_manager_service() {
 }
 
 init_conversation_persistence() {
-    local persistence_dir="$VIBE_SERVICES_DIR/context_manager/conversations"
+    local persistence_dir="$VIBE_SERVICES_DIR"
     mkdir -p "$persistence_dir"
 
     # 创建对话索引文件
-    if [[ ! -f "$persistence_dir/index.json" ]]; then
-        cat > "$persistence_dir/index.json" <<EOF
+    if [[ ! -f "$persistence_dir/services-context-conversations.json" ]]; then
+        cat > "$persistence_dir/services-context-conversations.json" <<EOF
 {
   "conversations": {},
   "total_conversations": 0,
@@ -299,12 +293,10 @@ EOF
 }
 
 init_project_state_management() {
-    local state_dir="$VIBE_SERVICES_DIR/context_manager/project_states"
-    mkdir -p "$state_dir"
-
-    # 创建项目状态索引
-    if [[ ! -f "$state_dir/index.json" ]]; then
-        cat > "$state_dir/index.json" <<EOF
+    local state_dir="$VIBE_SERVICES_DIR"
+    # 创建项目状态索引 (直接在services目录下)
+    if [[ ! -f "$state_dir/services-project-states.json" ]]; then
+        cat > "$state_dir/services-project-states.json" <<EOF
 {
   "projects": {},
   "last_updated": "$(date -Iseconds)"
@@ -344,13 +336,12 @@ start_code_generator_service() {
 }
 
 init_code_generation_engine() {
-    local generator_dir="$VIBE_SERVICES_DIR/code_generator"
-    mkdir -p "$generator_dir/templates"
-    mkdir -p "$generator_dir/generated"
+    local generator_dir="$VIBE_SERVICES_DIR"
+    # 不再创建子目录，直接在services目录下创建文件
 
     # 创建模板索引
-    if [[ ! -f "$generator_dir/templates/index.json" ]]; then
-        cat > "$generator_dir/templates/index.json" <<EOF
+    if [[ ! -f "$generator_dir/services-code-generator-templates.json" ]]; then
+        cat > "$generator_dir/services-code-generator-templates.json" <<EOF
 {
   "templates": {
     "react_component": {"language": "typescript", "type": "component"},
@@ -365,12 +356,10 @@ EOF
 }
 
 init_code_review_system() {
-    local review_dir="$VIBE_SERVICES_DIR/code_generator/reviews"
-    mkdir -p "$review_dir"
-
-    # 创建审查规则配置
-    if [[ ! -f "$review_dir/rules.json" ]]; then
-        cat > "$review_dir/rules.json" <<EOF
+    local review_dir="$VIBE_SERVICES_DIR"
+    # 创建审查规则配置 (直接在services目录下)
+    if [[ ! -f "$review_dir/services-code-review-rules.json" ]]; then
+        cat > "$review_dir/services-code-review-rules.json" <<EOF
 {
   "rules": {
     "code_quality": ["eslint", "prettier"],
@@ -416,13 +405,11 @@ start_dependency_tracker_service() {
 }
 
 init_dependency_tracking_engine() {
-    local tracker_dir="$VIBE_SERVICES_DIR/dependency_tracker"
+    local tracker_dir="$VIBE_SERVICES_DIR"
     mkdir -p "$tracker_dir/dependencies"
-    mkdir -p "$tracker_dir/vulnerabilities"
-
-    # 创建依赖索引
-    if [[ ! -f "$tracker_dir/dependencies/index.json" ]]; then
-        cat > "$tracker_dir/dependencies/index.json" <<EOF
+    # 创建依赖和漏洞索引 (直接在services目录下)
+    if [[ ! -f "$tracker_dir/services-dependencies-index.json" ]]; then
+        cat > "$tracker_dir/services-dependencies-index.json" <<EOF
 {
   "projects": {},
   "global_dependencies": {},
@@ -433,13 +420,10 @@ EOF
 }
 
 init_security_scanning_system() {
-    local security_dir="$VIBE_SERVICES_DIR/dependency_tracker/security"
-    mkdir -p "$security_dir/scans"
-    mkdir -p "$security_dir/reports"
-
-    # 创建安全扫描配置
-    if [[ ! -f "$security_dir/config.json" ]]; then
-        cat > "$security_dir/config.json" <<EOF
+    local security_dir="$VIBE_SERVICES_DIR"
+    # 创建安全扫描配置 (直接在services目录下)
+    if [[ ! -f "$security_dir/services-security-config.json" ]]; then
+        cat > "$security_dir/services-security-config.json" <<EOF
 {
   "scan_frequency": "daily",
   "severity_levels": ["critical", "high", "medium", "low"],
@@ -482,14 +466,10 @@ start_test_validator_service() {
 }
 
 init_test_validation_engine() {
-    local validator_dir="$VIBE_SERVICES_DIR/test_validator"
-    mkdir -p "$validator_dir/tests"
-    mkdir -p "$validator_dir/reports"
-    mkdir -p "$validator_dir/coverage"
-
-    # 创建测试配置
-    if [[ ! -f "$validator_dir/config.json" ]]; then
-        cat > "$validator_dir/config.json" <<EOF
+    local validator_dir="$VIBE_SERVICES_DIR"
+    # 创建测试配置 (直接在services目录下)
+    if [[ ! -f "$validator_dir/services-test-config.json" ]]; then
+        cat > "$validator_dir/services-test-config.json" <<EOF
 {
   "test_frameworks": ["jest", "mocha", "jasmine"],
   "coverage_tools": ["nyc", "istanbul"],
@@ -503,13 +483,10 @@ EOF
 }
 
 init_quality_analysis_system() {
-    local quality_dir="$VIBE_SERVICES_DIR/test_validator/quality"
-    mkdir -p "$quality_dir/metrics"
-    mkdir -p "$quality_dir/trends"
-
-    # 创建质量指标配置
-    if [[ ! -f "$quality_dir/metrics.json" ]]; then
-        cat > "$quality_dir/metrics.json" <<EOF
+    local quality_dir="$VIBE_SERVICES_DIR"
+    # 创建质量指标配置 (直接在services目录下)
+    if [[ ! -f "$quality_dir/services-quality-metrics.json" ]]; then
+        cat > "$quality_dir/services-quality-metrics.json" <<EOF
 {
   "metrics": {
     "coverage": {"target": 80, "current": 0},
@@ -555,14 +532,10 @@ start_doc_generator_service() {
 }
 
 init_documentation_generation_engine() {
-    local doc_dir="$VIBE_SERVICES_DIR/doc_generator"
-    mkdir -p "$doc_dir/docs"
-    mkdir -p "$doc_dir/templates"
-    mkdir -p "$doc_dir/api"
-
-    # 创建文档配置
-    if [[ ! -f "$doc_dir/config.json" ]]; then
-        cat > "$doc_dir/config.json" <<EOF
+    local doc_dir="$VIBE_SERVICES_DIR"
+    # 创建文档配置 (直接在services目录下)
+    if [[ ! -f "$doc_dir/services-doc-config.json" ]]; then
+        cat > "$doc_dir/services-doc-config.json" <<EOF
 {
   "auto_generate_readme": true,
   "auto_generate_api_docs": true,
@@ -579,13 +552,10 @@ EOF
 }
 
 init_api_documentation_system() {
-    local api_dir="$VIBE_SERVICES_DIR/doc_generator/api"
-    mkdir -p "$api_dir/schemas"
-    mkdir -p "$api_dir/examples"
-
-    # 创建API文档配置
-    if [[ ! -f "$api_dir/config.json" ]]; then
-        cat > "$api_dir/config.json" <<EOF
+    local api_dir="$VIBE_SERVICES_DIR"
+    # 创建API文档配置 (直接在services目录下)
+    if [[ ! -f "$api_dir/services-api-docs-config.json" ]]; then
+        cat > "$api_dir/services-api-docs-config.json" <<EOF
 {
   "auto_discover_endpoints": true,
   "generate_openapi_spec": true,
@@ -628,12 +598,8 @@ start_deployment_manager_service() {
 }
 
 init_deployment_management_engine() {
-    local deploy_dir="$VIBE_SERVICES_DIR/deployment_manager"
-    mkdir -p "$deploy_dir/deployments"
-    mkdir -p "$deploy_dir/pipelines"
-    mkdir -p "$deploy_dir/infrastructure"
-
-    # 创建部署配置
+    local deploy_dir="$VIBE_SERVICES_DIR"
+    # 创建部署配置 (直接在services目录下)
     if [[ ! -f "$deploy_dir/config.json" ]]; then
         cat > "$deploy_dir/config.json" <<EOF
 {
@@ -650,13 +616,10 @@ EOF
 }
 
 init_ci_cd_integration() {
-    local ci_dir="$VIBE_SERVICES_DIR/deployment_manager/ci_cd"
-    mkdir -p "$ci_dir/pipelines"
-    mkdir -p "$ci_dir/templates"
-
-    # 创建CI/CD配置
-    if [[ ! -f "$ci_dir/config.json" ]]; then
-        cat > "$ci_dir/config.json" <<EOF
+    local ci_dir="$VIBE_SERVICES_DIR"
+    # 创建CI/CD配置 (直接在services目录下)
+    if [[ ! -f "$ci_dir/services-ci-cd-config.json" ]]; then
+        cat > "$ci_dir/services-ci-cd-config.json" <<EOF
 {
   "auto_detect_ci_tool": true,
   "generate_pipeline_templates": true,

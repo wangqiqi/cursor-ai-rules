@@ -14,11 +14,11 @@ source "$SCRIPT_DIR/context-manager.sh"
 source "$SCRIPT_DIR/token-compression.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 上下文池配置
-CONTEXT_POOL_DIR="$CURSOR_GROWTH/context_pool"
-CONTEXT_POOL_INDEX="$CONTEXT_POOL_DIR/pool_index.json"
-CONTEXT_POOL_STATS="$CONTEXT_POOL_DIR/pool_stats.json"
-CONTEXT_POOL_SHARED="$CONTEXT_POOL_DIR/shared_contexts"
+# 上下文池配置 (合并到ai目录)
+CONTEXT_POOL_DIR="$AI_DIR"
+CONTEXT_POOL_INDEX="$CONTEXT_POOL_DIR/ai-context-pool-index.json"
+CONTEXT_POOL_STATS="$CONTEXT_POOL_DIR/ai-context-pool-stats.json"
+CONTEXT_POOL_SHARED="$CONTEXT_POOL_DIR/ai-context-pool-shared.json"
 
 # 上下文池参数
 POOL_MAX_SIZE="${CONTEXT_POOL_MAX_SIZE:-100}"  # 池最大容量
@@ -39,17 +39,16 @@ declare -A CONTEXT_TYPES=(
 init_context_pool() {
     smart_echo "初始化上下文池管理系统..." "processing"
 
-    # 创建必要的目录结构
+    # 创建必要的目录结构 (只创建一级目录)
     mkdir -p "$CONTEXT_POOL_DIR"
-    mkdir -p "$CONTEXT_POOL_SHARED"
 
     # 初始化池索引文件
-    [[ ! -f "$CONTEXT_POOL_INDEX" ]] && cat > "$CONTEXT_POOL_INDEX" << 'EOF'
+    [[ ! -f "$CONTEXT_POOL_INDEX" ]] && cat > "$CONTEXT_POOL_INDEX" << EOF
 {
   "version": "1.0",
-  "created_at": "'$(date -Iseconds)'",
+  "created_at": "$(date -Iseconds)",
   "pool_size": 0,
-  "max_size": '$POOL_MAX_SIZE',
+  "max_size": $POOL_MAX_SIZE,
   "contexts": {},
   "sharing_rules": {
     "project": {"shareable": true, "ttl": 86400, "max_uses": 50},
@@ -59,7 +58,7 @@ init_context_pool() {
     "system": {"shareable": true, "ttl": 2592000, "max_uses": 500}
   },
   "compression_stats": {
-    "enabled": '$POOL_COMPRESSION_ENABLED',
+    "enabled": $POOL_COMPRESSION_ENABLED,
     "total_saved_tokens": 0,
     "compression_ratio": 0
   }
@@ -67,14 +66,14 @@ init_context_pool() {
 EOF
 
     # 初始化统计文件
-    [[ ! -f "$CONTEXT_POOL_STATS" ]] && cat > "$CONTEXT_POOL_STATS" << 'EOF'
+    [[ ! -f "$CONTEXT_POOL_STATS" ]] && cat > "$CONTEXT_POOL_STATS" << EOF
 {
   "stats": {
     "total_contexts_created": 0,
     "total_contexts_reused": 0,
     "total_tokens_saved": 0,
     "average_reuse_rate": 0,
-    "last_cleanup": "'$(date -Iseconds)'"
+    "last_cleanup": "$(date -Iseconds)"
   },
   "performance": {
     "avg_pool_lookup_time": 0,
@@ -267,7 +266,8 @@ update_context_usage() {
 
     # 更新索引中的使用统计
     local temp_index=$(mktemp)
-    jq --arg key "$context_key" '.contexts[$key].usage_count = (.contexts[$key].usage_count + 1) | .contexts[$key].last_used = "'$(date -Iseconds)'"' "$CONTEXT_POOL_INDEX" > "$temp_index"
+    local current_time="$(date -Iseconds)"
+    jq --arg key "$context_key" --arg timestamp "$current_time" '.contexts[$key].usage_count = (.contexts[$key].usage_count + 1) | .contexts[$key].last_used = $timestamp' "$CONTEXT_POOL_INDEX" > "$temp_index"
     mv "$temp_index" "$CONTEXT_POOL_INDEX"
 
     # 更新统计信息
@@ -531,7 +531,8 @@ update_pool_stats() {
             jq '.stats.total_contexts_reused += 1' "$stats_file" > "$temp_stats"
             ;;
         "cleanup_performed")
-            jq '.stats.last_cleanup = "'$(date -Iseconds)'"' "$stats_file" > "$temp_stats"
+            local current_time="$(date -Iseconds)"
+            jq --arg timestamp "$current_time" '.stats.last_cleanup = $timestamp' "$stats_file" > "$temp_stats"
             ;;
     esac
 

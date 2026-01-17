@@ -20,7 +20,7 @@ filename=$(basename "$file_path")
 extension="${filename##*.}"
 
 # 创建日志目录（如果不存在）
-mkdir -p "$CURSOR_GROWTH/logs"
+mkdir -p "$ANALYTICS_DIR"
 
 # 记录处理开始
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')

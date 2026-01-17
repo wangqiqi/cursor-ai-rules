@@ -41,11 +41,11 @@ init_compression() {
     smart_echo "初始化Token压缩系统..." "processing"
 
     # 创建压缩缓存目录
-    mkdir -p "$CURSOR_GROWTH/compression"
+    mkdir -p "$CONFIG_DATA_DIR"
 
     # 初始化数据模式文件
     [[ ! -f "$SCRIPT_DIR/patterns.json" ]] && echo "{}" > "$SCRIPT_DIR/patterns.json"
-    [[ ! -f "$CURSOR_GROWTH/compression_strategies.json" ]] && echo "{}" > "$CURSOR_GROWTH/compression_strategies.json"
+    [[ ! -f "$CONFIG_DATA_DIR/config-compression-strategies.json" ]] && echo "{}" > "$CONFIG_DATA_DIR/config-compression-strategies.json"
 
     # 初始化流式输出缓冲
     STREAM_BUFFER=""

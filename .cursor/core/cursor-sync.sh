@@ -91,7 +91,7 @@ sync_transcript_file() {
     local transcripts_dir="$2"
     local filename
     filename=$(basename "$transcript_file" .txt)
-    local growth_conversation_file="$GROWTH_DIR/conversations/cursor_${filename}.json"
+    local growth_conversation_file="$GROWTH_DIR/ai-conversation-cursor-${filename}.json"
 
     # 检查是否已经同步过
     local sync_status_file
@@ -266,7 +266,7 @@ sync_full_cursor_data() {
     if [ -d "$cursor_project_dir/agent-transcripts" ]; then
         echo -e "${BLUE}📝 同步对话记录...${NC}"
         local transcripts_synced
-        transcripts_synced=$(sync_directory "$cursor_project_dir/agent-transcripts" "conversations" "cursor_" "transcript")
+        transcripts_synced=$(sync_directory "$cursor_project_dir/agent-transcripts" "ai-conversations" "ai-conversation-cursor-" "transcript")
         echo -e "${GREEN}  ✅ 对话记录: $transcripts_synced 个文件${NC}"
         ((total_synced += transcripts_synced))
     fi
@@ -505,7 +505,7 @@ show_sync_status() {
 
     # 显示本地同步的对话文件
     local conversation_count
-    conversation_count=$(find "$GROWTH_DIR/conversations" -name "cursor_*.json" -type f 2>/dev/null | wc -l)
+    conversation_count=$(find "$GROWTH_DIR" -name "ai-conversation-cursor-*.json" -type f 2>/dev/null | wc -l)
     echo -e "${BLUE}💬 本地Cursor对话数: ${NC}$conversation_count"
 
     echo -e "${GREEN}🌱 生长目录位置: ${NC}$GROWTH_DIR"

@@ -81,11 +81,12 @@ echo "🏗️  检查 $CURSOR_GROWTH 目录结构..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 REQUIRED_DIRS=(
-    "$CURSOR_GROWTH/cache"
-    "$CURSOR_GROWTH/monitoring"
-    "$CURSOR_GROWTH/learning"
-    "$CURSOR_GROWTH/conversations"
-    "$CURSOR_GROWTH/personal"
+    "$AI_DIR"
+    "$SERVICES_DIR"
+    "$ANALYTICS_DIR"
+    "$RESEARCH_DIR"
+    "$INTEGRATIONS_DIR"
+    "$CONFIG_DATA_DIR"
 )
 
 for dir in "${REQUIRED_DIRS[@]}"; do

@@ -94,7 +94,7 @@ verify_system_integrity() {
 
     local critical_files=(
         "core/env-perception.sh"
-        "core/core/config/config-manager.sh"
+        "core/config-manager.sh"
         "core/quality-manager.sh"
         "commands/master.md"
         "commands/command-router.md"

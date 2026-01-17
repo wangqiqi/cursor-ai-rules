@@ -41,7 +41,7 @@ echo "📄 检查配置文件..."
 
 # 生长元数据文件
 if [ ! -f "$GROWTH_DIR/growth_meta.json" ]; then
-    cat > "$GROWTH_DIR/growth_meta.json" << 'EOF'
+    cat > "$GROWTH_DIR/growth_meta.json" << EOF
 {
   "version": "1.0.0",
   "created_at": "'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'",
@@ -73,7 +73,7 @@ fi
 
 # 用户偏好学习文件
 if [ ! -f "$GROWTH_DIR/learning/preferences.json" ]; then
-    cat > "$GROWTH_DIR/learning/preferences.json" << 'EOF'
+    cat > "$GROWTH_DIR/ai-preferences.json" << EOF
 {
   "version": "1.0.0",
   "last_updated": "'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'",
@@ -108,7 +108,7 @@ fi
 
 # 监控统计文件
 if [ ! -f "$GROWTH_DIR/monitoring/usage_metrics.json" ]; then
-    cat > "$GROWTH_DIR/monitoring/usage_metrics.json" << 'EOF'
+    cat > "$GROWTH_DIR/analytics-usage-metrics.json" << EOF
 {
   "version": "1.0.0",
   "tracking_started": "'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'",

@@ -14,12 +14,11 @@ source "$SCRIPT_DIR/performance-monitor.sh"
 source "$SCRIPT_DIR/context-pool-manager.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 仪表板配置
-DASHBOARD_DIR="$CURSOR_GROWTH/dashboard"
-DASHBOARD_DATA_DIR="$DASHBOARD_DIR/data"
-DASHBOARD_REPORTS_DIR="$DASHBOARD_DIR/reports"
-DASHBOARD_METRICS_FILE="$DASHBOARD_DATA_DIR/metrics.json"
-DASHBOARD_ANALYSIS_FILE="$DASHBOARD_DATA_DIR/analysis.json"
+# 仪表板配置 (合并到analytics目录)
+DASHBOARD_DIR="$ANALYTICS_DIR"
+DASHBOARD_METRICS_FILE="$DASHBOARD_DIR/analytics-metrics.json"
+DASHBOARD_ANALYSIS_FILE="$DASHBOARD_DIR/analytics-analysis.json"
+DASHBOARD_REPORTS_FILE="$DASHBOARD_DIR/analytics-reports.json"
 
 # 性能阈值配置
 declare -A PERFORMANCE_THRESHOLDS=(
@@ -35,15 +34,14 @@ declare -A PERFORMANCE_THRESHOLDS=(
 init_performance_dashboard() {
     smart_echo "初始化性能监控仪表板..." "processing"
 
-    # 创建必要的目录结构
-    mkdir -p "$DASHBOARD_DATA_DIR"
-    mkdir -p "$DASHBOARD_REPORTS_DIR"
+    # 创建必要的目录结构 (只创建一级目录)
+    mkdir -p "$DASHBOARD_DIR"
 
     # 初始化指标数据文件
-    [[ ! -f "$DASHBOARD_METRICS_FILE" ]] && cat > "$DASHBOARD_METRICS_FILE" << 'EOF'
+    [[ ! -f "$DASHBOARD_METRICS_FILE" ]] && cat > "$DASHBOARD_METRICS_FILE" << EOF
 {
   "version": "1.0",
-  "created_at": "'$(date -Iseconds)'",
+  "created_at": "$(date -Iseconds)",
   "metrics": {
     "response_times": [],
     "token_usage": [],
@@ -64,9 +62,9 @@ init_performance_dashboard() {
 EOF
 
     # 初始化分析文件
-    [[ ! -f "$DASHBOARD_ANALYSIS_FILE" ]] && cat > "$DASHBOARD_ANALYSIS_FILE" << 'EOF'
+    [[ ! -f "$DASHBOARD_ANALYSIS_FILE" ]] && cat > "$DASHBOARD_ANALYSIS_FILE" << EOF
 {
-  "last_analysis": "'$(date -Iseconds)'",
+  "last_analysis": "$(date -Iseconds)",
   "performance_trends": {},
   "optimization_opportunities": [],
   "system_health": {},
@@ -124,11 +122,11 @@ get_realtime_performance_stats() {
 
     # 计算实时统计
     local stats=$(jq '
-        .aggregates.avg_response_time = (.metrics.response_times | map(.response_time_ms) | add / length // 0) |
-        .aggregates.cache_hit_rate = ((.metrics.cache_performance | map(select(.cache_hit == true) | 1) | add // 0) / (.metrics.cache_performance | length) * 100 // 0) |
-        .aggregates.compression_ratio = (.metrics.compression_stats | map(.compression_ratio_percent) | add / length // 0) |
-        .aggregates.avg_memory_usage = (.metrics.memory_usage | map(.memory_usage_percent) | add / length // 0) |
-        .aggregates.avg_cpu_usage = (.metrics.cpu_usage | map(.cpu_usage_percent) | add / length // 0)
+        .aggregates.avg_response_time = (if (.metrics.response_times | length) > 0 then (.metrics.response_times | map(.response_time_ms) | add / length) else 0 end) |
+        .aggregates.cache_hit_rate = (if (.metrics.cache_performance | length) > 0 then ((.metrics.cache_performance | map(select(.cache_hit == true) | 1) | add // 0) / (.metrics.cache_performance | length) * 100) else 0 end) |
+        .aggregates.compression_ratio = (if (.metrics.compression_stats | length) > 0 then (.metrics.compression_stats | map(.compression_ratio_percent) | add / length) else 0 end) |
+        .aggregates.avg_memory_usage = (if (.metrics.memory_usage | length) > 0 then (.metrics.memory_usage | map(.memory_usage_percent) | add / length) else 0 end) |
+        .aggregates.avg_cpu_usage = (if (.metrics.cpu_usage | length) > 0 then (.metrics.cpu_usage | map(.cpu_usage_percent) | add / length) else 0 end)
     ' "$DASHBOARD_METRICS_FILE")
 
     echo "$stats"
