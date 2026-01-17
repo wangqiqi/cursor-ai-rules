@@ -208,7 +208,7 @@ extract_conversation_data() {
   "messages": $json_messages,
   "metadata": {
     "project_root": "$PROJECT_ROOT",
-    "cursor_version": "4.3.0",
+    "cursor_version": "5.0.0",
     "sync_timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
     "transcript_file": "$session_id.txt"
   }

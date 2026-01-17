@@ -175,7 +175,7 @@ EOF
   "metadata": {
     "user_id": "unknown",
     "project_root": "$PROJECT_ROOT",
-    "cursor_version": "4.3.0"
+    "cursor_version": "5.0.0"
   }
 }
 EOF
@@ -1367,7 +1367,7 @@ record_conversation() {
   },
   "metadata": {
     "project_context": "$(basename "$PROJECT_ROOT")",
-    "cursor_version": "4.3.0",
+    "cursor_version": "5.0.0",
     "interaction_type": "master_command"
   }
 }

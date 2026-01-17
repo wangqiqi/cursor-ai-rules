@@ -4376,7 +4376,7 @@
   },
   "version_info": {
     "description": "Version information and system metadata",
-    "current_version": "4.3.0",
+    "current_version": "5.0.0",
     "last_updated": "2026-01-17",
     "total_mappings": 100,
     "supported_scenarios": [

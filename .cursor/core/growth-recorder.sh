@@ -65,7 +65,7 @@ EOF
   "profile": {
     "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
     "project_root": "$PROJECT_ROOT",
-    "cursor_version": "4.3.0",
+    "cursor_version": "5.0.0",
     "total_interactions": 0,
     "successful_interactions": 0,
     "learning_enabled": true,
