@@ -10,7 +10,7 @@ class SmartCache {
             maxMemorySize: options.maxMemorySize || 100, // 内存缓存最大条目数
             maxFileSize: options.maxFileSize || 1000, // 文件缓存最大条目数
             defaultTTL: options.defaultTTL || 300000, // 默认TTL 5分钟
-            cacheDir: options.cacheDir || path.join(__dirname, '..', '..', '.cursorGrowth', 'cache'),
+            cacheDir: options.cacheDir || path.join(__dirname, '..', '..', '.cursorGrowth', 'analytics', 'cache'),
             ...options
         };
 
@@ -98,7 +98,7 @@ class SmartCache {
             // 检查文件是否过期
             if (Date.now() - stats.mtime.getTime() > ttl) {
                 // 删除过期文件
-                await fs.unlink(filePath).catch(() => {});
+                await fs.unlink(filePath).catch(() => { });
                 return null;
             }
 
