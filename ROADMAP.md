@@ -949,27 +949,19 @@ gantt
     title Master 命令控制器开发路线图
     dateFormat YYYY-MM-DD
     section Phase Alpha
-    /master 入口点重构         :done, 2026-01-18, 7d
+    /master 入口点重构         :done, m1, 2026-01-18, 7d
     section Phase Beta
-    /master 智能增强           :2026-01-25, 14d
+    /master 智能增强           :m2, 2026-01-25, 14d
     section Phase Gamma
-    /master 宪法架构实现       :2026-02-08, 21d
+    /master 宪法架构实现       :m3, 2026-02-08, 21d
     section Phase Delta
-    /master 交互协议优化       :2026-03-01, 21d
+    /master 交互协议优化       :m4, 2026-03-01, 21d
     section Phase Epsilon
-    /master 生态系统扩展       :2026-03-22, 28d
+    /master 生态系统扩展       :m5, 2026-03-22, 28d
     section Phase Zeta
-    /master 持续演进系统       :2026-04-19, 14d
+    /master 持续演进系统       :m6, 2026-04-19, 14d
     section Phase Eta
-    /master 治理与优化         :2026-05-03, 14d
-
-    section Milestones
-    M1: 宪法兼容性            :milestone, 2026-01-25
-    M2: 强制执行              :milestone, 2026-02-08
-    M3: 架构完整              :milestone, 2026-03-01
-    M4: 感知矩阵              :milestone, 2026-03-29
-    M5: 生态集成              :milestone, 2026-04-12
-    M6: 完整系统              :milestone, 2026-05-17
+    /master 治理与优化         :m7, 2026-05-03, 14d
 ```
 
 ## ✅ 第六章：质量保障与验收 (Chapter 6: Quality Assurance & Acceptance)
