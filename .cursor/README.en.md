@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - Constitution-Driven Super AI Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-6.0.0--constitution-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-6.1.0--polite-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
@@ -289,6 +289,9 @@ cd your-project
 @master Help me analyze project status    # 📈 Performance monitoring reports
 @master Debug this error                  # 🔧 Smart error handling
 @master Set up CI/CD pipeline           # 🚀 Automated deployment
+
+# ✨ Polite Response Mode - Always responds politely
+@master any command  # Always responds with: "Boss, received, what can I do for you? Based on your question, I have the following suggestions!"
 ```
 
 ### 💬 Method 3: VIBE Development Methodology

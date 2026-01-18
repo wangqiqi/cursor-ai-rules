@@ -1,7 +1,7 @@
 # 🚀 Cursor AI Rules - 超级AI编程伙伴
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-6.0.0--constitution-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-6.1.0--polite-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 [![Constitution](https://img.shields.io/badge/constitution-三大公理-red?style=flat-square)]()
@@ -271,6 +271,9 @@ cd your-project
 @master 帮我分析项目现状        # 📈 性能监控报告
 @master 调试这个错误           # 🔧 智能错误处理
 @master 设置CI/CD流水线       # 🚀 自动化部署
+
+# ✨ 客气回复模式 - 始终客气回复
+@master 任意命令  # 始终回复："老板，收到，你有什么吩咐？基于你的问题， 我有如下建议！"
 ```
 
 ### 💬 方式三：VIBE开发方法论
