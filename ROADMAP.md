@@ -1788,8 +1788,10 @@ app.listen(3000, () => {
   - 系统状态监控面板
   - 命令历史记录
   - 响应式设计适配移动端
-- **启动方式**: `./start-web.sh` 或 `cd web && node server.js`
+- **启动方式**: `.cursor/start-web.sh` 或 `cd .cursor/web && node server.js`
+- **停止方式**: `.cursor/stop-web.sh`
 - **访问地址**: http://localhost:3000
+- **文件位置**: `.cursor/web/`, `.cursor/start-web.sh`, `.cursor/stop-web.sh`
 - **修复内容**:
   - ✅ 静态文件路径配置修复 (`express.static('.')`)
   - ✅ 根路径路由添加 (`/` → `index.html`)
@@ -1801,6 +1803,7 @@ app.listen(3000, () => {
   - ✅ CORS支持添加 (允许跨域请求)
   - ✅ 后台启动修复 (nohup + PID管理)
   - ✅ 停止脚本创建 (优雅停止服务器)
+  - ✅ 文件位置重构 (移动到 `.cursor` 目录，主动激活模式)
 - **预期效果**: 用户体验提升 60%，新用户上手时间减少 80%
 
 ### 📊 实施成果统计
