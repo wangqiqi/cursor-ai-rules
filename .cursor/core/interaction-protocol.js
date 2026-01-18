@@ -141,6 +141,9 @@ class InteractionProtocol {
 
         response += `**请提供更多信息，我会为您提供精准的解决方案！** 🎯`;
 
+        // 添加客气的包装
+        response = this.wrapResponseWithPoliteness(response);
+
         return {
             success: true,
             sessionId,
@@ -286,7 +289,18 @@ class InteractionProtocol {
 
         response += `**🎉 六维交互协议执行完成！**`;
 
-        return response;
+        // 添加客气的包装
+        return this.wrapResponseWithPoliteness(response);
+    }
+
+    /**
+     * 为回复添加客气的包装
+     * @param {string} content - 原始回复内容
+     * @returns {string} 包装后的回复
+     */
+    wrapResponseWithPoliteness(content) {
+        const politePrefix = `老板，收到，你有什么吩咐？基于你的问题， 我有如下建议！\n\n`;
+        return politePrefix + content;
     }
 
     /**

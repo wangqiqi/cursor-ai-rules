@@ -381,7 +381,18 @@ class IntentSovereigntyEngine {
         response += `**⚖️ 宪法要求：必须先与您讨论需求和方案，获得明确确认后才能开始开发！**\n\n`;
         response += `**请先与我讨论需求和方案，确认后再开始开发！** 🎯`;
 
-        return response;
+        // 添加客气的包装
+        return this.wrapResponseWithPoliteness(response);
+    }
+
+    /**
+     * 为回复添加客气的包装
+     * @param {string} content - 原始回复内容
+     * @returns {string} 包装后的回复
+     */
+    wrapResponseWithPoliteness(content) {
+        const politePrefix = `老板，收到，你有什么吩咐？基于你的问题， 我有如下建议！\n\n`;
+        return politePrefix + content;
     }
 
     /**
