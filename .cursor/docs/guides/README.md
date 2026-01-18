@@ -10,6 +10,7 @@
 
 ### 🧠 高级功能系列
 - **[智能进化指南](intelligent-evolution-guide.md)**: AI学习和持续优化机制
+- **[智能提交指南](smart-commit-guide.md)**: 标准化Git提交和质量保证 ⭐
 - **[系统信息指南](system-info-guide.md)**: 环境检测和系统状态监控
 
 ### ⚡ 性能优化系列
@@ -28,8 +29,9 @@
 
 ### 进阶用户
 4. **[智能进化指南](intelligent-evolution-guide.md)** - AI学习机制
-5. **[性能优化指南](performance-optimization-guide.md)** - 性能调优
-6. **[Token压缩指南](token-compression-guide.md)** - Token管理
+5. **[智能提交指南](smart-commit-guide.md)** - 标准化提交 ⭐
+6. **[性能优化指南](performance-optimization-guide.md)** - 性能调优
+7. **[Token压缩指南](token-compression-guide.md)** - Token管理
 
 ### 团队用户
 7. **[远程规则导入指南](remote-rules-guide.md)** - 团队协作

@@ -4659,6 +4659,654 @@
         "traditional_git_flow"
       ]
     },
+    "agent_orchestration": {
+      "description": "8个智能代理协作编排系统",
+      "intents": [
+        "agent_orchestration",
+        "智能代理",
+        "多代理协作",
+        "8个代理",
+        "agent_orchestration"
+      ],
+      "confidence_threshold": 0.95,
+      "user_examples": [
+        "激活智能代理",
+        "启动多代理协作",
+        "运行8个智能代理"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "conversation_intent_analyzer"
+        ],
+        "scripts": [
+          "core/agent-orchestration-engine.sh"
+        ],
+        "workflows": [
+          "agent-collaboration",
+          "task-distribution",
+          "coordinator-orchestration"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "max_agents": 8,
+        "collaboration_mode": "intelligent",
+        "task_distribution": "dynamic",
+        "coordination_strategy": "adaptive"
+      },
+      "validation_rules": {
+        "require_ai_context": true,
+        "check_agent_availability": true,
+        "validate_task_complexity": true
+      },
+      "fallback_strategies": [
+        "single_agent_mode",
+        "manual_orchestration"
+      ]
+    },
+    "adaptive_optimization": {
+      "description": "自适应优化和A/B测试引擎",
+      "intents": [
+        "adaptive_optimization",
+        "自适应优化",
+        "A_B_test",
+        "optimization_engine"
+      ],
+      "confidence_threshold": 0.90,
+      "user_examples": [
+        "运行自适应优化",
+        "执行A/B测试",
+        "启动优化引擎"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/adaptive-optimization-engine.sh"
+        ],
+        "workflows": [
+          "optimization-cycle",
+          "experiment-design",
+          "result-analysis"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "optimization_cycle": "2h",
+        "experiment_duration": "1h",
+        "improvement_threshold": "5%",
+        "max_concurrent_experiments": 3
+      },
+      "validation_rules": {
+        "require_baseline_metrics": true,
+        "check_experiment_safety": true
+      },
+      "fallback_strategies": [
+        "conservative_optimization",
+        "manual_testing"
+      ]
+    },
+    "experiment_framework": {
+      "description": "自动化实验框架和A/B测试",
+      "intents": [
+        "experiment_framework",
+        "实验框架",
+        "A_B_testing",
+        "automated_experiments"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "运行实验框架",
+        "执行自动化实验",
+        "启动A/B测试"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/experiment-framework.sh"
+        ],
+        "workflows": [
+          "experiment-setup",
+          "data-collection",
+          "statistical-analysis",
+          "result-reporting"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "min_sample_size": 50,
+        "confidence_level": 0.95,
+        "statistical_significance": 0.05,
+        "max_experiment_duration": "1h"
+      },
+      "validation_rules": {
+        "require_statistical_rigor": true,
+        "check_sample_size": true,
+        "validate_hypothesis": true
+      },
+      "fallback_strategies": [
+        "manual_experimentation",
+        "conservative_testing"
+      ]
+    },
+    "self_learning": {
+      "description": "自学习引擎和模式识别",
+      "intents": [
+        "self_learning",
+        "自学习",
+        "learning_engine",
+        "pattern_learning"
+      ],
+      "confidence_threshold": 0.90,
+      "user_examples": [
+        "启动自学习",
+        "运行学习引擎",
+        "执行模式学习"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/self-learning-engine.sh"
+        ],
+        "workflows": [
+          "data-collection",
+          "pattern-analysis",
+          "model-update",
+          "optimization-application"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "learning_rate": 0.01,
+        "model_update_interval": "1h",
+        "pattern_confidence_threshold": 0.8,
+        "max_patterns": 1000
+      },
+      "validation_rules": {
+        "require_historical_data": true,
+        "check_data_quality": true,
+        "validate_learning_metrics": true
+      },
+      "fallback_strategies": [
+        "baseline_behavior",
+        "manual_optimization"
+      ]
+    },
+    "continuous_learning": {
+      "description": "持续学习循环和实时优化",
+      "intents": [
+        "continuous_learning",
+        "持续学习",
+        "real_time_learning",
+        "adaptive_system"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "启动持续学习",
+        "运行实时学习",
+        "激活自适应系统"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/continuous-learning-loop.sh"
+        ],
+        "workflows": [
+          "real-time-monitoring",
+          "incremental-learning",
+          "performance-feedback",
+          "continuous-optimization"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "monitoring_interval": "5m",
+        "learning_cycle": "1h",
+        "feedback_loop_delay": "10m",
+        "adaptation_threshold": 0.05
+      },
+      "validation_rules": {
+        "require_real_time_data": true,
+        "check_system_stability": true,
+        "validate_adaptation_safety": true
+      },
+      "fallback_strategies": [
+        "batch_learning",
+        "manual_monitoring"
+      ]
+    },
+    "context_management": {
+      "description": "智能上下文管理系统",
+      "intents": [
+        "context_management",
+        "上下文管理",
+        "smart_context",
+        "context_manager"
+      ],
+      "confidence_threshold": 0.90,
+      "user_examples": [
+        "激活上下文管理",
+        "智能上下文",
+        "上下文管理系统"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/context-manager.sh"
+        ],
+        "workflows": [
+          "context-analysis",
+          "relevance-scoring",
+          "predictive-loading",
+          "cache-optimization"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "context_layers": 4,
+        "relevance_threshold": 0.7,
+        "prediction_enabled": true,
+        "cache_optimization": true
+      },
+      "validation_rules": {
+        "require_context_data": true,
+        "check_relevance_accuracy": true,
+        "validate_performance_impact": true
+      },
+      "fallback_strategies": [
+        "basic_context",
+        "manual_context"
+      ]
+    },
+    "mcp_integration": {
+      "description": "MCP生态集成系统",
+      "intents": [
+        "mcp_integration",
+        "MCP",
+        "工具集成",
+        "mcp_tools"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "激活MCP集成",
+        "更新工具集成",
+        "MCP工具"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/local-mcp-integration.sh"
+        ],
+        "mcp_tools": [
+          "git",
+          "jest",
+          "eslint",
+          "prettier",
+          "webpack",
+          "docker",
+          "sqlite3",
+          "npm",
+          "yarn"
+        ],
+        "workflows": [
+          "tool-discovery",
+          "service-registration",
+          "integration-testing",
+          "performance-monitoring"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "mcp_tools",
+        "workflows"
+      ],
+      "parameters": {
+        "supported_tools": 25,
+        "auto_discovery": true,
+        "service_registration": true,
+        "quality_assurance": true
+      },
+      "validation_rules": {
+        "require_tool_availability": true,
+        "check_service_health": true,
+        "validate_integration_quality": true
+      },
+      "fallback_strategies": [
+        "basic_tools",
+        "manual_integration"
+      ]
+    },
+    "performance_dashboard": {
+      "description": "性能仪表板和监控系统",
+      "intents": [
+        "performance_dashboard",
+        "性能仪表板",
+        "performance_monitoring",
+        "system_metrics"
+      ],
+      "confidence_threshold": 0.80,
+      "user_examples": [
+        "查看性能仪表板",
+        "生成性能报告",
+        "系统性能监控"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/performance-dashboard.sh"
+        ],
+        "workflows": [
+          "metrics-collection",
+          "performance-analysis",
+          "report-generation",
+          "optimization-recommendations"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "metrics_interval": "5m",
+        "report_format": "comprehensive",
+        "optimization_suggestions": true,
+        "historical_comparison": true
+      },
+      "validation_rules": {
+        "require_performance_data": true,
+        "check_metrics_accuracy": true,
+        "validate_report_quality": true
+      },
+      "fallback_strategies": [
+        "basic_metrics",
+        "manual_monitoring"
+      ]
+    },
+    "pattern_analysis": {
+      "description": "智能模式分析和错误识别",
+      "intents": [
+        "pattern_analysis",
+        "模式分析",
+        "error_patterns",
+        "batch_fix"
+      ],
+      "confidence_threshold": 0.85,
+      "user_examples": [
+        "分析错误模式",
+        "运行模式分析",
+        "批量修复错误"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/pattern-analyzer.sh"
+        ],
+        "workflows": [
+          "pattern-recognition",
+          "error-classification",
+          "batch-fix-generation",
+          "impact-assessment"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "analysis_depth": "comprehensive",
+        "pattern_threshold": 0.8,
+        "max_fix_suggestions": 10,
+        "safety_first": true
+      },
+      "validation_rules": {
+        "require_error_data": true,
+        "check_pattern_accuracy": true,
+        "validate_fix_safety": true
+      },
+      "fallback_strategies": [
+        "basic_analysis",
+        "manual_debugging"
+      ]
+    },
+    "isolation_debug": {
+      "description": "隔离调试环境和安全分析",
+      "intents": [
+        "isolation_debug",
+        "隔离调试",
+        "safe_debugging",
+        "error_isolation"
+      ],
+      "confidence_threshold": 0.80,
+      "user_examples": [
+        "隔离调试错误",
+        "安全调试环境",
+        "错误隔离分析"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/isolation-debugger.sh"
+        ],
+        "workflows": [
+          "environment-isolation",
+          "safe-execution",
+          "result-analysis",
+          "cleanup-recovery"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "isolation_level": "full",
+        "resource_limits": true,
+        "rollback_enabled": true,
+        "monitoring_enabled": true
+      },
+      "validation_rules": {
+        "require_isolation_setup": true,
+        "check_resource_limits": true,
+        "validate_cleanup_procedures": true
+      },
+      "fallback_strategies": [
+        "basic_debugging",
+        "manual_testing"
+      ]
+    },
+    "token_compression": {
+      "description": "Token智能压缩和优化",
+      "intents": [
+        "token_compression",
+        "Token压缩",
+        "context_optimization",
+        "token_efficiency"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "优化Token使用",
+        "压缩上下文",
+        "减少Token消耗"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/token-compression.sh"
+        ],
+        "workflows": [
+          "compression-analysis",
+          "pattern-identification",
+          "optimization-application",
+          "efficiency-monitoring"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "compression_ratio": 0.7,
+        "preserve_semantics": true,
+        "adaptive_compression": true,
+        "performance_monitoring": true
+      },
+      "validation_rules": {
+        "check_semantic_preservation": true,
+        "validate_compression_ratio": true,
+        "monitor_performance_impact": true
+      },
+      "fallback_strategies": [
+        "basic_compression",
+        "no_compression"
+      ]
+    },
+    "quality_reporting": {
+      "description": "全面质量报告生成",
+      "intents": [
+        "quality_reporting",
+        "质量报告",
+        "code_quality_report",
+        "quality_metrics"
+      ],
+      "confidence_threshold": 0.75,
+      "user_examples": [
+        "生成质量报告",
+        "查看代码质量",
+        "质量分析报告"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "scripts": [
+          "core/quality-reporter.sh"
+        ],
+        "workflows": [
+          "metrics-collection",
+          "quality-analysis",
+          "report-generation",
+          "recommendation-engine"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "report_format": "comprehensive",
+        "include_historical": true,
+        "generate_recommendations": true,
+        "export_formats": ["json", "html", "text"]
+      },
+      "validation_rules": {
+        "require_quality_data": true,
+        "check_metrics_accuracy": true,
+        "validate_report_completeness": true
+      },
+      "fallback_strategies": [
+        "basic_report",
+        "manual_assessment"
+      ]
+    },
+    "conversational_system": {
+      "description": "高级会话命令处理系统",
+      "intents": [
+        "conversational_system",
+        "会话系统",
+        "dialogue_system",
+        "conversation_handler"
+      ],
+      "confidence_threshold": 0.70,
+      "user_examples": [
+        "处理复杂对话",
+        "高级会话系统",
+        "多步骤对话处理"
+      ],
+      "capabilities": {
+        "rules": [
+          "conversation_intent_analyzer"
+        ],
+        "scripts": [
+          "core/conversational-command-system.sh"
+        ],
+        "workflows": [
+          "dialogue-analysis",
+          "context-tracking",
+          "response-generation",
+          "conversation-flow"
+        ]
+      },
+      "execution_order": [
+        "rules",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "conversation_depth": "advanced",
+        "context_window": 50,
+        "response_adaptation": true,
+        "multi_turn_support": true
+      },
+      "validation_rules": {
+        "require_conversation_context": true,
+        "check_response_coherence": true,
+        "validate_conversation_flow": true
+      },
+      "fallback_strategies": [
+        "basic_dialogue",
+        "simple_responses"
+      ]
+    },
     "monitoring_and_analytics": {
       "description": "Monitoring and analytics configuration",
       "execution_tracking": {

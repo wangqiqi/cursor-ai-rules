@@ -120,9 +120,33 @@
         "timeout": 5000,
         "async": true,
         "enabled": true
+      },
+      {
+        "name": "agent-orchestration",
+        "description": "8个智能代理协作编排",
+        "command": "core/agent-orchestration-engine.sh",
+        "timeout": 30000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "context-pool-manager",
+        "description": "上下文池动态管理",
+        "command": "core/context-pool-manager.sh",
+        "timeout": 8000,
+        "async": true,
+        "enabled": true
       }
     ],
     "beforeSubmitPrompt": [
+      {
+        "name": "context-management",
+        "description": "智能上下文管理",
+        "command": "core/context-manager.sh",
+        "timeout": 5000,
+        "async": false,
+        "enabled": true
+      },
       {
         "name": "master-init",
         "description": "Master命令自动初始化",
@@ -160,6 +184,24 @@
         "enabled": true
       }
     ],
+    "preCommitOptimization": [
+      {
+        "name": "adaptive-optimization",
+        "description": "自适应优化和A/B测试",
+        "command": "core/adaptive-optimization-engine.sh",
+        "timeout": 15000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "experiment-framework",
+        "description": "实验框架自动化",
+        "command": "core/experiment-framework.sh",
+        "timeout": 20000,
+        "async": true,
+        "enabled": true
+      }
+    ],
     "postCommitLogging": [
       {
         "name": "post-commit-logger",
@@ -176,6 +218,92 @@
         "description": "会话结束时同步Cursor对话记录",
         "command": "features/hooks/cursor-sync.sh",
         "timeout": 10000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "session-learning",
+        "description": "会话结束学习总结",
+        "command": "core/self-learning-engine.sh",
+        "timeout": 15000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "continuous-learning",
+        "description": "持续学习循环",
+        "command": "core/continuous-learning-loop.sh",
+        "timeout": 20000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "onEnvironmentChange": [
+      {
+        "name": "mcp-integration",
+        "description": "本地工具MCP集成",
+        "command": "core/local-mcp-integration.sh",
+        "timeout": 20000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "performanceReportGeneration": [
+      {
+        "name": "performance-dashboard",
+        "description": "性能仪表板报告",
+        "command": "core/performance-dashboard.sh",
+        "timeout": 15000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "onDebugSessionStart": [
+      {
+        "name": "pattern-analyzer",
+        "description": "错误模式智能分析",
+        "command": "core/pattern-analyzer.sh",
+        "timeout": 20000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "onErrorDetected": [
+      {
+        "name": "isolation-debugger",
+        "description": "隔离调试环境",
+        "command": "core/isolation-debugger.sh",
+        "timeout": 15000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "tokenOptimization": [
+      {
+        "name": "token-compression",
+        "description": "Token智能压缩",
+        "command": "core/token-compression.sh",
+        "timeout": 10000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "qualityReportGeneration": [
+      {
+        "name": "quality-reporter",
+        "description": "质量报告生成",
+        "command": "core/quality-reporter.sh",
+        "timeout": 12000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "onComplexConversation": [
+      {
+        "name": "conversational-system",
+        "description": "高级会话命令处理",
+        "command": "core/conversational-command-system.sh",
+        "timeout": 25000,
         "async": true,
         "enabled": true
       }

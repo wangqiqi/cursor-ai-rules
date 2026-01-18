@@ -1,0 +1,99 @@
+#!/bin/bash
+# 🚀 Cursor AI Rules - Git Post-Commit Hook
+# 提交后自动触发的学习和生长记录
+
+# 获取项目根目录
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+CURSOR_DIR="$PROJECT_ROOT/.cursor"
+GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+
+# 记录提交信息
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+AUTHOR=$(git log -1 --pretty=format:'%an <%ae>')
+TIMESTAMP=$(date -Iseconds)
+
+echo "🎯 Git Post-Commit Hook 执行 - $TIMESTAMP"
+echo "📝 提交: $COMMIT_HASH"
+echo "👤 作者: $AUTHOR"
+echo "💬 消息: $COMMIT_MESSAGE"
+
+# ============================================================================
+# 🤖 AI学习与生长记录
+# ============================================================================
+
+# 1. 触发生长记录器
+echo "📈 记录到生长系统..."
+if [ -f "$CURSOR_DIR/core/growth-recorder.sh" ]; then
+    bash "$CURSOR_DIR/core/growth-recorder.sh" record "git-commit" "$COMMIT_MESSAGE" "completed" >> "$GROWTH_DIR/logs/git-post-commit.log" 2>&1
+fi
+
+# 2. 触发自学习引擎 (异步)
+echo "🧠 触发自学习引擎..."
+if [ -f "$CURSOR_DIR/core/self-learning-engine.sh" ]; then
+    (bash "$CURSOR_DIR/core/self-learning-engine.sh" --incremental-learn >> "$GROWTH_DIR/logs/git-learning.log" 2>&1 &) &
+fi
+
+# 3. 触发Token压缩优化
+echo "🗜️ 触发Token压缩..."
+if [ -f "$CURSOR_DIR/core/token-compression.sh" ]; then
+    (bash "$CURSOR_DIR/core/token-compression.sh" --post-commit >> "$GROWTH_DIR/logs/git-token-compress.log" 2>&1 &) &
+fi
+
+# ============================================================================
+# 🔍 代码质量与分析
+# ============================================================================
+
+# 4. 触发质量报告更新
+echo "📊 更新质量报告..."
+if [ -f "$CURSOR_DIR/core/quality-reporter.sh" ]; then
+    (bash "$CURSOR_DIR/core/quality-reporter.sh" --incremental >> "$GROWTH_DIR/logs/git-quality-update.log" 2>&1 &) &
+fi
+
+# 5. 触发模式分析 (如果有重大变更)
+LINES_CHANGED=$(git show --stat | tail -1 | awk '{print $4+$6}')
+if [ "$LINES_CHANGED" -gt 50 ]; then
+    echo "🔍 检测到重大变更 ($LINES_CHANGED 行), 触发模式分析..."
+    if [ -f "$CURSOR_DIR/core/pattern-analyzer.sh" ]; then
+        (bash "$CURSOR_DIR/core/pattern-analyzer.sh" --analyze-commit "$COMMIT_HASH" >> "$GROWTH_DIR/logs/git-pattern-analysis.log" 2>&1 &) &
+    fi
+fi
+
+# ============================================================================
+# 📋 提交统计记录
+# ============================================================================
+
+# 记录提交统计
+STATS_FILE="$GROWTH_DIR/analytics/commit-stats.jsonl"
+mkdir -p "$(dirname "$STATS_FILE")"
+
+COMMIT_STATS=$(cat <<EOF
+{
+  "timestamp": "$TIMESTAMP",
+  "commit_hash": "$COMMIT_HASH",
+  "author": "$AUTHOR",
+  "message": "$COMMIT_MESSAGE",
+  "lines_changed": $LINES_CHANGED,
+  "files_changed": $(git show --name-only | tail -n +2 | wc -l),
+  "triggered_hooks": ["growth-recorder", "self-learning", "token-compression", "quality-reporter"]
+}
+EOF
+)
+
+echo "$COMMIT_STATS" >> "$STATS_FILE"
+
+echo "✅ Git Post-Commit Hook 执行完成"
+echo "📊 统计已保存到: $STATS_FILE"
+echo ""
+
+# ============================================================================
+# 💡 用户提示 (可选)
+# ============================================================================
+
+# 检查是否有未推送的提交
+UNPUSHED=$(git log --oneline origin/$(git branch --show-current) 2>/dev/null | wc -l || echo "0")
+if [ "$UNPUSHED" -gt 0 ]; then
+    echo "💡 提示: 还有 $UNPUSHED 个提交未推送到远程"
+    echo "   推送命令: git push origin $(git branch --show-current)"
+    echo ""
+fi

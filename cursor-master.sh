@@ -322,6 +322,58 @@ perform_full_intent_analysis() {
         intent_type="show_growth_status"
         confidence=90
         actions=("display-growth-metrics")
+    elif echo "$user_input" | grep -qiE "(智能代理|agent.*orchestration|8个代理|多代理协作)"; then
+        intent_type="agent_orchestration"
+        confidence=95
+        actions=("agent-orchestration-engine")
+    elif echo "$user_input" | grep -qiE "(自适应优化|A.*B.*测试|adaptive.*optimization|optimization.*engine)"; then
+        intent_type="adaptive_optimization"
+        confidence=90
+        actions=("adaptive-optimization-engine")
+    elif echo "$user_input" | grep -qiE "(实验框架|experiment.*framework|A.*B.*test)"; then
+        intent_type="experiment_framework"
+        confidence=85
+        actions=("experiment-framework")
+    elif echo "$user_input" | grep -qiE "(自学习|self.*learning|learning.*engine)"; then
+        intent_type="self_learning"
+        confidence=90
+        actions=("self-learning-engine")
+    elif echo "$user_input" | grep -qiE "(持续学习|continuous.*learning)"; then
+        intent_type="continuous_learning"
+        confidence=85
+        actions=("continuous-learning-loop")
+    elif echo "$user_input" | grep -qiE "(上下文管理|context.*management)"; then
+        intent_type="context_management"
+        confidence=90
+        actions=("context-manager")
+    elif echo "$user_input" | grep -qiE "(MCP|MCP集成|工具集成)"; then
+        intent_type="mcp_integration"
+        confidence=85
+        actions=("local-mcp-integration")
+    elif echo "$user_input" | grep -qiE "(性能仪表板|performance.*dashboard)"; then
+        intent_type="performance_dashboard"
+        confidence=80
+        actions=("performance-dashboard")
+    elif echo "$user_input" | grep -qiE "(模式分析|pattern.*analysis)"; then
+        intent_type="pattern_analysis"
+        confidence=85
+        actions=("pattern-analyzer")
+    elif echo "$user_input" | grep -qiE "(隔离调试|isolation.*debug)"; then
+        intent_type="isolation_debug"
+        confidence=80
+        actions=("isolation-debugger")
+    elif echo "$user_input" | grep -qiE "(Token压缩|token.*compression)"; then
+        intent_type="token_compression"
+        confidence=75
+        actions=("token-compression")
+    elif echo "$user_input" | grep -qiE "(质量报告|quality.*report)"; then
+        intent_type="quality_reporting"
+        confidence=75
+        actions=("quality-reporter")
+    elif echo "$user_input" | grep -qiE "(会话系统|conversational.*system)"; then
+        intent_type="conversational_system"
+        confidence=70
+        actions=("conversational-command-system")
     elif echo "$user_input" | grep -qiE "(部署|发布|上线|运维)"; then
         intent_type="deployment"
         confidence=75
@@ -885,6 +937,58 @@ make_decision() {
             execution_plan=("enhanced-git-commit-preview")
             explanation="预览增强版Git提交内容，不执行实际提交"
             ;;
+        "agent_orchestration")
+            execution_plan=("agent-orchestration-engine")
+            explanation="激活8个智能代理协作编排系统，实现多代理智能化任务分配"
+            ;;
+        "adaptive_optimization")
+            execution_plan=("adaptive-optimization-engine")
+            explanation="执行自适应优化引擎，进行A/B测试和自动化性能优化"
+            ;;
+        "experiment_framework")
+            execution_plan=("experiment-framework")
+            explanation="运行实验框架，进行自动化实验设计和结果分析"
+            ;;
+        "self_learning")
+            execution_plan=("self-learning-engine")
+            explanation="执行自学习引擎，基于历史数据进行模式学习和优化"
+            ;;
+        "continuous_learning")
+            execution_plan=("continuous-learning-loop")
+            explanation="启动持续学习循环，实现实时数据收集和模型更新"
+            ;;
+        "context_management")
+            execution_plan=("context-manager")
+            explanation="激活智能上下文管理系统，实现分层加载和相关性评分"
+            ;;
+        "mcp_integration")
+            execution_plan=("local-mcp-integration")
+            explanation="激活MCP集成系统，支持25+本地工具的自动发现和集成"
+            ;;
+        "performance_dashboard")
+            execution_plan=("performance-dashboard")
+            explanation="生成性能仪表板报告，实时监控系统健康和优化指标"
+            ;;
+        "pattern_analysis")
+            execution_plan=("pattern-analyzer")
+            explanation="执行智能模式分析，识别错误模式和批量修复建议"
+            ;;
+        "isolation_debug")
+            execution_plan=("isolation-debugger")
+            explanation="激活隔离调试环境，进行安全的错误隔离和分析"
+            ;;
+        "token_compression")
+            execution_plan=("token-compression")
+            explanation="执行Token智能压缩，优化上下文使用和减少消耗"
+            ;;
+        "quality_reporting")
+            execution_plan=("quality-reporter")
+            explanation="生成全面的质量报告，包括代码质量、测试覆盖率等指标"
+            ;;
+        "conversational_system")
+            execution_plan=("conversational-command-system")
+            explanation="激活高级会话命令系统，处理复杂的对话交互和多步骤任务"
+            ;;
         "learn_project_patterns")
             execution_plan=("analyze-growth-data")
             explanation="分析.cursorGrowth目录中的学习数据，优化AI响应"
@@ -1055,6 +1159,240 @@ execute_action() {
                 fi
             else
                 echo -e "${RED}❌ 未找到增强版Git提交脚本${NC}"
+                return 1
+            fi
+            ;;
+        "agent-orchestration-engine")
+            echo -e "${BLUE}🤖 执行8个智能代理编排引擎...${NC}"
+
+            # 调用智能代理编排引擎
+            if [ -f "$CURSOR_DIR/core/agent-orchestration-engine.sh" ]; then
+                bash "$CURSOR_DIR/core/agent-orchestration-engine.sh" --orchestrate
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 智能代理编排执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 智能代理编排执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到智能代理编排引擎${NC}"
+                return 1
+            fi
+            ;;
+        "adaptive-optimization-engine")
+            echo -e "${BLUE}🔧 执行自适应优化引擎...${NC}"
+
+            # 调用自适应优化引擎
+            if [ -f "$CURSOR_DIR/core/adaptive-optimization-engine.sh" ]; then
+                bash "$CURSOR_DIR/core/adaptive-optimization-engine.sh" --optimize
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 自适应优化执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 自适应优化执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到自适应优化引擎${NC}"
+                return 1
+            fi
+            ;;
+        "experiment-framework")
+            echo -e "${BLUE}🧪 执行实验框架...${NC}"
+
+            # 调用实验框架
+            if [ -f "$CURSOR_DIR/core/experiment-framework.sh" ]; then
+                bash "$CURSOR_DIR/core/experiment-framework.sh" --run-experiment
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 实验框架执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 实验框架执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到实验框架${NC}"
+                return 1
+            fi
+            ;;
+        "self-learning-engine")
+            echo -e "${BLUE}🧠 执行自学习引擎...${NC}"
+
+            # 调用自学习引擎
+            if [ -f "$CURSOR_DIR/core/self-learning-engine.sh" ]; then
+                bash "$CURSOR_DIR/core/self-learning-engine.sh" --learn
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 自学习引擎执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 自学习引擎执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到自学习引擎${NC}"
+                return 1
+            fi
+            ;;
+        "continuous-learning-loop")
+            echo -e "${BLUE}🔄 执行持续学习循环...${NC}"
+
+            # 调用持续学习循环
+            if [ -f "$CURSOR_DIR/core/continuous-learning-loop.sh" ]; then
+                bash "$CURSOR_DIR/core/continuous-learning-loop.sh" --run-cycle
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 持续学习循环执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 持续学习循环执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到持续学习循环${NC}"
+                return 1
+            fi
+            ;;
+        "context-manager")
+            echo -e "${BLUE}🗂️ 执行智能上下文管理...${NC}"
+
+            # 调用智能上下文管理
+            if [ -f "$CURSOR_DIR/core/context-manager.sh" ]; then
+                bash "$CURSOR_DIR/core/context-manager.sh" --manage
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 智能上下文管理执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 智能上下文管理执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到智能上下文管理${NC}"
+                return 1
+            fi
+            ;;
+        "local-mcp-integration")
+            echo -e "${BLUE}🔌 执行MCP集成系统...${NC}"
+
+            # 调用MCP集成系统
+            if [ -f "$CURSOR_DIR/core/local-mcp-integration.sh" ]; then
+                bash "$CURSOR_DIR/core/local-mcp-integration.sh" --update-tools
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ MCP集成系统执行完成${NC}"
+                else
+                    echo -e "${RED}❌ MCP集成系统执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到MCP集成系统${NC}"
+                return 1
+            fi
+            ;;
+        "performance-dashboard")
+            echo -e "${BLUE}📊 执行性能仪表板...${NC}"
+
+            # 调用性能仪表板
+            if [ -f "$CURSOR_DIR/core/performance-dashboard.sh" ]; then
+                bash "$CURSOR_DIR/core/performance-dashboard.sh" --generate-report
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 性能仪表板执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 性能仪表板执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到性能仪表板${NC}"
+                return 1
+            fi
+            ;;
+        "pattern-analyzer")
+            echo -e "${BLUE}🔍 执行模式分析器...${NC}"
+
+            # 调用模式分析器
+            if [ -f "$CURSOR_DIR/core/pattern-analyzer.sh" ]; then
+                bash "$CURSOR_DIR/core/pattern-analyzer.sh" --analyze
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 模式分析器执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 模式分析器执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到模式分析器${NC}"
+                return 1
+            fi
+            ;;
+        "isolation-debugger")
+            echo -e "${BLUE}🐛 执行隔离调试器...${NC}"
+
+            # 调用隔离调试器
+            if [ -f "$CURSOR_DIR/core/isolation-debugger.sh" ]; then
+                bash "$CURSOR_DIR/core/isolation-debugger.sh" --isolate
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 隔离调试器执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 隔离调试器执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到隔离调试器${NC}"
+                return 1
+            fi
+            ;;
+        "token-compression")
+            echo -e "${BLUE}🗜️ 执行Token压缩优化...${NC}"
+
+            # 调用Token压缩工具
+            if [ -f "$CURSOR_DIR/core/token-compression.sh" ]; then
+                bash "$CURSOR_DIR/core/token-compression.sh" --optimize
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ Token压缩优化完成${NC}"
+                else
+                    echo -e "${RED}❌ Token压缩优化失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到Token压缩工具${NC}"
+                return 1
+            fi
+            ;;
+        "quality-reporter")
+            echo -e "${BLUE}📋 执行质量报告生成...${NC}"
+
+            # 调用质量报告器
+            if [ -f "$CURSOR_DIR/core/quality-reporter.sh" ]; then
+                bash "$CURSOR_DIR/core/quality-reporter.sh" --generate
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 质量报告生成完成${NC}"
+                else
+                    echo -e "${RED}❌ 质量报告生成失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到质量报告器${NC}"
+                return 1
+            fi
+            ;;
+        "conversational-command-system")
+            echo -e "${BLUE}💬 执行会话命令系统...${NC}"
+
+            # 调用会话命令系统
+            if [ -f "$CURSOR_DIR/core/conversational-command-system.sh" ]; then
+                bash "$CURSOR_DIR/core/conversational-command-system.sh" --process
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 会话命令系统执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 会话命令系统执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到会话命令系统${NC}"
                 return 1
             fi
             ;;

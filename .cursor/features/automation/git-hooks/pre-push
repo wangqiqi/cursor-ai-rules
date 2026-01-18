@@ -1,0 +1,139 @@
+#!/bin/bash
+# 🛡️ Cursor AI Rules - Git Pre-Push Hook
+# 推送前进行质量检查和安全验证
+
+# 获取项目根目录
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+CURSOR_DIR="$PROJECT_ROOT/.cursor"
+GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+
+echo "🛡️ Git Pre-Push Hook 执行 - $(date -Iseconds)"
+echo "🔍 正在进行推送前质量检查..."
+
+# ============================================================================
+# 🔒 安全与质量检查
+# ============================================================================
+
+HOOK_PASSED=true
+
+# 1. 运行代码质量检查
+echo "🔍 执行代码质量检查..."
+if [ -f "$CURSOR_DIR/core/quality-manager.sh" ]; then
+    if ! bash "$CURSOR_DIR/core/quality-manager.sh" --pre-push-check >> "$GROWTH_DIR/logs/git-pre-push-quality.log" 2>&1; then
+        echo "❌ 代码质量检查失败"
+        HOOK_PASSED=false
+    else
+        echo "✅ 代码质量检查通过"
+    fi
+else
+    echo "⚠️  未找到质量管理器，跳过质量检查"
+fi
+
+# 2. 运行一致性检查
+echo "🔍 执行一致性检查..."
+if [ -f "$CURSOR_DIR/core/consistency-checker.sh" ]; then
+    if ! bash "$CURSOR_DIR/core/consistency-checker.sh" --pre-push >> "$GROWTH_DIR/logs/git-pre-push-consistency.log" 2>&1; then
+        echo "❌ 一致性检查失败"
+        HOOK_PASSED=false
+    else
+        echo "✅ 一致性检查通过"
+    fi
+else
+    echo "⚠️  未找到一致性检查器，跳过一致性检查"
+fi
+
+# 3. 检查隔离调试状态
+echo "🔍 检查调试隔离状态..."
+if [ -f "$CURSOR_DIR/core/isolation-debugger.sh" ]; then
+    ISOLATION_STATUS=$(bash "$CURSOR_DIR/core/isolation-debugger.sh" --check-status 2>/dev/null)
+    if echo "$ISOLATION_STATUS" | grep -q "active"; then
+        echo "⚠️  检测到活跃的调试隔离环境"
+        echo "💡 建议在推送前完成调试或关闭隔离环境"
+        # 不阻止推送，但给出警告
+    fi
+fi
+
+# ============================================================================
+# 📊 性能与监控检查
+# ============================================================================
+
+# 4. 运行性能监控检查
+echo "📊 执行性能监控检查..."
+if [ -f "$CURSOR_DIR/core/performance-monitor.sh" ]; then
+    PERF_STATUS=$(bash "$CURSOR_DIR/core/performance-monitor.sh" check --pre-push 2>&1)
+    if echo "$PERF_STATUS" | grep -q "WARNING\|CRITICAL"; then
+        echo "⚠️  检测到性能问题:"
+        echo "$PERF_STATUS" | grep "WARNING\|CRITICAL"
+        # 性能问题不阻止推送，但记录警告
+    else
+        echo "✅ 性能检查正常"
+    fi
+fi
+
+# 5. 检查Token使用情况
+echo "🗜️ 检查Token使用优化..."
+if [ -f "$CURSOR_DIR/core/token-compression.sh" ]; then
+    bash "$CURSOR_DIR/core/token-compression.sh" --check-efficiency >> "$GROWTH_DIR/logs/git-pre-push-tokens.log" 2>&1
+fi
+
+# ============================================================================
+# 🤖 AI系统状态检查
+# ============================================================================
+
+# 6. 检查AI代理健康状态
+echo "🤖 检查AI代理健康状态..."
+if [ -f "$CURSOR_DIR/core/agent-orchestration-engine.sh" ]; then
+    AGENT_HEALTH=$(bash "$CURSOR_DIR/core/agent-orchestration-engine.sh" --health-check 2>&1)
+    if echo "$AGENT_HEALTH" | grep -q "ERROR\|FAILED"; then
+        echo "⚠️  AI代理健康检查发现问题:"
+        echo "$AGENT_HEALTH"
+        # AI问题不阻止推送
+    else
+        echo "✅ AI代理状态正常"
+    fi
+fi
+
+# ============================================================================
+# 📋 推送统计记录
+# ============================================================================
+
+# 记录推送统计
+PUSH_STATS_FILE="$GROWTH_DIR/analytics/push-stats.jsonl"
+mkdir -p "$(dirname "$PUSH_STATS_FILE")"
+
+PUSH_STATS=$(cat <<EOF
+{
+  "timestamp": "$(date -Iseconds)",
+  "hook_passed": $HOOK_PASSED,
+  "checks_performed": ["quality", "consistency", "performance", "ai_health"],
+  "warnings_count": $(echo "$PERF_STATUS" | grep -c "WARNING\|CRITICAL" || echo "0"),
+  "branch": "$(git branch --show-current)",
+  "remote": "$(git remote get-url origin 2>/dev/null || echo 'unknown')"
+}
+EOF
+)
+
+echo "$PUSH_STATS" >> "$PUSH_STATS_FILE"
+
+# ============================================================================
+# 🎯 最终决策
+# ============================================================================
+
+if [ "$HOOK_PASSED" = true ]; then
+    echo ""
+    echo "✅ Git Pre-Push Hook 检查通过"
+    echo "🚀 允许推送操作"
+    exit 0
+else
+    echo ""
+    echo "❌ Git Pre-Push Hook 检查失败"
+    echo "🚫 推送操作被阻止"
+    echo ""
+    echo "💡 解决方法:"
+    echo "   1. 查看上述失败的检查项目"
+    echo "   2. 修复相关问题"
+    echo "   3. 重新提交或使用 --no-verify 跳过检查"
+    echo "   4. 检查日志: $GROWTH_DIR/logs/git-pre-push-*.log"
+    echo ""
+    exit 1
+fi

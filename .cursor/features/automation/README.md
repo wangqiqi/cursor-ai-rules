@@ -1,23 +1,42 @@
 # ⚙️ 自动化工具层
 
-这个目录包含了所有自动化工具和脚本，负责处理各种自动化任务。
+这个目录包含了所有自动化工具和脚本，负责处理各种自动化任务，包括事件驱动、定时任务和Git集成。
 
 ## 📁 目录结构
 
 ```
 automation/
-├── hooks/         # 事件钩子系统
-│   ├── code-quality.sh     # 代码质量检查钩子
-│   ├── command-log.sh      # 命令日志钩子
-│   ├── prompt-security.sh  # 提示安全钩子
-│   ├── rule-usage-tracker.sh # 规则使用跟踪
-│   ├── security-audit.sh   # 安全审计钩子
-│   ├── session-summary.sh  # 会话总结钩子
-│   └── test-hooks.sh       # 测试钩子
+├── cron/          # 定时任务配置
+│   └── cursor-ai-rules.cron    # 自动化任务配置
+├── git-hooks/     # Git事件钩子
+│   ├── install-hooks.sh        # 钩子安装脚本
+│   ├── post-commit             # 提交后智能处理
+│   └── pre-push                # 推送前质量检查
+├── hooks/         # 系统事件钩子
+│   ├── code-quality.sh         # 代码质量检查钩子
+│   ├── command-log.sh          # 命令日志钩子
+│   ├── commit-message-validator.sh # 提交消息验证
+│   ├── consistency-check.sh    # 一致性检查钩子
+│   ├── config-validator.sh     # 配置验证钩子
+│   ├── dependency-check.sh     # 依赖检查钩子
+│   ├── env-perception.sh       # 环境感知钩子
+│   ├── event-logger.sh         # 事件日志钩子
+│   ├── growth-recorder.sh      # 生长记录钩子
+│   ├── master-init.sh          # 主控制器初始化
+│   ├── performance-monitor.sh  # 性能监控钩子
+│   ├── pre-commit-analyzer.sh  # 预提交分析钩子
+│   ├── prompt-security.sh      # 提示安全钩子
+│   ├── quality-check.sh        # 质量检查钩子
+│   ├── rule-usage-tracker.sh   # 规则使用跟踪
+│   ├── security-audit.sh       # 安全审计钩子
+│   ├── session-optimizer.sh    # 会话优化钩子
+│   ├── session-summary.sh      # 会话总结钩子
+│   ├── test-hooks.sh           # 测试钩子
+│   └── token-compression.sh    # Token压缩钩子
 └── scripts/       # 自动化脚本
     ├── convert_to_agent_skills.sh # 技能转换脚本
-    ├── growth_init.sh      # 增长初始化脚本
-    └── plugin_manager.sh   # 插件管理脚本
+    ├── growth_init.sh             # 增长初始化脚本
+    └── plugin_manager.sh          # 插件管理脚本
 ```
 
 ## 🎯 职责范围
@@ -36,15 +55,39 @@ automation/
 
 ## 🚀 使用方法
 
-### 钩子系统
-钩子由系统自动触发，无需手动调用：
+### 定时任务系统
+自动执行的后台任务：
+
+```bash
+# 查看定时任务配置
+cat automation/cron/cursor-ai-rules.cron
+
+# 安装定时任务
+crontab automation/cron/cursor-ai-rules.cron
+```
+
+### Git钩子系统
+智能Git事件处理：
+
+```bash
+# 安装Git钩子
+bash automation/git-hooks/install-hooks.sh
+
+# 手动触发钩子
+bash automation/git-hooks/post-commit  # 提交后处理
+bash automation/git-hooks/pre-push     # 推送前检查
+```
+
+### 系统钩子系统
+系统事件自动触发：
 
 ```json
 // hooks.json 配置示例
 {
   "hooks": {
-    "afterFileEdit": [{"command": "automation/hooks/code-quality.sh"}],
-    "beforeShellExecution": [{"command": "automation/hooks/security-audit.sh"}]
+    "afterFileEdit": [{"command": "features/automation/hooks/code-quality.sh"}],
+    "beforeShellExecution": [{"command": "features/automation/hooks/security-audit.sh"}],
+    "afterAgentResponse": [{"command": "core/agent-orchestration-engine.sh"}]
   }
 }
 ```
