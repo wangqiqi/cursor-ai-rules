@@ -17,24 +17,58 @@
 # 获取脚本所在目录
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 标准化路径计算
-if [[ "$SCRIPT_DIR" == *"/.cursor/core" ]]; then
-    # 脚本在 .cursor/core/ 目录中
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-    CURSOR_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-elif [[ "$SCRIPT_DIR" == *"/.cursor/config" ]]; then
-    # 脚本在 .cursor/config/ 目录中 (如果有的话)
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-    CURSOR_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-elif [[ "$SCRIPT_DIR" == *"/.cursor/features/hooks" ]]; then
-    # 钩子脚本在 .cursor/features/hooks/ 目录中
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-    CURSOR_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-else
-    # 其他位置的脚本
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-    CURSOR_DIR="$SCRIPT_DIR"
-fi
+# 🧠 智能路径查找函数
+find_project_paths() {
+    local current_dir="$(pwd)"
+
+    # 从当前目录开始向上查找 .git 目录（项目根目录）
+    PROJECT_ROOT="$current_dir"
+    while [[ "$PROJECT_ROOT" != "/" ]]; do
+        if [[ -d "$PROJECT_ROOT/.git" ]]; then
+            break
+        fi
+        PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
+    done
+
+    # 如果没找到 .git，使用当前目录作为fallback
+    if [[ ! -d "$PROJECT_ROOT/.git" ]]; then
+        PROJECT_ROOT="$current_dir"
+    fi
+
+    # 从当前目录开始向上查找 .cursor 目录
+    CURSOR_DIR="$current_dir"
+    while [[ "$CURSOR_DIR" != "/" ]]; do
+        if [[ -d "$CURSOR_DIR/.cursor" ]]; then
+            CURSOR_DIR="$CURSOR_DIR/.cursor"
+            break
+        fi
+        CURSOR_DIR="$(dirname "$CURSOR_DIR")"
+    done
+
+    # 如果没找到 .cursor，从SCRIPT_DIR开始查找（向后兼容）
+    if [[ ! -d "$CURSOR_DIR" || "$CURSOR_DIR" == "/" ]]; then
+        if [[ "$SCRIPT_DIR" == *"/.cursor/core" ]]; then
+            CURSOR_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+            PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+        elif [[ "$SCRIPT_DIR" == *"/.cursor/features/hooks" ]]; then
+            CURSOR_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+            PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+        elif [[ "$SCRIPT_DIR" == *"/.cursor/features/automation/scripts" ]]; then
+            CURSOR_DIR="$(cd "$SCRIPT_DIR/../../../.." && pwd)/.cursor"
+            PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+        else
+            CURSOR_DIR="$SCRIPT_DIR"
+            PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+        fi
+    fi
+
+    # 确保路径是绝对路径
+    PROJECT_ROOT="$(cd "$PROJECT_ROOT" && pwd)"
+    CURSOR_DIR="$(cd "$CURSOR_DIR" && pwd)"
+}
+
+# 执行智能路径查找
+find_project_paths
 
 # 导出标准化路径变量
 export PROJECT_ROOT

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🎯 智能Master命令控制器 v4.3.0
+# 🎯 智能Master命令控制器 v5.0.0
 # 自动感知 + 智能决策 + 自主执行
 #
 # 使用方法:
@@ -10,178 +10,46 @@
 
 set -e
 
-# 获取脚本所在目录的绝对路径
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CURSOR_DIR="$SCRIPT_DIR/.cursor"
-PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+# 🔧 加载统一路径配置（会自动查找项目路径）
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.cursor/core/path-config.sh"
 
-# 🚀 初始化优化系统（如果可用）
-if [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
-    source "$CURSOR_DIR/core/optimizer.sh"
-    init_optimizer >/dev/null 2>&1 || true
-fi
+# 🌱 简化初始化：只保留基础生长目录初始化
+# 移除复杂的AI系统初始化，保持轻量级
 
-# 🎯 初始化上下文池管理系统（如果可用）
-if [ -f "$CURSOR_DIR/core/context-pool-manager.sh" ]; then
-    source "$CURSOR_DIR/core/context-pool-manager.sh"
-    init_context_pool >/dev/null 2>&1 || true
-fi
-
-# 🎯 初始化VIBE服务集成（如果可用）
-if [ -f "$CURSOR_DIR/core/vibe-services-integration.sh" ]; then
-    source "$CURSOR_DIR/core/vibe-services-integration.sh"
-    init_vibe_services_integration >/dev/null 2>&1 || true
-fi
-
-# 💬 初始化对话式命令系统（如果可用）
-if [ -f "$CURSOR_DIR/core/conversational-command-system.sh" ]; then
-    source "$CURSOR_DIR/core/conversational-command-system.sh"
-    init_conversational_command_system >/dev/null 2>&1 || true
-fi
-
-# 🔗 初始化本地MCP集成系统（如果可用）
-if [ -f "$CURSOR_DIR/core/local-mcp-integration.sh" ]; then
-    source "$CURSOR_DIR/core/local-mcp-integration.sh"
-    init_local_mcp_integration >/dev/null 2>&1 || true
-fi
-
-# 🤖 初始化代理编排引擎（如果可用）
-if [ -f "$CURSOR_DIR/core/agent-orchestration-engine.sh" ]; then
-    source "$CURSOR_DIR/core/agent-orchestration-engine.sh"
-    init_agent_orchestration_engine >/dev/null 2>&1 || true
-fi
-
-# 📊 初始化性能监控仪表板（如果可用）
-if [ -f "$CURSOR_DIR/core/performance-dashboard.sh" ]; then
-    source "$CURSOR_DIR/core/performance-dashboard.sh"
-    init_performance_dashboard >/dev/null 2>&1 || true
-fi
-
-# 🧠 初始化自学习引擎（如果可用）
-if [ -f "$CURSOR_DIR/core/self-learning-engine.sh" ]; then
-    source "$CURSOR_DIR/core/self-learning-engine.sh"
-    init_self_learning_engine >/dev/null 2>&1 || true
-fi
-
-# ⚡ 初始化自适应优化引擎（如果可用）
-if [ -f "$CURSOR_DIR/core/adaptive-optimization-engine.sh" ]; then
-    source "$CURSOR_DIR/core/adaptive-optimization-engine.sh"
-    init_adaptive_optimization_engine >/dev/null 2>&1 || true
-fi
-
-# 🔄 初始化持续学习循环（如果可用）
-if [ -f "$CURSOR_DIR/core/continuous-learning-loop.sh" ]; then
-    source "$CURSOR_DIR/core/continuous-learning-loop.sh"
-    init_continuous_learning_loop >/dev/null 2>&1 || true
-fi
 
 # 🌱 初始化项目生长目录
-GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+GROWTH_DIR="$CURSOR_GROWTH"
 init_growth_directory() {
     # 首次使用检测
     if [ ! -d "$GROWTH_DIR" ]; then
         echo -e "${CYAN}🌱 初始化项目生长目录...${NC}" >&2
 
-        # 创建主目录
-        mkdir -p "$GROWTH_DIR"
-
-        # 创建子目录结构
-        mkdir -p "$GROWTH_DIR/learning"
-        mkdir -p "$GROWTH_DIR/conversations"
-        mkdir -p "$GROWTH_DIR/debug"
-        mkdir -p "$GROWTH_DIR/growth"
-        mkdir -p "$GROWTH_DIR/personal"
-        mkdir -p "$GROWTH_DIR/cache"
-        mkdir -p "$GROWTH_DIR/monitoring"
-        mkdir -p "$GROWTH_DIR/optimization"
-
-        # 🔒 主动管理 .gitignore 文件，确保隐私保护
-        ensure_gitignore_protection
-
-        # 创建初始配置文件
-        cat > "$GROWTH_DIR/README.md" << 'EOF'
-# 🌱 项目生长目录 (.cursorGrowth)
-
-此目录存储项目的私有化信息、学习数据和生长记录。
-每次使用 `@master` 命令时，此目录都会自动更新和生长。
-
-## 📁 目录结构
-
-- `learning/` - AI学习数据和模式识别
-- `conversations/` - 对话历史和上下文
-- `debug/` - 调试信息和错误日志
-- `growth/` - 项目生长指标和趋势
-- `personal/` - 用户偏好和个性化设置
-
-## 🔒 隐私保护
-
-此目录包含敏感信息，请勿提交到版本控制系统。
-建议将其添加到 `.gitignore` 文件中。
-
-## 📊 数据使用
-
-系统会自动分析此目录中的数据来：
-- 改进AI助手的响应质量
-- 学习用户的偏好和习惯
-- 优化项目开发流程
-- 提供个性化的建议
-
-EOF
-
-        # 创建初始学习配置文件
-        cat > "$GROWTH_DIR/learning/profile.json" << EOF
-{
-  "version": "1.0.0",
-  "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
-  "user_profile": {
-    "learning_style": "adaptive",
-    "communication_preference": "natural_language",
-    "expertise_level": "intermediate",
-    "preferred_languages": ["zh-CN", "en-US"],
-    "common_intents": [],
-    "success_patterns": [],
-    "challenge_areas": []
-  },
-  "project_profile": {
-    "name": "$(basename "$PROJECT_ROOT")",
-    "type": "unknown",
-    "technologies": [],
-    "development_stage": "initialization",
-    "team_size": 1,
-    "last_activity": "$(date '+%Y-%m-%d %H:%M:%S')"
-  },
-  "growth_metrics": {
-    "total_interactions": 0,
-    "successful_executions": 0,
-    "learning_iterations": 0,
-    "improvement_score": 0.0
-  }
-}
-EOF
-
-        # 创建初始对话记录
-        cat > "$GROWTH_DIR/conversations/initial_conversation.json" << EOF
-{
-  "conversation_id": "initial_$(date +%s)",
-  "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
-  "type": "initialization",
-  "messages": [
-    {
-      "role": "system",
-      "content": "项目生长目录已初始化。开始记录AI助手与用户的交互数据。",
-      "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')"
-    }
-  ],
-  "metadata": {
-    "user_id": "unknown",
-    "project_root": "$PROJECT_ROOT",
-    "cursor_version": "5.0.0"
-  }
-}
-EOF
-
-        echo -e "${GREEN}✅ 项目生长目录初始化完成${NC}" >&2
-        echo -e "${YELLOW}📁 生长目录位置: $GROWTH_DIR${NC}" >&2
+        # 调用统一的生长目录初始化脚本
+        if [ -f "$CURSOR_DIR/features/automation/scripts/growth_init.sh" ]; then
+            bash "$CURSOR_DIR/features/automation/scripts/growth_init.sh" >/dev/null 2>&1
+            if [ $? -eq 0 ]; then
+                # 确保.gitignore保护
+                ensure_gitignore_protection
+                echo -e "${GREEN}✅ 项目生长目录初始化完成${NC}" >&2
+                echo -e "${YELLOW}📁 生长目录位置: $GROWTH_DIR${NC}" >&2
+            else
+                echo -e "${YELLOW}⚠️ 生长目录初始化失败，使用备用方案${NC}" >&2
+                # 备用方案：创建基本目录结构
+                mkdir -p "$GROWTH_DIR"/{data/perception,data/user_preferences,data/project_metrics,cache/analysis,cache/templates,cache/rules,learning,monitoring,backups/config_backups}
+                echo "{}" > "$GROWTH_DIR/.gitkeep"
+                # 确保.gitignore保护
+                ensure_gitignore_protection
+                echo -e "${GREEN}✅ 基本生长目录创建完成${NC}" >&2
+            fi
+        else
+            echo -e "${YELLOW}⚠️ 未找到生长初始化脚本，使用备用方案${NC}" >&2
+            # 备用方案：创建基本目录结构
+            mkdir -p "$GROWTH_DIR"/{data/perception,data/user_preferences,data/project_metrics,cache/analysis,cache/templates,cache/rules,learning,monitoring,backups/config_backups}
+            echo "{}" > "$GROWTH_DIR/.gitkeep"
+            # 确保.gitignore保护
+            ensure_gitignore_protection
+            echo -e "${GREEN}✅ 基本生长目录创建完成${NC}" >&2
+        fi
     fi
 }
 
@@ -193,61 +61,13 @@ ensure_gitignore_protection() {
 
     # 检查是否存在.gitignore文件
     if [ ! -f "$gitignore_file" ]; then
-        echo -e "${YELLOW}📝 创建新的.gitignore文件...${NC}" >&2
+        echo -e "${YELLOW}📝 创建基本的.gitignore文件...${NC}" >&2
 
-        # 创建基本的.gitignore文件，包含Cursor AI相关的隐私保护
+        # 如果.gitignore不存在，只创建必要的Cursor AI相关规则
         cat > "$gitignore_file" << 'EOF'
 # Cursor AI 生长数据 - 自动感知和学习
 # 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
 .cursorGrowth/
-
-# 个人信息和本地配置
-*.local
-*.personal
-config.local.json
-user_preferences.local.json
-
-# 临时文件和缓存
-*.tmp
-*.cache
-.DS_Store
-Thumbs.db
-
-# 日志文件
-*.log
-logs/
-
-# IDE 和编辑器文件
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# 操作系统文件
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# 构建产物
-node_modules/
-dist/
-build/
-target/
-*.class
-
-# 包管理器文件
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# 环境变量文件
-.env
-.env.local
-.env.*.local
-
-# 测试覆盖率
-coverage/
-.nyc_output/
 
 # Cursor AI Rules - 通用规则保持跟踪
 !.cursor/
@@ -256,11 +76,11 @@ coverage/
 EOF
         echo -e "${GREEN}✅ 已创建.gitignore文件并添加隐私保护${NC}" >&2
     else
-        # 检查是否已经包含.cursorGrowth/条目
-        if ! grep -q "^\.cursorGrowth/$" "$gitignore_file"; then
+        # 检查是否已经包含任何形式的cursorGrowth相关条目
+        if ! grep -q -E "(^\.cursorGrowth/|\$CURSOR_GROWTH/)" "$gitignore_file"; then
             echo -e "${YELLOW}📝 更新.gitignore文件，添加.cursorGrowth/保护...${NC}" >&2
 
-            # 在文件开头添加Cursor AI相关的隐私保护注释和条目
+            # 在文件开头添加Cursor AI相关的隐私保护注释和条目（只有在不存在时）
             local temp_file=$(mktemp)
             cat > "$temp_file" << 'EOF'
 # Cursor AI 生长数据 - 自动感知和学习
@@ -274,7 +94,7 @@ EOF
 
             echo -e "${GREEN}✅ 已更新.gitignore文件，添加.cursorGrowth/保护${NC}" >&2
         else
-            echo -e "${GREEN}✅ .gitignore文件已包含.cursorGrowth/保护${NC}" >&2
+            echo -e "${GREEN}✅ .gitignore文件已包含cursorGrowth相关保护${NC}" >&2
         fi
     fi
 
@@ -1306,7 +1126,6 @@ record_learning_data() {
     local session_id="$5"
 
     local learning_file="$GROWTH_DIR/learning/master_interactions.json"
-    mkdir -p "$GROWTH_DIR/learning"
 
     # 提取关键信息
     local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
@@ -1347,7 +1166,6 @@ record_conversation() {
     local session_id="$5"
 
     local conversation_file="$GROWTH_DIR/conversations/session_$session_id.json"
-    mkdir -p "$GROWTH_DIR/conversations"
 
     local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
     local explanation=$(echo "$decision_json" | jq -r '.decision_making.explanation' 2>/dev/null || echo "")
@@ -1388,7 +1206,6 @@ record_debug_info() {
 
     if [ "$should_execute" = "false" ]; then
         local debug_file="$GROWTH_DIR/debug/error_$session_id.json"
-        mkdir -p "$GROWTH_DIR/debug"
 
         local error_record=$(cat << EOF
 {
@@ -1423,7 +1240,6 @@ update_growth_metrics() {
     local timestamp="$3"
 
     local metrics_file="$GROWTH_DIR/growth/metrics.json"
-    mkdir -p "$GROWTH_DIR/growth"
 
     # 如果metrics文件不存在，创建初始版本
     if [ ! -f "$metrics_file" ]; then
@@ -1465,7 +1281,6 @@ update_personal_profile() {
     local timestamp="$3"
 
     local profile_file="$GROWTH_DIR/personal/user_profile.json"
-    mkdir -p "$GROWTH_DIR/personal"
 
     # 如果profile文件不存在，从learning目录复制初始版本
     if [ ! -f "$profile_file" ]; then
@@ -1823,7 +1638,7 @@ show_intelligent_logo() {
     echo -e "${CYAN}"
     echo "╔══════════════════════════════════════════════════════════════╗"
     echo "║                                                              ║"
-    echo "║            🧠 智能Master控制器 v4.3.0                        ║"
+    echo "║            🧠 智能Master控制器 v5.0.0                        ║"
     echo "║                                                              ║"
     echo "║        自动感知 · 智能决策 · 自主执行 · 持续学习            ║"
     echo "║                                                              ║"

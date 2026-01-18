@@ -6,15 +6,15 @@
 
 [![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Capabilities](https://img.shields.io/badge/capabilities-325-red?style=flat-square)]()
-[![Hooks](https://img.shields.io/badge/hooks-20-purple?style=flat-square)]()
+[![Capabilities](https://img.shields.io/badge/capabilities-340-red?style=flat-square)]()
+[![Hooks](https://img.shields.io/badge/hooks-17-purple?style=flat-square)]()
 [![VIBE](https://img.shields.io/badge/vibe-6-green?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 325 Capability Mappings + 20 Automation Hooks + 6 VIBE Services**
+**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 340 Capability Mappings + 17 Automation Hooks + 6 VIBE Services**
 
-📚 **[Quick Start](docs/quick-start.md)** | **[Intelligent Agent Guide](docs/guides/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/guides/token-compression-guide.md)** | **[MCP Integration Guide](docs/mcp-integration-guide.md)** | **[VIBE Development Guide](docs/vibe-development-guide.md)**
+📚 **[Quick Start](docs/guides/quick-start.md)** | **[Intelligent Agent Guide](docs/guides/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/guides/token-compression-guide.md)** | **[MCP Integration Guide](docs/skills/mcp-priority-system.md)** | **[VIBE Development Guide](rules/workflow/vibe-coding.md)**
 
 Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), an enterprise-level AI programming platform with **multi-agent collaboration + self-learning optimization + MCP ecosystem integration + VIBE development methodology**, achieving end-to-end intelligent collaboration from concept to deployment.
 
@@ -49,7 +49,7 @@ This is an intelligent AI collaboration system designed for efficient human-AI i
 - **Learner**: Pattern learning, performance optimization, improvement suggestions
 - **Monitor**: Health checks, performance monitoring, alert handling
 
-### 🎯 324 Capability Mappings - Intent to Action System
+### 🎯 340 Capability Mappings - Intent to Action System
 - **Project Creation & Management**: React, Vue, Python API, environment setup (15+ mappings)
 - **Code Quality & Optimization**: ESLint, testing, performance analysis, refactoring (25+ mappings)
 - **Debug & Troubleshooting**: Isolation debugging, pattern analysis, error fixing (10+ mappings)
@@ -110,7 +110,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 - **👥 Collaboration-Friendly**: Teams share configuration, each person's data remains independent
 - **⚡ Performance Optimization**: Local cache and learning data improve response speed
 
-**📖 [Detailed Architecture Documentation](docs/project-growth-architecture.md)**
+**📖 [Detailed Architecture Documentation](docs/architecture/project-growth-architecture.md)**
 
 ### Core Architecture Components
 
@@ -144,53 +144,25 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 - **A/B Testing**: Automated experiment design and result analysis
 - **Continuous Optimization**: Automatic system adjustments based on learning results
 
-## 🛠️ Development Guidelines
+## 🛠️ Development Environment & Support
 
-### Code Quality
-- Follow established coding standards
-- Prioritize readability and maintainability
-- Include appropriate documentation
+### Code Quality & Project Structure
+- **Coding Standards**: Follow established coding standards, prioritize readability and maintainability
+- **Project Organization**: Maintain organized file structure, use consistent naming conventions
+- **Documentation Standards**: Include appropriate documentation, keep dependencies up to date
 
-### Project Structure
-- Maintain organized file structure
-- Use consistent naming conventions
-- Keep dependencies up to date
+### Workflow Integration & Rule System
+- **Rule Application**: Utilize `.cursor/rules` for specialized guidance, apply rules based on context and file types
+- **Intelligent Features**: Combine multiple rules for comprehensive coverage, apply adaptive rule optimization
+- **Environment Perception**: Leverage automatic environment detection, use perception system for project analysis
 
-## 📋 Workflow Integration
+### Multi-language & Internationalization Support
+- **Multi-language Projects**: Automatic detection of tech stacks, language-specific best practices, cross-platform compatibility
+- **Internationalization**: Support for multiple human languages, bilingual documentation available, global developer community friendly
 
-### Rule System
-- Utilize `.cursor/rules` for specialized guidance
-- Apply rules based on context and file types
-- Combine multiple rules for comprehensive coverage
-
-### Intelligent Features
-- Leverage automatic environment detection
-- Use perception system for project analysis
-- Apply adaptive rule optimization
-
-## 🌍 Language Support
-
-### Multi-language Projects
-- Automatic detection of tech stacks
-- Language-specific best practices
-- Cross-platform compatibility
-
-### Internationalization
-- Support for multiple human languages
-- Bilingual documentation available
-- Global developer community friendly
-
-## 🔧 Technical Environment
-
-### Supported Platforms
-- Linux, macOS, Windows
-- Various CPU architectures
-- Multiple build systems (CMake, Make, etc.)
-
-### Tool Integration
-- Automatic toolchain detection
-- Compiler and build tool support
-- Development environment adaptation
+### Platform & Tool Compatibility
+- **Supported Platforms**: Linux, macOS, Windows, various CPU architectures
+- **Tool Integration**: Automatic toolchain detection, compiler and build tool support, development environment adaptation
 
 ## ⚡ Core Features
 
@@ -204,12 +176,10 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | 💾 **Intelligent Caching System**            | Cache mechanism based on file changes                                             | **5x Response Speed Improvement**     |
 | 🛡️ **Graceful Degradation**                  | Environment detection and error handling                                          | **99.9% Stability**                   |
 | 🔓 **Out-of-the-Box**                        | No configuration needed, copy and use                                             | Support for any project, any language |
-| 🪝 **Automated Hooks System**                | 20 lifecycle hooks for intelligent automation                                     | **100% Process Automation**           |
+| 🪝 **Automated Hooks System**                | 17 lifecycle hooks for intelligent automation                                     | **100% Process Automation**           |
 | 🔌 **MCP Priority System**                   | Smart MCP tool detection and execution priority                                   | **Intelligent Tool Selection**        |
-| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch fixes                                | **Debug Efficiency 300%↑**            |
-| 🎯 **324 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
-| 🪝 **20 Automation Hooks**                   | Lifecycle automation system for session, file, and command events                 | **100% Process Automation**           |
-| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, and batch error fixing tools               | **Debug Efficiency 300%↑**            |
+| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch error fixing tools                    | **Debug Efficiency 300%↑**            |
+| 🎯 **340 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
 | 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
 | 📊 **Performance Monitoring**                | Real-time system metrics and optimization                                         | **System Health Tracking**            |
 
@@ -243,10 +213,10 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 
 | System                     | Description                                       | Features                                                               | Status             |
 | -------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
-| **Hooks Automation**       | Lifecycle automation system with 20 hooks         | Session/file/command events, intelligent triggers, async execution     | ✅ Production Ready |
+| **Hooks Automation**       | Lifecycle automation system with 17 hooks         | Session/file/command events, intelligent triggers, async execution     | ✅ Production Ready |
 | **MCP Priority System**    | Intelligent MCP tool detection and prioritization | 25+ local tools, auto-discovery, priority execution, fallback          | ✅ Production Ready |
 | **Debug Suite**            | Advanced debugging tools and workflows            | Isolation debugging, pattern analysis, batch error fixing, auto-commit | ✅ Production Ready |
-| **Capability Mapping**     | 103 comprehensive intent-action mappings          | Multi-layer analysis, confidence thresholds, execution ordering        | ✅ Production Ready |
+| **Capability Mapping**     | 340 comprehensive intent-action mappings          | Multi-layer analysis, confidence thresholds, execution ordering        | ✅ Production Ready |
 | **Growth Intelligence**    | AI learning and personalization system            | Behavior patterns, A/B testing, continuous optimization                | ✅ Production Ready |
 | **Performance Monitoring** | Real-time system health and optimization          | Token tracking, caching, compression, dashboard reporting              | ✅ Production Ready |
 
@@ -263,7 +233,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 
 ## 🚀 Quick Start
 
-## Method 1: Traditional Intelligent Master Mode
+### 💡 Method 1: Traditional Intelligent Master Mode
 ```bash
 cd your-project
 # Place the .cursor directory in the project root
@@ -277,7 +247,7 @@ cd your-project
 @master Learn my coding patterns            # AI learns and adapts to your preferences
 ```
 
-## Method 2: VIBE Conversational Development (Recommended)
+### 🎯 Method 2: VIBE Conversational Development (Recommended)
 ```bash
 # 💬 One-click VIBE development session launch
 @vibe start my-awesome-app
@@ -295,7 +265,7 @@ cd your-project
 @vibe deploy production
 ```
 
-## Method 3: Master Smart Orchestration + VIBE Integration (New)
+### 🔗 Method 3: Master Smart Orchestration + VIBE Integration
 ```bash
 # 🎯 Smart VIBE development flow via @master
 @master Use VIBE development approach
@@ -321,7 +291,7 @@ cd your-project
 2. 🤖 **Agent Collaboration**: 8 intelligent agents work together: Planner→Generator→Tester→Deployer + VIBE service orchestration
 3. 🔌 **MCP Integration**: 25+ local tools auto-discovery and integration + VIBE toolchain integration
 4. ⚡ **Token Optimization**: Context sharing and smart caching, 25-35% Token savings + VIBE context optimization
-5. ⚡ **Smart Combination**: Auto-selects rules + skills + scripts + workflows + hooks
+5. 🎯 **Smart Combination**: Auto-selects rules + skills + scripts + workflows + hooks
 6. 🎯 **One-Click Execution**: Zero configuration, AI handles all details with automation hooks
 7. 📊 **Real-time Feedback**: Provides detailed execution reports and recommendations + VIBE quality scoring
 8. 🌱 **Continuous Learning**: System learns from interactions and adapts behavior + VIBE development patterns
@@ -354,119 +324,6 @@ cd your-project
 - **Single-Step Execution**: Complete all analysis in one API call
 - **Intelligent Caching**: Auto-refresh when files change
 - **Token Savings**: 60%+ savings compared to traditional methods
-
-### Quality Tools
-```bash
-# Code quality checks
-./.cursor/features/automation/scripts/plugin_manager.sh list      # View available tools
-# Integrated tools
-✅ ESLint code quality checks (integrated into rules system)
-```
-
-## 📊 System Monitoring
-
-```bash
-# Intelligent help system
-./.cursor/core/init.sh --help
-
-# Environment integrity check
-./.cursor/core/env-perception.sh
-```
-
-## 💡 Usage Examples
-
-### Intelligent Master Usage
-Describe your needs directly in natural language:
-
-```bash
-# In Cursor chat
-@master I want to create a React project
-@master Need to optimize code quality
-@master Help me analyze the current project status
-@master Debug this JavaScript error
-@master Setup automated testing pipeline
-@master Containerize this application
-@master Show me my growth status
-
-# Advanced Commands
-@master isolate debug this function      # Uses isolation debugging
-@master analyze error patterns          # Pattern analysis across codebase
-@master batch fix console.log statements # Batch error fixing
-@master learn my preferences            # AI personalization
-@master optimize performance            # Performance analysis and optimization
-
-# Or in command line
-./cursor-master.sh "I want to create a React project"
-```
-
-### Advanced Capabilities
-
-**Debug Suite Commands:**
-```bash
-@master isolate debug this file         # Comment-based isolation debugging
-@master analyze error patterns         # Find similar bugs across codebase
-@master batch fix undefined errors     # Automated batch error fixing
-@master debug assistant mode           # Interactive debugging guidance
-```
-
-**MCP Integration:**
-```bash
-@master commit code                    # Uses MCP Git tools with priority
-@master run tests                      # MCP testing tools integration
-@master deploy application             # Intelligent deployment orchestration
-```
-
-**Growth & Learning:**
-```bash
-@master learn project patterns         # Analyze usage patterns
-@master optimize my preferences        # Personalize AI behavior
-@master show growth status             # View project evolution metrics
-@master analyze usage habits           # Detailed usage analytics
-```
-
-### Traditional Rule References
-After setup, rules are automatically applied. You can also manually reference:
-
-```markdown
-@constitution - AI Symbiosis Constitution
-@intelligent_evolution - Intelligent evolution suggestions
-@system_info - System information retrieval
-@vibe-coding - VIBE development principles
-@javascript - JavaScript/TypeScript best practices
-@python - Python development guidelines
-```
-
-### Real-world Application Scenarios
-
-**During Code Review:**
-```
-Based on project tech stack (JavaScript) and current stage (proof of concept),
-lightweight coding standards are recommended, focusing on basic syntax correctness.
-Automated hooks will trigger quality checks on file save.
-```
-
-**During Project Planning:**
-```
-Single developer mode detected, agile development process recommended:
-- Daily code commits (with MCP Git integration)
-- Simplified documentation requirements
-- Rapid prototype validation with automated testing
-```
-
-**During Problem Diagnosis:**
-```
-Intelligent perception shows small project scale and low complexity,
-simple architecture recommended, avoid over-engineering.
-Debug suite available for rapid issue isolation and pattern analysis.
-```
-
-**During Performance Optimization:**
-```
-Performance monitoring detected bottlenecks in:
-- Bundle size (recommendation: code splitting)
-- API response times (recommendation: caching strategy)
-- Memory usage (recommendation: lazy loading)
-```
 
 ## 🔧 Advanced Configuration
 
@@ -609,7 +466,7 @@ ls -la .cursor/core/init.sh
 
 ## 📊 Technical Metrics
 
-| Metric                 | v1.0     | v4.3.0   | v4.3.0      | Improvement                    |
+| Metric                 | v1.0     | v4.3.0   | v5.0.0      | Improvement                    |
 | ---------------------- | -------- | -------- | ----------- | ------------------------------ |
 | Initialization Time    | ~30s     | ~5s      | ~3s         | **90%↑**                       |
 | Perception Time        | ~10s     | ~1s      | ~0.5s       | **95%↑**                       |
@@ -620,49 +477,46 @@ ls -la .cursor/core/init.sh
 | Maintainability        | Baseline | +60%     | +75%        | **Significant Improvement**    |
 | Extensibility          | Limited  | Infinite | Intelligent | **AI-driven**                  |
 | **New Metrics (2026)** | -        | -        | -           | -                              |
-| Automation Hooks       | -        | -        | 20          | **100% Process Automation**    |
+| Automation Hooks       | -        | -        | 17          | **100% Process Automation**    |
 | MCP Integrations       | -        | -        | 10+         | **Intelligent Tool Selection** |
-| Capability Mappings    | -        | -        | 324         | **Comprehensive Coverage**     |
+| Capability Mappings    | -        | -        | 340         | **Comprehensive Coverage**     |
 | Debug Efficiency       | Baseline | +100%    | +300%       | **300%↑**                      |
 | Learning Accuracy      | -        | -        | 92%         | **Continuous Improvement**     |
 | System Stability       | 95%      | 99%      | 99.9%       | **99.9% Uptime**               |
 
-## 📋 Environment Requirements
+## ⚙️ System Features & Requirements
 
+### Environment Requirements
 - **Cursor Editor** v0.40+
 - **Git** 2.0+
 - **Bash** 4.0+
 - **jq** (JSON processor, optional but recommended)
 
----
+### Out-of-the-Box Features
 
-## 🎯 Out-of-the-Box Features
-
-### Project Agnostic
+#### 🚀 Project Agnostic
 - ✅ Auto-detect tech stack (JavaScript, Python, Go, Rust, Java, C/C++, etc.)
 - ✅ Smart analysis of team size and development stage
 - ✅ Dynamic adaptation to project complexity requirements
 - ✅ No hardcoded project-specific information
 
-### User Agnostic
+#### 👤 User Agnostic
 - ✅ Use Git config to get user information
 - ✅ Support universal defaults without Git environment
 - ✅ Auto-get local time and timezone
 - ✅ **Automatic Privacy Protection**: Proactively manage `.gitignore` to prevent sensitive data leaks
 
-### Language Agnostic
+#### 🌍 Language Agnostic
 - ✅ Auto-detect project file structure
 - ✅ Support mainstream programming languages
 - ✅ Smart recommendation of language-specific best practices
 - ✅ Extensible support for new languages
 
-### Autonomous Perception and Evolution
+#### 🧠 Autonomous Perception and Evolution
 - ✅ Single-step multi-task project analysis
 - ✅ Continuous learning of user collaboration preferences
 - ✅ Data-driven rule optimization
 - ✅ Progressive system evolution
-
----
 
 ## 🌱 Project Growth System (.cursorGrowth)
 
@@ -691,50 +545,78 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 # System automatically creates directory structure:
 .cursorGrowth/
-├── README.md                     # Growth directory description
-├── learning/                     # AI learning data
-│   ├── profile.json             # User and project learning profile
-│   └── master_interactions.json # Interaction history
-├── conversations/               # Conversation records
-│   └── session_*.json          # Detailed records of each conversation
-├── debug/                       # Debug information
-│   └── error_*.json            # Error and exception records
-├── growth/                      # Growth metrics
-│   └── metrics.json            # Project growth statistics
-└── personal/                    # Personalized data
-    └── user_profile.json       # User preferences and habits
+├── ai/                          # 🤖 AI Core Data
+│   ├── ai-agent-*.json         # 8 AI agents status and configuration
+│   ├── ai-context-pool-*.json  # Context pool management and statistics
+│   ├── ai-learning-*.json      # Learning buffer and metrics
+│   ├── ai-model-*.json         # Model checkpoints
+│   ├── ai-patterns.json        # Intent recognition patterns
+│   ├── communication_channels.json # Communication channels config
+│   ├── dependencies.json       # Dependencies mapping
+│   ├── predictions.json        # Prediction results
+│   ├── relevance.json          # Relevance analysis
+│   ├── data/                   # Learning data storage
+│   ├── metrics/                # Learning metrics
+│   └── models/                 # AI model files
+├── analytics/                   # 📊 Analytics & Monitoring
+│   ├── analytics-analysis.json    # Analysis results
+│   ├── analytics-metrics.json     # Analytics metrics
+│   └── analytics-monitoring-metrics.json # Monitoring metrics
+├── config/                      # ⚙️ Configuration Data
+│   ├── config-compression-strategies.json # Compression strategies
+│   └── config-user-profile.json # User configuration
+├── integrations/                # 🔗 External Integrations
+│   ├── integrations-cache-*.json   # Cache configuration
+│   ├── integrations-config-*.json  # Service configuration
+│   └── integrations-config-tool_detection.json # Tool detection
+├── research/                    # 🔬 Research & Experiments
+│   ├── experiment_queue.json      # Experiment queue
+│   ├── optimization_history.json  # Optimization history
+│   └── research-*.json           # Various research data
+├── services/                    # 🛠️ Service Status
+│   ├── commands.json            # Command configuration
+│   ├── config.json              # Service configuration
+│   ├── services-*.json          # Various service configurations
+│   ├── projects/                # Project-related services
+│   ├── sessions/                # Session management
+│   └── dependencies/            # Dependency management
+└── README.md                    # Growth directory description
 ```
 
 ### 📊 Automatically Recorded Data Types
 
-#### **Learning Data (learning/)**
-- User intent recognition patterns and accuracy rates
-- Successful command combination patterns
-- Failure cases and improvement suggestions
-- Personalized preference learning
+#### **AI Core Data (ai/)**
+- **Agent Status**: Real-time status and configuration of 8 AI agents (Planner, Generator, Tester, Deployer, etc.)
+- **Context Pool**: Intelligent context management and statistics, including relevance and predictions
+- **Learning System**: Learning buffer, metrics tracking, model checkpoints
+- **Communication System**: Communication channels and dependency mappings between agents
+- **Pattern Recognition**: Intent recognition patterns and behavior prediction models
 
-#### **Conversation History (conversations/)**
-- Complete conversation records with AI assistant each time
-- Intent recognition results and decision-making processes
-- Execution results and user feedback
-- Project context information
+#### **Analytics & Monitoring (analytics/)**
+- **Analysis Results**: Code quality, performance, dependency analysis data
+- **Monitoring Metrics**: System runtime status, performance metrics, resource usage
+- **Statistics**: Usage patterns, success rates, error rates and other statistics
 
-#### **Debug Information (debug/)**
-- Detailed error information for execution failures
-- System exceptions and edge cases
-- Performance issues and bottleneck analysis
-- Troubleshooting suggestions
+#### **Configuration Data (config/)**
+- **Compression Strategies**: Token compression and optimization strategy configurations
+- **User Configuration**: Personalized settings and preference configurations
+- **System Configuration**: Configuration information for various services and tools
 
-#### **Growth Metrics (growth/)**
-- Total interaction count statistics
-- Success rate trends
-- Intent type distribution analysis
-- Daily activity tracking
+#### **External Integrations (integrations/)**
+- **Cache Configuration**: Configuration and strategies for intelligent caching system
+- **Service Configuration**: Connection and configuration information for external services
+- **Tool Detection**: Automatic detection and configuration of development tools
 
-#### **Personalized Profile (personal/)**
-- User language preference auto-detection
-- Commonly used intent types statistics
-- Interaction style and preference analysis
+#### **Research & Experiments (research/)**
+- **Experiment Queue**: Pending optimization and experiment tasks
+- **Optimization History**: Historical records of performance optimization and improvements
+- **Research Data**: A/B testing, experiment framework, optimization configuration, etc.
+
+#### **Service Status (services/)**
+- **Command Configuration**: Configuration of system commands and scripts
+- **Service Management**: Status, configuration and dependencies of various services
+- **Project Management**: Project status tracking and session management
+- **Quality Monitoring**: Service status for code quality, testing, security, etc.
 
 ### 🧠 Intelligent Learning Mechanism
 
@@ -816,6 +698,9 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 *🌱 Cursor AI Rules v5.0.0 - Intelligent growth system allows AI assistants to continuously evolve, projects grow with each interaction!*
 
-*🚀 2026 Enhanced Features*: 23 Rules, 24 Skills, 325 Capability Mappings, 20 Automation Hooks, 6 VIBE Services, Advanced Debug Suite, MCP Integration!
+*🚀 Cursor AI Rules v5.0.0 - Unified intelligent entry, 4-layer architecture refactoring, AI truly becomes a programming assistant*
 
-*Core Innovation*: From static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration, MCP ecosystem integration, and VIBE development methodology for documentation-driven, test-first, frontend-backend aligned development!
+*🌱 Core Innovation*: 23 Rules, 24 Skills, 340 Capability Mappings, 17 Automation Hooks, from static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration and MCP ecosystem integration!
+
+*Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
+*Based on Cursor official specifications, integrated intelligent perception, decision-making and evolution systems*

@@ -217,71 +217,24 @@ ensure_gitignore_protection() {
     local gitignore_file="$PROJECT_ROOT/.gitignore"
 
     if [ ! -f "$gitignore_file" ]; then
+        # 如果.gitignore不存在，只创建必要的Cursor AI相关规则
         cat > "$gitignore_file" << 'EOF'
 # Cursor AI 生长数据 - 自动感知和学习
 # 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
 $CURSOR_GROWTH/
-
-# 个人信息和本地配置
-*.local
-*.personal
-config.local.json
-user_preferences.local.json
-
-# 临时文件和缓存
-*.tmp
-*.cache
-.DS_Store
-Thumbs.db
-
-# 日志文件
-*.log
-logs/
-
-# IDE 和编辑器文件
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# 操作系统文件
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# 构建产物
-node_modules/
-dist/
-build/
-target/
-*.class
-
-# 包管理器文件
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# 环境变量文件
-.env
-.env.local
-.env.*.local
-
-# 测试覆盖率
-coverage/
-.nyc_output/
 
 # Cursor AI Rules - 通用规则保持跟踪
 !.cursor/
 !.cursor/**# 保留生长文件夹的占位符
 !$CURSOR_GROWTH/.gitkeep
 EOF
-    elif ! grep -q "$CURSOR_GROWTH/" "$gitignore_file" 2>/dev/null; then
-        # 在文件开头添加保护规则
+    elif ! grep -q -E "(^\.cursorGrowth/|\$CURSOR_GROWTH/)" "$gitignore_file" 2>/dev/null; then
+        # 在文件开头添加保护规则（只有在不存在任何cursorGrowth相关条目时）
         local temp_file=$(mktemp)
         cat > "$temp_file" << 'EOF'
 # Cursor AI 生长数据 - 自动感知和学习
 # 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
-$CURSOR_GROWTH/
+.cursorGrowth/
 
 EOF
         cat "$gitignore_file" >> "$temp_file"
