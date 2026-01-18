@@ -1707,7 +1707,7 @@ EOF
 # 🎯 智能主函数
 intelligent_master() {
     local user_input="$1"
-    echo "🎯 ===== 进入intelligent_master函数 =====" >&2
+    echo "🎯 ===== 进入智能Master控制器 =====" >&2
     echo "🎯 user_input: '$user_input'" >&2
 
     # 🎯 VIBE命令检测和处理
@@ -1738,57 +1738,139 @@ intelligent_master() {
         return
     fi
 
-    echo -e "${CYAN}🎯 智能Master控制器已激活${NC}"
+    echo -e "${CYAN}🎯 AI共生宪法系统 - 智能Master控制器已激活${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${PURPLE}🧠 集成智能组件: Parser → Router → Executor${NC}"
+    echo -e "${PURPLE}⚖️ 宪法强制执行: 三大公理 + 六维协议${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    # 1. 增强意图分析 (结合capability-map.json)
-    local intent_result=$(enhanced_intent_analysis "$user_input")
+    # 🚀 使用JavaScript智能系统进行处理
+    echo -e "${BLUE}🤖 调用JavaScript智能系统...${NC}"
 
-    # 2. 感知环境
-    local env_result=$(analyze_environment)
+    local master_router="$CURSOR_DIR/commands/master-router.js"
 
-    # 3. 智能决策
-    local decision_result=$(make_decision "$intent_result" "$env_result")
-
-    # 4. 显示分析结果
-    show_analysis_results "$intent_result" "$env_result" "$decision_result"
-
-    # 5. 代理编排执行
-    local should_execute=$(echo "$decision_result" | jq -r '.decision_making.should_execute' 2>/dev/null || echo "false")
-
-    if [ "$should_execute" = "true" ]; then
-        # 使用代理编排引擎执行任务
-        execute_with_agent_orchestration "$user_input" "$intent_result" "$decision_result"
-    else
-        echo -e "${YELLOW}💡 建议: ${NC}$(echo "$decision_result" | jq -r '.decision_making.explanation' 2>/dev/null || echo "无法确定执行策略")"
-        # 显示智能引导
-        show_smart_guidance "$intent_result"
+    if [ ! -f "$master_router" ]; then
+        echo -e "${RED}❌ 错误: 找不到智能路由器 ($master_router)${NC}"
+        echo -e "${YELLOW}💡 请确保已完成Master命令架构升级${NC}"
+        return 1
     fi
 
-    # 6. 学习和记录
-    learn_from_interaction "$user_input" "$decision_result" "$intent_result" "$env_result"
+    # 调用JavaScript智能路由器
+    local result=""
+    local exit_code=0
+
+    if command -v node >/dev/null 2>&1; then
+        echo "🔄 执行智能路由处理..."
+
+        # 创建临时文件来捕获输出
+        local temp_output=$(mktemp)
+        local temp_error=$(mktemp)
+
+        # 执行JavaScript路由器
+        node "$master_router" "$user_input" >"$temp_output" 2>"$temp_error"
+        exit_code=$?
+
+        # 读取结果
+        result=$(cat "$temp_output" 2>/dev/null || echo "")
+        local error_output=$(cat "$temp_error" 2>/dev/null || echo "")
+
+        # 清理临时文件
+        rm -f "$temp_output" "$temp_error"
+
+        if [ $exit_code -eq 0 ]; then
+            echo -e "${GREEN}✅ 智能路由处理成功${NC}"
+
+            # 解析并显示结果
+            if echo "$result" | jq . >/dev/null 2>&1; then
+                # JSON格式的结果
+                local success=$(echo "$result" | jq -r '.success // false')
+                local message=$(echo "$result" | jq -r '.message // ""')
+                local type=$(echo "$result" | jq -r '.type // "unknown"')
+
+                if [ "$success" = "true" ]; then
+                    echo -e "${GREEN}🎉 执行成功!${NC}"
+                    if [ -n "$message" ]; then
+                        echo -e "${CYAN}📝 结果: ${NC}$message"
+                    fi
+
+                    # 特殊处理宪法响应
+                    if [ "$type" = "constitution_response" ]; then
+                        echo -e "${PURPLE}⚖️ 宪法保护机制已激活${NC}"
+                        echo "$message"
+                    fi
+                else
+                    local error=$(echo "$result" | jq -r '.error // "未知错误"')
+                    echo -e "${YELLOW}⚠️ 执行完成但有警告: ${NC}$error"
+                fi
+            else
+                # 普通文本输出
+                if [ -n "$result" ]; then
+                    echo "$result"
+                fi
+            fi
+        else
+            echo -e "${RED}❌ 智能路由处理失败 (退出码: $exit_code)${NC}"
+            if [ -n "$error_output" ]; then
+                echo -e "${RED}🔍 错误详情: ${NC}$error_output"
+            fi
+
+            # 回退到传统执行方式
+            echo -e "${YELLOW}🔄 回退到传统分析模式...${NC}"
+            fallback_to_traditional_execution "$user_input"
+            return 1
+        fi
+    else
+        echo -e "${RED}❌ 错误: 未找到Node.js运行环境${NC}"
+        echo -e "${YELLOW}💡 请安装Node.js以使用完整的智能功能${NC}"
+
+        # 回退到传统执行方式
+        fallback_to_traditional_execution "$user_input"
+        return 1
+    fi
 
     # 📊 Token优化: 性能监控结束
     local end_time=$(date +%s%3N 2>/dev/null || echo "$(date +%s)000")
     local response_time=$((end_time - start_time))
 
-    # 估算Token使用量（简化计算）
-    local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
-    local estimated_tokens=$(estimate_tokens "operation" "${#user_input}")
-    local cache_hit=false
+    # 估算Token使用量
+    local estimated_tokens=$(estimate_tokens "intelligent_operation" "${#user_input}")
 
-    # 检查是否使用了缓存
-    if echo "$intent_result" | grep -q "cached"; then
-        cache_hit=true
+    # 记录性能指标 (智能模式)
+    record_performance_metric "intelligent_master_js" "$response_time" "$estimated_tokens" "constitution_enforcer" "interaction_protocol" "false" "0" 2>/dev/null || true
+
+    # 🧠 自学习: 基于本次智能交互进行学习
+    trigger_learning_from_interaction "$user_input" "{\"type\":\"js_smart_system\"}" "{\"success\":$exit_code,\"response_time\":$response_time}" "$response_time" "$estimated_tokens" 2>/dev/null || true
+
+    echo -e "${GREEN}✅ AI共生智能执行完成！${NC}"
+    echo -e "${PURPLE}⚖️🧠💬 三大公理 + 六维协议 + 持续演进${NC}"
+}
+
+# 🔄 回退到传统执行方式
+fallback_to_traditional_execution() {
+    local user_input="$1"
+
+    echo -e "${YELLOW}🔄 使用传统分析模式...${NC}"
+
+    # 1. 基础意图分析
+    local intent_result=$(enhanced_intent_analysis "$user_input")
+
+    # 2. 基础环境感知
+    local env_result=$(analyze_environment)
+
+    # 3. 基础决策
+    local decision_result=$(make_decision "$intent_result" "$env_result")
+
+    # 显示简化结果
+    show_analysis_results "$intent_result" "$env_result" "$decision_result"
+
+    local should_execute=$(echo "$decision_result" | jq -r '.decision_making.should_execute // false' 2>/dev/null)
+
+    if [ "$should_execute" = "true" ]; then
+        echo -e "${YELLOW}💡 建议: 使用传统方式执行${NC}"
+        echo -e "${CYAN}   示例: ./cursor-master.sh script init.sh${NC}"
+    else
+        echo -e "${YELLOW}💡 $(echo "$decision_result" | jq -r '.decision_making.explanation // "需要更多信息"' 2>/dev/null)${NC}"
     fi
-
-    # 记录性能指标
-    record_performance_metric "intelligent_master" "$response_time" "$estimated_tokens" "" "" "$cache_hit" "0" 2>/dev/null || true
-
-    # 🧠 自学习: 基于本次交互进行学习和优化
-    trigger_learning_from_interaction "$user_input" "$intent_result" "$decision_result" "$response_time" "$estimated_tokens" 2>/dev/null || true
-
-    echo -e "${GREEN}✅ 智能执行完成！${NC}"
 }
 
 # 🎯 代理编排执行函数
@@ -2252,11 +2334,17 @@ main() {
             intelligent_master "$*"
             ;;
         *)
+            # 🎯 优先使用JavaScript智能系统
+            if [ -f "$CURSOR_DIR/commands/master-router.js" ] && command -v node >/dev/null 2>&1; then
+                echo -e "${BLUE}🚀 检测到智能路由器，使用AI共生宪法系统...${NC}" >&2
+                intelligent_master "$*"
             # 检查是否启用优化执行
-            if [ "${OPTIMIZATION_LEVEL:-balanced}" != "minimal" ] && [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
+            elif [ "${OPTIMIZATION_LEVEL:-balanced}" != "minimal" ] && [ -f "$CURSOR_DIR/core/optimizer.sh" ]; then
+                echo -e "${BLUE}⚡ 使用传统优化器执行...${NC}" >&2
                 bash "$CURSOR_DIR/core/optimizer.sh" execute "$*"
             else
                 # 智能模式：将所有参数作为用户需求处理
+                echo -e "${BLUE}🧠 使用传统智能分析...${NC}" >&2
                 intelligent_master "$*"
             fi
             ;;

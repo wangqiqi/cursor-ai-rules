@@ -194,11 +194,12 @@ class MasterCommandParser {
                 }
             }
 
-            // 标准化得分 (基于关键词数量和基础置信度)
+            // 标准化得分 (基于匹配度和基础置信度)
+            // 如果匹配到关键词，给基础分；匹配越多得分越高
             const normalizedScore = score > 0 ?
-                (score / intentConfig.keywords.length) * intentConfig.confidence : 0;
+                Math.min(score * 0.2 + 0.3, 1.0) * intentConfig.confidence : 0;
 
-            if (normalizedScore > maxScore && normalizedScore > 0.3) { // 最低阈值
+            if (normalizedScore > maxScore && normalizedScore > 0.2) { // 降低最低阈值
                 maxScore = normalizedScore;
                 bestMatch = {
                     intent: intentKey,
