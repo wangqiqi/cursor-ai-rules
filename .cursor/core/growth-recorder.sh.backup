@@ -12,18 +12,13 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 加载共享函数库
-source "$SCRIPT_DIR/shared-functions.sh"
-
-# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
-validate_project_context || handle_error 1 "项目上下文验证失败"
-
 # 加载统一路径配置（设置非严格模式）
 export STRICT_MODE=0
 export DEBUG=0
 if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
-    handle_error 1 "路径配置加载失败"
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
 fi
+GROWTH_DIR="$CURSOR_GROWTH"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -42,8 +37,8 @@ init_growth_if_needed() {
         echo -e "${GREEN}✅ 生长目录已通过管理器初始化${NC}"
     else
         echo -e "${YELLOW}⚠️  生长管理器未找到，使用备用初始化${NC}"
-        # 备用初始化逻辑（使用统一目录创建）
-        ensure_directory_structure
+        # 备用初始化逻辑（简化版）
+        mkdir -p "$GROWTH_DIR/learning" "$GROWTH_DIR/conversations" "$GROWTH_DIR/growth"
         ensure_gitignore_protection
     fi
 }
@@ -51,8 +46,8 @@ init_growth_if_needed() {
 # 创建初始文件
 create_initial_files() {
     # README (只有在不存在时创建)
-    if [ ! -f "$CURSOR_GROWTH/README.md" ]; then
-        cat > "$CURSOR_GROWTH/README.md" << 'EOF'
+    if [ ! -f "$GROWTH_DIR/README.md" ]; then
+        cat > "$GROWTH_DIR/README.md" << 'EOF'
 # 🌱 项目生长目录 ($CURSOR_GROWTH)
 
 此目录包含项目的AI学习数据和生长信息。
@@ -70,8 +65,8 @@ EOF
     fi
 
     # 初始配置文件 (只有在不存在时创建)
-    if [ ! -f "$AI_METRICS_DIR/ai-profile.json" ]; then
-        cat > "$AI_METRICS_DIR/ai-profile.json" << EOF
+    if [ ! -f "$GROWTH_DIR/ai-profile.json" ]; then
+        cat > "$GROWTH_DIR/ai-profile.json" << EOF
 {
   "profile": {
     "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -90,8 +85,8 @@ EOF
     fi
 
     # 初始对话记录 (只有在不存在时创建)
-    if [ ! -f "$CONVERSATIONS_DIR/initial_conversation.json" ]; then
-        cat > "$CONVERSATIONS_DIR/initial_conversation.json" << EOF
+    if [ ! -f "$GROWTH_DIR/conversations/initial_conversation.json" ]; then
+        cat > "$GROWTH_DIR/conversations/initial_conversation.json" << EOF
 {
   "conversation_id": "initial_$(date +%s)",
   "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -113,8 +108,8 @@ EOF
     fi
 
     # 初始生长指标 (只有在不存在时创建)
-    if [ ! -f "$GROWTH_METRICS_DIR/metrics.json" ]; then
-        cat > "$GROWTH_METRICS_DIR/metrics.json" << EOF
+    if [ ! -f "$GROWTH_DIR/growth/metrics.json" ]; then
+        cat > "$GROWTH_DIR/growth/metrics.json" << EOF
 {
   "metrics": {
     "start_date": "$(date '+%Y-%m-%d')",
@@ -192,7 +187,7 @@ EOF
 )
 
     # 追加到学习文件
-    local learning_file="$LEARNING_PROGRESS_DIR/ai-master-interactions.json"
+    local learning_file="$GROWTH_DIR/ai-master-interactions.json"
     echo "$interaction_record" >> "$learning_file"
     echo -e "${GREEN}✅ 交互数据已记录${NC}"
 
@@ -205,8 +200,8 @@ update_statistics() {
     local success="$1"
     local intent_type="$2"
 
-    local profile_file="$AI_METRICS_DIR/ai-profile.json"
-    local metrics_file="$GROWTH_METRICS_DIR/metrics.json"
+    local profile_file="$GROWTH_DIR/ai-profile.json"
+    local metrics_file="$GROWTH_DIR/growth/metrics.json"
 
     if [ -f "$profile_file" ] && [ -f "$metrics_file" ]; then
         # 更新profile统计
@@ -263,7 +258,7 @@ learn_from_input() {
 EOF
 )
 
-    echo "$learning_record" >> "$AI_METRICS_DIR/ai-patterns.json"
+    echo "$learning_record" >> "$GROWTH_DIR/ai-patterns.json"
     echo -e "${GREEN}✅ 学习数据已记录${NC}"
 }
 
@@ -274,9 +269,9 @@ show_stats() {
     echo -e "${CYAN}📊 生长统计信息${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    if [ -f "$GROWTH_METRICS_DIR/metrics.json" ]; then
-        local total=$(jq -r '.metrics.total_interactions' "$GROWTH_METRICS_DIR/metrics.json" 2>/dev/null || echo "0")
-        local success=$(jq -r '.metrics.successful_interactions' "$GROWTH_METRICS_DIR/metrics.json" 2>/dev/null || echo "0")
+    if [ -f "$GROWTH_DIR/growth/metrics.json" ]; then
+        local total=$(jq -r '.metrics.total_interactions' "$GROWTH_DIR/growth/metrics.json" 2>/dev/null || echo "0")
+        local success=$(jq -r '.metrics.successful_interactions' "$GROWTH_DIR/growth/metrics.json" 2>/dev/null || echo "0")
 
         echo -e "${BLUE}📈 总交互次数: ${NC}$total"
         echo -e "${BLUE}✅ 成功交互: ${NC}$success"
@@ -284,14 +279,14 @@ show_stats() {
         echo -e "${BLUE}📊 成功率: ${NC}$(awk "BEGIN {printf \"%.1f\", $success/$total*100}")%"
     fi
 
-    if [ -f "$LEARNING_PROGRESS_DIR/profile.json" ]; then
+    if [ -f "$GROWTH_DIR/learning/profile.json" ]; then
         echo ""
         echo -e "${PURPLE}🎯 最常使用的意图:${NC}"
-        jq -r '.profile.common_intents | to_entries | sort_by(.value) | reverse[] | "  \(.key): \(.value)次"' "$AI_METRICS_DIR/ai-profile.json" 2>/dev/null || echo "  无数据"
+        jq -r '.profile.common_intents | to_entries | sort_by(.value) | reverse[] | "  \(.key): \(.value)次"' "$GROWTH_DIR/ai-profile.json" 2>/dev/null || echo "  无数据"
     fi
 
     echo ""
-    echo -e "${GREEN}🌱 生长目录位置: $CURSOR_GROWTH${NC}"
+    echo -e "${GREEN}🌱 生长目录位置: $GROWTH_DIR${NC}"
 }
 
 # 主函数

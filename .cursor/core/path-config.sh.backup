@@ -1,14 +1,6 @@
 #!/bin/bash
 
 # 🎯 Cursor AI Rules - 统一路径配置、目录管理和项目隔离
-# 基于共享函数库的新6层级目录结构
-
-# 加载共享函数库 (所有共同函数)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/shared-functions.sh"
-
-# 注意: 项目上下文验证在脚本使用path-config.sh时由调用方负责
-# 这里不进行强制验证，以保持向后兼容性
 # 提供所有脚本使用的标准化路径配置、.cursorGrowth目录管理以及项目隔离功能
 #
 # 使用方法:
@@ -127,10 +119,35 @@ find_project_paths() {
     fi
 }
 
-# 项目标识符生成现在使用共享函数库中的实现
+# 🎯 项目标识符生成函数
+generate_project_identifier() {
+    # 基于项目根目录生成唯一标识符
+    local project_name=$(basename "$PROJECT_ROOT")
+    # 将项目名中的连字符替换为下划线，确保bash变量名有效
+    project_name=$(echo "$project_name" | tr '-' '_' | tr '[:upper:]' '[:lower:]')
+
+    local project_hash=$(echo "$PROJECT_ROOT" | md5sum 2>/dev/null | cut -d' ' -f1 | head -c 8)
+
+    # 如果md5sum不可用，使用basename + timestamp
+    if [ -z "$project_hash" ]; then
+        project_hash=$(echo "${project_name}$(date +%s)" | head -c 8)
+    fi
+
+    # 生成项目标识符: 项目名_哈希 (全部小写，确保bash兼容)
+    PROJECT_IDENTIFIER="${project_name}_${project_hash}"
+
+    # 生成项目显示名称 (保持原始格式用于显示)
+    PROJECT_DISPLAY_NAME=$(basename "$PROJECT_ROOT")
+
+    # 验证项目标识符的唯一性
+    if [[ "${DEBUG:-0}" == "1" ]]; then
+        echo "🏷️  项目标识符: $PROJECT_IDENTIFIER"
+        echo "📂 项目显示名: $PROJECT_DISPLAY_NAME"
+    fi
+}
 
 # 🔍 项目上下文验证函数
-validate_project_structure() {
+validate_project_context() {
     local validation_errors=()
 
     # 检查项目根目录
@@ -247,52 +264,49 @@ declare -a STANDARD_DIRS=(
     "integrations"         # 第三方集成
 )
 
-# ============================================================================
-# 🎯 新6层级目录结构路径变量定义
-# ============================================================================
+# .cursorGrowth 内部路径变量定义 (项目隔离，优化结构)
+# 格式: 项目标识符_目录名_DIR
+export "${PROJECT_IDENTIFIER}_AI_DIR"="$CURSOR_GROWTH/ai"
+export "${PROJECT_IDENTIFIER}_ANALYTICS_DIR"="$CURSOR_GROWTH/analytics"
+export "${PROJECT_IDENTIFIER}_ANALYTICS_CACHE_DIR"="$CURSOR_GROWTH/analytics/cache"
+export "${PROJECT_IDENTIFIER}_BACKUPS_DIR"="$CURSOR_GROWTH/backups"
+export "${PROJECT_IDENTIFIER}_CACHE_DIR"="$CURSOR_GROWTH/cache"
+export "${PROJECT_IDENTIFIER}_COMPRESSION_DIR"="$CURSOR_GROWTH/compression"
+export "${PROJECT_IDENTIFIER}_CONFIG_DIR"="$CURSOR_GROWTH/config"
+export "${PROJECT_IDENTIFIER}_CONVERSATIONS_DIR"="$CURSOR_GROWTH/conversations"
+export "${PROJECT_IDENTIFIER}_DEBUG_DIR"="$CURSOR_GROWTH/debug"
+export "${PROJECT_IDENTIFIER}_GROWTH_DIR"="$CURSOR_GROWTH/growth"
+export "${PROJECT_IDENTIFIER}_INTEGRATIONS_DIR"="$CURSOR_GROWTH/integrations"
+export "${PROJECT_IDENTIFIER}_LOGS_DIR"="$CURSOR_GROWTH/logs"
+export "${PROJECT_IDENTIFIER}_MONITORING_DIR"="$CURSOR_GROWTH/monitoring"
+export "${PROJECT_IDENTIFIER}_PERCEPTION_DIR"="$CURSOR_GROWTH/perception"
+export "${PROJECT_IDENTIFIER}_PROJECT_DATA_DIR"="$CURSOR_GROWTH/project_data"
+export "${PROJECT_IDENTIFIER}_SYNC_DIR"="$CURSOR_GROWTH/sync"
+export "${PROJECT_IDENTIFIER}_USER_DATA_DIR"="$CURSOR_GROWTH/user_data"
 
-# 6个顶级功能目录 (每个项目独立)
-export CORE_DATA_DIR="$CURSOR_GROWTH/core-data"
-export AI_LEARNING_DIR="$CURSOR_GROWTH/ai-learning"
-export ANALYTICS_MONITORING_DIR="$CURSOR_GROWTH/analytics-monitoring"
-export STORAGE_CACHE_DIR="$CURSOR_GROWTH/storage-cache"
-export RECORDS_LOGS_DIR="$CURSOR_GROWTH/records-logs"
-export SYSTEM_SERVICES_DIR="$CURSOR_GROWTH/system-services"
+# 兼容性变量 (保留常用变量名，用于当前项目)
+export AI_DIR="$CURSOR_GROWTH/ai"
+export ANALYTICS_DIR="$CURSOR_GROWTH/analytics"
+export ANALYTICS_CACHE_DIR="$CURSOR_GROWTH/analytics/cache"
+export BACKUPS_DIR="$CURSOR_GROWTH/backups"
+export CACHE_DIR="$CURSOR_GROWTH/cache"
+export COMPRESSION_DIR="$CURSOR_GROWTH/compression"
+export CONFIG_DIR="$CURSOR_GROWTH/config"
+export CONVERSATIONS_DIR="$CURSOR_GROWTH/conversations"
+export DEBUG_DIR="$CURSOR_GROWTH/debug"
+export GROWTH_DIR="$CURSOR_GROWTH/growth"
+export INTEGRATIONS_DIR="$CURSOR_GROWTH/integrations"
+export LOGS_DIR="$CURSOR_GROWTH/logs"
+export MONITORING_DIR="$CURSOR_GROWTH/monitoring"
+export PERCEPTION_DIR="$CURSOR_GROWTH/perception"
+export PROJECT_DATA_DIR="$CURSOR_GROWTH/project_data"
+export SYNC_DIR="$CURSOR_GROWTH/sync"
+export USER_DATA_DIR="$CURSOR_GROWTH/user_data"
 
-# 子目录变量 (按功能层级组织)
-export PERCEPTION_DIR="$CORE_DATA_DIR/perception"
-export USER_DATA_DIR="$CORE_DATA_DIR/user-data"
-export PROJECT_DATA_DIR="$CORE_DATA_DIR/project-data"
-
-export AI_MODELS_DIR="$AI_LEARNING_DIR/models"
-export AI_TRAINING_DATA_DIR="$AI_LEARNING_DIR/training-data"
-export AI_METRICS_DIR="$AI_LEARNING_DIR/metrics"
-export AI_RESULTS_DIR="$AI_LEARNING_DIR/results"
-
-export ANALYTICS_DATA_DIR="$ANALYTICS_MONITORING_DIR/data"
-export ANALYTICS_CACHE_DIR="$ANALYTICS_MONITORING_DIR/cache"
-export MONITORING_DIR="$ANALYTICS_MONITORING_DIR/system-metrics"
-
-export CACHE_RULES_DIR="$STORAGE_CACHE_DIR/rules"
-export CACHE_TEMPLATES_DIR="$STORAGE_CACHE_DIR/templates"
-export BACKUPS_DIR="$STORAGE_CACHE_DIR/backups"
-
-export CONVERSATIONS_DIR="$RECORDS_LOGS_DIR/conversations"
-export GROWTH_METRICS_DIR="$RECORDS_LOGS_DIR/growth-metrics"
-export LEARNING_PROGRESS_DIR="$RECORDS_LOGS_DIR/learning-progress"
-export SYSTEM_LOGS_DIR="$RECORDS_LOGS_DIR/system-logs"
-
-export CONFIG_DIR="$SYSTEM_SERVICES_DIR/config"
-export DEBUG_DIR="$SYSTEM_SERVICES_DIR/debug"
-export COMPRESSION_DIR="$SYSTEM_SERVICES_DIR/compression"
-export SYNC_DIR="$SYSTEM_SERVICES_DIR/sync"
-export INTEGRATIONS_DIR="$SYSTEM_SERVICES_DIR/integrations"
-
-# 注意: 这是完整重构，移除所有向后兼容性变量
-# .cursorGrowth 随时可删除重建，不需要兼容性
-
-# 为growth-manager.sh等目录管理脚本保留GROWTH_DIR变量
-export GROWTH_DIR="$CURSOR_GROWTH"
+# 兼容性变量（保留旧名称）
+export SERVICES_DIR="$CURSOR_GROWTH/services"
+export RESEARCH_DIR="$CURSOR_GROWTH/research"
+export INTEGRATIONS_DIR="$CURSOR_GROWTH/integrations"
 
 # ============================================================================
 # 📁 目录管理函数
@@ -404,8 +418,8 @@ cleanup_non_standard_dirs() {
 # 🎯 项目上下文验证和目录初始化
 # ============================================================================
 
-# 验证项目结构
-validate_project_structure
+# 验证项目上下文
+validate_project_context
 
 # ============================================================================
 # 💾 项目根目录缓存管理
@@ -446,14 +460,14 @@ if [ ! -d "$CURSOR_GROWTH" ]; then
     fi
 fi
 
-ensure_directory_structure
+init_growth_directories
 validate_project_root_cache  # 确保缓存文件正确
 
 if [[ "${VERIFY_DIRS:-0}" == "1" ]]; then
     if ! verify_growth_structure; then
         echo "⚠️  项目[$PROJECT_DISPLAY_NAME]目录结构不完整，正在修复..."
         cleanup_non_standard_dirs
-        ensure_directory_structure
+        init_growth_directories
         verify_growth_structure
     fi
 fi

@@ -7,12 +7,8 @@ set -e
 echo "🌱 Cursor AI 生长文件夹初始化"
 echo "================================"
 
-# 🔧 加载共享函数库
+# 🔧 加载统一路径配置（会自动查找项目路径）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../core/shared-functions.sh"
-
-# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
-validate_project_context || handle_error 1 "项目上下文验证失败"
 
 # 在加载 path-config.sh 之前设置非严格模式，确保验证失败时不会退出
 export STRICT_MODE=0
@@ -38,7 +34,17 @@ echo "🌳 生长文件夹: $GROWTH_DIR"
 # 创建完整的目录结构
 echo ""
 echo "🏗️  创建目录结构..."
-ensure_directory_structure
+mkdir -p \
+  "$GROWTH_DIR/data/perception" \
+  "$GROWTH_DIR/data/user_preferences" \
+  "$GROWTH_DIR/data/project_metrics" \
+  "$GROWTH_DIR/cache/analysis" \
+  "$GROWTH_DIR/cache/templates" \
+  "$GROWTH_DIR/cache/rules" \
+  "$GROWTH_DIR/learning" \
+  "$GROWTH_DIR/monitoring" \
+  "$GROWTH_DIR/backups/config_backups"
+
 echo "✅ 目录结构创建完成"
 
 # 检查并创建基础配置文件
@@ -46,8 +52,8 @@ echo ""
 echo "📄 检查配置文件..."
 
 # 生长元数据文件
-if [ ! -f "$CURSOR_GROWTH/growth_meta.json" ]; then
-    cat > "$CURSOR_GROWTH/growth_meta.json" << EOF
+if [ ! -f "$GROWTH_DIR/growth_meta.json" ]; then
+    cat > "$GROWTH_DIR/growth_meta.json" << EOF
 {
   "version": "1.0.0",
   "created_at": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
@@ -78,8 +84,8 @@ else
 fi
 
 # 用户偏好学习文件
-if [ ! -f "$LEARNING_PROGRESS_DIR/preferences.json" ]; then
-    cat > "$LEARNING_PROGRESS_DIR/preferences.json" << EOF
+if [ ! -f "$GROWTH_DIR/learning/preferences.json" ]; then
+    cat > "$GROWTH_DIR/learning/preferences.json" << EOF
 {
   "version": "1.0.0",
   "last_updated": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
@@ -113,8 +119,8 @@ else
 fi
 
 # 监控统计文件
-if [ ! -f "$MONITORING_DIR/usage_metrics.json" ]; then
-    cat > "$MONITORING_DIR/usage_metrics.json" << EOF
+if [ ! -f "$GROWTH_DIR/monitoring/usage_metrics.json" ]; then
+    cat > "$GROWTH_DIR/monitoring/usage_metrics.json" << EOF
 {
   "version": "1.0.0",
   "tracking_started": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
@@ -149,7 +155,7 @@ echo ""
 echo "🎯 初始化完成！"
 echo ""
 echo "📊 生长文件夹结构:"
-echo "   $CURSOR_GROWTH/"
+echo "   $GROWTH_DIR/"
 echo "   ├── data/"
 echo "   │   ├── perception/          # 感知数据"
 echo "   │   ├── user_preferences/    # 用户偏好"

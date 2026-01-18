@@ -8,17 +8,11 @@ set -e
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 加载共享函数库
-source "$SCRIPT_DIR/shared-functions.sh"
-
-# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
-validate_project_context || handle_error 1 "项目上下文验证失败"
-
 # 加载统一路径配置（设置非严格模式）
 export STRICT_MODE=0
 export DEBUG=0
 if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
-    handle_error 1 "路径配置加载失败"
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
 fi
 if ! source "$SCRIPT_DIR/performance-cache.sh" 2>/dev/null; then
     echo "⚠️  performance-cache.sh 加载失败" >&2
@@ -31,9 +25,10 @@ if ! source "$SCRIPT_DIR/compact-output.sh" 2>/dev/null; then
 fi
 
 # 学习引擎配置 (适配新目录结构)
-LEARNING_MODELS_DIR="$AI_MODELS_DIR"
-LEARNING_TRAINING_DIR="$AI_TRAINING_DATA_DIR"
-LEARNING_METRICS_DIR="$AI_METRICS_DIR"
+LEARNING_DIR="$AI_DIR"
+LEARNING_MODELS_DIR="$LEARNING_DIR/models"
+LEARNING_TRAINING_DIR="$LEARNING_DIR/training_data"
+LEARNING_METRICS_DIR="$LEARNING_DIR/metrics"
 LEARNING_RESULTS_DIR="$LEARNING_DIR/results"
 
 # 学习参数
@@ -58,7 +53,7 @@ init_self_learning_engine() {
     # 创建学习目录结构
     mkdir -p "$LEARNING_MODELS_DIR"
     mkdir -p "$LEARNING_TRAINING_DIR" "$LEARNING_RESULTS_DIR"
-    safe_file_operation "mkdir" "$LEARNING_METRICS_DIR"
+    mkdir -p "$LEARNING_METRICS_DIR"
 
     # 初始化学习模型
     init_learning_models

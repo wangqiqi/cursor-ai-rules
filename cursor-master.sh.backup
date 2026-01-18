@@ -10,19 +10,8 @@
 
 set -e
 
-# 🔧 加载共享函数库
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/.cursor/core/shared-functions.sh"
-
-# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
-validate_project_context || {
-    echo "❌ cursor-master.sh: 项目上下文验证失败"
-    echo "   请确保在正确的项目目录中运行脚本"
-    exit 1
-}
-
 # 🔧 加载统一路径配置（会自动查找项目路径）
-source "$SCRIPT_DIR/.cursor/core/path-config.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.cursor/core/path-config.sh"
 
 # 🌱 简化初始化：只保留基础生长目录初始化
 # 移除复杂的AI系统初始化，保持轻量级
@@ -45,18 +34,18 @@ init_growth_directory() {
                 echo -e "${YELLOW}📁 生长目录位置: $GROWTH_DIR${NC}" >&2
             else
                 echo -e "${YELLOW}⚠️ 生长目录初始化失败，使用备用方案${NC}" >&2
-                # 备用方案：创建标准目录结构
-                ensure_directory_structure
-                echo "{}" > "$CURSOR_GROWTH/.gitkeep"
+                # 备用方案：创建基本目录结构
+                mkdir -p "$GROWTH_DIR"/{data/perception,data/user_preferences,data/project_metrics,cache/analysis,cache/templates,cache/rules,learning,monitoring,backups/config_backups}
+                echo "{}" > "$GROWTH_DIR/.gitkeep"
                 # 确保.gitignore保护
                 ensure_gitignore_protection
                 echo -e "${GREEN}✅ 基本生长目录创建完成${NC}" >&2
             fi
         else
             echo -e "${YELLOW}⚠️ 未找到生长初始化脚本，使用备用方案${NC}" >&2
-            # 备用方案：创建标准目录结构
-            ensure_directory_structure
-            echo "{}" > "$CURSOR_GROWTH/.gitkeep"
+            # 备用方案：创建基本目录结构
+            mkdir -p "$GROWTH_DIR"/{data/perception,data/user_preferences,data/project_metrics,cache/analysis,cache/templates,cache/rules,learning,monitoring,backups/config_backups}
+            echo "{}" > "$GROWTH_DIR/.gitkeep"
             # 确保.gitignore保护
             ensure_gitignore_protection
             echo -e "${GREEN}✅ 基本生长目录创建完成${NC}" >&2
@@ -154,8 +143,8 @@ analyze_user_intent() {
     fi
 
     # 降级到传统文件缓存
-    local cache_dir="$STORAGE_CACHE_DIR"
-    safe_file_operation "mkdir" "$cache_dir"
+    local cache_dir="$GROWTH_DIR/cache"
+    mkdir -p "$cache_dir"
     local file_cache_key=$(echo "$user_input" | md5sum | cut -d' ' -f1)
     local cache_file="$cache_dir/intent_$file_cache_key.cache"
 
@@ -1136,7 +1125,7 @@ record_learning_data() {
     local timestamp="$4"
     local session_id="$5"
 
-    local learning_file="$LEARNING_PROGRESS_DIR/master_interactions.json"
+    local learning_file="$GROWTH_DIR/learning/master_interactions.json"
 
     # 提取关键信息
     local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
@@ -1176,7 +1165,7 @@ record_conversation() {
     local timestamp="$4"
     local session_id="$5"
 
-    local conversation_file="$CONVERSATIONS_DIR/session_$session_id.json"
+    local conversation_file="$GROWTH_DIR/conversations/session_$session_id.json"
 
     local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
     local explanation=$(echo "$decision_json" | jq -r '.decision_making.explanation' 2>/dev/null || echo "")
@@ -1216,7 +1205,7 @@ record_debug_info() {
     local should_execute=$(echo "$decision_json" | jq -r '.decision_making.should_execute' 2>/dev/null || echo "true")
 
     if [ "$should_execute" = "false" ]; then
-        local debug_file="$DEBUG_DIR/error_$session_id.json"
+        local debug_file="$GROWTH_DIR/debug/error_$session_id.json"
 
         local error_record=$(cat << EOF
 {
@@ -1250,7 +1239,7 @@ update_growth_metrics() {
     local decision_json="$2"
     local timestamp="$3"
 
-    local metrics_file="$GROWTH_METRICS_DIR/metrics.json"
+    local metrics_file="$GROWTH_DIR/growth/metrics.json"
 
     # 如果metrics文件不存在，创建初始版本
     if [ ! -f "$metrics_file" ]; then
@@ -1291,12 +1280,12 @@ update_personal_profile() {
     local intent_result="$2"
     local timestamp="$3"
 
-    local profile_file="$USER_DATA_DIR/user_profile.json"
+    local profile_file="$GROWTH_DIR/personal/user_profile.json"
 
     # 如果profile文件不存在，从learning目录复制初始版本
     if [ ! -f "$profile_file" ]; then
-        if [ -f "$LEARNING_PROGRESS_DIR/profile.json" ]; then
-            cp "$LEARNING_PROGRESS_DIR/profile.json" "$profile_file"
+        if [ -f "$GROWTH_DIR/learning/profile.json" ]; then
+            cp "$GROWTH_DIR/learning/profile.json" "$profile_file"
         else
             # 创建基本的profile
             cat > "$profile_file" << EOF
@@ -1588,8 +1577,8 @@ process_learning_data() {
     # 目前只是简单地记录数据供学习引擎使用
 
     # 保存到学习数据目录
-    local learning_dir="$AI_TRAINING_DATA_DIR"
-    safe_file_operation "mkdir" "$learning_dir"
+    local learning_dir=".cursorGrowth/learning/data"
+    mkdir -p "$learning_dir"
 
     local data_file="$learning_dir/interaction_$(date +%Y%m%d_%H%M%S_%N).json"
     echo "$learning_data" > "$data_file"
@@ -1934,7 +1923,7 @@ execute_skill() {
 analyze_learning_data() {
     echo -e "${BLUE}📚 分析学习数据...${NC}"
 
-    local learning_file="$LEARNING_PROGRESS_DIR/master_interactions.json"
+    local learning_file="$GROWTH_DIR/learning/master_interactions.json"
     if [ ! -f "$learning_file" ]; then
         echo -e "${YELLOW}⚠️  暂无学习数据${NC}"
         return
@@ -1959,7 +1948,7 @@ analyze_learning_data() {
 generate_learning_report() {
     echo -e "${BLUE}📋 生成学习报告...${NC}"
 
-    local report_file="$LEARNING_PROGRESS_DIR/learning_report_$(date +%Y%m%d).json"
+    local report_file="$GROWTH_DIR/learning/learning_report_$(date +%Y%m%d).json"
 
     # 从各种数据源生成综合报告
     local report_data=$(cat << EOF
@@ -1992,7 +1981,7 @@ EOF
 analyze_user_preferences() {
     echo -e "${BLUE}👤 分析用户偏好...${NC}"
 
-    local profile_file="$USER_DATA_DIR/user_profile.json"
+    local profile_file="$GROWTH_DIR/personal/user_profile.json"
     if [ -f "$profile_file" ]; then
         local preferred_lang=$(jq -r '.personal_data.preferred_language' "$profile_file" 2>/dev/null)
         echo -e "${PURPLE}🌍 偏好语言: ${NC}$preferred_lang"
@@ -2018,7 +2007,7 @@ adjust_ai_behavior() {
 generate_usage_report() {
     echo -e "${BLUE}📊 生成使用习惯报告...${NC}"
 
-    local report_file="$GROWTH_METRICS_DIR/usage_report_$(date +%Y%m%d).md"
+    local report_file="$GROWTH_DIR/growth/usage_report_$(date +%Y%m%d).md"
 
     cat > "$report_file" << EOF
 # 📊 使用习惯分析报告
@@ -2027,13 +2016,13 @@ generate_usage_report() {
 
 ## 🎯 使用概况
 
-- 总交互次数: $(jq 'select(.learning_data) | .learning_data.intent_type' "$LEARNING_PROGRESS_DIR/master_interactions.json" 2>/dev/null | wc -l)
-- 活跃天数: $(find "$CURSOR_GROWTH" -name "*.json" -newer "$CURSOR_GROWTH/README.md" 2>/dev/null | wc -l)
+- 总交互次数: $(jq 'select(.learning_data) | .learning_data.intent_type' "$GROWTH_DIR/learning/master_interactions.json" 2>/dev/null | wc -l)
+- 活跃天数: $(find "$GROWTH_DIR" -name "*.json" -newer "$GROWTH_DIR/README.md" 2>/dev/null | wc -l)
 - 平均每日使用: 计算中...
 
 ## 🎯 意图使用分布
 
-$(jq -r 'select(.learning_data) | .learning_data.intent_type' "$LEARNING_PROGRESS_DIR/master_interactions.json" 2>/dev/null | sort | uniq -c | sort -nr | while read count intent; do echo "- $intent: ${count}次"; done)
+$(jq -r 'select(.learning_data) | .learning_data.intent_type' "$GROWTH_DIR/learning/master_interactions.json" 2>/dev/null | sort | uniq -c | sort -nr | while read count intent; do echo "- $intent: ${count}次"; done)
 
 ## 💡 优化建议
 
@@ -2053,7 +2042,7 @@ display_growth_metrics() {
     echo -e "${CYAN}🌱 项目生长状态 ($(date '+%Y-%m-%d'))${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    local metrics_file="$GROWTH_METRICS_DIR/metrics.json"
+    local metrics_file="$GROWTH_DIR/growth/metrics.json"
     if [ -f "$metrics_file" ]; then
         local total_interactions=$(jq -r '.metrics.total_interactions' "$metrics_file" 2>/dev/null || echo "0")
         local successful_executions=$(jq -r '.metrics.successful_executions' "$metrics_file" 2>/dev/null || echo "0")

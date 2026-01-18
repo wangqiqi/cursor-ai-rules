@@ -1,4 +1,10 @@
 #!/bin/bash
+# 加载共享函数库
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../core/shared-functions.sh"
+
+# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
+validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
@@ -20,11 +26,11 @@ filename=$(basename "$file_path")
 extension="${filename##*.}"
 
 # 创建日志目录（如果不存在）
-mkdir -p "$ANALYTICS_DIR"
+mkdir -p "$ANALYTICS_MONITORING_DIR"
 
 # 记录处理开始
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-echo "[$timestamp] CODE_QUALITY_CHECK: $file_path" >> $CURSOR_GROWTH/logs/code-quality.log
+echo "[$timestamp] CODE_QUALITY_CHECK: $file_path" >> $SYSTEM_LOGS_DIR/code-quality.log
 
 # JavaScript/TypeScript文件处理
 if [[ "$extension" =~ ^(js|ts|jsx|tsx|mjs)$ ]]; then
@@ -37,9 +43,9 @@ if [[ "$extension" =~ ^(js|ts|jsx|tsx|mjs)$ ]]; then
         eslint_exit_code=$?
 
         if [[ $eslint_exit_code -eq 0 ]]; then
-            echo "  ✅ ESLint检查通过" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ✅ ESLint检查通过" >> $SYSTEM_LOGS_DIR/code-quality.log
         else
-            echo "  ⚠️  ESLint发现问题: $eslint_output" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ⚠️  ESLint发现问题: $eslint_output" >> $SYSTEM_LOGS_DIR/code-quality.log
         fi
     fi
 
@@ -50,9 +56,9 @@ if [[ "$extension" =~ ^(js|ts|jsx|tsx|mjs)$ ]]; then
         prettier_exit_code=$?
 
         if [[ $prettier_exit_code -eq 0 ]]; then
-            echo "  ✅ 代码格式化完成" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ✅ 代码格式化完成" >> $SYSTEM_LOGS_DIR/code-quality.log
         else
-            echo "  ⚠️  Prettier格式化失败: $prettier_output" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ⚠️  Prettier格式化失败: $prettier_output" >> $SYSTEM_LOGS_DIR/code-quality.log
         fi
     fi
 
@@ -67,9 +73,9 @@ elif [[ "$extension" == "py" ]]; then
         black_exit_code=$?
 
         if [[ $black_exit_code -eq 0 ]]; then
-            echo "  ✅ Python代码格式化完成" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ✅ Python代码格式化完成" >> $SYSTEM_LOGS_DIR/code-quality.log
         else
-            echo "  ⚠️  Black格式化失败: $black_output" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ⚠️  Black格式化失败: $black_output" >> $SYSTEM_LOGS_DIR/code-quality.log
         fi
     fi
 
@@ -80,9 +86,9 @@ elif [[ "$extension" == "py" ]]; then
         flake8_exit_code=$?
 
         if [[ $flake8_exit_code -eq 0 ]]; then
-            echo "  ✅ Flake8检查通过" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ✅ Flake8检查通过" >> $SYSTEM_LOGS_DIR/code-quality.log
         else
-            echo "  ⚠️  Flake8发现问题: $flake8_output" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ⚠️  Flake8发现问题: $flake8_output" >> $SYSTEM_LOGS_DIR/code-quality.log
         fi
     fi
 
@@ -94,7 +100,7 @@ elif [[ "$extension" == "go" ]]; then
     if command -v gofmt &> /dev/null; then
         echo "  🎨 运行gofmt格式化..."
         gofmt -w "$file_path"
-        echo "  ✅ Go代码格式化完成" >> $CURSOR_GROWTH/logs/code-quality.log
+        echo "  ✅ Go代码格式化完成" >> $SYSTEM_LOGS_DIR/code-quality.log
     fi
 
     # go vet检查
@@ -104,9 +110,9 @@ elif [[ "$extension" == "go" ]]; then
         go_vet_exit_code=$?
 
         if [[ $go_vet_exit_code -eq 0 ]]; then
-            echo "  ✅ go vet检查通过" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ✅ go vet检查通过" >> $SYSTEM_LOGS_DIR/code-quality.log
         else
-            echo "  ⚠️  go vet发现问题: $go_vet_output" >> $CURSOR_GROWTH/logs/code-quality.log
+            echo "  ⚠️  go vet发现问题: $go_vet_output" >> $SYSTEM_LOGS_DIR/code-quality.log
         fi
     fi
 
@@ -118,7 +124,7 @@ elif [[ "$extension" == "rs" ]]; then
     if command -v rustfmt &> /dev/null; then
         echo "  🎨 运行rustfmt格式化..."
         rustfmt "$file_path"
-        echo "  ✅ Rust代码格式化完成" >> $CURSOR_GROWTH/logs/code-quality.log
+        echo "  ✅ Rust代码格式化完成" >> $SYSTEM_LOGS_DIR/code-quality.log
     fi
 
 # C/C++文件处理
@@ -129,15 +135,15 @@ elif [[ "$extension" =~ ^(c|cpp|cxx|cc|c\+\+|h|hpp)$ ]]; then
     if command -v clang-format &> /dev/null; then
         echo "  🎨 运行clang-format格式化..."
         clang-format -i "$file_path"
-        echo "  ✅ C/C++代码格式化完成" >> $CURSOR_GROWTH/logs/code-quality.log
+        echo "  ✅ C/C++代码格式化完成" >> $SYSTEM_LOGS_DIR/code-quality.log
     fi
 
 # 其他文件类型
 else
-    echo "📄 文件类型: $extension - 跳过自动处理" >> "$CURSOR_GROWTH/logs/code-quality.log"
+    echo "📄 文件类型: $extension - 跳过自动处理" >> "$SYSTEM_LOGS_DIR/code-quality.log"
 fi
 
 # 记录处理完成
-echo "[$timestamp] CODE_QUALITY_CHECK_COMPLETED: $file_path" >> $CURSOR_GROWTH/logs/code-quality.log
+echo "[$timestamp] CODE_QUALITY_CHECK_COMPLETED: $file_path" >> $SYSTEM_LOGS_DIR/code-quality.log
 
 exit 0

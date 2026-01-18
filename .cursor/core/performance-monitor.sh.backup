@@ -1,16 +1,12 @@
 #!/bin/bash
-# 加载共享函数库
+# 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/shared-functions.sh"
-
-# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
-validate_project_context || handle_error 1 "项目上下文验证失败"
 
 # 加载统一路径配置（设置非严格模式）
 export STRICT_MODE=0
 export DEBUG=0
 if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
-    handle_error 1 "路径配置加载失败"
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
 fi
 
 
@@ -20,14 +16,15 @@ fi
 set -e
 
 # 配置 (使用新的目录结构)
+ANALYTICS_DATA_DIR="$ANALYTICS_DIR/data"
+ANALYTICS_CACHE_DIR="$ANALYTICS_DIR/cache"
 METRICS_FILE="$ANALYTICS_DATA_DIR/analytics-monitoring-metrics.json"
 TOKEN_LOG="$ANALYTICS_DATA_DIR/analytics-monitoring-token-usage.log"
 PERFORMANCE_LOG="$ANALYTICS_DATA_DIR/analytics-monitoring-performance.log"
 
 # 初始化监控目录
 init_monitoring() {
-    safe_file_operation "mkdir" "$ANALYTICS_DATA_DIR"
-    safe_file_operation "mkdir" "$ANALYTICS_CACHE_DIR"
+    mkdir -p "$ANALYTICS_DATA_DIR" "$ANALYTICS_CACHE_DIR"
 
     # 初始化指标文件
     if [ ! -f "$METRICS_FILE" ]; then
@@ -254,7 +251,7 @@ health_check() {
     echo "🔍 系统健康检查"
 
     # 检查缓存目录
-    if [ ! -d "$ANALYTICS_MONITORING_DIR" ]; then
+    if [ ! -d "$ANALYTICS_DIR" ]; then
         echo "❌ 缓存目录不存在"
         issues=$((issues + 1))
     fi

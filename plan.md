@@ -123,7 +123,7 @@
 - [ ] **更新 performance-monitor.sh** - analytics/* → analytics-monitoring/* (已完成)
 - [ ] **更新 self-learning-engine.sh** - ai/* → ai-learning/* (已完成)
 - [ ] **检查其他脚本** - 验证是否有遗漏的路径引用
-- [ ] **确保向后兼容性** - 保留旧变量作为别名
+- [ ] **移除向后兼容性代码** - 既然是完整重构，不需要保留旧变量别名
 - [ ] **路径引用校验** - 检查所有脚本中的硬编码路径是否已更新
 - [ ] **语法校验** - 确保所有脚本语法正确
 - [ ] 测试脚本在新的目录结构下正常工作
@@ -776,7 +776,7 @@ echo "🎉 使用共享函数库，维护成本大幅降低！"
 - **单一源头**: 所有路径变量在 `path-config.sh` 中统一定义
 - **层次化管理**: 按功能层级组织路径变量
 - **自动初始化**: 脚本加载时自动创建所需目录结构
-- **向后兼容**: 保留旧变量名作为新变量的别名
+- **简化设计**: 移除兼容性代码，专注于新架构
 
 #### path-config.sh 中的统一管理
 ```bash
@@ -864,7 +864,7 @@ metrics_file="$AI_METRICS_DIR/training_metrics.json"
 log_file="$SYSTEM_LOGS_DIR/app.log"
 config_file="$CONFIG_DIR/app_settings.json"
 
-# 旧变量仍然可用 (向后兼容)
+# 这是完整重构，旧变量已移除
 old_metrics_file="$AI_DIR/metrics/training_metrics.json"  # 仍然工作
 old_log_file="$LOGS_DIR/app.log"                         # 仍然工作
 ```
@@ -1068,14 +1068,18 @@ echo "🛡️ 重要提醒: 所有钩子脚本都必须是项目独立的！"
 **逐个脚本修改示例 (session-summary.sh - 使用共享函数):**
 ```bash
 # 首先重构为使用共享函数库
-# 添加共享函数库引用
+# 添加共享函数库引用 (手动操作，禁止使用sed自动化)
 if ! grep -q "shared-functions.sh" session-summary.sh; then
-    sed -i '1a source "$SCRIPT_DIR/shared-functions.sh"' session-summary.sh
+    echo "❌ 发现问题: 缺少共享函数库引用"
+    echo "✅ 手动修复: 在脚本开头添加 'source \"\$SCRIPT_DIR/shared-functions.sh\"'"
+    # 切记：不要使用 sed -i '1a source "$SCRIPT_DIR/shared-functions.sh"' session-summary.sh
 fi
 
-# 添加项目隔离验证
+# 添加项目隔离验证 (手动操作，禁止使用sed自动化)
 if ! grep -q "validate_project_context" session-summary.sh; then
-    sed -i '/shared-functions.sh/a validate_project_context || handle_error 1 "项目上下文验证失败"' session-summary.sh
+    echo "❌ 发现问题: 缺少项目上下文验证"
+    echo "✅ 手动修复: 在共享函数库加载后添加 'validate_project_context || handle_error 1 \"项目上下文验证失败\"'"
+    # 切记：不要使用 sed -i '/shared-functions.sh/a validate_project_context || handle_error 1 "项目上下文验证失败"' session-summary.sh
 fi
 
 # 查找所有日志操作
@@ -1177,8 +1181,8 @@ local metrics_file="$GROWTH_METRICS_DIR/metrics.json"
 | `SYNC_DIR`            | `$CURSOR_GROWTH/system-services/sync`         | 数据同步状态       |
 | `INTEGRATIONS_DIR`    | `$CURSOR_GROWTH/system-services/integrations` | 第三方服务集成     |
 
-#### 🔄 向后兼容变量映射
-| 旧变量名        | 新变量名                   | 兼容性说明       |
+#### 📋 变量使用说明
+| 变量名          | 路径位置                   | 功能说明         |
 | --------------- | -------------------------- | ---------------- |
 | `AI_DIR`        | `AI_LEARNING_DIR`          | AI功能目录别名   |
 | `ANALYTICS_DIR` | `ANALYTICS_MONITORING_DIR` | 分析功能目录别名 |
@@ -1296,9 +1300,9 @@ check_old_paths() {
         ((old_paths_found++))
     fi
 
-    # 检查旧的变量使用 (这些应该保留用于兼容性)
+    # 检查是否还有旧变量使用 (应该已被移除)
     if grep -q "\$GROWTH_DIR\|\$AI_DIR\|\$ANALYTICS_DIR\|\$CACHE_DIR\|\$LOGS_DIR" "$script"; then
-        echo "  ℹ️  发现旧变量引用 (检查是否为兼容性代码):"
+        echo "  ⚠️  发现旧变量引用 (在新架构中不应存在):"
         grep -n "\$GROWTH_DIR\|\$AI_DIR\|\$ANALYTICS_DIR\|\$CACHE_DIR\|\$LOGS_DIR" "$script"
     fi
 
@@ -1488,7 +1492,7 @@ grep -n "CURSOR_GROWTH/logs" cursor-master.sh
 
 # 步骤3: 验证替换结果
 grep -n "GROWTH_DIR\|CURSOR_GROWTH" cursor-master.sh
-# 确保只剩下兼容性代码中的引用
+# 确保所有引用都使用新变量
 ```
 
 ### 3. 配置文件更新
@@ -1659,6 +1663,7 @@ validate_directory_structure() {
         "storage-cache/backups"
         "records-logs/conversations"
         "records-logs/growth-metrics"
+        "records-logs/learning-progress"
         "records-logs/system-logs"
         "system-services/config"
         "system-services/debug"
@@ -1778,7 +1783,7 @@ monitor_resource_usage() {
 3. **缓存机制失效**: PROJECT_ROOT 缓存可能指向错误路径
 
 ### 中风险项目
-1. **向后兼容性**: 旧脚本可能仍使用旧路径
+1. **代码简化**: 移除所有兼容性代码，专注于新架构
 2. **功能测试不足**: 某些边缘情况可能未充分测试
 3. **文档更新滞后**: 使用说明可能与新结构不符
 
@@ -1796,7 +1801,7 @@ monitor_resource_usage() {
 4. **验证所有功能恢复正常**
 
 ### 渐进式回滚
-1. **保留新旧路径兼容性**
+1. **使用新的标准化路径**
 2. **逐步迁移脚本使用新路径**
 3. **分阶段删除旧目录结构**
 4. **最终完成全面迁移**
@@ -1881,7 +1886,7 @@ monitor_resource_usage() {
 - [ ] **校验和检查全部通过** (文件完整性保证)
 - [ ] **功能完整性校验通过** (每次测试前删除 .cursorGrowth，从干净状态验证)
 - [ ] 回滚机制有效 (紧急和渐进式回滚)
-- [ ] 向后兼容性保持 (旧路径变量可用)
+- [ ] 代码简化完成 (移除不必要的兼容性代码)
 - [ ] **清理验收通过** (只删除了无关文件，重要文件保留)
 - [ ] **项目识别验收通过** (脚本能正确识别所属项目)
 - [ ] **脚本独立执行验收通过** (每个脚本都是项目独立的)
@@ -2086,4 +2091,4 @@ generate_cleanup_report() {
 **开始时间**: 待定
 **完成时间**: 待定
 
-*此计划将 .cursorGrowth 重构为6个顶级功能目录的标准化架构，通过修改15+个脚本让它们能生成目标目录结构，配备完整的校验和检查机制，确保重构过程的安全性和正确性*
+*此计划将 .cursorGrowth 重构为6个顶级功能目录的标准化架构，通过修改15+个脚本实现完整重构，移除所有兼容性代码，配备完整的校验和检查机制，确保重构过程的简洁性和正确性*

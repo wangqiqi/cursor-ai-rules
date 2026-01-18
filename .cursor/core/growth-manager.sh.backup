@@ -14,18 +14,13 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 加载共享函数库
-source "$SCRIPT_DIR/shared-functions.sh"
-
-# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
-validate_project_context || handle_error 1 "项目上下文验证失败"
-
 # 加载统一路径配置（设置非严格模式）
 export STRICT_MODE=0
 export DEBUG=0
 if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
-    handle_error 1 "路径配置加载失败"
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
 fi
+GROWTH_DIR="$CURSOR_GROWTH"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -55,11 +50,13 @@ declare -a STANDARD_DIRS=(
 init_growth_directory() {
     echo -e "${CYAN}🌱 初始化生长目录管理系统...${NC}"
 
-    # 创建标准目录结构 (使用共享函数)
-    ensure_directory_structure
+    # 创建标准目录结构
+    for dir in "${STANDARD_DIRS[@]}"; do
+        mkdir -p "$GROWTH_DIR/$dir"
+    done
 
     # 创建README文件
-    create_readme_file "$CURSOR_GROWTH"
+    create_readme_file "$GROWTH_DIR"
 
     # 创建初始配置文件
     create_initial_configs
@@ -202,8 +199,8 @@ EOF
     fi
 
     # 创建初始生长指标（如果不存在）
-    if [ ! -f "$GROWTH_METRICS_DIR/metrics.json" ]; then
-        cat > "$GROWTH_METRICS_DIR/metrics.json" << EOF
+    if [ ! -f "$GROWTH_DIR/growth/metrics.json" ]; then
+        cat > "$GROWTH_DIR/growth/metrics.json" << EOF
 {
   "metrics": {
     "start_date": "$(date '+%Y-%m-%d')",

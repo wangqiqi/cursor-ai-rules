@@ -1,4 +1,10 @@
 #!/bin/bash
+# 加载共享函数库
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../core/shared-functions.sh"
+
+# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
+validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
@@ -17,7 +23,7 @@ if [[ -z "$prompt" ]]; then
 fi
 
 # 创建日志目录（如果不存在）
-mkdir -p "$ANALYTICS_DIR"
+mkdir -p "$ANALYTICS_MONITORING_DIR"
 
 # 定义敏感信息模式
 sensitive_patterns=(
@@ -56,7 +62,7 @@ done
 # 记录安全检查
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 if [[ "$is_sensitive" == true ]]; then
-    echo "[$timestamp] SENSITIVE_CONTENT_DETECTED: ${detected_patterns%,}" >> $CURSOR_GROWTH/logs/prompt-security.log
+    echo "[$timestamp] SENSITIVE_CONTENT_DETECTED: ${detected_patterns%,}" >> $SYSTEM_LOGS_DIR/prompt-security.log
 
     # 阻止包含敏感信息的prompt
     cat << EOF
@@ -67,7 +73,7 @@ if [[ "$is_sensitive" == true ]]; then
 EOF
     exit 0
 else
-    echo "[$timestamp] PROMPT_CHECKED: clean" >> $CURSOR_GROWTH/logs/prompt-security.log
+    echo "[$timestamp] PROMPT_CHECKED: clean" >> $SYSTEM_LOGS_DIR/prompt-security.log
 fi
 
 # 检查附件是否包含敏感文件
@@ -81,7 +87,7 @@ if [[ "$attachments" != "[]" ]]; then
 
         # 检查是否是敏感文件
         if [[ "$file_path" =~ (\.env|config\.json|secrets\.|credentials\.) ]]; then
-            echo "[$timestamp] SENSITIVE_FILE_ATTACHED: $file_path" >> $CURSOR_GROWTH/logs/prompt-security.log
+            echo "[$timestamp] SENSITIVE_FILE_ATTACHED: $file_path" >> $SYSTEM_LOGS_DIR/prompt-security.log
 
             cat << EOF
 {

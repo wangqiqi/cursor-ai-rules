@@ -1,4 +1,10 @@
 #!/bin/bash
+# 加载共享函数库
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../core/shared-functions.sh"
+
+# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
+validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
@@ -40,19 +46,19 @@ mkdir -p "$CURSOR_GROWTH/logs"
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 log_entry="$timestamp|$conversation_id|$command_type|$command|$duration|$output_length|$cwd"
 
-echo "$log_entry" >> $CURSOR_GROWTH/logs/command-execution.log
+echo "$log_entry" >> $SYSTEM_LOGS_DIR/command-execution.log
 
 # 如果执行时间过长，记录警告
 if [[ $duration -gt 10000 ]]; then
-    mkdir -p "$ANALYTICS_DIR"
-    echo "[$timestamp] SLOW_COMMAND: $command took ${duration}ms" >> $CURSOR_GROWTH/logs/performance-warnings.log
+    mkdir -p "$ANALYTICS_MONITORING_DIR"
+    echo "[$timestamp] SLOW_COMMAND: $command took ${duration}ms" >> $SYSTEM_LOGS_DIR/performance-warnings.log
 fi
 
 # 如果命令失败（可以从输出中检测），记录错误
 if [[ "$output" == *"error"* ]] || [[ "$output" == *"Error"* ]] || [[ "$output" == *"ERROR"* ]]; then
-    mkdir -p "$ANALYTICS_DIR"
-    echo "[$timestamp] COMMAND_ERROR: $command" >> $CURSOR_GROWTH/logs/command-errors.log
-    echo "Error output: $output" >> $CURSOR_GROWTH/logs/command-errors.log
+    mkdir -p "$ANALYTICS_MONITORING_DIR"
+    echo "[$timestamp] COMMAND_ERROR: $command" >> $SYSTEM_LOGS_DIR/command-errors.log
+    echo "Error output: $output" >> $SYSTEM_LOGS_DIR/command-errors.log
 fi
 
 # 保持简洁的输出

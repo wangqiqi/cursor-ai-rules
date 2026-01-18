@@ -1,4 +1,10 @@
 #!/bin/bash
+# 加载共享函数库
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../core/shared-functions.sh"
+
+# 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
+validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
@@ -58,9 +64,9 @@ for pattern in "${dangerous_patterns[@]}"; do
         echo "🚫 检测到危险命令，已阻止: $pattern" >&2
 
     # 记录安全事件
-    mkdir -p "$ANALYTICS_DIR"
+    mkdir -p "$ANALYTICS_MONITORING_DIR"
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] SECURITY_BLOCK: $command (pattern: $pattern)" >> "$CURSOR_GROWTH/logs/security-events.log"
+    echo "[$timestamp] SECURITY_BLOCK: $command (pattern: $pattern)" >> "$SYSTEM_LOGS_DIR/security-events.log"
 
         cat << EOF
 {
@@ -124,7 +130,7 @@ fi
 # 记录审计日志
 mkdir -p "$CURSOR_GROWTH/logs"
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-echo "[$timestamp] ALLOWED: $command (cwd: $cwd)" >> "$CURSOR_GROWTH/logs/command-audit.log"
+echo "[$timestamp] ALLOWED: $command (cwd: $cwd)" >> "$SYSTEM_LOGS_DIR/command-audit.log"
 
 # 允许执行
 cat << EOF
