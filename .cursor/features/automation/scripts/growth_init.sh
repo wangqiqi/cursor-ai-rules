@@ -78,8 +78,8 @@ else
 fi
 
 # 用户偏好学习文件
-if [ ! -f "$LEARNING_PROGRESS_DIR/preferences.json" ]; then
-    cat > "$LEARNING_PROGRESS_DIR/preferences.json" << EOF
+if [ ! -f "$USER_DATA_DIR/preferences.json" ]; then
+    cat > "$USER_DATA_DIR/preferences.json" << EOF
 {
   "version": "1.0.0",
   "last_updated": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
