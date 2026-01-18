@@ -1,72 +1,86 @@
-# 🚀 Cursor AI Rules - Make AI Your Super Programming Partner
+# 🚀 Cursor AI Rules - Constitution-Driven Super AI Programming Partner
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Version](https://img.shields.io/badge/version-5.0.0-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
+[![Version](https://img.shields.io/badge/version-6.0.0--constitution-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
+[![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
+[![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
 [![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Capabilities](https://img.shields.io/badge/capabilities-340-red?style=flat-square)]()
-[![Hooks](https://img.shields.io/badge/hooks-17-purple?style=flat-square)]()
-[![VIBE](https://img.shields.io/badge/vibe-6-green?style=flat-square)]()
+[![Web UI](https://img.shields.io/badge/web-UI-purple?style=flat-square)]()
+[![VIBE](https://img.shields.io/badge/vibe-Methodology-green?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 Enterprise AI Programming Collaboration Platform - 23 Rules + 24 Skills + 340 Capability Mappings + 17 Automation Hooks + 6 VIBE Services**
+**🌟 Constitution-Driven Super AI Programming Partner - Three Axioms + Three Agnostic Principles + Dual Directory Architecture + Web UI + Continuous Evolution**
 
-📚 **[Quick Start](docs/guides/quick-start.md)** | **[Intelligent Agent Guide](docs/guides/intelligent-evolution-guide.md)** | **[Token Optimization Guide](docs/guides/token-compression-guide.md)** | **[MCP Integration Guide](docs/skills/mcp-priority-system.md)** | **[VIBE Development Guide](rules/workflow/vibe-coding.md)**
+📚 **[Quick Improvements Guide](docs/guides/quick-improvements-and-web-guide.md)** | **[System Design Philosophy](docs/architecture/system-design-philosophy.md)** | **[VIBE Development Guide](rules/workflow/vibe-coding.md)** | **[API Documentation](docs/api/hooks-api.md)**
 
-Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), an enterprise-level AI programming platform with **multi-agent collaboration + self-learning optimization + MCP ecosystem integration + VIBE development methodology**, achieving end-to-end intelligent collaboration from concept to deployment.
+Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), a constitution-driven AI programming partner with **three fundamental axioms + three agnostic design principles + dual directory architecture + Web UI + VIBE development methodology**, achieving true **human-AI symbiosis** programming experience.
+
+## 🏛️ Three Fundamental Axioms - Constitution-Driven AI
+
+This system implements the rule of law in AI programming assistants through three fundamental axioms, ensuring AI behavior compliance and security.
+
+### ⚖️ **Intent Sovereignty Axiom** (Intent Sovereignty Axiom)
+Humans forever retain ultimate interpretive rights and decision-making authority over "why" and "what is correct"
+- ✅ **Project Creation Intent Detection**: Automatically detect project creation intent and enforce STOP mechanism
+- ✅ **Discussion Requirement Enforcement**: Prohibit any skip discussion direct creation actions
+- ✅ **Human Confirmation Mechanism**: All important operations require explicit human approval
+
+### 🔍 **Signal Trustworthiness Axiom** (Signal Trustworthiness Axiom)
+AI's outputs must all carry traceable, verifiable, attributable original signal chains
+- ✅ **Complete Traceability Chains**: All AI outputs include reasoning processes and data sources
+- ✅ **Rule Transparency**: Display all activated rule matching status and priorities
+- ✅ **Signal Freshness Verification**: Verify timeliness and relevance of all signals
+
+### ⏱️ **Cognitive Auditability Axiom** (Cognitive Auditability Axiom)
+All AI collaboration processes must support "three-second retrospection" - complete traceability of AI reasoning process and decision basis within 3 seconds
+- ✅ **Audit Trail Logging**: All interactions structured logs stored in `.cursorGrowth/`
+- ✅ **Decision Path Visualization**: Display complete decision path from input to output
+- ✅ **Historical Traceability**: Support complete retrospection of any historical session
 
 ## 🤝 Core Collaboration Principles
 
-This is an intelligent AI collaboration system designed for efficient human-AI interaction.
+Based on three fundamental axioms, this creates a **human-AI symbiosis** collaboration mode ensuring AI always serves human intent and interests.
 
 ### Human Intent Sovereignty
-- Human decisions always take precedence over AI suggestions
-- AI provides options, humans make final choices
-- All AI actions require human confirmation
+- ✅ **Constitutional Mandatory Execution**: 100% compliance with three axioms
+- ✅ **Discussion Prioritization**: Project creation requires discussion of requirements and solutions first
+- ✅ **Human Final Decision**: All important operations require explicit human approval
 
 ### Signal Transparency
-- AI must explain reasoning and data sources
-- All outputs should be traceable and verifiable
-- Clear attribution of information sources
-
-### Safe Collaboration
-- No automatic execution of destructive operations
-- All system changes require explicit approval
-- Risk assessment for all suggestions
+- ✅ **Complete Traceability Chains**: All AI outputs include reasoning processes and data sources
+- ✅ **Rule Transparency**: Display all activated rule matching status and priorities
+- ✅ **Signal Verifiability**: All signals are traceable, verifiable, attributable
 
 ## 🚀 Core Features
 
-### 🤖 8 Core Intelligent Agents
-- **Planner**: Requirements analysis, task planning, priority sorting
-- **Generator**: Code generation, documentation creation, template filling
-- **Tester**: Test writing, test execution, coverage analysis
-- **Deployer**: Environment configuration, deployment execution, monitoring setup
-- **Reviewer**: Code review, security audit, quality inspection
-- **Coordinator**: Task allocation, conflict resolution, progress tracking
-- **Learner**: Pattern learning, performance optimization, improvement suggestions
-- **Monitor**: Health checks, performance monitoring, alert handling
+### 🧠 Constitution-Driven Intelligent System
+- **Master Command**: Single intelligent entry automatically orchestrates 39 scripts + 23 rules + 24 skills
+- **Intent Understanding**: Natural language processing for complex user requirements
+- **Self-Learning**: A/B testing framework, user feedback loop, continuous optimization
+- **Performance Monitoring**: Comprehensive monitoring with response time <500ms
 
-### 🎯 340 Capability Mappings - Intent to Action System
-- **Project Creation & Management**: React, Vue, Python API, environment setup (15+ mappings)
-- **Code Quality & Optimization**: ESLint, testing, performance analysis, refactoring (25+ mappings)
-- **Debug & Troubleshooting**: Isolation debugging, pattern analysis, error fixing (10+ mappings)
-- **Deployment & DevOps**: CI/CD setup, containerization, monitoring (15+ mappings)
-- **Learning & Documentation**: Technology guides, code explanation, best practices (20+ mappings)
-- **Collaboration & Communication**: Team workflows, review processes, knowledge sharing (10+ mappings)
+### 🌐 Web UI Integration
+- **Modern UI**: Responsive design supporting desktop and mobile
+- **Natural Language Input**: Describe requirements in everyday language
+- **Real-time Feedback**: Process transparency with status updates
+- **System Status Monitoring**: Display project status, AI assistant status, learning data
 
-### 🛠️ 25+ Local Tool MCP Integration
-- **Version Control**: Git, Git LFS
-- **Testing Tools**: Jest, Vitest, Mocha, Jasmine, Tape, Ava
-- **Code Quality**: ESLint, Prettier, Stylelint, TSLint, Markdownlint
-- **Build Tools**: Webpack, Rollup, Parcel, Vite, Snowpack
-- **Package Managers**: npm, yarn, pnpm, bun
-- **Local Databases**: SQLite3, LevelDB, NeDB
-- **Documentation Tools**: JSDoc, TypeDoc, Markdown
-- **File System**: fs-extra, glob, chokidar
-- **Development Servers**: live-server, http-server, serve
+### 🎯 Intelligent Capability Orchestration System
+- **39 Scripts**: Environment perception, quality checks, performance monitoring, deployment management
+- **23 Rules**: Constitutional compliance, code quality, development specifications
+- **24 Skills**: Document processing, image generation, data analysis
+- **17 Hooks**: Automated Git hooks, code quality checks
+- **6 VIBE Services**: Documentation-driven, test-first, frontend-backend alignment
+
+### 🛠️ Enhanced Feature Capabilities
+- **Error Handling Optimization**: Smart diagnostics with 83% efficiency improvement
+- **Intelligent Cache System**: Three-level architecture with 60% speed improvement
+- **Web UI Integration**: Modern graphical interface with 300% UX improvement
+- **Learning Data Isolation**: `.cursorGrowth/` privacy protection design
 
 ### ⚡ Token Optimization System (25-35% Savings)
 - **Context Sharing**: Intelligent context pool management to avoid duplicate transmission
@@ -104,13 +118,31 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
   - Each project grows independently, supports AI personalized learning and continuous optimization
   - Automatically added to `.gitignore` for privacy and data security
 
+### Three Agnostic Design Principles
+
+#### 📦 Project Agnostic (Project Independence)
+- ✅ **Plug and Play**: Copy `.cursor/` to any Git project, get complete AI capabilities immediately
+- ✅ **Auto-Adaptation**: Smart detection of project types, tech stacks, and environment configurations
+- ✅ **Multi-Project Support**: Support simultaneous use of the same AI system across multiple projects
+
+#### 🖥️ System Agnostic (System Independence)
+- ✅ **Cross-Platform Compatibility**: Complete support for Linux/macOS/Windows
+- ✅ **Auto-Detection**: Intelligent recognition of OS types and environment variables
+- ✅ **Unified Interface**: Shield underlying system differences, provide consistent experience
+
+#### 👤 User Agnostic (User Independence)
+- ✅ **AI Core Independence**: Core AI capabilities do not depend on specific user identity
+- ✅ **Data Isolation**: `.cursorGrowth/` directory stores all user-specific data
+- ✅ **Privacy Protection**: User preferences and learning data are completely localized
+
 ### Architecture Advantages
 - **🔄 Replicability**: `.cursor` directory can be copied between any projects
 - **🔒 Privacy Protection**: `.cursorGrowth` data is completely private and not shared
 - **👥 Collaboration-Friendly**: Teams share configuration, each person's data remains independent
 - **⚡ Performance Optimization**: Local cache and learning data improve response speed
+- **🎯 Three Agnostic Principles**: Achieve true project, system, user independence
 
-**📖 [Detailed Architecture Documentation](docs/architecture/project-growth-architecture.md)**
+**📖 [System Design Philosophy](docs/architecture/system-design-philosophy.md)** | **[Quick Improvements Guide](docs/guides/quick-improvements-and-web-guide.md)**
 
 ### Core Architecture Components
 
@@ -178,7 +210,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | 🔓 **Out-of-the-Box**                        | No configuration needed, copy and use                                             | Support for any project, any language |
 | 🪝 **Automated Hooks System**                | 17 lifecycle hooks for intelligent automation                                     | **100% Process Automation**           |
 | 🔌 **MCP Priority System**                   | Smart MCP tool detection and execution priority                                   | **Intelligent Tool Selection**        |
-| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch error fixing tools                    | **Debug Efficiency 300%↑**            |
+| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch error fixing tools                   | **Debug Efficiency 300%↑**            |
 | 🎯 **340 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
 | 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
 | 📊 **Performance Monitoring**                | Real-time system metrics and optimization                                         | **System Health Tracking**            |
@@ -211,58 +243,67 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 
 ### 🎯 Advanced Systems (2026 Enhanced)
 
-| System                     | Description                                       | Features                                                               | Status             |
-| -------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
-| **Hooks Automation**       | Lifecycle automation system with 17 hooks         | Session/file/command events, intelligent triggers, async execution     | ✅ Production Ready |
-| **MCP Priority System**    | Intelligent MCP tool detection and prioritization | 25+ local tools, auto-discovery, priority execution, fallback          | ✅ Production Ready |
-| **Debug Suite**            | Advanced debugging tools and workflows            | Isolation debugging, pattern analysis, batch error fixing, auto-commit | ✅ Production Ready |
-| **Capability Mapping**     | 340 comprehensive intent-action mappings          | Multi-layer analysis, confidence thresholds, execution ordering        | ✅ Production Ready |
-| **Growth Intelligence**    | AI learning and personalization system            | Behavior patterns, A/B testing, continuous optimization                | ✅ Production Ready |
-| **Performance Monitoring** | Real-time system health and optimization          | Token tracking, caching, compression, dashboard reporting              | ✅ Production Ready |
+| System                               | Description                                       | Features                                                                           | Status             |
+| ------------------------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------ |
+| **Constitution Execution Engine**    | Three Axioms Mandatory Execution System           | Intent Sovereignty, Signal Trustworthiness, Cognitive Auditability, STOP Mechanism | ✅ Production Ready |
+| **Web UI Integration**               | Modern Graphical Interface System                 | Natural Language Input, Real-time Feedback, Responsive Design                      | ✅ Production Ready |
+| **Error Handling Optimization**      | Smart Diagnostics and Repair Suggestions System   | Diagnosis Efficiency 83%↑, User-friendly Error Messages                            | ✅ Production Ready |
+| **Intelligent Cache System**         | Three-Level Cache Architecture System             | Memory→File→Network, 60% Speed Improvement                                         | ✅ Production Ready |
+| **Dual Directory Architecture**      | .cursor Core + .cursorGrowth Growth Data          | Privacy Protection, Continuous Evolution, Multi-environment Isolation              | ✅ Production Ready |
+| **Master Intelligent Orchestration** | Single Entry Multi-component Orchestration System | 39 Scripts + 23 Rules + 24 Skills Intelligent Combination                          | ✅ Production Ready |
 
 ### 🎯 Skills Extension System (24 Professional Skills) + VIBE Services Ecosystem (6 VIBE Services)
 
-| Skill Category               | Count | Skills                                                                            | Status             |
-| ---------------------------- | ----- | --------------------------------------------------------------------------------- | ------------------ |
-| **Document Processing**      | 4     | docx, pdf, pptx, xlsx - Office document processing                                | ✅ Fully Integrated |
-| **Creative Design**          | 5     | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator | ✅ Fully Integrated |
-| **AI Integration**           | 5     | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification | ✅ Fully Integrated |
-| **Enterprise Collaboration** | 3     | brand-guidelines, internal-comms, doc-coauthoring                                 | ✅ Fully Integrated |
-| **Testing & Development**    | 3     | webapp-testing, web-artifacts-builder, evaluation                                 | ✅ Fully Integrated |
+| Skill Category               | Count | Skills                                                                                                 | Status             |
+| ---------------------------- | ----- | ------------------------------------------------------------------------------------------------------ | ------------------ |
+| **Document Processing**      | 4     | docx, pdf, pptx, xlsx - Office document processing                                                     | ✅ Fully Integrated |
+| **Creative Design**          | 5     | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator                      | ✅ Fully Integrated |
+| **AI Integration**           | 5     | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification                      | ✅ Fully Integrated |
+| **Enterprise Collaboration** | 3     | brand-guidelines, internal-comms, doc-coauthoring                                                      | ✅ Fully Integrated |
+| **Testing & Development**    | 3     | webapp-testing, web-artifacts-builder, evaluation                                                      | ✅ Fully Integrated |
 | **VIBE Development**         | 6     | context-manager, code-generator, dependency-tracker, test-validator, doc-generator, deployment-manager | ✅ Fully Integrated |
 
 ## 🚀 Quick Start
 
-### 💡 Method 1: Traditional Intelligent Master Mode
+### 🌐 Method 1: Web UI Mode (Recommended)
 ```bash
 cd your-project
 # Place the .cursor directory in the project root
 
-# 🚀 Intelligent Master - Natural language driven, AI auto-orchestrates all operations
-@master I want to create a React project     # AI auto-perceives and executes complete process
-@master Need to optimize code quality         # Auto-triggers quality checks and fixes
-@master Help me analyze project status        # Intelligent project analysis report generation
-@master Debug this error for me              # Activates debug suite with isolation and pattern analysis
-@master Setup CI/CD pipeline                # Intelligent DevOps automation
-@master Learn my coding patterns            # AI learns and adapts to your preferences
+# 🚀 Launch modern Web UI
+.cursor/start-web.sh
+
+# 🌐 Open in browser: http://localhost:3000
+
+# 💬 Natural language input:
+# "Create a React project"  # ⚖️ Constitution STOP mechanism activation
+# "Optimize code quality"   # 🔍 Smart analysis and fixes
+# "Analyze project status"  # 📊 Comprehensive diagnostics
 ```
 
-### 🎯 Method 2: VIBE Conversational Development (Recommended)
+### 🧠 Method 2: Command Line Master Mode
 ```bash
-# 💬 One-click VIBE development session launch
-@vibe start my-awesome-app
+# 🚀 Constitution-driven AI - Three axioms mandatory execution
+@master I want to create a React project  # ⚖️ Triggers constitution protection
+@master Need to optimize code quality     # 🛠️ Smart repair suggestions
+@master Help me analyze project status    # 📈 Performance monitoring reports
+@master Debug this error                  # 🔧 Smart error handling
+@master Set up CI/CD pipeline           # 🚀 Automated deployment
+```
 
-# 📋 Generate product requirements document
-@vibe prd Develop a task management app with team collaboration and progress tracking
+### 💬 Method 3: VIBE Development Methodology
+```bash
+# 📋 Documentation-driven development flow
+@master VIBE project creation task management app
 
-# 💻 Intelligent code generation
-@vibe code
+# 🧪 Test-first development
+@master VIBE code generation user login function
 
-# 🧪 Automated test generation and execution
-@vibe test
+# 🔗 Frontend-backend interface alignment
+@master VIBE interface alignment
 
-# 🚀 One-click deployment
-@vibe deploy production
+# 🚀 Quality gate verification
+@master VIBE quality check
 ```
 
 ### 🔗 Method 3: Master Smart Orchestration + VIBE Integration
@@ -696,11 +737,11 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 ---
 
-*🌱 Cursor AI Rules v5.0.0 - Intelligent growth system allows AI assistants to continuously evolve, projects grow with each interaction!*
+*🚀 Cursor AI Rules v6.0.0--constitution - Constitution-Driven Super AI Programming Partner*
 
-*🚀 Cursor AI Rules v5.0.0 - Unified intelligent entry, 4-layer architecture refactoring, AI truly becomes a programming assistant*
+*🏛️ Core Innovation*: Three Fundamental Axioms + Three Agnostic Design Principles + Dual Directory Architecture + Web UI Integration + 39 Scripts + 23 Rules + 24 Skills, magnificent transformation from tools to partners, achieving true **human-AI symbiosis** programming experience!
 
-*🌱 Core Innovation*: 23 Rules, 24 Skills, 340 Capability Mappings, 17 Automation Hooks, from static tools to dynamic growth entities, from single interactions to continuous learning, from generic AI to personalized assistants, now with multi-agent collaboration and MCP ecosystem integration!
+*⚖️ Three Axioms*: Intent Sovereignty · Signal Trustworthiness · Cognitive Auditability | 🎯 Three Agnostic Principles: Project Agnostic · System Agnostic · User Agnostic | 🌐 Web UI: Modern Graphical Experience | 🧠 Master Intelligent Orchestration: Single Entry Full Capability Coverage
 
-*Last updated: {{GENERATION_TIME}} | Author: wangqiqi (https://github.com/wangqiqi)*
-*Based on Cursor official specifications, integrated intelligent perception, decision-making and evolution systems*
+*Last updated: 2026-01-18 | Author: wangqiqi (https://github.com/wangqiqi)*
+*Based on Cursor official specifications, constitution-driven AI with intelligent perception, decision-making and evolution systems*
