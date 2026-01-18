@@ -42,21 +42,22 @@ elif [[ "$command" =~ ^(\./|\.cursor/scripts/) ]]; then
 fi
 
 # 记录详细日志
-mkdir -p "$CURSOR_GROWTH/logs"
+mkdir -p "$SYSTEM_LOGS_DIR"
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 log_entry="$timestamp|$conversation_id|$command_type|$command|$duration|$output_length|$cwd"
 
+mkdir -p "$SYSTEM_LOGS_DIR"
 echo "$log_entry" >> $SYSTEM_LOGS_DIR/command-execution.log
 
 # 如果执行时间过长，记录警告
 if [[ $duration -gt 10000 ]]; then
-    mkdir -p "$ANALYTICS_MONITORING_DIR"
+    mkdir -p "$SYSTEM_LOGS_DIR"
     echo "[$timestamp] SLOW_COMMAND: $command took ${duration}ms" >> $SYSTEM_LOGS_DIR/performance-warnings.log
 fi
 
 # 如果命令失败（可以从输出中检测），记录错误
 if [[ "$output" == *"error"* ]] || [[ "$output" == *"Error"* ]] || [[ "$output" == *"ERROR"* ]]; then
-    mkdir -p "$ANALYTICS_MONITORING_DIR"
+    mkdir -p "$SYSTEM_LOGS_DIR"
     echo "[$timestamp] COMMAND_ERROR: $command" >> $SYSTEM_LOGS_DIR/command-errors.log
     echo "Error output: $output" >> $SYSTEM_LOGS_DIR/command-errors.log
 fi

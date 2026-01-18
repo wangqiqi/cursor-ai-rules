@@ -64,8 +64,8 @@ find_cursor_transcripts_dir() {
 
 # 初始化同步状态跟踪
 init_sync_tracking() {
-    mkdir -p "$GROWTH_DIR/sync"
-    local sync_status_file="$GROWTH_DIR/sync/cursor_sync_status.json"
+    mkdir -p "$GROWTH_DIR/integrations/sync"
+    local sync_status_file="$GROWTH_DIR/integrations/sync/cursor_sync_status.json"
 
     if [ ! -f "$sync_status_file" ]; then
         cat > "$sync_status_file" << EOF

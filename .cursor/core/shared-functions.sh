@@ -86,11 +86,11 @@ validate_project_context() {
 
     local current_project_id="$PROJECT_IDENTIFIER"
 
-    if [[ -f ".cursor/project_id" ]]; then
-        stored_project_id=$(cat ".cursor/project_id")
+    if [[ -f "$PROJECT_ROOT/.cursor/project_id" ]]; then
+        stored_project_id=$(cat "$PROJECT_ROOT/.cursor/project_id")
     else
         # 首次运行，创建项目标识文件
-        echo "$current_project_id" > ".cursor/project_id"
+        echo "$current_project_id" > "$PROJECT_ROOT/.cursor/project_id"
         stored_project_id="$current_project_id"
     fi
 
@@ -224,44 +224,25 @@ ${key}=\"${value}\""
 # 自动创建项目目录结构
 # ------------------------------------------------------------------------------
 
-# 统一目录创建函数
+# 统一目录创建函数 (严格按照迁移指南的7个核心目录)
 ensure_directory_structure() {
-    local dirs_to_create=(
-        "$CORE_DATA_DIR"
-        "$AI_LEARNING_DIR"
-        "$ANALYTICS_MONITORING_DIR"
-        "$STORAGE_CACHE_DIR"
-        "$RECORDS_LOGS_DIR"
-        "$SYSTEM_SERVICES_DIR"
-        "$PERCEPTION_DIR"
-        "$USER_DATA_DIR"
-        "$PROJECT_DATA_DIR"
-        "$AI_MODELS_DIR"
-        "$AI_TRAINING_DATA_DIR"
-        "$AI_METRICS_DIR"
-        "$AI_RESULTS_DIR"
-        "$ANALYTICS_DATA_DIR"
-        "$ANALYTICS_CACHE_DIR"
-        "$MONITORING_DIR"
-        "$CACHE_RULES_DIR"
-        "$CACHE_TEMPLATES_DIR"
-        "$BACKUPS_DIR"
-        "$CONVERSATIONS_DIR"
-        "$GROWTH_METRICS_DIR"
-        "$LEARNING_PROGRESS_DIR"
-        "$SYSTEM_LOGS_DIR"
-        "$CONFIG_DIR"
-        "$DEBUG_DIR"
-        "$COMPRESSION_DIR"
-        "$SYNC_DIR"
-        "$INTEGRATIONS_DIR"
+    # 严格按照迁移指南：只有7个核心顶级目录
+    local core_dirs=(
+        "$PERCEPTION_DIR"      # 环境感知数据
+        "$USER_DATA_DIR"       # 用户相关数据
+        "$PROJECT_DATA_DIR"    # 项目相关数据
+        "$AI_DIR"              # AI相关数据
+        "$ANALYTICS_DIR"       # 分析数据
+        "$MONITORING_DIR"      # 系统监控
+        "$INTEGRATIONS_DIR"    # 第三方集成
     )
 
-    for dir in "${dirs_to_create[@]}"; do
+    # 只创建这7个核心目录
+    for dir in "${core_dirs[@]}"; do
         safe_file_operation "mkdir" "$dir"
     done
 
-    log_message "INFO" "项目目录结构创建完成"
+    log_message "INFO" "项目目录结构创建完成 (严格7目录结构)"
 }
 
 # ------------------------------------------------------------------------------

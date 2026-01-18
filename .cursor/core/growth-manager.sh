@@ -38,17 +38,13 @@ NC='\033[0m'
 
 # 标准目录结构定义
 declare -a STANDARD_DIRS=(
-    "learning"
-    "conversations"
-    "growth"
-    "personal"
-    "cache"
+    "perception"
+    "user_data"
+    "project_data"
+    "ai"
+    "analytics"
     "monitoring"
-    "debug"
-    "logs"
-    "sync"
-    "mcps"
-    "compression"
+    "integrations"
 )
 
 # 初始化生长目录
@@ -256,11 +252,11 @@ cleanup_expired_data() {
 
     local cleaned_files=0
 
-    # 清理7天前的缓存文件
-    local cache_files
-    cache_files=$(find "$GROWTH_DIR/cache" -name "*.cache" -type f -mtime +7 2>/dev/null | wc -l)
-    find "$GROWTH_DIR/cache" -name "*.cache" -type f -mtime +7 -delete 2>/dev/null
-    cleaned_files=$((cleaned_files + cache_files))
+    # 清理分析缓存文件 (如果存在)
+    local analytics_cache_files
+    analytics_cache_files=$(find "$GROWTH_DIR/analytics/cache" -name "*.cache" -type f -mtime +7 2>/dev/null | wc -l)
+    find "$GROWTH_DIR/analytics/cache" -name "*.cache" -type f -mtime +7 -delete 2>/dev/null
+    cleaned_files=$((cleaned_files + analytics_cache_files))
 
     # 清理30天前的旧日志
     local old_logs
@@ -286,11 +282,12 @@ optimize_directory_structure() {
         fi
     done
 
-    # 重新组织MCP文件（如果需要）
+    # 重新组织遗留文件到integrations目录（如果需要）
     if [ -d "$GROWTH_DIR/mcps" ] && [ "$(find "$GROWTH_DIR/mcps" -maxdepth 1 -name "*.json" | wc -l)" -gt 0 ]; then
-        echo -e "${BLUE}  🔄 重新组织MCP文件结构...${NC}"
-        mkdir -p "$GROWTH_DIR/mcps/user-pdf-reader"
-        find "$GROWTH_DIR/mcps" -maxdepth 1 -name "*.json" -exec mv {} "$GROWTH_DIR/mcps/user-pdf-reader/" \; 2>/dev/null
+        echo -e "${BLUE}  🔄 迁移遗留MCP文件到integrations目录...${NC}"
+        mkdir -p "$GROWTH_DIR/integrations/mcp-configs"
+        find "$GROWTH_DIR/mcps" -maxdepth 1 -name "*.json" -exec mv {} "$GROWTH_DIR/integrations/mcp-configs/" \; 2>/dev/null
+        rmdir "$GROWTH_DIR/mcps" 2>/dev/null
     fi
 
     # 压缩大文件（如果需要）

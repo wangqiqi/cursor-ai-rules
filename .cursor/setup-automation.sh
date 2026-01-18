@@ -113,7 +113,6 @@ echo -e "${BLUE}📊 初始化监控系统...${NC}"
 
 # 创建必要的目录结构
 mkdir -p "$PROJECT_ROOT/.cursorGrowth/analytics"
-mkdir -p "$PROJECT_ROOT/.cursorGrowth/logs"
 mkdir -p "$PROJECT_ROOT/.cursorGrowth/monitoring"
 
 # 运行初始监控
@@ -151,13 +150,13 @@ echo -e "${GREEN}✅ Cron任务: $CRON_TASKS 个已配置${NC}"
 
 # 检查目录结构
 DIRS_EXIST=0
-for dir in analytics logs monitoring; do
+for dir in analytics monitoring; do
     if [ -d "$PROJECT_ROOT/.cursorGrowth/$dir" ]; then
         ((DIRS_EXIST++))
     fi
 done
 
-echo -e "${GREEN}✅ 目录结构: $DIRS_EXIST/3 已创建${NC}"
+echo -e "${GREEN}✅ 目录结构: $DIRS_EXIST/2 已创建${NC}"
 
 # 检查监控文件
 if [ -f "$PROJECT_ROOT/.cursorGrowth/analytics/usage-stats-$(date +%Y%m%d).json" ]; then
@@ -233,7 +232,7 @@ echo ""
 echo -e "${YELLOW}💡 下一步:${NC}"
 echo "  1. 测试Git提交: git commit -m \"test: 测试自动化hooks\""
 echo "  2. 查看监控报告: cat .cursorGrowth/analytics/usage-stats-*.json"
-echo "  3. 检查cron日志: tail -f .cursorGrowth/logs/cron-*.log"
+echo "  3. 检查cron日志: tail -f .cursorGrowth/monitoring/logs/cron-*.log"
 echo ""
 echo -e "${GREEN}✅ Cursor AI Rules 自动化系统已就绪！${NC}"
 echo ""

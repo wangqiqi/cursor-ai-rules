@@ -73,7 +73,7 @@ CURSOR_DIR=$PROJECT_PATH/.cursor
 0 6 * * * $CURSOR_DIR/core/usage-monitor.sh --generate-only >> $PROJECT_PATH/.cursorGrowth/logs/cron-usage-monitor.log 2>&1
 
 # 日志轮转清理 - 每月1号凌晨4点执行
-0 4 1 * * find $PROJECT_PATH/.cursorGrowth/logs -name "*.log" -mtime +30 -delete >> $PROJECT_PATH/.cursorGrowth/logs/cron-log-rotate.log 2>&1
+0 4 1 * * find $PROJECT_PATH/.cursorGrowth/monitoring/logs -name "*.log" -mtime +30 -delete >> $PROJECT_PATH/.cursorGrowth/monitoring/logs/cron-log-rotate.log 2>&1
 
 # ============================================================================
 # ⚠️ 重要说明

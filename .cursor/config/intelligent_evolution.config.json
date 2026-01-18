@@ -147,18 +147,19 @@
   "growth_architecture": {
     "enabled": true,
     "data_directories": {
-      "perception": "data/perception",
-      "user_preferences": "data/user_preferences",
-      "project_metrics": "data/project_metrics"
+      "perception": "perception",
+      "user_data": "user_data",
+      "project_data": "project_data"
     },
     "cache_directories": {
-      "analysis": "cache/analysis",
-      "templates": "cache/templates",
-      "rules": "cache/rules"
+      "analysis": "analytics/cache",
+      "ai_cache": "ai/cache"
     },
-    "learning_storage": "learning",
+    "ai_storage": "ai",
+    "analytics_storage": "analytics",
     "monitoring_storage": "monitoring",
-    "backup_storage": "backups/config_backups"
+    "integrations_storage": "integrations",
+    "backup_storage": "user_data/backups"
   },
   "monitoring": {
     "performance_metrics": {

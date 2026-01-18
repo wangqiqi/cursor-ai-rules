@@ -199,7 +199,7 @@ performance_analysis() {
     echo ""
     echo "💾 缓存状态"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    ls -la $CURSOR_GROWTH/cache/ 2>/dev/null | wc -l | xargs echo "缓存文件数量:"
+    ls -la $CURSOR_GROWTH/analytics/cache/ 2>/dev/null | wc -l | xargs echo "分析缓存文件数量:"
 
     echo ""
     echo "🎯 优化建议"

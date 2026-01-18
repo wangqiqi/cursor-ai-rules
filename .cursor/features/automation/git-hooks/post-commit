@@ -25,19 +25,19 @@ echo "💬 消息: $COMMIT_MESSAGE"
 # 1. 触发生长记录器
 echo "📈 记录到生长系统..."
 if [ -f "$CURSOR_DIR/core/growth-recorder.sh" ]; then
-    bash "$CURSOR_DIR/core/growth-recorder.sh" record "git-commit" "$COMMIT_MESSAGE" "completed" >> "$GROWTH_DIR/logs/git-post-commit.log" 2>&1
+    bash "$CURSOR_DIR/core/growth-recorder.sh" record "git-commit" "$COMMIT_MESSAGE" "completed" >> "$GROWTH_DIR/monitoring/logs/git-post-commit.log" 2>&1
 fi
 
 # 2. 触发自学习引擎 (异步)
 echo "🧠 触发自学习引擎..."
 if [ -f "$CURSOR_DIR/core/self-learning-engine.sh" ]; then
-    (bash "$CURSOR_DIR/core/self-learning-engine.sh" --incremental-learn >> "$GROWTH_DIR/logs/git-learning.log" 2>&1 &) &
+    (bash "$CURSOR_DIR/core/self-learning-engine.sh" --incremental-learn >> "$GROWTH_DIR/monitoring/logs/git-learning.log" 2>&1 &) &
 fi
 
 # 3. 触发Token压缩优化
 echo "🗜️ 触发Token压缩..."
 if [ -f "$CURSOR_DIR/core/token-compression.sh" ]; then
-    (bash "$CURSOR_DIR/core/token-compression.sh" --post-commit >> "$GROWTH_DIR/logs/git-token-compress.log" 2>&1 &) &
+    (bash "$CURSOR_DIR/core/token-compression.sh" --post-commit >> "$GROWTH_DIR/monitoring/logs/git-token-compress.log" 2>&1 &) &
 fi
 
 # ============================================================================
@@ -47,7 +47,7 @@ fi
 # 4. 触发质量报告更新
 echo "📊 更新质量报告..."
 if [ -f "$CURSOR_DIR/core/quality-reporter.sh" ]; then
-    (bash "$CURSOR_DIR/core/quality-reporter.sh" --incremental >> "$GROWTH_DIR/logs/git-quality-update.log" 2>&1 &) &
+    (bash "$CURSOR_DIR/core/quality-reporter.sh" --incremental >> "$GROWTH_DIR/monitoring/logs/git-quality-update.log" 2>&1 &) &
 fi
 
 # 5. 触发模式分析 (如果有重大变更)
@@ -55,7 +55,7 @@ LINES_CHANGED=$(git show --stat | tail -1 | awk '{print $4+$6}')
 if [ "$LINES_CHANGED" -gt 50 ]; then
     echo "🔍 检测到重大变更 ($LINES_CHANGED 行), 触发模式分析..."
     if [ -f "$CURSOR_DIR/core/pattern-analyzer.sh" ]; then
-        (bash "$CURSOR_DIR/core/pattern-analyzer.sh" --analyze-commit "$COMMIT_HASH" >> "$GROWTH_DIR/logs/git-pattern-analysis.log" 2>&1 &) &
+        (bash "$CURSOR_DIR/core/pattern-analyzer.sh" --analyze-commit "$COMMIT_HASH" >> "$GROWTH_DIR/monitoring/logs/git-pattern-analysis.log" 2>&1 &) &
     fi
 fi
 

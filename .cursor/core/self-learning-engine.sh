@@ -34,7 +34,7 @@ fi
 LEARNING_MODELS_DIR="$AI_MODELS_DIR"
 LEARNING_TRAINING_DIR="$AI_TRAINING_DATA_DIR"
 LEARNING_METRICS_DIR="$AI_METRICS_DIR"
-LEARNING_RESULTS_DIR="$LEARNING_DIR/results"
+LEARNING_RESULTS_DIR="$AI_DIR/results"
 
 # 学习参数
 LEARNING_RATE="${LEARNING_RATE:-0.1}"
@@ -576,7 +576,7 @@ generate_optimization_recommendations() {
     fi
 
     # 保存建议
-    local recommendations_file="$LEARNING_DIR/recommendations.json"
+    local recommendations_file="$USER_DATA_DIR/learning-recommendations.json"
     echo "{\"timestamp\": \"$(date -Iseconds)\", \"recommendations\": $recommendations}" > "$recommendations_file"
 
     smart_echo "生成 $(echo "$recommendations" | jq 'length') 条优化建议" "info"
@@ -586,7 +586,7 @@ generate_optimization_recommendations() {
 execute_adaptive_optimizations() {
     smart_echo "执行自适应优化..." "processing"
 
-    local recommendations_file="$LEARNING_DIR/recommendations.json"
+    local recommendations_file="$USER_DATA_DIR/learning-recommendations.json"
 
     if [[ ! -f "$recommendations_file" ]]; then
         smart_echo "没有优化建议可执行" "info"

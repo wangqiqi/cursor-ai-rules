@@ -26,10 +26,11 @@ filename=$(basename "$file_path")
 extension="${filename##*.}"
 
 # 创建日志目录（如果不存在）
-mkdir -p "$ANALYTICS_MONITORING_DIR"
+mkdir -p "$SYSTEM_LOGS_DIR"
 
 # 记录处理开始
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+mkdir -p "$SYSTEM_LOGS_DIR"
 echo "[$timestamp] CODE_QUALITY_CHECK: $file_path" >> $SYSTEM_LOGS_DIR/code-quality.log
 
 # JavaScript/TypeScript文件处理

@@ -156,7 +156,7 @@ analyze_user_intent() {
     fi
 
     # 降级到传统文件缓存
-    local cache_dir="$STORAGE_CACHE_DIR"
+    local cache_dir="$ANALYTICS_DIR/cache"
     safe_file_operation "mkdir" "$cache_dir"
     local file_cache_key=$(echo "$user_input" | md5sum | cut -d' ' -f1)
     local cache_file="$cache_dir/intent_$file_cache_key.cache"
@@ -1517,7 +1517,7 @@ record_learning_data() {
     local timestamp="$4"
     local session_id="$5"
 
-    local learning_file="$LEARNING_PROGRESS_DIR/master_interactions.json"
+    local learning_file="$USER_DATA_DIR/master_interactions.json"
 
     # 提取关键信息
     local intent_type=$(echo "$intent_result" | jq -r '.intent_analysis.intent_type' 2>/dev/null || echo "unknown")
@@ -1597,7 +1597,7 @@ record_debug_info() {
     local should_execute=$(echo "$decision_json" | jq -r '.decision_making.should_execute' 2>/dev/null || echo "true")
 
     if [ "$should_execute" = "false" ]; then
-        local debug_file="$DEBUG_DIR/error_$session_id.json"
+        local debug_file="$MONITORING_DIR/debug/error_$session_id.json"
 
         local error_record=$(cat << EOF
 {
@@ -1971,7 +1971,7 @@ process_learning_data() {
     # 目前只是简单地记录数据供学习引擎使用
 
     # 保存到学习数据目录
-    local learning_dir="$AI_TRAINING_DATA_DIR"
+    local learning_dir="$AI_DIR/training_data"
     safe_file_operation "mkdir" "$learning_dir"
 
     local data_file="$learning_dir/interaction_$(date +%Y%m%d_%H%M%S_%N).json"
@@ -2317,7 +2317,7 @@ execute_skill() {
 analyze_learning_data() {
     echo -e "${BLUE}📚 分析学习数据...${NC}"
 
-    local learning_file="$LEARNING_PROGRESS_DIR/master_interactions.json"
+    local learning_file="$USER_DATA_DIR/master_interactions.json"
     if [ ! -f "$learning_file" ]; then
         echo -e "${YELLOW}⚠️  暂无学习数据${NC}"
         return
@@ -2342,7 +2342,7 @@ analyze_learning_data() {
 generate_learning_report() {
     echo -e "${BLUE}📋 生成学习报告...${NC}"
 
-    local report_file="$LEARNING_PROGRESS_DIR/learning_report_$(date +%Y%m%d).json"
+    local report_file="$USER_DATA_DIR/learning_report_$(date +%Y%m%d).json"
 
     # 从各种数据源生成综合报告
     local report_data=$(cat << EOF
@@ -2410,13 +2410,13 @@ generate_usage_report() {
 
 ## 🎯 使用概况
 
-- 总交互次数: $(jq 'select(.learning_data) | .learning_data.intent_type' "$LEARNING_PROGRESS_DIR/master_interactions.json" 2>/dev/null | wc -l)
+- 总交互次数: $(jq 'select(.learning_data) | .learning_data.intent_type' "$USER_DATA_DIR/master_interactions.json" 2>/dev/null | wc -l)
 - 活跃天数: $(find "$CURSOR_GROWTH" -name "*.json" -newer "$CURSOR_GROWTH/README.md" 2>/dev/null | wc -l)
 - 平均每日使用: 计算中...
 
 ## 🎯 意图使用分布
 
-$(jq -r 'select(.learning_data) | .learning_data.intent_type' "$LEARNING_PROGRESS_DIR/master_interactions.json" 2>/dev/null | sort | uniq -c | sort -nr | while read count intent; do echo "- $intent: ${count}次"; done)
+$(jq -r 'select(.learning_data) | .learning_data.intent_type' "$USER_DATA_DIR/master_interactions.json" 2>/dev/null | sort | uniq -c | sort -nr | while read count intent; do echo "- $intent: ${count}次"; done)
 
 ## 💡 优化建议
 

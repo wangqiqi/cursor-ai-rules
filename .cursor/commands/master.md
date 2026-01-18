@@ -837,12 +837,12 @@ auto_init_growth_directory() {
         else
             echo -e "${YELLOW}⚠️ 生长目录初始化失败，使用备用方案${NC}"
             # 备用方案：创建基本目录结构
-            mkdir -p "$growth_dir"/{learning,conversations,growth,personal,cache,monitoring,debug,logs,sync}
+            mkdir -p "$growth_dir"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
         fi
     else
         echo -e "${YELLOW}⚠️ 未找到生长初始化脚本，使用备用方案${NC}"
-        # 备用方案：创建基本目录结构
-        mkdir -p "$growth_dir"/{learning,conversations,growth,personal,cache,monitoring,debug,logs,sync}
+        # 备用方案：创建新的7目录结构
+        mkdir -p "$growth_dir"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
     fi
 
     # 确保gitignore保护
@@ -884,9 +884,9 @@ learn_from_interaction() {
 
     # 保存学习数据到.cursorGrowth目录
     local growth_dir="$PROJECT_ROOT/.cursorGrowth"
-    local learning_file="$growth_dir/learning/master_interactions.json"
+    local learning_file="$growth_dir/user_data/master_interactions.json"
 
-    mkdir -p "$growth_dir/learning"
+    mkdir -p "$growth_dir"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
 
     # 创建学习记录
     local learning_record=$(cat << EOF
@@ -1335,18 +1335,16 @@ graph TD
 
 # 系统自动创建目录结构：
 .cursorGrowth/
-├── README.md           # 生长目录说明
-├── learning/           # AI学习数据
-│   ├── profile.json    # 用户和项目学习档案
-│   └── master_interactions.json  # 交互历史
-├── conversations/      # 对话记录
-│   └── session_*.json  # 每次对话的详细记录
-├── debug/              # 调试信息
-│   └── error_*.json    # 错误和异常记录
-├── growth/             # 生长指标
-│   └── metrics.json    # 项目生长统计
-└── personal/           # 个性化数据
-    └── user_profile.json # 用户偏好和习惯
+├── perception/         # 环境感知数据
+├── user_data/          # 用户相关数据
+│   ├── user_profile.json       # 用户偏好和习惯
+│   └── master_interactions.json # 交互历史
+├── project_data/       # 项目相关数据
+├── ai/                 # AI相关数据
+├── analytics/          # 分析数据
+├── monitoring/         # 系统监控
+│   └── logs/           # 系统日志 (整合到监控目录)
+└── integrations/       # 第三方集成
 ```
 
 ### 📊 自动记录的数据类型
@@ -1445,7 +1443,7 @@ graph TD
 ### 🎓 学习命令详解
 
 #### **@master 学习项目模式**
-- 分析.cursorGrowth/learning/中的数据
+- 分析.cursorGrowth/user_data/中的数据
 - 识别用户的意图模式和偏好
 - 优化未来命令的响应准确性
 - 生成个性化使用建议

@@ -198,7 +198,7 @@ toggle_compact_mode() {
 # 自动模式选择（基于用户偏好或系统负载）
 auto_select_mode() {
     # 检查用户偏好
-    local user_pref_file="$CURSOR_GROWTH/personal/user_profile.json"
+    local user_pref_file="$CURSOR_GROWTH/user_data/user_profile.json"
     if [ -f "$user_pref_file" ]; then
         local pref=$(jq -r '.preferences.output_mode // "detailed"' "$user_pref_file" 2>/dev/null || echo "detailed")
         case "$pref" in

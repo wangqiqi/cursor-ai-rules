@@ -652,7 +652,7 @@ ls -la .cursor/core/init.sh
 ### 🎓 学习命令详解
 
 #### **@master 学习项目模式**
-- 分析.cursorGrowth/learning/中的数据
+- 分析.cursorGrowth/user_data/中的数据
 - 识别用户行为模式和偏好
 - 优化未来命令响应准确性
 - 生成个性化使用建议

@@ -21,7 +21,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 GROWTH_DIR="$CURSOR_GROWTH"
 DEBUG_DIR="$PROJECT_ROOT/.cursor/debug"
-ANALYSIS_DIR="$PROJECT_ROOT/$CURSOR_GROWTH/debug/analysis"
+ANALYSIS_DIR="$CURSOR_GROWTH/analytics/analysis"
 
 # 颜色定义
 RED='\033[0;31m'

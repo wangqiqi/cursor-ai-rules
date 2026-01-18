@@ -113,14 +113,14 @@ find_project_paths() {
                 echo "  旧缓存: $cached_root"
                 echo "  新路径: $PROJECT_ROOT"
             fi
-            echo "$PROJECT_ROOT" > "$cache_file"
+            # 移除PROJECT_ROOT缓存文件创建
         fi
     else
-        # 💾 创建项目根目录缓存文件
+        # 💾 确保.cursorGrowth目录存在
         if [[ ! -d "$PROJECT_ROOT/.cursorGrowth" ]]; then
             mkdir -p "$PROJECT_ROOT/.cursorGrowth"
         fi
-        echo "$PROJECT_ROOT" > "$cache_file"
+        # 移除PROJECT_ROOT缓存文件创建
         if [[ "${DEBUG:-0}" == "1" ]]; then
             echo "💾 创建项目根目录缓存: $cache_file"
         fi
@@ -202,48 +202,14 @@ export STRICT_MODE="${STRICT_MODE:-0}"
 # 标准目录结构定义 (优化版 - 消除概念重叠，逻辑清晰)
 declare -a STANDARD_DIRS=(
     # ============================================================================
-    # 🎯 核心数据层 (系统感知和原始数据)
+    # 🎯 严格按照迁移指南的7个核心顶级目录
     # ============================================================================
-    "perception"           # 环境感知数据 (env-perception.sh)
-    "user_data"            # 用户相关数据 (偏好、配置等)
-    "project_data"         # 项目相关数据 (指标、统计等)
-
-    # ============================================================================
-    # 🤖 AI学习层 (机器学习和智能系统)
-    # ============================================================================
-    "ai/models"            # AI学习模型
-    "ai/training_data"     # AI训练数据集
-    "ai/metrics"           # AI学习效果指标
-    "ai/results"           # AI预测和生成结果
-
-    # ============================================================================
-    # 📊 分析和监控层 (数据分析和系统监控)
-    # ============================================================================
-    "analytics/data"       # 分析数据和统计结果
-    "analytics/cache"      # 分析结果缓存
-    "monitoring"           # 系统性能监控
-
-    # ============================================================================
-    # 💾 存储和缓存层 (数据持久化和性能优化)
-    # ============================================================================
-    "cache/rules"          # 规则缓存
-    "cache/templates"      # 模板缓存
-    "backups"              # 数据备份
-
-    # ============================================================================
-    # 📝 记录和日志层 (系统运行记录)
-    # ============================================================================
-    "conversations"        # 对话历史记录
-    "growth"               # 系统生长指标
-    "logs"                 # 系统日志文件
-
-    # ============================================================================
-    # 🔧 系统服务层 (扩展功能和服务)
-    # ============================================================================
-    "config"               # 系统配置
-    "debug"                # 调试信息
-    "compression"          # 数据压缩
-    "sync"                 # 数据同步
+    "perception"           # 环境感知数据
+    "user_data"            # 用户相关数据
+    "project_data"         # 项目相关数据
+    "ai"                   # AI相关数据
+    "analytics"            # 分析数据
+    "monitoring"           # 系统监控
     "integrations"         # 第三方集成
 )
 
@@ -251,42 +217,31 @@ declare -a STANDARD_DIRS=(
 # 🎯 新6层级目录结构路径变量定义
 # ============================================================================
 
-# 6个顶级功能目录 (每个项目独立)
-export CORE_DATA_DIR="$CURSOR_GROWTH/core-data"
-export AI_LEARNING_DIR="$CURSOR_GROWTH/ai-learning"
-export ANALYTICS_MONITORING_DIR="$CURSOR_GROWTH/analytics-monitoring"
-export STORAGE_CACHE_DIR="$CURSOR_GROWTH/storage-cache"
-export RECORDS_LOGS_DIR="$CURSOR_GROWTH/records-logs"
-export SYSTEM_SERVICES_DIR="$CURSOR_GROWTH/system-services"
+# 已迁移到新的7个核心目录结构
 
-# 子目录变量 (按功能层级组织)
-export PERCEPTION_DIR="$CORE_DATA_DIR/perception"
-export USER_DATA_DIR="$CORE_DATA_DIR/user-data"
-export PROJECT_DATA_DIR="$CORE_DATA_DIR/project-data"
+# 顶级目录变量 (按迁移指南重新组织)
+export PERCEPTION_DIR="$CURSOR_GROWTH/perception"
+export USER_DATA_DIR="$CURSOR_GROWTH/user_data"
+export PROJECT_DATA_DIR="$CURSOR_GROWTH/project_data"
 
-export AI_MODELS_DIR="$AI_LEARNING_DIR/models"
-export AI_TRAINING_DATA_DIR="$AI_LEARNING_DIR/training-data"
-export AI_METRICS_DIR="$AI_LEARNING_DIR/metrics"
-export AI_RESULTS_DIR="$AI_LEARNING_DIR/results"
+# AI相关目录 (顶级ai目录下的子目录)
+export AI_DIR="$CURSOR_GROWTH/ai"
+export AI_MODELS_DIR="$AI_DIR/models"
+export AI_TRAINING_DATA_DIR="$AI_DIR/training_data"
+export AI_METRICS_DIR="$AI_DIR/metrics"
+export AI_RESULTS_DIR="$AI_DIR/results"
 
-export ANALYTICS_DATA_DIR="$ANALYTICS_MONITORING_DIR/data"
-export ANALYTICS_CACHE_DIR="$ANALYTICS_MONITORING_DIR/cache"
-export MONITORING_DIR="$ANALYTICS_MONITORING_DIR/system-metrics"
+# Analytics相关目录 (顶级analytics目录下的子目录)
+export ANALYTICS_DIR="$CURSOR_GROWTH/analytics"
+export ANALYTICS_DATA_DIR="$ANALYTICS_DIR/data"
+export ANALYTICS_CACHE_DIR="$ANALYTICS_DIR/cache"
 
-export CACHE_RULES_DIR="$STORAGE_CACHE_DIR/rules"
-export CACHE_TEMPLATES_DIR="$STORAGE_CACHE_DIR/templates"
-export BACKUPS_DIR="$STORAGE_CACHE_DIR/backups"
+# Monitoring目录 (独立顶级目录)
+export MONITORING_DIR="$CURSOR_GROWTH/monitoring"
 
-export CONVERSATIONS_DIR="$RECORDS_LOGS_DIR/conversations"
-export GROWTH_METRICS_DIR="$RECORDS_LOGS_DIR/growth-metrics"
-export LEARNING_PROGRESS_DIR="$RECORDS_LOGS_DIR/learning-progress"
-export SYSTEM_LOGS_DIR="$RECORDS_LOGS_DIR/system-logs"
-
-export CONFIG_DIR="$SYSTEM_SERVICES_DIR/config"
-export DEBUG_DIR="$SYSTEM_SERVICES_DIR/debug"
-export COMPRESSION_DIR="$SYSTEM_SERVICES_DIR/compression"
-export SYNC_DIR="$SYSTEM_SERVICES_DIR/sync"
-export INTEGRATIONS_DIR="$SYSTEM_SERVICES_DIR/integrations"
+# 日志整合到监控目录中
+export SYSTEM_LOGS_DIR="$MONITORING_DIR/logs"
+export INTEGRATIONS_DIR="$CURSOR_GROWTH/integrations"
 
 # 注意: 这是完整重构，移除所有向后兼容性变量
 # .cursorGrowth 随时可删除重建，不需要兼容性
@@ -413,10 +368,9 @@ validate_project_structure
 
 # 更新项目根目录缓存
 update_project_root_cache() {
-    local cache_file="$CURSOR_GROWTH/PROJECT_ROOT"
-    echo "$PROJECT_ROOT" > "$cache_file"
+    # 移除PROJECT_ROOT缓存文件创建
     if [[ "${DEBUG:-0}" == "1" ]]; then
-        echo "💾 更新项目根目录缓存: $cache_file"
+        echo "💾 项目根目录缓存已禁用"
     fi
 }
 
@@ -431,7 +385,7 @@ validate_project_root_cache() {
                 echo "  旧路径: $cached_root"
                 echo "  新路径: $PROJECT_ROOT"
             fi
-            update_project_root_cache
+            # 移除缓存更新
         fi
     else
         update_project_root_cache
@@ -446,7 +400,7 @@ if [ ! -d "$CURSOR_GROWTH" ]; then
     fi
 fi
 
-init_growth_directories
+init_growth_directories || true  # 允许失败，不影响脚本执行
 validate_project_root_cache  # 确保缓存文件正确
 
 if [[ "${VERIFY_DIRS:-0}" == "1" ]]; then
@@ -472,12 +426,12 @@ if [[ "${DEBUG:-0}" == "1" ]]; then
     echo "  DOCS_DIR: $DOCS_DIR"
     echo ""
     echo "  🎯 项目隔离路径变量:"
+    echo "    PERCEPTION_DIR: $PERCEPTION_DIR (${PROJECT_IDENTIFIER}_PERCEPTION_DIR)"
+    echo "    USER_DATA_DIR: $USER_DATA_DIR (${PROJECT_IDENTIFIER}_USER_DATA_DIR)"
+    echo "    PROJECT_DATA_DIR: $PROJECT_DATA_DIR (${PROJECT_IDENTIFIER}_PROJECT_DATA_DIR)"
     echo "    AI_DIR: $AI_DIR (${PROJECT_IDENTIFIER}_AI_DIR)"
     echo "    ANALYTICS_DIR: $ANALYTICS_DIR (${PROJECT_IDENTIFIER}_ANALYTICS_DIR)"
-    echo "    CACHE_DIR: $CACHE_DIR (${PROJECT_IDENTIFIER}_CACHE_DIR)"
-    echo "    DATA_DIR: $DATA_DIR (${PROJECT_IDENTIFIER}_DATA_DIR)"
-    echo "    LEARNING_DIR: $LEARNING_DIR (${PROJECT_IDENTIFIER}_LEARNING_DIR)"
-    echo "    LOGS_DIR: $LOGS_DIR (${PROJECT_IDENTIFIER}_LOGS_DIR)"
-    echo "    MONITORING_DIR: $MONITORING_DIR (${PROJECT_IDENTIFIER}_MONITORING_DIR)"
+    echo "    INTEGRATIONS_DIR: $INTEGRATIONS_DIR (${PROJECT_IDENTIFIER}_INTEGRATIONS_DIR)"
+    echo "    SYSTEM_LOGS_DIR: $SYSTEM_LOGS_DIR (${PROJECT_IDENTIFIER}_SYSTEM_LOGS_DIR)"
     echo ""
 fi

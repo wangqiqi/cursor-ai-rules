@@ -19,7 +19,7 @@ HOOK_PASSED=true
 # 1. 运行代码质量检查
 echo "🔍 执行代码质量检查..."
 if [ -f "$CURSOR_DIR/core/quality-manager.sh" ]; then
-    if ! bash "$CURSOR_DIR/core/quality-manager.sh" --pre-push-check >> "$GROWTH_DIR/logs/git-pre-push-quality.log" 2>&1; then
+    if ! bash "$CURSOR_DIR/core/quality-manager.sh" --pre-push-check >> "$GROWTH_DIR/monitoring/logs/git-pre-push-quality.log" 2>&1; then
         echo "❌ 代码质量检查失败"
         HOOK_PASSED=false
     else
@@ -32,7 +32,7 @@ fi
 # 2. 运行一致性检查
 echo "🔍 执行一致性检查..."
 if [ -f "$CURSOR_DIR/core/consistency-checker.sh" ]; then
-    if ! bash "$CURSOR_DIR/core/consistency-checker.sh" --pre-push >> "$GROWTH_DIR/logs/git-pre-push-consistency.log" 2>&1; then
+    if ! bash "$CURSOR_DIR/core/consistency-checker.sh" --pre-push >> "$GROWTH_DIR/monitoring/logs/git-pre-push-consistency.log" 2>&1; then
         echo "❌ 一致性检查失败"
         HOOK_PASSED=false
     else
@@ -73,7 +73,7 @@ fi
 # 5. 检查Token使用情况
 echo "🗜️ 检查Token使用优化..."
 if [ -f "$CURSOR_DIR/core/token-compression.sh" ]; then
-    bash "$CURSOR_DIR/core/token-compression.sh" --check-efficiency >> "$GROWTH_DIR/logs/git-pre-push-tokens.log" 2>&1
+    bash "$CURSOR_DIR/core/token-compression.sh" --check-efficiency >> "$GROWTH_DIR/monitoring/logs/git-pre-push-tokens.log" 2>&1
 fi
 
 # ============================================================================
@@ -133,7 +133,7 @@ else
     echo "   1. 查看上述失败的检查项目"
     echo "   2. 修复相关问题"
     echo "   3. 重新提交或使用 --no-verify 跳过检查"
-    echo "   4. 检查日志: $GROWTH_DIR/logs/git-pre-push-*.log"
+    echo "   4. 检查日志: $GROWTH_DIR/monitoring/logs/git-pre-push-*.log"
     echo ""
     exit 1
 fi

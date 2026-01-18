@@ -180,12 +180,10 @@ run_security_audit() {
     echo ""
 }
 
-# 📊 第四阶段：质量报告生成
-generate_quality_report() {
-    echo "📊 第四阶段：质量报告生成"
-    echo "==========================="
-
-    local report_file="$QUALITY_DIR/quality-report.json"
+# 📊 显示质量总结
+show_quality_summary() {
+    echo "📊 质量检查总结"
+    echo "==============="
 
     # 计算质量分数
     local quality_score=0
@@ -205,40 +203,48 @@ generate_quality_report() {
         quality_grade="D"
     fi
 
-    # 生成详细报告
-    local report_data=$(cat << EOF
-{
-  "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
-  "project": "$(basename "$PROJECT_ROOT")",
-  "quality_score": $quality_score,
-  "quality_grade": "$quality_grade",
-  "statistics": {
-    "checks_total": $QUALITY_CHECKS_TOTAL,
-    "checks_passed": $QUALITY_CHECKS_PASSED,
-    "issues_found": $QUALITY_ISSUES_FOUND,
-    "warnings_found": $QUALITY_WARNINGS_FOUND
-  },
-  "results": $(declare -p QUALITY_RESULTS | sed 's/declare -A QUALITY_RESULTS=//' | jq -R -s 'fromjson? // {}'),
-  "recommendations": $(generate_quality_recommendations "$quality_score")
-}
-EOF
-)
-
-    echo "$report_data" | jq . > "$report_file" 2>/dev/null || echo "$report_data" > "$report_file"
-
-    echo "📄 质量报告已生成: $report_file"
-    echo ""
     echo "🎯 质量评分: $quality_score/100 (等级: $quality_grade)"
+    echo "📅 检查时间: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "📁 项目: $(basename "$PROJECT_ROOT")"
+    echo ""
 
-    # 显示质量概览
-    if [ $QUALITY_ISSUES_FOUND -eq 0 ]; then
-        echo "🎉 恭喜！代码质量检查全部通过"
-    else
-        echo "⚠️  发现 $QUALITY_ISSUES_FOUND 个质量问题需要修复"
+    # 显示统计信息
+    echo "📈 检查统计:"
+    echo "   🔍 总检查数: $QUALITY_CHECKS_TOTAL"
+    echo "   ✅ 通过检查: $QUALITY_CHECKS_PASSED"
+    echo "   ❌ 发现问题: $QUALITY_ISSUES_FOUND"
+    echo "   ⚠️  发现警告: $QUALITY_WARNINGS_FOUND"
+    echo ""
+
+    # 显示详细结果
+    if [ ${#QUALITY_RESULTS[@]} -gt 0 ]; then
+        echo "🔍 详细检查结果:"
+        for key in "${!QUALITY_RESULTS[@]}"; do
+            local status="${QUALITY_RESULTS[$key]}"
+            local icon="✅"
+            if [ "$status" = "failed" ]; then
+                icon="❌"
+            elif [ "$status" = "warning" ]; then
+                icon="⚠️"
+            fi
+            echo "   $icon $key: $status"
+        done
+        echo ""
     fi
 
-    if [ $QUALITY_WARNINGS_FOUND -gt 0 ]; then
-        echo "💡 有 $QUALITY_WARNINGS_FOUND 个质量建议可以优化"
+    # 生成并显示建议
+    echo "💡 改进建议:"
+    local recommendations=$(generate_quality_recommendations "$quality_score")
+    echo "$recommendations" | jq -r '.[]' 2>/dev/null || echo "保持良好的代码质量实践"
+    echo ""
+
+    # 显示质量概览
+    if [ $QUALITY_ISSUES_FOUND -eq 0 ] && [ $QUALITY_WARNINGS_FOUND -eq 0 ]; then
+        echo "🎉 恭喜！代码质量检查全部通过，所有指标都符合标准。"
+    elif [ $QUALITY_ISSUES_FOUND -eq 0 ]; then
+        echo "✅ 代码质量良好！没有发现严重问题，但有 $QUALITY_WARNINGS_FOUND 个警告需要注意。"
+    else
+        echo "⚠️  发现 $QUALITY_ISSUES_FOUND 个质量问题需要修复，建议优先处理。"
     fi
 }
 
@@ -297,7 +303,7 @@ main() {
             run_code_quality_checks
             run_code_formatting
             run_security_audit
-            generate_quality_report
+            show_quality_summary
             ;;
     esac
 

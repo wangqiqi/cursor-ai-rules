@@ -27,18 +27,18 @@ source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
                 echo "✅ 生长目录初始化完成" >&2
             else
                 echo "⚠️ 生长目录初始化失败，使用备用方案" >&2
-                mkdir -p "$GROWTH_DIR"/{learning,conversations,growth,personal,cache,monitoring,debug,logs,sync,mcps,compression}
+                # 使用新的7目录结构
+                mkdir -p "$GROWTH_DIR"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
                 echo "{}" > "$GROWTH_DIR/.gitkeep"
             fi
         else
             echo "⚠️ 未找到生长初始化脚本，使用备用方案" >&2
-            mkdir -p "$GROWTH_DIR"/{learning,conversations,growth,personal,cache,monitoring,debug,logs,sync,mcps,compression}
+            mkdir -p "$GROWTH_DIR"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
             echo "{}" > "$GROWTH_DIR/.gitkeep"
         fi
 
-        # 创建基本的配置文件
-        mkdir -p "$GROWTH_DIR/learning"
-        mkdir -p "$GROWTH_DIR/monitoring"
+        # 确保核心目录存在
+        mkdir -p "$GROWTH_DIR"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
 
         # 创建学习配置文件
         cat > "$GROWTH_DIR/ai-profile.json" << EOF

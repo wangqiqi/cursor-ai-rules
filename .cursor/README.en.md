@@ -677,7 +677,7 @@ The system **automatically manages** the `.gitignore` file in the project root d
 ### 🎓 Learning Command Details
 
 #### **@master learn project patterns**
-- Analyze data in .cursorGrowth/learning/
+- Analyze data in .cursorGrowth/user_data/
 - Identify user behavior patterns and preferences
 - Optimize future command response accuracy
 - Generate personalized usage suggestions

@@ -7,7 +7,10 @@ set -e
 # 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/shared-functions.sh"
+# 保存SCRIPT_DIR，避免被path-config.sh覆盖
+ORIGINAL_SCRIPT_DIR="$SCRIPT_DIR"
 source "$SCRIPT_DIR/path-config.sh"
+SCRIPT_DIR="$ORIGINAL_SCRIPT_DIR"
 
 # 验证项目上下文
 validate_project_context || handle_error 1 "项目上下文验证失败"
@@ -34,21 +37,21 @@ collect_script_stats() {
 
     local stats="{}"
 
-    # 脚本文件大小统计
-    local total_scripts=$(find "$SCRIPT_DIR" -name "*.sh" | wc -l)
-    local total_size=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -f%z {} \; 2>/dev/null | paste -sd+ - | bc 2>/dev/null || echo "0")
+    # 脚本文件大小统计 (Linux兼容)
+    local total_scripts=$(find "$SCRIPT_DIR" -name "*.sh" 2>/dev/null | wc -l)
+    local total_size=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -c%s {} \; 2>/dev/null | paste -sd+ - 2>/dev/null | bc 2>/dev/null || echo "0")
 
-    stats=$(echo "$stats" | jq ".total_scripts = $total_scripts")
-    stats=$(echo "$stats" | jq ".total_size_bytes = $total_size")
+    stats=$(echo "$stats" | jq ".total_scripts = $total_scripts" 2>/dev/null || echo "$stats")
+    stats=$(echo "$stats" | jq ".total_size_bytes = $total_size" 2>/dev/null || echo "$stats")
 
-    # 按大小分类统计
-    local large_scripts=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -f%z {} \; 2>/dev/null | awk '$1 > 20000 {count++} END {print count+0}')
-    local medium_scripts=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -f%z {} \; 2>/dev/null | awk '$1 > 10000 && $1 <= 20000 {count++} END {print count+0}')
-    local small_scripts=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -f%z {} \; 2>/dev/null | awk '$1 <= 10000 {count++} END {print count+0}')
+    # 按大小分类统计 (Linux兼容)
+    local large_scripts=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -c%s {} \; 2>/dev/null | awk '$1 > 20000 {count++} END {print count+0}' 2>/dev/null || echo "0")
+    local medium_scripts=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -c%s {} \; 2>/dev/null | awk '$1 > 10000 && $1 <= 20000 {count++} END {print count+0}' 2>/dev/null || echo "0")
+    local small_scripts=$(find "$SCRIPT_DIR" -name "*.sh" -exec stat -c%s {} \; 2>/dev/null | awk '$1 <= 10000 {count++} END {print count+0}' 2>/dev/null || echo "0")
 
-    stats=$(echo "$stats" | jq ".large_scripts = $large_scripts")
-    stats=$(echo "$stats" | jq ".medium_scripts = $medium_scripts")
-    stats=$(echo "$stats" | jq ".small_scripts = $small_scripts")
+    stats=$(echo "$stats" | jq ".large_scripts = $large_scripts" 2>/dev/null || echo "$stats")
+    stats=$(echo "$stats" | jq ".medium_scripts = $medium_scripts" 2>/dev/null || echo "$stats")
+    stats=$(echo "$stats" | jq ".small_scripts = $small_scripts" 2>/dev/null || echo "$stats")
 
     echo "$stats"
 }
@@ -63,9 +66,9 @@ analyze_hooks_usage() {
     local hooks_log_dir="$CURSOR_GROWTH/logs"
     if [ -d "$hooks_log_dir" ]; then
         local total_hook_calls=$(find "$hooks_log_dir" -name "*hook*.log" -exec wc -l {} \; 2>/dev/null | paste -sd+ - | bc 2>/dev/null || echo "0")
-        hooks_stats=$(echo "$hooks_stats" | jq ".total_hook_calls = $total_hook_calls")
+        hooks_stats=$(echo "$hooks_stats" | jq ".total_hook_calls = $total_hook_calls" 2>/dev/null || echo "$hooks_stats")
     else
-        hooks_stats=$(echo "$hooks_stats" | jq ".total_hook_calls = 0")
+        hooks_stats=$(echo "$hooks_stats" | jq ".total_hook_calls = 0" 2>/dev/null || echo "$hooks_stats")
     fi
 
     # 分析不同类型hooks的使用情况
@@ -73,9 +76,9 @@ analyze_hooks_usage() {
     local pre_commit=$(grep -r "pre-commit" "$hooks_log_dir" 2>/dev/null | wc -l || echo "0")
     local post_commit=$(grep -r "post-commit" "$hooks_log_dir" 2>/dev/null | wc -l || echo "0")
 
-    hooks_stats=$(echo "$hooks_stats" | jq ".after_agent_response = $after_agent_response")
-    hooks_stats=$(echo "$hooks_stats" | jq ".pre_commit = $pre_commit")
-    hooks_stats=$(echo "$hooks_stats" | jq ".post_commit = $post_commit")
+    hooks_stats=$(echo "$hooks_stats" | jq ".after_agent_response = $after_agent_response" 2>/dev/null || echo "$hooks_stats")
+    hooks_stats=$(echo "$hooks_stats" | jq ".pre_commit = $pre_commit" 2>/dev/null || echo "$hooks_stats")
+    hooks_stats=$(echo "$hooks_stats" | jq ".post_commit = $post_commit" 2>/dev/null || echo "$hooks_stats")
 
     echo "$hooks_stats"
 }
@@ -89,12 +92,12 @@ analyze_command_usage() {
     # 从日志中提取命令使用情况
     local cursor_master_logs=$(find "$CURSOR_GROWTH/logs" -name "*cursor-master*" -exec grep -h "intent_type" {} \; 2>/dev/null | wc -l || echo "0")
 
-    command_stats=$(echo "$command_stats" | jq ".cursor_master_calls = $cursor_master_logs")
+    command_stats=$(echo "$command_stats" | jq ".cursor_master_calls = $cursor_master_logs" 2>/dev/null || echo "$command_stats")
 
     # 分析最常用的意图类型
     if [ -d "$CURSOR_GROWTH/analytics" ]; then
         local intent_types=$(find "$CURSOR_GROWTH/analytics" -name "*.json" -exec grep -h "intent_type" {} \; 2>/dev/null | sed 's/.*"intent_type": "\([^"]*\)".*/\1/' | sort | uniq -c | sort -nr | head -5 | jq -R -s 'split("\n") | map(select(. != ""))' 2>/dev/null || echo "[]")
-        command_stats=$(echo "$command_stats" | jq ".popular_intents = $intent_types")
+        command_stats=$(echo "$command_stats" | jq ".popular_intents = $intent_types" 2>/dev/null || echo "$command_stats")
     fi
 
     echo "$command_stats"
@@ -109,13 +112,13 @@ analyze_performance_stats() {
     # 分析响应时间
     if [ -f "$CURSOR_GROWTH/analytics/performance-metrics.jsonl" ]; then
         local avg_response_time=$(tail -100 "$CURSOR_GROWTH/analytics/performance-metrics.jsonl" 2>/dev/null | jq -r '.response_time // 0' 2>/dev/null | awk '{sum+=$1; count++} END {if(count>0) print sum/count; else print 0}')
-        perf_stats=$(echo "$perf_stats" | jq ".avg_response_time = $avg_response_time")
+        perf_stats=$(echo "$perf_stats" | jq ".avg_response_time = $avg_response_time" 2>/dev/null || echo "$perf_stats")
     fi
 
     # 分析Token使用情况
     if [ -f "$CURSOR_GROWTH/analytics/token-usage.jsonl" ]; then
         local total_tokens=$(tail -100 "$CURSOR_GROWTH/analytics/token-usage.jsonl" 2>/dev/null | jq -r '.tokens_used // 0' 2>/dev/null | paste -sd+ - | bc 2>/dev/null || echo "0")
-        perf_stats=$(echo "$perf_stats" | jq ".total_tokens_used = $total_tokens")
+        perf_stats=$(echo "$perf_stats" | jq ".total_tokens_used = $total_tokens" 2>/dev/null || echo "$perf_stats")
     fi
 
     echo "$perf_stats"
@@ -241,8 +244,8 @@ generate_recommendations() {
     fi
 
     # 基于性能的建议
-    local avg_response=$(echo "$perf_stats" | jq -r '.avg_response_time')
-    if [ "$(echo "$avg_response > 5000" | bc 2>/dev/null)" = "1" ]; then
+    local avg_response=$(echo "$perf_stats" | jq -r '.avg_response_time // 0' 2>/dev/null || echo "0")
+    if [ "$avg_response" != "0" ] && [ "$avg_response" != "null" ] && [ "$(echo "$avg_response > 5000" | bc 2>/dev/null || echo "0")" = "1" ]; then
         recommendations+=("平均响应时间过长 ($avg_response ms)，建议优化性能")
     fi
 

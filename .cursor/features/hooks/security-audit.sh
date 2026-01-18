@@ -128,8 +128,9 @@ EOF
 fi
 
 # 记录审计日志
-mkdir -p "$CURSOR_GROWTH/logs"
+mkdir -p "$SYSTEM_LOGS_DIR"
 timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+mkdir -p "$SYSTEM_LOGS_DIR"
 echo "[$timestamp] ALLOWED: $command (cwd: $cwd)" >> "$SYSTEM_LOGS_DIR/command-audit.log"
 
 # 允许执行

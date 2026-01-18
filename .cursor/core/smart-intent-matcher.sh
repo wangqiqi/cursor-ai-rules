@@ -5,7 +5,9 @@
 set -e
 
 # JSON模式检查：在加载任何依赖之前
+echo "DEBUG: 参数检查 - \$1='$1', \$2='$2', \$3='$3'" > /tmp/debug-matcher.log
 if [ "$3" = "json" ]; then
+    echo "DEBUG: 进入JSON模式" >> /tmp/debug-matcher.log
     # 直接内联处理，不加载任何依赖
     input="$1"
     capability_map="${2:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../commands/capability-map.json}"
@@ -21,6 +23,16 @@ if [ "$3" = "json" ]; then
     # 简单关键词匹配
     if echo "$normalized_input" | grep -qi "提交\|commit\|保存\|save"; then
         echo '{"matched": true, "capability": "commit_code", "config": {}, "match_details": {"matched": true, "intent": "提交", "confidence": 0.9, "match_type": "exact"}}'
+    elif echo "$normalized_input" | grep -qi "检查.*质量\|质量.*检查\|code.*quality\|lint\|audit"; then
+        echo '{"matched": true, "capability": "check_code_quality", "config": {}, "match_details": {"matched": true, "intent": "检查代码质量", "confidence": 0.9, "match_type": "keyword"}}'
+    elif echo "$normalized_input" | grep -qi "运行.*测试\|测试.*运行\|run.*test"; then
+        echo '{"matched": true, "capability": "run_tests", "config": {}, "match_details": {"matched": true, "intent": "运行测试", "confidence": 0.9, "match_type": "keyword"}}'
+    elif echo "$normalized_input" | grep -qi "部署\|deploy"; then
+        echo '{"matched": true, "capability": "deploy_application", "config": {}, "match_details": {"matched": true, "intent": "部署应用", "confidence": 0.9, "match_type": "keyword"}}'
+    elif echo "$normalized_input" | grep -qi "分析.*项目\|项目.*分析"; then
+        echo '{"matched": true, "capability": "analyze_project", "config": {}, "match_details": {"matched": true, "intent": "分析项目", "confidence": 0.9, "match_type": "keyword"}}'
+    elif echo "$normalized_input" | grep -qi "创建.*react\|react.*项目"; then
+        echo '{"matched": true, "capability": "create_react_project", "config": {}, "match_details": {"matched": true, "intent": "创建React项目", "confidence": 0.9, "match_type": "keyword"}}'
     else
         echo '{"matched": false, "confidence": 0.0}'
     fi
@@ -219,9 +231,27 @@ main() {
         # 标准化输入
         local normalized_input=$(echo "$input" | sed 's/[[:punct:]]//g')
 
-        # 简单关键词匹配
+        # 调试信息 (暂时写入文件)
+        echo "DEBUG: input='$input', normalized='$normalized_input'" > /tmp/debug-matcher.log
+
+        # 直接关键词匹配（更简单可靠）
+        echo "DEBUG: 测试匹配条件" >> /tmp/debug-matcher.log
         if echo "$normalized_input" | grep -qi "提交\|commit\|保存\|save"; then
-            echo '{"matched": true, "capability": "commit_code", "config": {}, "match_details": {"matched": true, "intent": "提交", "confidence": 0.9, "match_type": "exact"}}'
+            echo "DEBUG: 匹配提交关键词" >> /tmp/debug-matcher.log
+            echo '{"matched": true, "capability": "commit_code", "config": {}, "match_details": {"matched": true, "intent": "提交", "confidence": 0.9, "match_type": "keyword"}}'
+        elif echo "$normalized_input" | grep -qi "检查.*质量\|质量.*检查"; then
+            echo "DEBUG: 匹配检查质量关键词" >> /tmp/debug-matcher.log
+            echo '{"matched": true, "capability": "check_code_quality", "config": {}, "match_details": {"matched": true, "intent": "检查代码质量", "confidence": 0.9, "match_type": "keyword"}}'
+        elif echo "$normalized_input" | grep -qi "code.*quality\|lint\|audit"; then
+            echo '{"matched": true, "capability": "check_code_quality", "config": {}, "match_details": {"matched": true, "intent": "检查代码质量", "confidence": 0.9, "match_type": "keyword"}}'
+        elif echo "$normalized_input" | grep -qi "运行.*测试\|测试.*运行\|run.*test"; then
+            echo '{"matched": true, "capability": "run_tests", "config": {}, "match_details": {"matched": true, "intent": "运行测试", "confidence": 0.9, "match_type": "keyword"}}'
+        elif echo "$normalized_input" | grep -qi "部署\|deploy"; then
+            echo '{"matched": true, "capability": "deploy_application", "config": {}, "match_details": {"matched": true, "intent": "部署应用", "confidence": 0.9, "match_type": "keyword"}}'
+        elif echo "$normalized_input" | grep -qi "分析.*项目\|项目.*分析"; then
+            echo '{"matched": true, "capability": "analyze_project", "config": {}, "match_details": {"matched": true, "intent": "分析项目", "confidence": 0.9, "match_type": "keyword"}}'
+        elif echo "$normalized_input" | grep -qi "创建.*react\|react.*项目"; then
+            echo '{"matched": true, "capability": "create_react_project", "config": {}, "match_details": {"matched": true, "intent": "创建React项目", "confidence": 0.9, "match_type": "keyword"}}'
         else
             echo '{"matched": false, "confidence": 0.0}'
         fi
