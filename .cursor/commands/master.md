@@ -2,6 +2,7 @@
 command: master
 description: "🎯 智能总命令控制器 - 自动感知需求并智能执行内部命令 | AI决策驱动"
 alwaysApply: true
+handler: "./master-handler.js"
 ---
 
 # 🎯 智能Master总指挥中心 (Intelligent Master Command Center)
@@ -41,6 +42,14 @@ graph TD
 - 🔄 **自适应进化**: 根据项目特点和用户偏好动态调整行为
 
 ## 🛠️ 智能使用方法
+
+## 🚀 命令执行处理器
+
+此命令通过以下处理器执行：
+
+- **主处理器**: `master-handler.js` - 智能命令解析和执行
+- **智能匹配器**: `../core/smart-intent-matcher.sh` - 意图识别
+- **能力映射**: `capability-map.json` - 命令到能力的映射
 
 ### 🎯 核心用法：自然语言驱动（推荐）
 
