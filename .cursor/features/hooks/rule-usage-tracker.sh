@@ -1,7 +1,7 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
 
 # 📊 规则使用追踪Hook - 监控AI规则系统使用情况
 # 用于优化和改进Cursor AI Rules系统

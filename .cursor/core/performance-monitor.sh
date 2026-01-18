@@ -1,7 +1,13 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
+# 加载统一路径配置（设置非严格模式）
+export STRICT_MODE=0
+export DEBUG=0
+if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
+fi
 
 
 # 📊 Cursor AI Rules - 性能监控和Token统计系统
@@ -9,15 +15,16 @@ source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 
 set -e
 
-# 配置 (合并到analytics目录)
-MONITOR_DIR="$ANALYTICS_DIR"
-METRICS_FILE="$MONITOR_DIR/analytics-monitoring-metrics.json"
-TOKEN_LOG="$MONITOR_DIR/analytics-monitoring-token-usage.log"
-PERFORMANCE_LOG="$MONITOR_DIR/analytics-monitoring-performance.log"
+# 配置 (使用新的目录结构)
+ANALYTICS_DATA_DIR="$ANALYTICS_DIR/data"
+ANALYTICS_CACHE_DIR="$ANALYTICS_DIR/cache"
+METRICS_FILE="$ANALYTICS_DATA_DIR/analytics-monitoring-metrics.json"
+TOKEN_LOG="$ANALYTICS_DATA_DIR/analytics-monitoring-token-usage.log"
+PERFORMANCE_LOG="$ANALYTICS_DATA_DIR/analytics-monitoring-performance.log"
 
 # 初始化监控目录
 init_monitoring() {
-    mkdir -p "$MONITOR_DIR"
+    mkdir -p "$ANALYTICS_DATA_DIR" "$ANALYTICS_CACHE_DIR"
 
     # 初始化指标文件
     if [ ! -f "$METRICS_FILE" ]; then

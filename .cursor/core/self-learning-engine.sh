@@ -7,17 +7,29 @@ set -e
 
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# 加载统一路径配置
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
-source "$SCRIPT_DIR/performance-cache.sh"
-source "$SCRIPT_DIR/performance-dashboard.sh"
-source "$SCRIPT_DIR/compact-output.sh"
 
-# 学习引擎配置
+# 加载统一路径配置（设置非严格模式）
+export STRICT_MODE=0
+export DEBUG=0
+if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
+fi
+if ! source "$SCRIPT_DIR/performance-cache.sh" 2>/dev/null; then
+    echo "⚠️  performance-cache.sh 加载失败" >&2
+fi
+if ! source "$SCRIPT_DIR/performance-dashboard.sh" 2>/dev/null; then
+    echo "⚠️  performance-dashboard.sh 加载失败" >&2
+fi
+if ! source "$SCRIPT_DIR/compact-output.sh" 2>/dev/null; then
+    echo "⚠️  compact-output.sh 加载失败" >&2
+fi
+
+# 学习引擎配置 (适配新目录结构)
 LEARNING_DIR="$AI_DIR"
 LEARNING_MODELS_DIR="$LEARNING_DIR/models"
-LEARNING_DATA_DIR="$LEARNING_DIR/data"
+LEARNING_TRAINING_DIR="$LEARNING_DIR/training_data"
 LEARNING_METRICS_DIR="$LEARNING_DIR/metrics"
+LEARNING_RESULTS_DIR="$LEARNING_DIR/results"
 
 # 学习参数
 LEARNING_RATE="${LEARNING_RATE:-0.1}"
@@ -40,7 +52,7 @@ init_self_learning_engine() {
 
     # 创建学习目录结构
     mkdir -p "$LEARNING_MODELS_DIR"
-    mkdir -p "$LEARNING_DATA_DIR"
+    mkdir -p "$LEARNING_TRAINING_DIR" "$LEARNING_RESULTS_DIR"
     mkdir -p "$LEARNING_METRICS_DIR"
 
     # 初始化学习模型
@@ -172,7 +184,7 @@ get_model_features() {
 init_learning_data_collector() {
     smart_echo "初始化学习数据收集器..." "info"
 
-    data_collector_file="$LEARNING_DATA_DIR/data_collector.json"
+    data_collector_file="$LEARNING_TRAINING_DIR/data_collector.json"
 
     if [[ ! -f "$data_collector_file" ]]; then
         cat > "$data_collector_file" <<EOF
@@ -319,7 +331,7 @@ EOF
 )
 
     # 保存到学习数据文件
-    local data_file="$LEARNING_DATA_DIR/learning_data_$(date +%Y%m%d_%H%M%S).json"
+    local data_file="$LEARNING_TRAINING_DIR/learning_data_$(date +%Y%m%d_%H%M%S).json"
     echo "$learning_data" > "$data_file"
 
     # 压缩旧数据
@@ -364,7 +376,7 @@ calculate_data_quality_score() {
 # 压缩旧学习数据
 compress_old_learning_data() {
     # 查找7天前的旧数据文件
-    local old_files=$(find "$LEARNING_DATA_DIR" -name "learning_data_*.json" -mtime +7 2>/dev/null || echo "")
+    local old_files=$(find "$LEARNING_TRAINING_DIR" -name "learning_data_*.json" -mtime +7 2>/dev/null || echo "")
 
     if [[ -n "$old_files" ]]; then
         smart_echo "压缩旧学习数据..." "info"
@@ -381,14 +393,14 @@ compress_old_learning_data() {
 # 验证学习数据质量
 validate_learning_data() {
     # 检查是否有足够的数据样本
-    local data_files=$(find "$LEARNING_DATA_DIR" -name "learning_data_*.json*" -mtime -1 2>/dev/null | wc -l)
+    local data_files=$(find "$LEARNING_TRAINING_DIR" -name "learning_data_*.json*" -mtime -1 2>/dev/null | wc -l)
 
     if (( data_files < 5 )); then
         return 1
     fi
 
     # 检查数据质量
-    local latest_data_file=$(find "$LEARNING_DATA_DIR" -name "learning_data_*.json" -mtime -1 | head -1)
+    local latest_data_file=$(find "$LEARNING_TRAINING_DIR" -name "learning_data_*.json" -mtime -1 | head -1)
     if [[ -f "$latest_data_file" ]]; then
         local quality_score=$(jq -r '.data_quality_score // 0' "$latest_data_file" 2>/dev/null || echo "0")
 
@@ -425,7 +437,7 @@ collect_model_training_data() {
     local model_type="$1"
 
     # 从最近的学习数据中收集相关数据
-    local recent_data_files=$(find "$LEARNING_DATA_DIR" -name "learning_data_*.json*" -mtime -1 | head -10)
+    local recent_data_files=$(find "$LEARNING_TRAINING_DIR" -name "learning_data_*.json*" -mtime -1 | head -10)
 
     local training_data="[]"
 

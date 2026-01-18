@@ -1,7 +1,7 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
 
 # 📊 命令日志Hook - 记录所有shell命令执行结果
 # 用于审计和性能监控

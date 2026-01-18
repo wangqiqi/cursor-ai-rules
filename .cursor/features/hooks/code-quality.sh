@@ -1,7 +1,7 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
 
 # 🔍 代码质量检查Hook - AI编辑后自动检查和格式化代码
 # 基于Cursor AI Rules的代码质量保障

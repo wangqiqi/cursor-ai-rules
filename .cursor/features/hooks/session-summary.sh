@@ -1,7 +1,7 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
 
 # 📋 会话摘要Hook - 在AI会话结束时生成总结报告
 # 用于分析和改进AI协作效果

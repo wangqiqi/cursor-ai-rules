@@ -13,8 +13,13 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# 加载统一路径配置
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+
+# 加载统一路径配置（设置非严格模式）
+export STRICT_MODE=0
+export DEBUG=0
+if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
+    echo "⚠️  路径配置加载失败，使用默认设置" >&2
+fi
 GROWTH_DIR="$CURSOR_GROWTH"
 
 # 颜色定义

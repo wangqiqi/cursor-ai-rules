@@ -9,7 +9,21 @@ echo "================================"
 
 # 🔧 加载统一路径配置（会自动查找项目路径）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../core/path-config.sh"
+
+# 在加载 path-config.sh 之前设置非严格模式，确保验证失败时不会退出
+export STRICT_MODE=0
+export DEBUG=0  # 减少调试输出，避免干扰
+
+if ! source "$SCRIPT_DIR/../../../core/path-config.sh" 2>/dev/null; then
+    echo "⚠️  路径配置加载失败，尝试手动设置..." >&2
+
+    # 手动设置关键路径变量
+    export PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+    export CURSOR_DIR="$PROJECT_ROOT/.cursor"
+    export CURSOR_GROWTH="$PROJECT_ROOT/.cursorGrowth"
+
+    echo "📁 使用手动设置的路径: $CURSOR_GROWTH" >&2
+fi
 
 # 设置生长目录变量
 GROWTH_DIR="$CURSOR_GROWTH"
@@ -42,7 +56,7 @@ if [ ! -f "$GROWTH_DIR/growth_meta.json" ]; then
     cat > "$GROWTH_DIR/growth_meta.json" << EOF
 {
   "version": "1.0.0",
-  "created_at": "'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'",
+  "created_at": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
   "description": "Cursor AI 生长数据元信息",
   "perception_runs": 0,
   "first_perception": null,
@@ -71,10 +85,10 @@ fi
 
 # 用户偏好学习文件
 if [ ! -f "$GROWTH_DIR/learning/preferences.json" ]; then
-    cat > "$GROWTH_DIR/ai-preferences.json" << EOF
+    cat > "$GROWTH_DIR/learning/preferences.json" << EOF
 {
   "version": "1.0.0",
-  "last_updated": "'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'",
+  "last_updated": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
   "communication_style": {
     "preferred_language": "auto",
     "detail_level": "balanced",
@@ -106,10 +120,10 @@ fi
 
 # 监控统计文件
 if [ ! -f "$GROWTH_DIR/monitoring/usage_metrics.json" ]; then
-    cat > "$GROWTH_DIR/analytics-usage-metrics.json" << EOF
+    cat > "$GROWTH_DIR/monitoring/usage_metrics.json" << EOF
 {
   "version": "1.0.0",
-  "tracking_started": "'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'",
+  "tracking_started": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
   "session_count": 0,
   "total_interactions": 0,
   "command_usage": {},
