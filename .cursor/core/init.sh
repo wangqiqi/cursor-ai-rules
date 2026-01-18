@@ -49,20 +49,42 @@ check_basic_dependencies() {
 setup_directory_structure() {
     echo "📁 设置核心目录结构..."
 
-    # 创建核心目录
-    mkdir -p "$SCRIPT_DIR/../core"
-    mkdir -p "$SCRIPT_DIR/../features"
-    mkdir -p "$SCRIPT_DIR/../config"
-    mkdir -p "$SCRIPT_DIR/../quality"
-    mkdir -p "$SCRIPT_DIR/../docs"
+    # 注意: 不应该在运行时创建.cursor目录结构
+    # 所有.cursor内容都应该是预先存在的
+    # 只允许在运行时创建 .cursor/project_id 文件
 
-    # 创建功能层目录
-    mkdir -p "$SCRIPT_DIR/../features/automation"
-    mkdir -p "$SCRIPT_DIR/../features/skills"
-    mkdir -p "$SCRIPT_DIR/../features/hooks"
-    mkdir -p "$SCRIPT_DIR/../features/plugins"
+    # 检查必要的目录是否存在
+    if [ ! -d "$SCRIPT_DIR/../core" ]; then
+        echo "⚠️  警告: .cursor/core 目录不存在，请确保.cursor目录结构完整"
+        return 1
+    fi
 
-    echo "✅ 目录结构设置完成"
+    if [ ! -d "$SCRIPT_DIR/../config" ]; then
+        echo "⚠️  警告: .cursor/config 目录不存在，请确保.cursor目录结构完整"
+        return 1
+    fi
+
+    if [ ! -d "$SCRIPT_DIR/../features" ]; then
+        echo "⚠️  警告: .cursor/features 目录不存在，请确保.cursor目录结构完整"
+        return 1
+    fi
+
+    # 验证功能层目录存在
+    local required_dirs=(
+        "$SCRIPT_DIR/../features/automation"
+        "$SCRIPT_DIR/../features/skills"
+        "$SCRIPT_DIR/../features/hooks"
+    )
+
+    for dir in "${required_dirs[@]}"; do
+        if [ ! -d "$dir" ]; then
+            echo "⚠️  警告: 必要目录不存在: $dir"
+            echo "请确保.cursor目录结构完整"
+            return 1
+        fi
+    done
+
+    echo "✅ 目录结构验证完成"
 }
 
 # 初始化配置文件
@@ -75,8 +97,8 @@ initialize_config_files() {
         exit 1
     fi
 
-    # 创建用户配置目录（如果不存在）
-    mkdir -p "$HOME/.cursor/config"
+    # 注意: 不应该在用户家目录创建.cursor目录
+    # 所有.cursor内容都应该是项目本地的
 
     # 初始化项目级配置
     if [ ! -f "$SCRIPT_DIR/../config/project.json" ]; then

@@ -242,7 +242,20 @@ ensure_directory_structure() {
         safe_file_operation "mkdir" "$dir"
     done
 
-    log_message "INFO" "项目目录结构创建完成 (严格7目录结构)"
+    # 创建核心目录的子目录结构
+    local sub_dirs=(
+        "$AI_DIR/skills"           # 已加载的AI技能
+        "$AI_DIR/cache"            # AI缓存数据
+        "$MONITORING_DIR/logs"     # 系统日志
+        "$MONITORING_DIR/pids"     # 进程ID文件
+    )
+
+    # 创建子目录
+    for dir in "${sub_dirs[@]}"; do
+        safe_file_operation "mkdir" "$dir"
+    done
+
+    log_message "INFO" "项目目录结构创建完成 (7目录 + 子目录结构)"
 }
 
 # ------------------------------------------------------------------------------

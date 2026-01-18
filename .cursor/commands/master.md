@@ -73,7 +73,6 @@ graph TD
 @master 缓存管理           # performance-cache.sh - 缓存管理器
 @master 配置管理           # config-manager.sh - 配置管理器
 @master 质量检查           # quality-manager.sh - 质量管理系统
-@master 插件管理           # plugin_manager.sh - 插件管理器
 @master 隔离调试           # isolation-debugger.sh - 调试工具
 @master 模式分析           # pattern-analyzer.sh - 模式分析器
 @master 代码质量钩子       # code-quality.sh - 质量钩子
@@ -452,7 +451,6 @@ graph TD
 | 脚本                         | 描述           | Master调用             |
 | ---------------------------- | -------------- | ---------------------- |
 | `growth_init.sh`             | 项目增长初始化 | ✅ `@master 初始化生长` |
-| `plugin_manager.sh`          | 插件管理器     | ✅ `@master 插件管理`   |
 | `convert_to_agent_skills.sh` | 技能转换器     | ✅ `@master 转换技能`   |
 
 ### 🎣 钩子系统 (Hooks System)
@@ -578,7 +576,7 @@ analyze_user_intent() {
     elif echo "$user_input" | grep -qiE "(部署|发布|上线|运维)"; then
         intent_type="deployment"
         confidence=75
-        actions=("env_check" "plugin_manager")
+        actions=("env_check")
     elif echo "$user_input" | grep -qiE "(学习|了解|教程|指南)"; then
         intent_type="learning"
         confidence=70
@@ -683,7 +681,7 @@ make_decision() {
             explanation="执行全面的项目状态分析"
             ;;
         "deployment")
-            execution_plan=("env_check" "plugin_manager")
+            execution_plan=("env_check")
             explanation="准备项目部署环境"
             ;;
         "learning")
@@ -773,13 +771,6 @@ execute_action() {
                 bash "$CURSOR_DIR/core/env-perception.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到感知分析脚本${NC}"
-            fi
-            ;;
-        "plugin_manager")
-            if [ -f "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh" ]; then
-                bash "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh"
-            else
-                echo -e "${YELLOW}⚠️  未找到插件管理脚本${NC}"
             fi
             ;;
         "templates")
@@ -1104,7 +1095,6 @@ show_traditional_commands() {
     echo -e "  🚀 ${CYAN}init.sh${NC} - 统一初始化引擎"
     echo -e "  🚀 ${CYAN}quality-manager.sh${NC} - 统一质量管理系统"
     echo -e "  🚀 ${CYAN}env-perception.sh${NC} - 统一环境感知引擎"
-    echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本 (features/automation/scripts/)"
 
     echo ""
     echo -e "${YELLOW}💡 提示: 建议使用智能模式 '@master [需求描述]' 而非传统命令模式${NC}"

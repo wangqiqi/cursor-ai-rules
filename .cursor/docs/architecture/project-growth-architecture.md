@@ -12,19 +12,17 @@ Cursor AI Rules 采用双目录架构，将项目无关的配置与项目私有�
 ## 📁 .cursorGrowth 目录结构
 
 ### 核心数据目录
-- `learning/` - AI学习数据和模式识别
-- `conversations/` - 对话历史和上下文记录
-- `personal/` - 用户偏好和个性化配置
+- `perception/` - 环境感知数据（项目环境、技术栈、依赖关系等）
+- `user_data/` - 用户相关数据（偏好设置、学习档案、个性化配置）
+- `project_data/` - 项目相关数据（配置、指标、历史记录）
 
-### 性能优化目录
-- `cache/` - 智能缓存系统（环境感知、意图分析等）
-- `monitoring/` - 性能监控数据（响应时间、Token使用统计）
-- `optimization/` - 优化策略配置和状态数据
+### AI与分析目录
+- `ai/` - AI相关数据（训练数据、生成结果、学习指标）
+- `analytics/` - 分析数据（性能数据、统计信息、洞察报告）
 
-### 诊断和调试目录
-- `debug/` - 调试信息和错误日志
-- `logs/` - 运行日志和审计记录
-- `growth/` - 项目生长指标和趋势分析
+### 系统管理目录
+- `monitoring/` - 系统监控（性能指标、资源使用、健康状态）
+- `integrations/` - 第三方集成（MCP服务、外部工具、API连接）
 
 ## 🔒 隐私与安全
 
@@ -43,9 +41,10 @@ Cursor AI Rules 采用双目录架构，将项目无关的配置与项目私有�
 ## 🚀 性能优化数据
 
 ### 智能缓存系统
-**存储位置**: `.cursorGrowth/cache/`
+**存储位置**: `.cursorGrowth/analytics/cache/`
 - 环境感知缓存（5分钟TTL）
 - 意图分析缓存（基于内容哈希）
+- 分析结果缓存（24小时TTL）
 - 自动过期清理机制
 
 **性能提升**: 缓存命中率可达80%，Token节省60%
@@ -54,15 +53,15 @@ Cursor AI Rules 采用双目录架构，将项目无关的配置与项目私有�
 **存储位置**: `.cursorGrowth/monitoring/`
 - 实时响应时间统计
 - Token消耗和节省计算
-- 缓存命中率分析
-- 系统健康检查数据
+- 系统资源使用监控
+- 健康状态检查数据
 
 ### AI学习记录
-**存储位置**: `.cursorGrowth/learning/`
+**存储位置**: `.cursorGrowth/ai/`
 - 用户意图识别模式
 - 交互成功率统计
-- 个性化偏好学习
-- 行为模式分析
+- AI生成结果存储
+- 学习指标和训练数据
 
 ## 🔄 自动初始化
 
@@ -79,14 +78,13 @@ Cursor AI Rules 采用双目录架构，将项目无关的配置与项目私有�
 
 # 系统自动创建目录结构：
 .cursorGrowth/
-├── cache/           # 智能缓存
-├── monitoring/      # 性能监控
-├── learning/        # AI学习数据
-├── conversations/   # 对话历史
-├── personal/        # 用户偏好
-├── debug/          # 调试信息
-├── logs/           # 运行日志
-└── growth/         # 生长指标
+├── perception/      # 环境感知数据
+├── user_data/       # 用户相关数据
+├── project_data/    # 项目相关数据
+├── ai/              # AI相关数据
+├── analytics/       # 分析数据
+├── monitoring/      # 系统监控
+└── integrations/    # 第三方集成
 ```
 
 ## 🎯 架构优势
@@ -197,13 +195,18 @@ rm -rf .cursorGrowth/monitoring/* # 重置监控，保持系统配置
 
 #### 重构前的问题架构
 ```
-.cursor/
-├── core/performance-cache.sh    ❌ 直接在.cursor创建缓存
-├── core/performance-monitor.sh  ❌ 直接在.cursor创建监控数据
-└── cache/                       ❌ 动态数据混在静态配置中
+.cursorGrowth/ (混乱的旧结构)
+├── learning/                    # ❌ 重叠概念
+├── conversations/               # ❌ 重叠概念
+├── personal/                    # ❌ 重叠概念
+├── cache/                       # ❌ 概念不清
+├── monitoring/                  # ❌ 混合用途
+├── debug/                       # ❌ 临时调试
+├── logs/                        # ❌ 分散日志
+└── growth/                      # ❌ 模糊定义
 ```
 
-#### 重构后的正确架构
+#### 重构后的7目录架构
 ```
 .cursor/                          📁 项目无关（可共享）
 ├── core/                        # 核心脚本和规则
@@ -211,20 +214,22 @@ rm -rf .cursorGrowth/monitoring/* # 重置监控，保持系统配置
 ├── docs/                        # 文档
 └── extensions/                  # 扩展功能
 
-.cursorGrowth/                   🌱 项目私有（不共享）
-├── cache/                       # ✅ 缓存数据
-├── monitoring/                  # ✅ 性能监控
-├── learning/                    # AI学习记录
-└── conversations/               # 对话历史
+.cursorGrowth/                   🌱 项目私有（7目录结构）
+├── perception/                  # ✅ 环境感知数据
+├── user_data/                   # ✅ 用户相关数据
+├── project_data/                # ✅ 项目相关数据
+├── ai/                          # ✅ AI相关数据
+├── analytics/                   # ✅ 分析数据
+├── monitoring/                  # ✅ 系统监控
+└── integrations/                # ✅ 第三方集成
 ```
 
-#### 修改的脚本文件
-| 脚本文件 | 重构内容 | 状态 |
-|----------|----------|------|
-| `performance-cache.sh` | `CACHE_DIR=".cursor/cache"` → `CACHE_DIR=".cursorGrowth/cache"` | ✅ |
-| `performance-monitor.sh` | `MONITOR_DIR=".cursor/monitoring"` → `MONITOR_DIR=".cursorGrowth/monitoring"` | ✅ |
-| `optimizer.sh` | 所有缓存目录引用更新为 `.cursorGrowth/cache` | ✅ |
-| `cursor-master.sh` | 初始化时自动创建所有 `.cursorGrowth` 子目录 | ✅ |
+#### 重构成果验证
+- ✅ **目录结构**: 统一采用7目录结构规范
+- ✅ **路径配置**: 所有脚本正确使用新的目录路径
+- ✅ **向后兼容**: 保持API的一致性和稳定性
+- ✅ **性能优化**: 缓存和监控数据正确分离存储
+- ✅ **隐私保护**: 敏感数据自动隔离到项目私有目录
 
 #### 架构优势验证
 - ✅ **项目独立性**: `.cursor` 可复制，`.cursorGrowth` 隔离

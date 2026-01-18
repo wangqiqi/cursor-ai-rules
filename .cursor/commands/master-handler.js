@@ -45,7 +45,21 @@ class MasterCommandHandler {
 
     async executeScript(scriptPath, parameters = {}) {
         try {
-            const fullPath = path.join(this.cursorDir, scriptPath);
+            // 查找脚本文件 (支持子目录)
+            let fullPath = path.join(this.cursorDir, scriptPath);
+
+            // 如果不存在，尝试在子目录中查找
+            if (!fs.existsSync(fullPath)) {
+                const scriptDirs = ['core', 'config', 'features/automation/scripts'];
+                for (const dir of scriptDirs) {
+                    const subPath = path.join(this.cursorDir, dir, scriptPath);
+                    if (fs.existsSync(subPath)) {
+                        fullPath = subPath;
+                        break;
+                    }
+                }
+            }
+
             console.log(`🔧 执行脚本: ${fullPath}`);
 
             // 检查脚本是否存在
@@ -101,9 +115,181 @@ class MasterCommandHandler {
         }
     }
 
+    async handleDirectCall(input) {
+        // 检查是否是直接调用格式: rule <name>, script <name>, skill <name>, hook <name>
+        const directCallRegex = /^(rule|script|skill|hook)\s+(.+)$/i;
+        const match = input.trim().match(directCallRegex);
+
+        if (!match) {
+            return null; // 不是直接调用
+        }
+
+        const callType = match[1].toLowerCase();
+        const targetName = match[2].trim();
+
+        console.log(`🔧 检测到直接调用: ${callType} ${targetName}`);
+
+        try {
+            switch (callType) {
+                case 'rule':
+                    return await this.executeRule(targetName);
+                case 'script':
+                    return await this.executeScript(targetName);
+                case 'skill':
+                    return await this.executeSkill(targetName);
+                case 'hook':
+                    return await this.executeHook(targetName);
+                default:
+                    return { success: false, message: `未知调用类型: ${callType}` };
+            }
+        } catch (error) {
+            console.error(`❌ 直接调用执行失败:`, error);
+            return { success: false, message: `调用失败: ${error.message}` };
+        }
+    }
+
+    async executeRule(ruleName) {
+        console.log(`📏 执行规则: ${ruleName}`);
+
+        try {
+            console.log(`📂 查找规则文件: ${ruleName}`);
+            // 检查规则文件是否存在 (支持子目录)
+            let rulePath = path.join(this.cursorDir, 'rules', `${ruleName}.md`);
+
+            // 如果不存在，尝试在子目录中查找
+            if (!fs.existsSync(rulePath)) {
+                const ruleDirs = ['core', 'evolution', 'system', 'team', 'tech', 'workflow'];
+                for (const dir of ruleDirs) {
+                    const subPath = path.join(this.cursorDir, 'rules', dir, `${ruleName}.md`);
+                    if (fs.existsSync(subPath)) {
+                        rulePath = subPath;
+                        break;
+                    }
+                }
+            }
+
+            if (!fs.existsSync(rulePath)) {
+                console.log(`❌ 规则文件不存在: ${rulePath}`);
+                return { success: false, message: `规则文件不存在: ${ruleName}.md` };
+            }
+
+            console.log(`✅ 找到规则文件: ${rulePath}`);
+
+            // 读取规则文件内容
+            console.log(`📖 读取规则文件内容...`);
+            const ruleContent = fs.readFileSync(rulePath, 'utf8');
+            console.log(`📄 文件内容长度: ${ruleContent.length} 字符`);
+
+            // 解析规则配置
+            const alwaysApplyMatch = ruleContent.match(/^alwaysApply:\s*(.+)$/m);
+            const handlerMatch = ruleContent.match(/^handler:\s*(.+)$/m);
+
+            const alwaysApply = alwaysApplyMatch ? alwaysApplyMatch[1].trim() === 'true' : false;
+            const handler = handlerMatch ? handlerMatch[1].trim() : null;
+
+            let result = `✅ 规则 ${ruleName} 已激活 (alwaysApply: ${alwaysApply})`;
+
+            // 如果有处理器，执行处理器
+            if (handler && handler !== 'null') {
+                const handlerPath = path.join(this.cursorDir, 'commands', handler);
+                if (fs.existsSync(handlerPath)) {
+                    console.log(`🔧 执行规则处理器: ${handlerPath}`);
+
+                    try {
+                        if (handler.endsWith('.js')) {
+                            // 执行JavaScript处理器
+                            const handlerResult = execSync(`node "${handlerPath}" "${ruleName}"`, {
+                                cwd: this.projectRoot,
+                                encoding: 'utf8',
+                                timeout: 30000
+                            });
+                            result += `\n🔧 处理器输出: ${handlerResult.trim()}`;
+                        } else {
+                            // 执行Shell处理器
+                            const handlerResult = execSync(`bash "${handlerPath}" "${ruleName}"`, {
+                                cwd: this.projectRoot,
+                                encoding: 'utf8',
+                                timeout: 30000
+                            });
+                            result += `\n🔧 处理器输出: ${handlerResult.trim()}`;
+                        }
+                    } catch (handlerError) {
+                        result += `\n⚠️ 处理器执行警告: ${handlerError.message}`;
+                    }
+                } else {
+                    result += `\n⚠️ 处理器文件不存在: ${handlerPath}`;
+                }
+            }
+
+            return {
+                success: true,
+                message: result,
+                rule: ruleName,
+                alwaysApply: alwaysApply,
+                handler: handler
+            };
+
+        } catch (error) {
+            return { success: false, message: `规则执行失败: ${error.message}`, rule: ruleName };
+        }
+    }
+
+    async executeSkill(skillName) {
+        console.log(`🎯 执行技能: ${skillName}`);
+
+        try {
+            // 使用skills-loader.sh执行技能
+            const loaderScript = path.join(this.cursorDir, 'core', 'skills-loader.sh');
+
+            if (!fs.existsSync(loaderScript)) {
+                return { success: false, message: `技能加载器不存在: ${loaderScript}` };
+            }
+
+            // 首先尝试加载技能
+            try {
+                execSync(`bash "${loaderScript}" load "${skillName}"`, {
+                    cwd: this.projectRoot,
+                    encoding: 'utf8',
+                    timeout: 30000,
+                    stdio: 'pipe'
+                });
+            } catch (loadError) {
+                // 技能可能已经加载，继续执行
+            }
+
+            // 执行技能
+            const result = execSync(`bash "${loaderScript}" execute "${skillName}"`, {
+                cwd: this.projectRoot,
+                encoding: 'utf8',
+                timeout: 60000,
+                stdio: 'pipe'
+            });
+
+            return {
+                success: true,
+                message: `✅ 技能 ${skillName} 执行成功`,
+                output: result.trim(),
+                skill: skillName
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                message: `❌ 技能 ${skillName} 执行失败: ${error.message}`,
+                skill: skillName
+            };
+        }
+    }
+
     async execute(input) {
         try {
             console.log(`🎯 处理 /master 命令: ${input}`);
+
+            // 0. 检查直接调用 (rule/script/skill/hook)
+            const directCallResult = await this.handleDirectCall(input);
+            if (directCallResult) {
+                return directCallResult;
+            }
 
             // 1. 调用智能匹配器
             const matchResult = await this.callSmartMatcher(input);
@@ -472,12 +658,101 @@ Generated by Cursor AI Rules v4.3.0 at ${new Date().toISOString()}`;
 // 导出供Cursor IDE使用
 module.exports = MasterCommandHandler;
 
+// 测试函数
+async function testDirectCalls() {
+    console.log('🧪 测试直接调用功能...\n');
+
+    const handler = new MasterCommandHandler();
+
+    const testCases = [
+        { input: 'rule constitution', description: '测试规则调用' },
+        { input: 'script init.sh', description: '测试脚本调用' }
+    ];
+
+    for (const testCase of testCases) {
+        console.log(`\n📋 测试: ${testCase.description}`);
+        console.log(`   输入: ${testCase.input}`);
+
+        try {
+            const result = await handler.handleDirectCall(testCase.input);
+            console.log(`   ✅ 结果: ${result ? '成功' : '不是直接调用'}`);
+            if (result) {
+                console.log(`   📝 消息: ${result.message}`);
+            }
+        } catch (error) {
+            console.log(`   ❌ 错误: ${error.message}`);
+        }
+    }
+}
+
 // 如果直接运行此脚本
 if (require.main === module) {
     const args = process.argv.slice(2);
     if (args.length === 0) {
         console.log('用法: node master-handler.js <命令>');
+        console.log('或者: node master-handler.js --test');
         process.exit(1);
+    }
+
+    if (args[0] === '--test') {
+        testDirectCalls().catch(console.error);
+        return;
+    }
+
+    const handler = new MasterCommandHandler();
+    const input = args.join(' ');
+
+    handler.execute(input).then(result => {
+        console.log('执行结果:', result);
+        process.exit(result.success ? 0 : 1);
+    }).catch(error => {
+        console.error('执行失败:', error);
+        process.exit(1);
+    });
+}
+
+// 导出类供外部使用
+module.exports = { MasterCommandHandler };
+
+// 测试函数
+async function testDirectCalls() {
+    console.log('🧪 测试直接调用功能...\n');
+
+    const handler = new MasterCommandHandler();
+
+    const testCases = [
+        { input: 'rule constitution', description: '测试规则调用' },
+        { input: 'script init.sh', description: '测试脚本调用' }
+    ];
+
+    for (const testCase of testCases) {
+        console.log(`\n📋 测试: ${testCase.description}`);
+        console.log(`   输入: ${testCase.input}`);
+
+        try {
+            const result = await handler.handleDirectCall(testCase.input);
+            console.log(`   ✅ 结果: ${result ? '成功' : '不是直接调用'}`);
+            if (result) {
+                console.log(`   📝 消息: ${result.message}`);
+            }
+        } catch (error) {
+            console.log(`   ❌ 错误: ${error.message}`);
+        }
+    }
+}
+
+// 如果直接运行此脚本
+if (require.main === module) {
+    const args = process.argv.slice(2);
+    if (args.length === 0) {
+        console.log('用法: node master-handler.js <命令>');
+        console.log('或者: node master-handler.js --test');
+        process.exit(1);
+    }
+
+    if (args[0] === '--test') {
+        testDirectCalls().catch(console.error);
+        return;
     }
 
     const handler = new MasterCommandHandler();

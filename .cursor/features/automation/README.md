@@ -35,8 +35,7 @@ automation/
 │   └── token-compression.sh    # Token压缩钩子
 └── scripts/       # 自动化脚本
     ├── convert_to_agent_skills.sh # 技能转换脚本
-    ├── growth_init.sh             # 增长初始化脚本
-    └── plugin_manager.sh          # 插件管理脚本
+    └── growth_init.sh             # 增长初始化脚本
 ```
 
 ## 🎯 职责范围
@@ -102,8 +101,6 @@ bash automation/git-hooks/pre-push     # 推送前检查
 # 代码质量检查
 @master script quality
 
-# 插件管理
-@master script plugin_manager.sh
 ```
 
 ## 🔧 开发指南

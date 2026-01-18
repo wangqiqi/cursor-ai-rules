@@ -5514,5 +5514,154 @@
       "knowledge_sharing",
       "team_training"
     ]
+  },
+  "hooks_management": {
+    "description": "钩子系统管理",
+    "intents": [
+      "hooks",
+      "hook",
+      "触发器",
+      "自动化",
+      "事件处理"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "管理钩子系统",
+      "查看钩子配置",
+      "执行钩子",
+      "设置自动化触发器"
+    ],
+    "capabilities": {
+      "rules": [
+        "module_manager"
+      ],
+      "scripts": [
+        "core/hooks-engine.sh"
+      ],
+      "hooks": [
+        "master-init.sh",
+        "env-perception.sh",
+        "session-optimizer.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "hooks"
+    ],
+    "parameters": {
+      "trigger_type": "onSessionStart",
+      "async_execution": true
+    }
+  },
+  "skills_loading": {
+    "description": "技能加载和管理",
+    "intents": [
+      "skills",
+      "skill",
+      "技能",
+      "加载",
+      "能力"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "加载技能",
+      "管理技能",
+      "查看可用技能",
+      "执行技能"
+    ],
+    "capabilities": {
+      "rules": [
+        "module_manager"
+      ],
+      "scripts": [
+        "core/skills-loader.sh"
+      ],
+      "skills": [
+        "skill-creator"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "skills"
+    ],
+    "parameters": {
+      "auto_load": true,
+      "category_filter": "all"
+    }
+  },
+  "hooks_execution": {
+    "description": "执行特定钩子",
+    "intents": [
+      "execute",
+      "run",
+      "trigger",
+      "执行",
+      "运行",
+      "触发"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "执行会话开始钩子",
+      "运行代码质量检查",
+      "触发环境感知",
+      "执行Token压缩"
+    ],
+    "capabilities": {
+      "scripts": [
+        "core/hooks-engine.sh"
+      ],
+      "hooks": [
+        "env-perception.sh",
+        "code-quality.sh",
+        "consistency-check.sh",
+        "architecture-check.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "hooks"
+    ],
+    "parameters": {
+      "trigger": "onSessionStart",
+      "async": true,
+      "timeout": 10000
+    }
+  },
+  "skills_execution": {
+    "description": "执行特定技能",
+    "intents": [
+      "execute",
+      "run",
+      "use",
+      "执行",
+      "运行",
+      "使用"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "执行文档处理技能",
+      "运行PDF处理",
+      "使用前端设计技能",
+      "执行代码调试助手"
+    ],
+    "capabilities": {
+      "scripts": [
+        "core/skills-loader.sh"
+      ],
+      "skills": [
+        "docx",
+        "pdf",
+        "webapp-testing",
+        "debug-assistant"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "skills"
+    ],
+    "parameters": {
+      "skill_name": "auto",
+      "execution_mode": "sync"
+    }
   }
 }

@@ -401,7 +401,7 @@ perform_full_intent_analysis() {
     elif echo "$user_input" | grep -qiE "(部署|发布|上线|运维)"; then
         intent_type="deployment"
         confidence=75
-        actions=("env-perception" "plugin_manager")
+        actions=("env-perception")
     elif echo "$user_input" | grep -qiE "(测试|testing)"; then
         intent_type="write_tests"
         confidence=80
@@ -896,7 +896,7 @@ make_decision() {
             explanation="执行全面的项目状态分析"
             ;;
         "deployment")
-            execution_plan=("env-perception" "plugin_manager")
+            execution_plan=("env-perception")
             explanation="准备项目部署环境"
             ;;
         "learning")
@@ -1125,13 +1125,6 @@ execute_action() {
                 bash "$CURSOR_DIR/scripts/perception.sh"
             else
                 echo -e "${YELLOW}⚠️  未找到感知分析脚本${NC}"
-            fi
-            ;;
-        "plugin_manager")
-            if [ -f "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh" ]; then
-                bash "$CURSOR_DIR/features/automation/scripts/plugin_manager.sh"
-            else
-                echo -e "${YELLOW}⚠️  未找到插件管理脚本${NC}"
             fi
             ;;
         "git-commit")
@@ -1723,6 +1716,13 @@ intelligent_master() {
         return
     fi
 
+    # 🔧 统一调用处理器：处理 rule/script/skill/hook 直接调用
+    echo "🔧 检查直接调用: '$user_input'" >&2
+    if handle_direct_calls "$user_input"; then
+        echo "🔧 直接调用已处理，返回" >&2
+        return
+    fi
+
     # 📊 Token优化: 性能监控开始
     local start_time=$(date +%s%3N 2>/dev/null || echo "$(date +%s)000")  # 毫秒级时间戳
 
@@ -2284,7 +2284,6 @@ show_traditional_commands() {
     echo -e "  🚀 ${CYAN}init.sh${NC} - 统一初始化引擎"
     echo -e "  🚀 ${CYAN}quality-manager.sh${NC} - 统一质量管理系统"
     echo -e "  🚀 ${CYAN}perception.sh${NC} - 智能感知分析脚本"
-    echo -e "  🚀 ${CYAN}plugin_manager.sh${NC} - 插件管理系统脚本 (features/automation/scripts/)"
 
     echo ""
     echo -e "${YELLOW}💡 提示: 建议使用智能模式 './cursor-master.sh [需求描述]' 而非传统命令模式${NC}"
@@ -2785,6 +2784,250 @@ show_vibe_help() {
     echo -e "  • 🧪 测试保障: 测试先于代码实现"
     echo -e "  • 🔗 接口对齐: 前后端契约化开发"
     echo -e "  • 📊 质量进化: 持续对齐验证和优化"
+}
+
+# 🔧 统一调用处理器：处理 rule/script/skill/hook 直接调用
+handle_direct_calls() {
+    local user_input="$1"
+
+    # 检测直接调用模式
+    if echo "$user_input" | grep -qE "^(rule|script|skill|hook)[[:space:]]+"; then
+        local call_type=$(echo "$user_input" | sed -E 's/^(rule|script|skill|hook)[[:space:]]+.*/\1/')
+        local target_name=$(echo "$user_input" | sed -E 's/^(rule|script|skill|hook)[[:space:]]+//')
+
+        echo -e "${BLUE}🔧 检测到直接调用: ${CYAN}${call_type} ${target_name}${NC}"
+
+        case "$call_type" in
+            "rule")
+                execute_rule_call "$target_name"
+                return $?
+                ;;
+            "script")
+                execute_script_call "$target_name"
+                return $?
+                ;;
+            "skill")
+                execute_skill_call "$target_name"
+                return $?
+                ;;
+            "hook")
+                execute_hook_call "$target_name"
+                return $?
+                ;;
+        esac
+    fi
+
+    return 1  # 不是直接调用，继续正常流程
+}
+
+# 📏 执行规则调用
+execute_rule_call() {
+    local rule_name="$1"
+
+    echo -e "${YELLOW}📏 执行规则: ${CYAN}${rule_name}${NC}"
+
+    # 检查规则是否存在
+    local rule_file="$CURSOR_DIR/rules/${rule_name}.md"
+    if [ ! -f "$rule_file" ]; then
+        echo -e "${RED}❌ 规则文件不存在: ${rule_file}${NC}"
+        return 1
+    fi
+
+    # 解析规则配置
+    local always_apply=$(grep -E "^alwaysApply:" "$rule_file" | head -1 | sed 's/alwaysApply: *//;s/ *$//')
+    local handler=$(grep -E "^handler:" "$rule_file" | head -1 | sed 's/handler: *//;s/ *$//')
+
+    if [ "$always_apply" = "true" ]; then
+        echo -e "${GREEN}✅ 规则 ${rule_name} 已激活 (alwaysApply: true)${NC}"
+    else
+        echo -e "${BLUE}🔄 规则 ${rule_name} 已激活 (alwaysApply: false)${NC}"
+    fi
+
+    # 如果有处理器，执行处理器
+    if [ -n "$handler" ] && [ "$handler" != "null" ]; then
+        local handler_path="$CURSOR_DIR/commands/${handler}"
+        if [ -f "$handler_path" ]; then
+            echo -e "${BLUE}🔧 执行规则处理器: ${handler_path}${NC}"
+            if [[ "$handler_path" == *.js ]]; then
+                node "$handler_path" "$rule_name" 2>/dev/null || echo -e "${YELLOW}⚠️ 规则处理器执行完成${NC}"
+            else
+                bash "$handler_path" "$rule_name" 2>/dev/null || echo -e "${YELLOW}⚠️ 规则处理器执行完成${NC}"
+            fi
+        else
+            echo -e "${YELLOW}⚠️ 规则处理器不存在: ${handler_path}${NC}"
+        fi
+    fi
+
+    echo -e "${GREEN}✅ 规则 ${rule_name} 执行完成${NC}"
+    return 0
+}
+
+# 🔧 执行脚本调用
+execute_script_call() {
+    local script_name="$1"
+
+    echo -e "${YELLOW}🔧 执行脚本: ${CYAN}${script_name}${NC}"
+
+    # 查找脚本文件
+    local script_path=""
+    local possible_paths=(
+        "$CURSOR_DIR/core/${script_name}"
+        "$CURSOR_DIR/config/${script_name}"
+        "$CURSOR_DIR/features/automation/scripts/${script_name}"
+        "$CURSOR_DIR/${script_name}"
+    )
+
+    for path in "${possible_paths[@]}"; do
+        if [ -f "$path" ]; then
+            script_path="$path"
+            break
+        fi
+    done
+
+    if [ -z "$script_path" ]; then
+        echo -e "${RED}❌ 脚本文件不存在: ${script_name}${NC}"
+        echo -e "${YELLOW}💡 可能的脚本位置:${NC}"
+        for path in "${possible_paths[@]}"; do
+            echo -e "  • ${path}"
+        done
+        return 1
+    fi
+
+    # 检查执行权限
+    if [ ! -x "$script_path" ]; then
+        echo -e "${YELLOW}⚠️ 脚本没有执行权限，正在修复: ${script_path}${NC}"
+        chmod +x "$script_path"
+    fi
+
+    # 执行脚本
+    echo -e "${BLUE}🚀 执行: ${script_path}${NC}"
+    if bash "$script_path" 2>&1; then
+        echo -e "${GREEN}✅ 脚本 ${script_name} 执行成功${NC}"
+        return 0
+    else
+        local exit_code=$?
+        echo -e "${RED}❌ 脚本 ${script_name} 执行失败 (退出码: ${exit_code})${NC}"
+        return $exit_code
+    fi
+}
+
+# 🎯 执行技能调用
+execute_skill_call() {
+    local skill_name="$1"
+
+    echo -e "${YELLOW}🎯 执行技能: ${CYAN}${skill_name}${NC}"
+
+    # 使用skills-loader执行技能
+    local loader_script="$CURSOR_DIR/core/skills-loader.sh"
+    if [ ! -f "$loader_script" ]; then
+        echo -e "${RED}❌ 技能加载器不存在: ${loader_script}${NC}"
+        return 1
+    fi
+
+    # 先加载技能（如果还没加载）
+    if ! bash "$loader_script" info "$skill_name" >/dev/null 2>&1; then
+        echo -e "${BLUE}📦 加载技能: ${skill_name}${NC}"
+        if ! bash "$loader_script" load "$skill_name" 2>/dev/null; then
+            echo -e "${RED}❌ 技能加载失败: ${skill_name}${NC}"
+            return 1
+        fi
+    fi
+
+    # 执行技能
+    echo -e "${BLUE}🚀 执行技能: ${skill_name}${NC}"
+    if bash "$loader_script" execute "$skill_name" 2>&1; then
+        echo -e "${GREEN}✅ 技能 ${skill_name} 执行成功${NC}"
+        return 0
+    else
+        local exit_code=$?
+        echo -e "${RED}❌ 技能 ${skill_name} 执行失败 (退出码: ${exit_code})${NC}"
+        return $exit_code
+    fi
+}
+
+# 🎣 执行钩子调用
+execute_hook_call() {
+    local hook_name="$1"
+
+    echo -e "${YELLOW}🎣 执行钩子: ${CYAN}${hook_name}${NC}"
+
+    # 使用hooks-engine执行钩子
+    local engine_script="$CURSOR_DIR/core/hooks-engine.sh"
+    if [ ! -f "$engine_script" ]; then
+        echo -e "${RED}❌ 钩子引擎不存在: ${engine_script}${NC}"
+        return 1
+    fi
+
+    # 执行钩子（通过引擎）
+    echo -e "${BLUE}🚀 执行钩子: ${hook_name}${NC}"
+
+    # 构造触发器名称（简单映射）
+    local trigger="custom"
+    case "$hook_name" in
+        "master-init"|"env-perception"|"session-optimizer")
+            trigger="onSessionStart"
+            ;;
+        "code-quality"|"consistency-check"|"architecture-check"|"quality-check")
+            trigger="afterFileSave"
+            ;;
+        "performance-monitor"|"command-log"|"event-logger")
+            trigger="afterShellExecution"
+            ;;
+        "growth-recorder")
+            trigger="afterAgentResponse"
+            ;;
+        "prompt-security")
+            trigger="beforeSubmitPrompt"
+            ;;
+        "pre-commit-analyzer")
+            trigger="preCommitAnalysis"
+            ;;
+        "commit-message-validator")
+            trigger="commitMessageValidation"
+            ;;
+        "cursor-sync")
+            trigger="onSessionEnd"
+            ;;
+        *)
+            trigger="custom"
+            ;;
+    esac
+
+    # 创建临时hooks配置用于执行
+    local temp_config="/tmp/hooks_config_$$.json"
+    cat > "$temp_config" << EOF
+{
+  "version": 3,
+  "hooks": {
+    "$trigger": [
+      {
+        "name": "$hook_name",
+        "command": "$hook_name.sh",
+        "enabled": true,
+        "async": false,
+        "timeout": 30000
+      }
+    ]
+  },
+  "global_config": {
+    "max_execution_time": 30000,
+    "error_handling": "log_and_continue",
+    "logging_enabled": true
+  }
+}
+EOF
+
+    # 执行钩子
+    if bash "$engine_script" "$trigger" "$temp_config" 2>&1; then
+        echo -e "${GREEN}✅ 钩子 ${hook_name} 执行成功${NC}"
+        rm -f "$temp_config"
+        return 0
+    else
+        local exit_code=$?
+        echo -e "${RED}❌ 钩子 ${hook_name} 执行失败 (退出码: ${exit_code})${NC}"
+        rm -f "$temp_config"
+        return $exit_code
+    fi
 }
 
 # 执行主函数

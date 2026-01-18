@@ -1,23 +1,23 @@
-# Configuration Directory
+# 🔧 配置目录
 
-This directory contains configuration files for the Cursor AI Rules system.
+此目录包含Cursor AI Rules系统的配置文件。
 
-## Files
+## 📄 文件说明
 
-- **`intelligent_evolution.config.json`** - Configuration for the Intelligent Evolution System
-  - Perception settings and monitoring parameters
-  - Evolution triggers and rule adjustments
-  - Learning system and privacy controls
+- **`intelligent_evolution.config.json`** - 智能进化系统配置
+  - 感知设置和监控参数
+  - 进化触发器和规则调整
+  - 学习系统和隐私控制
 
-- **`templates.config.json`** - Configuration templates for project initialization
-  - Project templates and collaboration settings
-  - Technical requirements and quality gates
-  - Team dynamics and development workflow
+- **`templates.config.json`** - 项目初始化配置模板
+  - 项目模板和协作设置
+  - 技术要求和质量门禁
+  - 团队动态和开发工作流
 
-## Usage
+## 🔄 使用方法
 
-These configuration files can be modified to customize the behavior of the AI collaboration system. Changes take effect immediately without requiring system restart.
+这些配置文件可以修改以自定义AI协作系统的行为。更改会立即生效，无需重启系统。
 
-## Backup
+## 💾 备份
 
-Important: Always backup configuration files before making changes. The system may create `.backup` files automatically for restoration purposes.
+重要提示：在进行更改前，请务必备份配置文件。系统可能会自动创建 `.backup` 文件以用于恢复。
