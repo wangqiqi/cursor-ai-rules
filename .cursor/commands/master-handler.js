@@ -1,14 +1,49 @@
-// Cursor IDE Master Command Handler
-// 处理 /master 命令的实际执行逻辑
+// Cursor IDE Master Command Handler - 智能升级版
+// 集成AI共生宪法系统，充分利用IDE上下文，实现真正的智能协作
 
 const { execSync, spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
 class MasterCommandHandler {
-    constructor() {
+    constructor(context = {}) {
         this.projectRoot = this.findProjectRoot();
         this.cursorDir = path.join(this.projectRoot, '.cursor');
+
+        // 🎯 IDE上下文信息 - 这是/master相较于cursor-master.sh的最大优势
+        this.ideContext = {
+            currentFile: context.currentFile || null,
+            selectedText: context.selectedText || null,
+            cursorPosition: context.cursorPosition || null,
+            openFiles: context.openFiles || [],
+            projectStructure: context.projectStructure || null,
+            userPreferences: context.userPreferences || {},
+            workspaceState: context.workspaceState || {},
+            ...context
+        };
+
+        // 🚀 集成我们的智能系统
+        this.intelligentSystem = null;
+        this.initializeIntelligentSystem();
+    }
+
+    /**
+     * 初始化智能系统
+     */
+    async initializeIntelligentSystem() {
+        try {
+            console.log('🧠 初始化AI共生宪法智能系统...');
+
+            // 尝试加载我们的智能路由器
+            const MasterRouter = require('./master-router');
+            this.intelligentSystem = new MasterRouter(this.projectRoot);
+            await this.intelligentSystem.initialize();
+
+            console.log('✅ 智能系统初始化成功');
+        } catch (error) {
+            console.warn('⚠️ 智能系统初始化失败，回退到传统模式:', error.message);
+            this.intelligentSystem = null;
+        }
     }
 
     findProjectRoot() {
@@ -281,33 +316,436 @@ class MasterCommandHandler {
         }
     }
 
-    async execute(input) {
+    async execute(input, context = {}) {
         try {
-            console.log(`🎯 处理 /master 命令: ${input}`);
+            console.log(`🎯 处理IDE /master 命令: ${input}`);
+
+            // 🔄 更新IDE上下文
+            this.updateIdeContext(context);
+
+            // 🎯 显示IDE上下文信息
+            this.displayIdeContext();
 
             // 0. 检查直接调用 (rule/script/skill/hook)
             const directCallResult = await this.handleDirectCall(input);
             if (directCallResult) {
-                return directCallResult;
+                return this.enhanceWithIdeContext(directCallResult);
             }
 
-            // 1. 调用智能匹配器
+            // 🚀 优先使用AI共生宪法智能系统
+            if (this.intelligentSystem) {
+                console.log('🧠 使用AI共生宪法智能系统...');
+
+                try {
+                    // 构建增强的上下文
+                    const enhancedContext = this.buildEnhancedContext(input, context);
+
+                    // 调用智能路由器
+                    const result = await this.intelligentSystem.route(input, enhancedContext);
+
+                    // 为结果添加IDE特定的增强
+                    return this.enhanceResultForIde(result, context);
+
+                } catch (intelligentError) {
+                    console.warn('⚠️ 智能系统调用失败，回退到传统模式:', intelligentError.message);
+                    // 回退到传统执行
+                }
+            }
+
+            // 🔄 传统模式：使用bash脚本进行意图分析
+            console.log('📊 使用传统智能匹配模式...');
             const matchResult = await this.callSmartMatcher(input);
             console.log('🎯 智能匹配结果:', matchResult);
 
             if (!matchResult.matched) {
                 console.log('❌ 未能识别命令意图');
-                return { success: false, message: '未能识别命令意图' };
+
+                // 提供智能建议
+                const suggestions = await this.generateSmartSuggestions(input, context);
+                return {
+                    success: false,
+                    message: '未能识别命令意图',
+                    suggestions: suggestions,
+                    ideContext: this.getIdeContextSummary()
+                };
             }
 
             // 2. 根据能力执行相应操作
-            const result = await this.executeCapability(matchResult.capability, input);
-            return result;
+            const result = await this.executeCapability(matchResult.capability, input, context);
+            return this.enhanceWithIdeContext(result);
 
         } catch (error) {
-            console.error('❌ Master命令执行失败:', error);
-            return { success: false, message: error.message };
+            console.error('❌ IDE Master命令执行失败:', error);
+
+            // 提供错误恢复建议
+            const recoverySuggestions = this.generateErrorRecoverySuggestions(error, context);
+
+            return {
+                success: false,
+                message: error.message,
+                recoverySuggestions: recoverySuggestions,
+                ideContext: this.getIdeContextSummary()
+            };
         }
+    }
+
+    /**
+     * 更新IDE上下文信息
+     */
+    updateIdeContext(context) {
+        this.ideContext = {
+            ...this.ideContext,
+            ...context,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    /**
+     * 显示IDE上下文信息
+     */
+    displayIdeContext() {
+        if (this.ideContext.currentFile) {
+            console.log(`📄 当前文件: ${this.ideContext.currentFile}`);
+        }
+        if (this.ideContext.selectedText) {
+            const selectedLength = this.ideContext.selectedText.length;
+            console.log(`📝 选中内容: ${selectedLength} 字符`);
+        }
+        if (this.ideContext.cursorPosition) {
+            console.log(`📍 光标位置: 行${this.ideContext.cursorPosition.line}, 列${this.ideContext.cursorPosition.column}`);
+        }
+        if (this.ideContext.openFiles && this.ideContext.openFiles.length > 0) {
+            console.log(`📂 打开文件数: ${this.ideContext.openFiles.length}`);
+        }
+    }
+
+    /**
+     * 构建增强的上下文信息
+     */
+    buildEnhancedContext(input, context) {
+        return {
+            ...context,
+            ide: {
+                currentFile: this.ideContext.currentFile,
+                selectedText: this.ideContext.selectedText,
+                cursorPosition: this.ideContext.cursorPosition,
+                openFiles: this.ideContext.openFiles,
+                projectStructure: this.getProjectStructure()
+            },
+            user: {
+                preferences: this.ideContext.userPreferences,
+                history: this.getUserHistory()
+            },
+            workspace: {
+                state: this.ideContext.workspaceState,
+                recentActions: this.getRecentActions()
+            }
+        };
+    }
+
+    /**
+     * 为结果添加IDE特定的增强
+     */
+    enhanceResultForIde(result, context) {
+        if (!result) return result;
+
+        // 添加IDE特定的信息
+        const enhancedResult = {
+            ...result,
+            ide: {
+                contextSummary: this.getIdeContextSummary(),
+                suggestions: this.generateIdeSpecificSuggestions(result, context),
+                actions: this.generateIdeActions(result, context)
+            },
+            display: {
+                format: this.determineDisplayFormat(result),
+                location: this.determineDisplayLocation(result, context)
+            }
+        };
+
+        return enhancedResult;
+    }
+
+    /**
+     * 为传统结果添加IDE上下文增强
+     */
+    enhanceWithIdeContext(result) {
+        if (!result) return result;
+
+        return {
+            ...result,
+            ideContext: this.getIdeContextSummary(),
+            ideEnhancements: {
+                fileOperations: this.suggestFileOperations(result),
+                codeActions: this.suggestCodeActions(result),
+                navigation: this.suggestNavigation(result)
+            }
+        };
+    }
+
+    /**
+     * 生成智能建议
+     */
+    async generateSmartSuggestions(input, context) {
+        const suggestions = [];
+
+        // 基于当前文件类型提供建议
+        if (this.ideContext.currentFile) {
+            const fileExt = path.extname(this.ideContext.currentFile);
+            switch (fileExt) {
+                case '.js':
+                case '.ts':
+                    suggestions.push('优化这段JavaScript代码', '添加类型检查', '运行测试');
+                    break;
+                case '.py':
+                    suggestions.push('优化这段Python代码', '添加类型提示', '运行单元测试');
+                    break;
+                case '.md':
+                    suggestions.push('检查文档格式', '生成目录', '验证链接');
+                    break;
+            }
+        }
+
+        // 基于选中内容提供建议
+        if (this.ideContext.selectedText) {
+            const selectedLength = this.ideContext.selectedText.length;
+            if (selectedLength < 100) {
+                suggestions.push('解释这段代码', '优化这段代码', '添加注释');
+            } else {
+                suggestions.push('重构这段代码', '提取函数', '添加文档');
+            }
+        }
+
+        // 基于项目状态提供建议
+        const projectSuggestions = await this.generateProjectSuggestions(context);
+        suggestions.push(...projectSuggestions);
+
+        return suggestions.slice(0, 5); // 最多5个建议
+    }
+
+    /**
+     * 生成项目相关的建议
+     */
+    async generateProjectSuggestions(context) {
+        const suggestions = [];
+
+        try {
+            // 检查是否有未提交的更改
+            const gitStatus = execSync('git status --porcelain', {
+                cwd: this.projectRoot,
+                encoding: 'utf8'
+            });
+
+            if (gitStatus.trim()) {
+                suggestions.push('提交代码更改', '查看更改详情');
+            }
+
+            // 检查是否有测试文件
+            const testFiles = execSync('find . -name "*test*" -o -name "*spec*" | head -5', {
+                cwd: this.projectRoot,
+                encoding: 'utf8'
+            });
+
+            if (testFiles.trim()) {
+                suggestions.push('运行测试', '检查测试覆盖率');
+            }
+
+        } catch (error) {
+            // Git或其他命令可能不可用，忽略
+        }
+
+        return suggestions;
+    }
+
+    /**
+     * 生成错误恢复建议
+     */
+    generateErrorRecoverySuggestions(error, context) {
+        const suggestions = [
+            '检查命令语法是否正确',
+            '查看相关文档和帮助',
+            '尝试使用更简单的命令'
+        ];
+
+        // 基于错误类型提供特定建议
+        if (error.message.includes('script')) {
+            suggestions.push('检查脚本文件是否存在', '验证脚本执行权限');
+        } else if (error.message.includes('rule')) {
+            suggestions.push('检查规则文件是否存在', '验证规则配置');
+        }
+
+        return suggestions;
+    }
+
+    /**
+     * 获取项目结构信息
+     */
+    getProjectStructure() {
+        try {
+            const structure = {
+                root: this.projectRoot,
+                hasPackageJson: fs.existsSync(path.join(this.projectRoot, 'package.json')),
+                hasRequirementsTxt: fs.existsSync(path.join(this.projectRoot, 'requirements.txt')),
+                hasGoMod: fs.existsSync(path.join(this.projectRoot, 'go.mod')),
+                hasCargoToml: fs.existsSync(path.join(this.projectRoot, 'Cargo.toml')),
+                hasGit: fs.existsSync(path.join(this.projectRoot, '.git'))
+            };
+            return structure;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * 获取用户历史
+     */
+    getUserHistory() {
+        // 这里可以实现从.cursorGrowth获取用户历史
+        return [];
+    }
+
+    /**
+     * 获取最近操作
+     */
+    getRecentActions() {
+        // 这里可以实现获取最近的IDE操作历史
+        return [];
+    }
+
+    /**
+     * 获取IDE上下文摘要
+     */
+    getIdeContextSummary() {
+        return {
+            currentFile: this.ideContext.currentFile,
+            hasSelection: !!this.ideContext.selectedText,
+            selectionLength: this.ideContext.selectedText?.length || 0,
+            openFilesCount: this.ideContext.openFiles?.length || 0,
+            projectType: this.inferProjectType()
+        };
+    }
+
+    /**
+     * 推断项目类型
+     */
+    inferProjectType() {
+        const structure = this.getProjectStructure();
+        if (structure?.hasPackageJson) return 'javascript';
+        if (structure?.hasRequirementsTxt) return 'python';
+        if (structure?.hasGoMod) return 'golang';
+        if (structure?.hasCargoToml) return 'rust';
+        return 'unknown';
+    }
+
+    /**
+     * 生成IDE特定的建议
+     */
+    generateIdeSpecificSuggestions(result, context) {
+        const suggestions = [];
+
+        if (result.success) {
+            suggestions.push('在输出面板查看详细结果');
+        }
+
+        if (this.ideContext.currentFile) {
+            suggestions.push(`在 ${path.basename(this.ideContext.currentFile)} 中应用更改`);
+        }
+
+        return suggestions;
+    }
+
+    /**
+     * 生成IDE操作
+     */
+    generateIdeActions(result, context) {
+        const actions = [];
+
+        if (result.success && result.data?.script) {
+            actions.push({
+                type: 'open_terminal',
+                label: '在终端中查看结果',
+                command: `echo "脚本 ${result.data.script} 执行完成"`
+            });
+        }
+
+        return actions;
+    }
+
+    /**
+     * 确定显示格式
+     */
+    determineDisplayFormat(result) {
+        if (result.type === 'constitution_response') {
+            return 'modal'; // 宪法响应使用模态框
+        } else if (result.success && result.data?.output) {
+            return 'panel'; // 有输出的成功结果使用面板
+        } else {
+            return 'notification'; // 其他情况使用通知
+        }
+    }
+
+    /**
+     * 确定显示位置
+     */
+    determineDisplayLocation(result, context) {
+        if (result.type === 'constitution_response') {
+            return 'center_modal';
+        } else if (this.ideContext.currentFile) {
+            return 'inline'; // 在当前文件附近显示
+        } else {
+            return 'bottom_panel';
+        }
+    }
+
+    /**
+     * 建议文件操作
+     */
+    suggestFileOperations(result) {
+        const operations = [];
+
+        if (result.success && result.data?.script) {
+            operations.push({
+                type: 'open_file',
+                file: path.join(this.cursorDir, 'core', result.data.script),
+                label: `查看脚本: ${result.data.script}`
+            });
+        }
+
+        return operations;
+    }
+
+    /**
+     * 建议代码操作
+     */
+    suggestCodeActions(result) {
+        const actions = [];
+
+        if (this.ideContext.selectedText) {
+            actions.push({
+                type: 'refactor',
+                label: '重构选中代码',
+                scope: 'selection'
+            });
+        }
+
+        return actions;
+    }
+
+    /**
+     * 建议导航操作
+     */
+    suggestNavigation(result) {
+        const navigation = [];
+
+        if (result.data?.rule) {
+            navigation.push({
+                type: 'open_file',
+                file: path.join(this.cursorDir, 'rules', `${result.data.rule}.md`),
+                label: `查看规则: ${result.data.rule}`
+            });
+        }
+
+        return navigation;
     }
 
     async callSmartMatcher(input) {

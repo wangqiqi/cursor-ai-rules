@@ -1,8 +1,9 @@
 ---
 command: master
-description: "🎯 智能总命令控制器 - 自动感知需求并智能执行内部命令 | AI决策驱动"
+description: "🎯 AI共生宪法智能控制器 - 集成宪法合规、六维协议、IDE上下文感知 | 真正的智能协作"
 alwaysApply: true
 handler: "./master-handler.js"
+context: ["currentFile", "selectedText", "cursorPosition", "openFiles", "workspace"]
 ---
 
 # 🎯 智能Master总指挥中心 (Intelligent Master Command Center)

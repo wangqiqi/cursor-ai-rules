@@ -253,10 +253,10 @@ CURSOR_HOOK_DATA='{"test": true}' \
 
 ### 日志位置
 
-钩子执行日志保存在：`.cursor/logs/hooks/`
+钩子执行日志保存在：`.cursorGrowth/monitoring/logs/hooks/`
 
 ```
-.cursor/logs/hooks/
+.cursorGrowth/monitoring/logs/hooks/
 ├── code-quality.log      # 代码质量钩子日志
 ├── security-audit.log    # 安全审计日志
 ├── command-log.log       # 命令日志
@@ -274,17 +274,17 @@ CURSOR_HOOK_DATA='{"test": true}' \
 export CURSOR_HOOK_DEBUG=true
 
 # 查看钩子执行详情
-tail -f .cursor/logs/hooks/*.log
+tail -f .cursorGrowth/monitoring/logs/hooks/*.log
 ```
 
 ### 性能监控
 
 ```bash
 # 查看钩子性能统计
-cat .cursor/logs/hooks/performance.json
+cat .cursorGrowth/monitoring/logs/hooks/performance.json
 
 # 监控执行时间
-grep "duration" .cursor/logs/hooks/*.log | tail -10
+grep "duration" .cursorGrowth/monitoring/logs/hooks/*.log | tail -10
 ```
 
 ## 🎯 高级用法

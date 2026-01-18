@@ -427,7 +427,7 @@ fix: 验证修复错误模式 'undefined'
 
 如果遇到问题或有改进建议：
 
-1. 查看调试日志：`.cursorGrowth/logs/`
+1. 查看调试日志：`.cursorGrowth/monitoring/logs/`
 2. 生成诊断报告：运行分析命令并附上报告
 3. 描述问题场景和期望行为
 4. 提供相关的配置文件和错误信息

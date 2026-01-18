@@ -218,13 +218,19 @@ class ConstitutionEnforcer {
      */
     async persistAuditLog(auditEntry) {
         try {
-            const logDir = path.join(this.cursorDir, 'logs');
+            // 📁 日志应该存储在 .cursorGrowth 目录中
+            const cursorGrowthDir = path.join(this.projectRoot, '.cursorGrowth');
+            const logDir = path.join(cursorGrowthDir, 'monitoring', 'logs');
+
+            // 确保目录存在
             if (!fs.existsSync(logDir)) {
                 fs.mkdirSync(logDir, { recursive: true });
             }
 
             const logFile = path.join(logDir, 'constitution-audit.jsonl');
             fs.appendFileSync(logFile, JSON.stringify(auditEntry) + '\n');
+
+            console.log(`📝 审计日志已保存到: ${logFile}`);
         } catch (error) {
             console.warn('⚠️ 审计日志持久化失败:', error.message);
         }

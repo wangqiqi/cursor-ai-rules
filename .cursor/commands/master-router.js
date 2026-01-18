@@ -331,7 +331,7 @@ class MasterCommandRouter {
      */
     async recordExecutionHistory(record) {
         try {
-            const historyDir = path.join(this.cursorDir, 'logs');
+            const historyDir = path.join(this.projectRoot, '.cursorGrowth', 'monitoring', 'logs');
             if (!fs.existsSync(historyDir)) {
                 fs.mkdirSync(historyDir, { recursive: true });
             }

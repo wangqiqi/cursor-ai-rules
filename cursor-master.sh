@@ -2559,36 +2559,36 @@ process_vibe_command() {
     local subcommand=$(echo "$vibe_command" | awk '{print $1}')
     local args=$(echo "$vibe_command" | sed 's/^[^ ]* *//')
 
-    echo -e "${BLUE}🚀 VIBE Coding 智能开发总指挥${NC}"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${BLUE}🚀 VIBE Coding - AI共生宪法系统下的专业开发模式${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
     case "$subcommand" in
         "start")
-            echo -e "${GREEN}🎯 启动VIBE项目创建流程...${NC}"
+            echo -e "${GREEN}⚖️ 启动宪法合规的VIBE项目创建流程...${NC}"
             process_vibe_start "$args"
             ;;
         "prd")
-            echo -e "${GREEN}📋 启动VIBE产品需求文档生成...${NC}"
+            echo -e "${GREEN}📋 启动宪法审计的产品需求文档生成...${NC}"
             process_vibe_prd "$args"
             ;;
         "code")
-            echo -e "${GREEN}💻 启动VIBE代码生成流程...${NC}"
+            echo -e "${GREEN}💻 启动六维协议的VIBE代码生成流程...${NC}"
             process_vibe_code "$args"
             ;;
         "test")
-            echo -e "${GREEN}🧪 启动VIBE测试驱动开发...${NC}"
+            echo -e "${GREEN}🧪 启动意图主权的VIBE测试驱动开发...${NC}"
             process_vibe_test "$args"
             ;;
         "deploy")
-            echo -e "${GREEN}🚀 启动VIBE部署配置...${NC}"
+            echo -e "${GREEN}🚀 启动信号可信的VIBE部署配置...${NC}"
             process_vibe_deploy "$args"
             ;;
         "align")
-            echo -e "${GREEN}🔗 启动VIBE对齐验证...${NC}"
+            echo -e "${GREEN}🔗 启动认知可审计的VIBE对齐验证...${NC}"
             process_vibe_align "$args"
             ;;
         "check")
-            echo -e "${GREEN}✅ 启动VIBE质量检查...${NC}"
+            echo -e "${GREEN}✅ 启动宪法门禁的VIBE质量检查...${NC}"
             process_vibe_check "$args"
             ;;
         "stats")
@@ -2630,10 +2630,10 @@ process_vibe_start() {
 
     # 调用VIBE服务进行项目初始化
     if [ -f "$CURSOR_DIR/core/vibe-services-integration.sh" ]; then
-        echo -e "${BLUE}🎯 启动VIBE服务...${NC}"
+        echo -e "${BLUE}⚖️ 启动宪法合规的VIBE服务...${NC}"
         # 这里可以调用具体的VIBE服务
-        echo -e "${GREEN}✅ VIBE项目创建流程已启动${NC}"
-        echo -e "${YELLOW}💡 接下来将按VIBE原则进行: 需求分析 → 文档化 → 分层开发 → 测试验证 → 对齐检查${NC}"
+        echo -e "${GREEN}✅ 宪法VIBE项目创建流程已启动${NC}"
+        echo -e "${YELLOW}💡 接下来将按宪法VIBE原则进行: 合规检查 → 意图分析 → 六维协议编排 → 专业开发 → 宪法审计${NC}"
     else
         echo -e "${RED}❌ VIBE服务不可用${NC}"
         return 1
@@ -2836,42 +2836,47 @@ process_vibe_example() {
 
 # VIBE帮助信息
 show_vibe_help() {
-    echo -e "${BLUE}🚀 VIBE Coding 智能开发总指挥${NC}"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${CYAN}🎯 VIBE核心理念: 文档驱动 + 测试先行 + 前后端对齐 + 智能化开发${NC}"
+    echo -e "${BLUE}🚀 VIBE Coding - AI共生宪法系统下的专业开发模式${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}⚖️🧠💬 AI共生宪法 + VIBE专业流程: 三大公理 + 六维协议 + 专业开发方法论${NC}"
     echo ""
-    echo -e "${GREEN}📋 可用命令:${NC}"
-    echo -e "  ${YELLOW}vibe start${NC}   [项目描述]    一键启动VIBE项目创建"
-    echo -e "  ${YELLOW}vibe prd${NC}     [需求描述]    生成产品需求文档"
-    echo -e "  ${YELLOW}vibe code${NC}    [功能描述]    智能代码生成"
-    echo -e "  ${YELLOW}vibe test${NC}    [测试描述]    测试驱动开发"
-    echo -e "  ${YELLOW}vibe deploy${NC}  [部署描述]    配置生产部署"
-    echo -e "  ${YELLOW}vibe align${NC}   [类型]       对齐验证检查"
-    echo -e "  ${YELLOW}vibe check${NC}   [类型] [目标] 质量门禁检查"
-    echo -e "  ${YELLOW}vibe stats${NC}   [类型]       开发统计信息"
-    echo -e "  ${YELLOW}vibe guide${NC}   [类型]       开发指南"
-    echo -e "  ${YELLOW}vibe example${NC} [类型]       使用示例"
-    echo -e "  ${YELLOW}vibe services${NC}            VIBE服务状态"
-    echo -e "  ${YELLOW}vibe help${NC}                显示此帮助信息"
+    echo -e "${GREEN}📋 宪法保障的VIBE开发命令:${NC}"
+    echo -e "  ${YELLOW}vibe start${NC}   [项目描述]    宪法合规的项目创建"
+    echo -e "  ${YELLOW}vibe prd${NC}     [需求描述]    宪法审计的产品需求文档"
+    echo -e "  ${YELLOW}vibe code${NC}    [功能描述]    六维协议的智能代码生成"
+    echo -e "  ${YELLOW}vibe test${NC}    [测试描述]    意图主权的测试驱动开发"
+    echo -e "  ${YELLOW}vibe deploy${NC}  [部署描述]    信号可信的生产部署"
+    echo -e "  ${YELLOW}vibe align${NC}   [类型]       认知可审计的对齐验证"
+    echo -e "  ${YELLOW}vibe check${NC}   [类型] [目标] 宪法门禁的质量检查"
+    echo -e "  ${YELLOW}vibe stats${NC}   [类型]       宪法留痕的开发统计"
+    echo -e "  ${YELLOW}vibe guide${NC}   [类型]       宪法指南和最佳实践"
+    echo -e "  ${YELLOW}vibe example${NC} [类型]       宪法合规的使用示例"
+    echo -e "  ${YELLOW}vibe services${NC}            VIBE服务宪法状态"
+    echo -e "  ${YELLOW}vibe help${NC}                显示宪法VIBE帮助信息"
     echo ""
-    echo -e "${GREEN}💡 使用示例:${NC}"
-    echo -e "  ${CYAN}vibe start 创建一个任务管理应用${NC}"
-    echo -e "  ${CYAN}vibe prd 设计在线教育平台产品需求${NC}"
-    echo -e "  ${CYAN}vibe code 生成用户认证模块${NC}"
-    echo -e "  ${CYAN}vibe test 编写完整的API测试${NC}"
+    echo -e "${GREEN}💡 宪法保障的使用示例:${NC}"
+    echo -e "  ${CYAN}vibe start 创建一个任务管理应用，支持团队协作${NC}"
+    echo -e "  ${CYAN}vibe prd 基于宪法协议设计电商平台产品需求${NC}"
+    echo -e "  ${CYAN}vibe code 按照六维协议生成用户认证模块${NC}"
+    echo -e "  ${CYAN}vibe test 为购物车功能生成宪法可追溯测试${NC}"
     echo -e "  ${CYAN}vibe align all${NC}"
     echo -e "  ${CYAN}vibe check quality-gate frontend${NC}"
     echo ""
-    echo -e "${GREEN}🔗 VIBE开发流程:${NC}"
-    echo -e "  1. 📋 需求分析 → 2. 📝 文档化 → 3. 💻 前端开发 → 4. 🔧 后端开发"
-    echo -e "  5. 🧪 测试验证 → 6. 🔗 对齐检查 → 7. 🚀 部署上线"
+    echo -e "${GREEN}🔗 宪法驱动的VIBE开发流程:${NC}"
+    echo -e "  1. ⚖️ 宪法合规检查 → 2. 🧠 Parser意图分析 → 3. 💻 Router智能编排"
+    echo -e "  4. 📋 VIBE专业服务 → 5. 🧪 六维协议执行 → 6. 🔗 宪法审计留痕"
+    echo -e "  7. 📊 质量门禁验证 → 8. 🚀 宪法保障部署"
     echo ""
-    echo -e "${GREEN}🎯 核心优势:${NC}"
-    echo -e "  • 📚 文档驱动: 任何开发从完整文档开始"
-    echo -e "  • 🏗️ 分层有序: 前端优先，后端跟随"
-    echo -e "  • 🧪 测试保障: 测试先于代码实现"
-    echo -e "  • 🔗 接口对齐: 前后端契约化开发"
-    echo -e "  • 📊 质量进化: 持续对齐验证和优化"
+    echo -e "${GREEN}🎯 宪法赋能的核心优势:${NC}"
+    echo -e "  • ⚖️ 三大公理强制: 意图主权、信号可信、认知可审计"
+    echo -e "  • 🧠 六维交互协议: D1-D6完整协议的智能协作体验"
+    echo -e "  • 📚 宪法VIBE文档驱动: 宪法合规下的文档先行开发"
+    echo -e "  • 🏗️ 分层宪法开发: 前端优先，后端跟随，宪法质量保障"
+    echo -e "  • 🧪 测试宪法先行: 测试计划基于宪法审计的可靠性保障"
+    echo -e "  • 🔗 接口宪法对齐: 前后端契约化开发，信号链可追溯"
+    echo -e "  • 📊 宪法质量进化: 持续宪法审计和质量优化"
+    echo ""
+    echo -e "${PURPLE}🎉 立即开始你的宪法VIBE开发之旅: ${CYAN}vibe start 你的项目需求描述${NC}"
 }
 
 # 🔧 统一调用处理器：处理 rule/script/skill/hook 直接调用

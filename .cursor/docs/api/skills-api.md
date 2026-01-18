@@ -399,7 +399,7 @@ echo "Test React component development" | cursor-chat
 
 ```bash
 # 查看技能使用统计
-cat .cursor/logs/skill-usage.json
+cat .cursorGrowth/ai/skills/skill-usage.json
 
 # 生成使用报告
 .cursor/features/automation/scripts/skill-report.sh

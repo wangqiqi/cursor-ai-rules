@@ -571,7 +571,7 @@ class MasterCommandExecutor {
      */
     async logConstitutionEvent(eventType, data) {
         try {
-            const logDir = path.join(this.cursorDir, 'logs');
+            const logDir = path.join(this.projectRoot, '.cursorGrowth', 'monitoring', 'logs');
             if (!fs.existsSync(logDir)) {
                 fs.mkdirSync(logDir, { recursive: true });
             }

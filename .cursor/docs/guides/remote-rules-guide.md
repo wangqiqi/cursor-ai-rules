@@ -486,7 +486,7 @@ curl -I https://github.com
 ./cursor-master.sh "validate package <package-name>"
 
 # 查看错误日志
-cat .cursor/logs/remote-import.log
+cat .cursorGrowth/monitoring/logs/remote-import.log
 
 # 手动导入
 ./cursor-master.sh "import package <package-name> --force"
@@ -514,7 +514,7 @@ export CURSOR_DEBUG=remote
 ./cursor-master.sh "import remote rules --debug"
 
 # 查看调试日志
-tail -f .cursor/logs/remote-debug.log
+tail -f .cursorGrowth/monitoring/logs/remote-debug.log
 ```
 
 ## 📚 最佳实践
