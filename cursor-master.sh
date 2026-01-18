@@ -130,6 +130,8 @@ NC='\033[0m' # No Color
 analyze_user_intent() {
     local user_input="$1"
 
+    echo "🧠 ===== 进入analyze_user_intent函数 =====" >&2
+    echo "🧠 user_input: '$user_input'" >&2
     echo "🧠 正在分析用户意图..." >&2
 
     # 🚀 阶段1.1: Token优化 - 上下文池集成
@@ -196,6 +198,28 @@ perform_full_intent_analysis() {
     intent_type="unknown"
     confidence=0
     actions=()
+
+    # 🎯 阶段0: 智能能力映射 (新增)
+    if [ -f "$CURSOR_DIR/core/smart-intent-matcher.sh" ]; then
+        # 直接调用智能匹配器并解析JSON结果
+        local smart_match_result=$(bash "$CURSOR_DIR/core/smart-intent-matcher.sh" "$user_input" "" "json" 2>/dev/null)
+        local json_result=$(echo "$smart_match_result" | grep -o '{.*}' | tail -n1 || echo "{}")
+
+        if echo "$json_result" | jq -r '.matched // false' 2>/dev/null | grep -q "true"; then
+            local matched_capability=$(echo "$json_result" | jq -r '.capability // empty' 2>/dev/null)
+            local confidence_score=$(echo "$json_result" | jq -r '.match_details.confidence // 0' 2>/dev/null)
+
+            # 映射到对应的intent_type
+            case "$matched_capability" in
+                "commit_code")
+                    intent_type="git_commit"
+                    confidence=${confidence_score:-90}
+                    actions=("git-commit")  # 使用execute_action中定义的动作名
+                    return  # 智能匹配成功，直接返回
+                    ;;
+            esac
+        fi
+    fi
 
     # 1. 预处理：清理和标准化输入
     local clean_input=$(echo "$user_input" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-zA-Z0-9\u4e00-\u9fff ]//g')
@@ -756,6 +780,8 @@ map_capabilities_from_json() {
 # 🎯 增强的意图分析 (结合JSON映射)
 enhanced_intent_analysis() {
     local user_input="$1"
+    echo "🎯 ===== 进入enhanced_intent_analysis函数 =====" >&2
+    echo "🎯 user_input: '$user_input'" >&2
     local intent_result=$(analyze_user_intent "$user_input")
 
     # 提取意图类型
@@ -1688,6 +1714,8 @@ EOF
 # 🎯 智能主函数
 intelligent_master() {
     local user_input="$1"
+    echo "🎯 ===== 进入intelligent_master函数 =====" >&2
+    echo "🎯 user_input: '$user_input'" >&2
 
     # 🎯 VIBE命令检测和处理
     if echo "$user_input" | grep -q "^@vibe" || echo "$user_input" | grep -q "^vibe"; then

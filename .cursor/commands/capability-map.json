@@ -264,6 +264,111 @@
         "智能提交",
         "标准化提交"
       ],
+      "smart_matching": {
+        "enabled": true,
+        "fuzzy_matching": {
+          "enabled": true,
+          "similarity_threshold": 0.8,
+          "levenshtein_distance": 2
+        },
+        "synonym_support": {
+          "enabled": true,
+          "synonyms": {
+            "提交": [
+              "commit",
+              "保存",
+              "存储",
+              "入库",
+              "checkin"
+            ],
+            "代码": [
+              "code",
+              "源码",
+              "程序",
+              "文件",
+              "changes"
+            ],
+            "更改": [
+              "修改",
+              "变更",
+              "更新",
+              "变动",
+              "changes"
+            ],
+            "推送": [
+              "push",
+              "上传",
+              "发布",
+              "同步",
+              "upload"
+            ],
+            "智能": [
+              "smart",
+              "自动",
+              "智慧",
+              "智能",
+              "auto"
+            ],
+            "标准化": [
+              "standard",
+              "规范",
+              "统一",
+              "standardized"
+            ]
+          }
+        },
+        "punctuation_handling": {
+          "enabled": true,
+          "ignore_punctuation": [
+            "!",
+            "？",
+            "?",
+            ".",
+            "。",
+            ",",
+            "，",
+            ":",
+            "："
+          ],
+          "normalize_spaces": true
+        },
+        "semantic_rules": {
+          "enabled": true,
+          "intent_patterns": [
+            {
+              "pattern": "(提交|保存|commit).*?(代码|更改|文件)",
+              "confidence_boost": 0.2,
+              "context_keywords": [
+                "git",
+                "版本控制",
+                "代码库"
+              ]
+            },
+            {
+              "pattern": "(推送|上传|push).*?(代码|更改)",
+              "confidence_boost": 0.15,
+              "implies_commit": true
+            },
+            {
+              "pattern": "(智能|自动|智慧).*?(提交|保存)",
+              "confidence_boost": 0.1,
+              "preferred_script": "enhanced-git-commit.sh"
+            }
+          ]
+        },
+        "context_awareness": {
+          "enabled": true,
+          "git_context": {
+            "check_uncommitted": true,
+            "check_staged": true,
+            "boost_if_changes": 0.3
+          },
+          "project_context": {
+            "check_cursor_dir": true,
+            "boost_if_cursor_project": 0.2
+          }
+        }
+      },
       "capabilities": {
         "rules": [
           "intelligent_evolution",
@@ -5246,7 +5351,11 @@
         "report_format": "comprehensive",
         "include_historical": true,
         "generate_recommendations": true,
-        "export_formats": ["json", "html", "text"]
+        "export_formats": [
+          "json",
+          "html",
+          "text"
+        ]
       },
       "validation_rules": {
         "require_quality_data": true,

@@ -446,14 +446,14 @@ if [ ! -d "$CURSOR_GROWTH" ]; then
     fi
 fi
 
-ensure_directory_structure
+init_growth_directories
 validate_project_root_cache  # 确保缓存文件正确
 
 if [[ "${VERIFY_DIRS:-0}" == "1" ]]; then
     if ! verify_growth_structure; then
         echo "⚠️  项目[$PROJECT_DISPLAY_NAME]目录结构不完整，正在修复..."
         cleanup_non_standard_dirs
-        ensure_directory_structure
+        init_growth_directories
         verify_growth_structure
     fi
 fi
