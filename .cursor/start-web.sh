@@ -55,12 +55,20 @@ echo ""
 echo "按 Ctrl+C 停止服务器"
 echo ""
 
+# 确保.cursorGrowth目录存在
+GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
+WEB_DIR="$SCRIPT_DIR/web"
+PID_DIR="$GROWTH_DIR/web"
+
+mkdir -p "$PID_DIR"
+
 # 启动服务器并在后台运行
-cd "$SCRIPT_DIR/web"
+cd "$WEB_DIR"
 nohup node server.js > server.log 2>&1 &
-echo $! > server.pid
+echo $! > "$PID_DIR/server.pid"
 cd "$PROJECT_ROOT"
 
-echo "✅ Web服务器已在后台启动 (PID: $(cat "$SCRIPT_DIR/web/server.pid"))"
-echo "📝 日志文件: $SCRIPT_DIR/web/server.log"
+echo "✅ Web服务器已在后台启动 (PID: $(cat "$PID_DIR/server.pid"))"
+echo "📝 日志文件: $WEB_DIR/server.log"
+echo "📍 PID文件: $PID_DIR/server.pid"
 echo "🛑 要停止服务器，请运行: $SCRIPT_DIR/stop-web.sh"
