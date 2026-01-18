@@ -1141,10 +1141,15 @@ if (require.main === module) {
     const input = args.join(' ');
 
     handler.execute(input).then(result => {
-        console.log('执行结果:', result);
+        // 返回JSON格式的结果供Web界面解析
+        console.log(JSON.stringify(result, null, 2));
         process.exit(result.success ? 0 : 1);
     }).catch(error => {
-        console.error('执行失败:', error);
+        console.error(JSON.stringify({
+            success: false,
+            error: error.message,
+            stack: error.stack
+        }));
         process.exit(1);
     });
 }
@@ -1197,10 +1202,15 @@ if (require.main === module) {
     const input = args.join(' ');
 
     handler.execute(input).then(result => {
-        console.log('执行结果:', result);
+        // 返回JSON格式的结果供Web界面解析
+        console.log(JSON.stringify(result, null, 2));
         process.exit(result.success ? 0 : 1);
     }).catch(error => {
-        console.error('执行失败:', error);
+        console.error(JSON.stringify({
+            success: false,
+            error: error.message,
+            stack: error.stack
+        }));
         process.exit(1);
     });
 }
