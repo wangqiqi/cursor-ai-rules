@@ -244,51 +244,160 @@
       }
     },
     "commit_code": {
-      "description": "提交代码到Git",
+      "description": "智能提交代码到Git (增强版)",
       "intents": [
         "commit",
         "git",
         "save",
-        "push"
+        "push",
+        "提交代码",
+        "git commit",
+        "保存更改",
+        "推送代码"
       ],
       "confidence_threshold": 0.9,
       "user_examples": [
         "提交代码",
         "git commit",
         "保存更改",
-        "推送代码"
+        "推送代码",
+        "智能提交",
+        "标准化提交"
       ],
       "capabilities": {
         "rules": [
-          "intelligent_evolution"
+          "intelligent_evolution",
+          "conventional_commits"
         ],
         "scripts": [
-          "core/git-commit.sh"
+          "core/enhanced-git-commit.sh"
         ],
         "hooks": [
-          "features/hooks/code-quality.sh"
+          "features/hooks/pre-commit-analyzer.sh",
+          "features/hooks/commit-message-validator.sh",
+          "features/hooks/code-quality.sh",
+          "features/hooks/consistency-check.sh",
+          "features/hooks/post-commit-logger.sh"
+        ],
+        "mcp_tools": [
+          {
+            "intent": "git_intelligent_commit",
+            "tool": "mcp_git_smart_commit",
+            "server": "mcp-git",
+            "priority": "high"
+          }
         ],
         "workflows": [
-          "stage",
-          "commit",
-          "push"
+          "enhanced-analysis",
+          "standard-commit",
+          "quality-assurance",
+          "post-commit-logging"
         ]
       },
       "execution_order": [
         "hooks",
+        "mcp_tools",
         "scripts",
         "workflows"
       ],
       "parameters": {
         "auto_stage": true,
-        "generate_message": true,
-        "push_after_commit": true
+        "deep_analysis": true,
+        "conventional_commits": true,
+        "quality_checks": true,
+        "mcp_enhancement": true,
+        "push_after_commit": false,
+        "generate_changelog": false
       },
       "validation_rules": {
         "message_format": "type(scope): description",
         "max_line_length": 72,
-        "require_tests": true
+        "require_conventional_commits": true,
+        "complexity_analysis": true,
+        "quality_gates": true
       }
+    },
+    "enhanced_commit": {
+      "description": "增强版智能Git提交 (深度分析+MCP+标准化)",
+      "intents": [
+        "enhanced_commit",
+        "smart_commit",
+        "standard_commit",
+        "advanced_commit",
+        "提交代码",
+        "智能提交",
+        "标准化提交"
+      ],
+      "confidence_threshold": 0.95,
+      "user_examples": [
+        "智能提交代码",
+        "标准化提交",
+        "增强版提交",
+        "深度分析后提交",
+        "使用增强提交"
+      ],
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution",
+          "conventional_commits"
+        ],
+        "scripts": [
+          "core/enhanced-git-commit.sh"
+        ],
+        "hooks": [
+          "features/hooks/pre-commit-analyzer.sh",
+          "features/hooks/commit-message-validator.sh",
+          "features/hooks/code-quality.sh",
+          "features/hooks/consistency-check.sh",
+          "features/hooks/post-commit-logger.sh"
+        ],
+        "mcp_tools": [
+          {
+            "intent": "git_intelligent_analysis",
+            "tool": "mcp_git_smart_analyze",
+            "server": "mcp-git",
+            "priority": "high"
+          },
+          {
+            "intent": "git_standard_commit",
+            "tool": "mcp_git_conventional_commit",
+            "server": "mcp-git",
+            "priority": "high"
+          }
+        ],
+        "workflows": [
+          "enhanced-analysis",
+          "standard-commit",
+          "quality-assurance",
+          "post-commit-logging"
+        ]
+      },
+      "execution_order": [
+        "hooks",
+        "mcp_tools",
+        "scripts",
+        "workflows"
+      ],
+      "parameters": {
+        "auto_stage": true,
+        "deep_analysis": true,
+        "conventional_commits": true,
+        "quality_checks": true,
+        "mcp_enhancement": true,
+        "push_after_commit": false,
+        "generate_changelog": false
+      },
+      "validation_rules": {
+        "message_format": "type(scope): description",
+        "max_line_length": 72,
+        "require_conventional_commits": true,
+        "complexity_analysis": true,
+        "quality_gates": true
+      },
+      "fallback_strategies": [
+        "traditional_commit",
+        "basic_commit"
+      ]
     },
     "run_tests": {
       "description": "运行测试",

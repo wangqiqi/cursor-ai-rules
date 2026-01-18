@@ -296,6 +296,14 @@ perform_full_intent_analysis() {
         intent_type="commit_code"
         confidence=90
         actions=("git-commit")
+    elif echo "$user_input" | grep -qiE "(智能提交|增强提交|深度提交|标准化提交|enhanced.*commit|smart.*commit)"; then
+        intent_type="enhanced_commit"
+        confidence=95
+        actions=("enhanced-git-commit")
+    elif echo "$user_input" | grep -qiE "(预览提交|检查提交|commit.*preview|commit.*check)"; then
+        intent_type="commit_preview"
+        confidence=85
+        actions=("enhanced-git-commit-preview")
 
     # 学习和生长系列
     elif echo "$user_input" | grep -qiE "(学习|learn|study).*模式"; then
@@ -866,8 +874,16 @@ make_decision() {
             explanation="安全审计，识别和修复安全漏洞"
             ;;
         "commit_code")
-            execution_plan=("git-commit")
-            explanation="提交代码变更到Git仓库"
+            execution_plan=("enhanced-git-commit")
+            explanation="执行智能Git提交，包含深度分析、标准化消息和质量保证"
+            ;;
+        "enhanced_commit")
+            execution_plan=("enhanced-git-commit")
+            explanation="执行增强版智能Git提交，包含深度分析、标准化消息和质量保证"
+            ;;
+        "commit_preview")
+            execution_plan=("enhanced-git-commit-preview")
+            explanation="预览增强版Git提交内容，不执行实际提交"
             ;;
         "learn_project_patterns")
             execution_plan=("analyze-growth-data")
@@ -989,55 +1005,56 @@ execute_action() {
             fi
             ;;
         "git-commit")
-            echo -e "${BLUE}🔄 执行Git提交流程...${NC}"
+            echo -e "${BLUE}🚀 执行智能Git提交流程...${NC}"
 
-            # 检查Git状态
-            if ! git rev-parse --git-dir > /dev/null 2>&1; then
-                echo -e "${RED}❌ 当前目录不是Git仓库${NC}"
-                return 1
-            fi
-
-            # 检查是否有未提交的更改
-            if [ -z "$(git status --porcelain)" ]; then
-                echo -e "${YELLOW}⚠️  没有发现未提交的更改${NC}"
-                return 0
-            fi
-
-            # 自动暂存所有更改
-            echo -e "${BLUE}📦 暂存所有更改...${NC}"
-            git add .
-
-            # 生成提交信息
-            echo -e "${BLUE}📝 生成提交信息...${NC}"
-            local commit_message="feat: update project files"
-
-            # 检查是否有具体的更改类型
-            if git diff --cached --name-only | grep -q "\.md$"; then
-                commit_message="docs: update documentation"
-            elif git diff --cached --name-only | grep -q "\.(js\|ts\|jsx\|tsx)$"; then
-                commit_message="feat: update code"
-            elif git diff --cached --name-only | grep -q "\.(json\|yaml\|yml)$"; then
-                commit_message="config: update configuration"
-            fi
-
-            # 执行提交
-            echo -e "${BLUE}💾 提交更改...${NC}"
-            if git commit -m "$commit_message"; then
-                echo -e "${GREEN}✅ 代码提交成功${NC}"
-
-                # 询问是否推送
-                echo -e "${BLUE}🔄 是否推送到远程仓库？(y/N)${NC}"
-                read -r -t 10 push_choice
-                if [ "$push_choice" = "y" ] || [ "$push_choice" = "Y" ]; then
-                    echo -e "${BLUE}📤 推送代码...${NC}"
-                    if git push; then
-                        echo -e "${GREEN}✅ 代码推送成功${NC}"
-                    else
-                        echo -e "${YELLOW}⚠️  推送失败，请手动推送${NC}"
-                    fi
+            # 调用增强版提交脚本 (现在所有提交都是智能的)
+            if [ -f "$CURSOR_DIR/core/enhanced-git-commit.sh" ]; then
+                bash "$CURSOR_DIR/core/enhanced-git-commit.sh"
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 智能Git提交执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 智能Git提交执行失败${NC}"
+                    return $exit_code
                 fi
             else
-                echo -e "${RED}❌ 提交失败${NC}"
+                echo -e "${RED}❌ 未找到智能Git提交脚本${NC}"
+                return 1
+            fi
+            ;;
+        "enhanced-git-commit")
+            echo -e "${BLUE}🚀 执行增强版智能Git提交流程...${NC}"
+
+            # 调用增强版提交脚本
+            if [ -f "$CURSOR_DIR/core/enhanced-git-commit.sh" ]; then
+                bash "$CURSOR_DIR/core/enhanced-git-commit.sh"
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 增强版Git提交执行完成${NC}"
+                else
+                    echo -e "${RED}❌ 增强版Git提交执行失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到增强版Git提交脚本${NC}"
+                return 1
+            fi
+            ;;
+        "enhanced-git-commit-preview")
+            echo -e "${BLUE}🔍 执行增强版Git提交预览...${NC}"
+
+            # 调用增强版提交脚本的预览模式
+            if [ -f "$CURSOR_DIR/core/enhanced-git-commit.sh" ]; then
+                bash "$CURSOR_DIR/core/enhanced-git-commit.sh" --dry-run
+                local exit_code=$?
+                if [ $exit_code -eq 0 ]; then
+                    echo -e "${GREEN}✅ 增强版Git提交预览完成${NC}"
+                else
+                    echo -e "${RED}❌ 增强版Git提交预览失败${NC}"
+                    return $exit_code
+                fi
+            else
+                echo -e "${RED}❌ 未找到增强版Git提交脚本${NC}"
                 return 1
             fi
             ;;
@@ -1476,7 +1493,7 @@ decompose_plan_into_agent_tasks() {
                 tasks=$(echo "$tasks" | jq '. + ["运行ESLint代码检查"]')
                 ;;
             "git-commit")
-                tasks=$(echo "$tasks" | jq '. + ["提交代码到Git仓库"]')
+                tasks=$(echo "$tasks" | jq '. + ["智能提交代码到Git仓库"]')
                 ;;
             "plugin_manager")
                 tasks=$(echo "$tasks" | jq '. + ["管理项目插件和扩展"]')

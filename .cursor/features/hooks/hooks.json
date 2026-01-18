@@ -140,6 +140,36 @@
         "enabled": true
       }
     ],
+    "preCommitAnalysis": [
+      {
+        "name": "pre-commit-analyzer",
+        "description": "预提交深度分析",
+        "command": "features/hooks/pre-commit-analyzer.sh",
+        "timeout": 15000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "commitMessageValidation": [
+      {
+        "name": "commit-message-validator",
+        "description": "提交消息格式验证",
+        "command": "features/hooks/commit-message-validator.sh",
+        "timeout": 5000,
+        "async": false,
+        "enabled": true
+      }
+    ],
+    "postCommitLogging": [
+      {
+        "name": "post-commit-logger",
+        "description": "后提交日志记录和分析",
+        "command": "features/hooks/post-commit-logger.sh",
+        "timeout": 10000,
+        "async": true,
+        "enabled": true
+      }
+    ],
     "onSessionEnd": [
       {
         "name": "cursor-sync",
