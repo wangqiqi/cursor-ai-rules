@@ -4,6 +4,14 @@
   "hooks": {
     "onSessionStart": [
       {
+        "name": "role-activation",
+        "description": "会话开始角色系统初始化",
+        "command": "features/hooks/role-activation.sh",
+        "timeout": 8000,
+        "async": true,
+        "enabled": true
+      },
+      {
         "name": "env-perception",
         "description": "会话开始环境感知",
         "command": "features/hooks/env-perception.sh",
@@ -139,6 +147,14 @@
       }
     ],
     "beforeSubmitPrompt": [
+      {
+        "name": "role-activation",
+        "description": "自动角色激活 - 在.cursor规则执行前激活当前项目角色",
+        "command": "features/hooks/role-activation.sh",
+        "timeout": 8000,
+        "async": false,
+        "enabled": true
+      },
       {
         "name": "context-management",
         "description": "智能上下文管理",

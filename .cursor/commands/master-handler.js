@@ -282,6 +282,17 @@ class MasterCommandHandler {
 
     async executeScript(scriptPath, parameters = {}) {
         try {
+            // 🎭 在执行脚本前激活角色
+            console.log(`🎭 检查角色激活状态...`);
+            if (this.roleManager) {
+                const currentRoleInfo = this.roleManager.getCurrentRole();
+                if (currentRoleInfo.success) {
+                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+                } else {
+                    console.log(`⚠️ 角色系统状态未知`);
+                }
+            }
+
             // 查找脚本文件 (支持子目录)
             let fullPath = path.join(this.cursorDir, scriptPath);
 
@@ -389,6 +400,17 @@ class MasterCommandHandler {
         console.log(`📏 执行规则: ${ruleName}`);
 
         try {
+            // 🎭 在执行规则前激活角色
+            console.log(`🎭 检查角色激活状态...`);
+            if (this.roleManager) {
+                const currentRoleInfo = this.roleManager.getCurrentRole();
+                if (currentRoleInfo.success) {
+                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+                } else {
+                    console.log(`⚠️ 角色系统状态未知`);
+                }
+            }
+
             console.log(`📂 查找规则文件: ${ruleName}`);
             // 检查规则文件是否存在 (支持子目录)
             let rulePath = path.join(this.cursorDir, 'rules', `${ruleName}.md`);
@@ -475,6 +497,17 @@ class MasterCommandHandler {
         console.log(`🎯 执行技能: ${skillName}`);
 
         try {
+            // 🎭 在执行技能前激活角色
+            console.log(`🎭 检查角色激活状态...`);
+            if (this.roleManager) {
+                const currentRoleInfo = this.roleManager.getCurrentRole();
+                if (currentRoleInfo.success) {
+                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+                } else {
+                    console.log(`⚠️ 角色系统状态未知`);
+                }
+            }
+
             // 使用skills-loader.sh执行技能
             const loaderScript = path.join(this.cursorDir, 'core', 'skills-loader.sh');
 

@@ -11,6 +11,28 @@ class MasterCommandExecutor {
         this.cursorDir = path.join(projectRoot, '.cursor');
         this.executionTimeout = 30000; // 30秒默认超时
         this.maxConcurrency = 3; // 最大并发数
+
+        // 初始化角色管理器
+        this.roleManager = null;
+        this.initializeRoleManager();
+    }
+
+    /**
+     * 初始化角色管理器
+     */
+    async initializeRoleManager() {
+        try {
+            const RoleManager = require('./role-manager');
+            this.roleManager = new RoleManager(this.cursorDir, this.projectRoot);
+            await this.roleManager.initialize();
+            console.log('🎭 执行器角色管理器初始化成功');
+        } catch (error) {
+            console.warn('⚠️ 执行器角色管理器初始化失败:', error.message);
+            // 创建简化的备用系统
+            this.roleManager = {
+                getCurrentRole: () => ({ success: true, role: { id: 'professional_assistant', name: '专业助手' } })
+            };
+        }
     }
 
     /**
@@ -467,6 +489,17 @@ class MasterCommandExecutor {
         console.log(`📏 执行规则: ${ruleName}`);
 
         try {
+            // 🎭 在执行规则前激活角色
+            console.log(`🎭 检查角色激活状态...`);
+            if (this.roleManager) {
+                const currentRoleInfo = this.roleManager.getCurrentRole();
+                if (currentRoleInfo.success) {
+                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+                } else {
+                    console.log(`⚠️ 角色系统状态未知`);
+                }
+            }
+
             // 查找规则文件
             let rulePath = this.findRuleFile(ruleName);
             if (!rulePath) {
@@ -578,6 +611,17 @@ class MasterCommandExecutor {
         console.log(`🔧 执行脚本: ${scriptName}`);
 
         try {
+            // 🎭 在执行脚本前激活角色
+            console.log(`🎭 检查角色激活状态...`);
+            if (this.roleManager) {
+                const currentRoleInfo = this.roleManager.getCurrentRole();
+                if (currentRoleInfo.success) {
+                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+                } else {
+                    console.log(`⚠️ 角色系统状态未知`);
+                }
+            }
+
             let scriptPath = path.join(this.cursorDir, scriptName);
 
             // 如果不存在，尝试在子目录中查找
@@ -623,6 +667,17 @@ class MasterCommandExecutor {
         console.log(`🎯 执行技能: ${skillName}`);
 
         try {
+            // 🎭 在执行技能前激活角色
+            console.log(`🎭 检查角色激活状态...`);
+            if (this.roleManager) {
+                const currentRoleInfo = this.roleManager.getCurrentRole();
+                if (currentRoleInfo.success) {
+                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+                } else {
+                    console.log(`⚠️ 角色系统状态未知`);
+                }
+            }
+
             const loaderScript = path.join(this.cursorDir, 'core', 'skills-loader.sh');
 
             if (!fs.existsSync(loaderScript)) {
