@@ -130,7 +130,7 @@ class RoleManager {
     }
 
     /**
-     * 获取当前角色信息
+     * 获取当前角色信息，包含丰富的灵魂和感官描述
      */
     getCurrentRole() {
         if (!this.currentRole || !this.personalitySystem.roles[this.currentRole]) {
@@ -140,13 +140,65 @@ class RoleManager {
             };
         }
 
+        const roleConfig = this.personalitySystem.roles[this.currentRole];
+        const enhancedRole = {
+            id: this.currentRole,
+            ...roleConfig
+        };
+
+        // 添加活跃状态描述
+        enhancedRole.status = "活跃中";
+        enhancedRole.activation_message = this.generateActivationMessage(roleConfig);
+
         return {
             success: true,
-            role: {
-                id: this.currentRole,
-                ...this.personalitySystem.roles[this.currentRole]
-            }
+            role: enhancedRole,
+            personality_insight: this.generatePersonalityInsight(roleConfig)
         };
+    }
+
+    /**
+     * 生成角色激活时的个性化消息
+     */
+    generateActivationMessage(roleConfig) {
+        let message = `🎭 ${roleConfig.name}已激活！`;
+
+        if (roleConfig.personality_traits && roleConfig.personality_traits.inner_voice) {
+            message += `\n💭 ${roleConfig.personality_traits.inner_voice}`;
+        }
+
+        if (roleConfig.sensory_reactions) {
+            const primarySense = roleConfig.sensory_reactions.hearing ||
+                               roleConfig.sensory_reactions.vision ||
+                               Object.values(roleConfig.sensory_reactions)[0];
+            if (primarySense) {
+                message += `\n🔍 ${primarySense}`;
+            }
+        }
+
+        return message;
+    }
+
+    /**
+     * 生成角色人格洞察
+     */
+    generatePersonalityInsight(roleConfig) {
+        const insights = [];
+
+        if (roleConfig.personality_traits) {
+            if (roleConfig.personality_traits.core_values) {
+                insights.push(`核心价值观：${roleConfig.personality_traits.core_values.join(' · ')}`);
+            }
+            if (roleConfig.personality_traits.thinking_patterns) {
+                insights.push(`思维模式：${roleConfig.personality_traits.thinking_patterns}`);
+            }
+        }
+
+        if (roleConfig.sensory_reactions) {
+            insights.push(`感官特征：${Object.keys(roleConfig.sensory_reactions).length}种感官感知`);
+        }
+
+        return insights.length > 0 ? insights.join('\n') : '标准人格特征';
     }
 
     /**
@@ -236,7 +288,7 @@ class RoleManager {
     }
 
     /**
-     * 根据结果类型选择合适的欢迎语模板
+     * 根据结果类型选择合适的欢迎语模板，包含角色灵魂和感官描述
      */
     selectWelcomeTemplate(result, context = {}) {
         const currentRoleConfig = this.personalitySystem.roles[this.currentRole];
@@ -247,28 +299,133 @@ class RoleManager {
         const templates = currentRoleConfig.welcome_templates;
 
         // 根据结果类型选择模板
+        let selectedTemplate;
         if (result.success === false) {
-            return templates.error || templates.general || "⚠️ 处理遇到问题：\n\n{content}";
-        }
-
-        // 根据意图选择模板
-        if (context.intent) {
+            selectedTemplate = templates.error || templates.general || "⚠️ 处理遇到问题：\n\n{content}";
+        } else if (context.intent) {
             switch (context.intent) {
                 case 'learning':
-                    return templates.learning || templates.general;
+                    selectedTemplate = templates.learning || templates.general;
+                    break;
                 case 'creation':
                 case 'project':
-                    return templates.project || templates.general;
+                    selectedTemplate = templates.project || templates.general;
+                    break;
                 case 'optimization':
                 case 'code':
-                    return templates.code || templates.general;
+                    selectedTemplate = templates.code || templates.general;
+                    break;
                 default:
-                    return templates.general;
+                    selectedTemplate = templates.general;
+            }
+        } else {
+            selectedTemplate = templates.success || templates.general || "✅ 处理完成：\n\n{content}";
+        }
+
+        // 添加角色灵魂和感官描述
+        return this.enrichTemplateWithPersonality(selectedTemplate, result, context);
+    }
+
+    /**
+     * 用角色的个性特征丰富模板
+     */
+    enrichTemplateWithPersonality(template, result, context) {
+        const currentRoleConfig = this.personalitySystem.roles[this.currentRole];
+        let enrichedTemplate = template;
+
+        // 添加内心独白 (inner_voice)
+        if (currentRoleConfig.personality_traits && currentRoleConfig.personality_traits.inner_voice) {
+            enrichedTemplate += `\n\n💭 *${currentRoleConfig.personality_traits.inner_voice}*`;
+        }
+
+        // 根据结果类型添加情感反应
+        if (currentRoleConfig.personality_traits && currentRoleConfig.personality_traits.emotional_responses) {
+            const emotions = currentRoleConfig.personality_traits.emotional_responses;
+            let emotionText = '';
+
+            if (result.success === false) {
+                emotionText = emotions.failure || emotions.error;
+            } else if (result.success === true) {
+                emotionText = emotions.success;
+            } else if (context.intent === 'learning') {
+                emotionText = emotions.learning;
+            }
+
+            if (emotionText) {
+                enrichedTemplate += `\n\n💭 *${emotionText}*`;
             }
         }
 
-        // 默认使用成功模板
-        return templates.success || templates.general || "✅ 处理完成：\n\n{content}";
+        // 添加感官反应
+        if (currentRoleConfig.sensory_reactions) {
+            const senses = currentRoleConfig.sensory_reactions;
+            const senseReactions = [];
+
+            if (senses.hearing) senseReactions.push(`👂 ${senses.hearing}`);
+            if (senses.vision) senseReactions.push(`👁️ ${senses.vision}`);
+            if (senses.touch) senseReactions.push(`✋ ${senses.touch}`);
+            if (senses.intuition) senseReactions.push(`🔮 ${senses.intuition}`);
+
+            if (senseReactions.length > 0) {
+                enrichedTemplate += `\n\n*感官感知：*\n${senseReactions.join('\n')}`;
+            }
+        }
+
+        // 添加核心价值观标签
+        if (currentRoleConfig.personality_traits && currentRoleConfig.personality_traits.core_values) {
+            const values = currentRoleConfig.personality_traits.core_values;
+            enrichedTemplate += `\n\n🏷️ *秉持价值观：* ${values.join(' · ')}`;
+        }
+
+        return enrichedTemplate;
+    }
+
+    /**
+     * 根据角色语言模式生成个性化回应
+     */
+    generatePersonalizedResponse(responseType, context = {}) {
+        const currentRoleConfig = this.personalitySystem.roles[this.currentRole];
+        if (!currentRoleConfig || !currentRoleConfig.language_patterns) {
+            return null;
+        }
+
+        const patterns = currentRoleConfig.language_patterns;
+        let response = '';
+
+        // 根据回应类型选择合适的语言模式
+        switch (responseType) {
+            case 'greeting':
+                if (patterns.greetings && patterns.greetings.length > 0) {
+                    response = patterns.greetings[Math.floor(Math.random() * patterns.greetings.length)];
+                }
+                break;
+            case 'agreement':
+                if (patterns.agreement && patterns.agreement.length > 0) {
+                    response = patterns.agreement[Math.floor(Math.random() * patterns.agreement.length)];
+                }
+                break;
+            case 'confirmation':
+                if (patterns.confirmation && patterns.confirmation.length > 0) {
+                    response = patterns.confirmation[Math.floor(Math.random() * patterns.confirmation.length)];
+                }
+                break;
+            case 'apology':
+                if (patterns.apology && patterns.apology.length > 0) {
+                    response = patterns.apology[Math.floor(Math.random() * patterns.apology.length)];
+                }
+                break;
+        }
+
+        // 如果有额外的语言模式，随机添加一些
+        if (patterns.encouragement && Math.random() > 0.7) {
+            response += ' ' + patterns.encouragement[Math.floor(Math.random() * patterns.encouragement.length)];
+        }
+
+        if (patterns.casual_chat && Math.random() > 0.8) {
+            response += ' ' + patterns.casual_chat[Math.floor(Math.random() * patterns.casual_chat.length)];
+        }
+
+        return response || null;
     }
 
     /**
