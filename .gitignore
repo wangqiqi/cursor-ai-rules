@@ -11,6 +11,9 @@
 .cursor/**/*.log
 .cursor/**/*.pid
 
+# 项目角色配置（每个用户独立）
+.cursor-project.json
+
 # 旧版 Web 文件路径 (向后兼容)
 web/node_modules/
 web/package-lock.json

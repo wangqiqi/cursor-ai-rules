@@ -5,12 +5,14 @@ const path = require('path');
 const fs = require('fs');
 
 class RoleManager {
-    constructor(cursorDir) {
+    constructor(cursorDir, projectDir = null) {
         this.cursorDir = cursorDir;
+        this.projectDir = projectDir || process.cwd();
         this.personalitySystem = null;
         this.currentRole = null;
         this.roleHistory = [];
         this.maxHistorySize = 10;
+        this.projectRoleConfigPath = path.join(this.projectDir, '.cursor-project.json');
     }
 
     /**
@@ -46,9 +48,12 @@ class RoleManager {
             }
         }
 
-        // 设置默认角色
-        this.currentRole = this.personalitySystem.default_role;
-        this.addToHistory(this.currentRole, 'initialization');
+        // 加载项目特定角色配置，如果存在的话
+        const projectRoleConfig = this.loadProjectRoleConfig();
+
+        // 设置当前角色：优先使用项目配置，否则使用默认角色
+        this.currentRole = projectRoleConfig || this.personalitySystem.default_role;
+        this.addToHistory(this.currentRole, projectRoleConfig ? 'project_restore' : 'initialization');
     }
 
     /**
@@ -101,11 +106,14 @@ class RoleManager {
         this.currentRole = roleId;
         this.addToHistory(roleId, reason);
 
+        // 保存项目角色配置
+        await this.saveProjectRoleConfig(roleId);
+
         const roleConfig = this.personalitySystem.roles[roleId];
 
         return {
             success: true,
-            message: `角色切换成功！从 "${this.personalitySystem.roles[oldRole]?.name || oldRole}" 切换到 "${roleConfig.name}"`,
+            message: `角色切换成功！从 "${this.personalitySystem.roles[oldRole]?.name || oldRole}" 切换到 "${roleConfig.name}"\n项目配置已保存，下次打开项目时会自动恢复此角色。`,
             oldRole: oldRole,
             newRole: roleId,
             roleConfig: roleConfig
@@ -372,6 +380,68 @@ class RoleManager {
 
         } catch (error) {
             return { success: false, message: `导入失败: ${error.message}` };
+        }
+    }
+
+    /**
+     * 加载项目特定角色配置
+     */
+    loadProjectRoleConfig() {
+        try {
+            if (fs.existsSync(this.projectRoleConfigPath)) {
+                const content = fs.readFileSync(this.projectRoleConfigPath, 'utf8');
+                const config = JSON.parse(content);
+
+                // 验证角色是否存在
+                if (config.currentRole && this.personalitySystem?.roles[config.currentRole]) {
+                    console.log(`✅ 加载项目角色配置: ${config.currentRole}`);
+                    return config.currentRole;
+                } else {
+                    console.log('⚠️ 项目角色配置无效，使用默认角色');
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ 读取项目角色配置失败:', error.message);
+        }
+
+        return null;
+    }
+
+    /**
+     * 保存项目特定角色配置
+     */
+    async saveProjectRoleConfig(roleId) {
+        try {
+            const config = {
+                currentRole: roleId,
+                lastUpdated: new Date().toISOString(),
+                projectPath: this.projectDir
+            };
+
+            fs.writeFileSync(this.projectRoleConfigPath, JSON.stringify(config, null, 2), 'utf8');
+            console.log(`✅ 项目角色配置已保存: ${roleId}`);
+            return { success: true, message: "项目角色配置保存成功" };
+        } catch (error) {
+            console.error('❌ 保存项目角色配置失败:', error.message);
+            return { success: false, message: `保存失败: ${error.message}` };
+        }
+    }
+
+    /**
+     * 清除项目角色配置（重置为默认）
+     */
+    async clearProjectRoleConfig() {
+        try {
+            if (fs.existsSync(this.projectRoleConfigPath)) {
+                fs.unlinkSync(this.projectRoleConfigPath);
+                console.log('✅ 项目角色配置已清除');
+                return { success: true, message: "项目角色配置已清除" };
+            } else {
+                return { success: true, message: "项目角色配置不存在" };
+            }
+        } catch (error) {
+            console.error('❌ 清除项目角色配置失败:', error.message);
+            return { success: false, message: `清除失败: ${error.message}` };
         }
     }
 }

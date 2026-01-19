@@ -56,7 +56,7 @@ class MasterCommandHandler {
     async initializeRoleManager() {
         try {
             const RoleManager = require('./role-manager');
-            this.roleManager = new RoleManager(this.cursorDir);
+            this.roleManager = new RoleManager(this.cursorDir, this.projectRoot);
             await this.roleManager.initialize();
             console.log('🎭 角色管理器初始化成功');
         } catch (error) {
@@ -136,7 +136,12 @@ class MasterCommandHandler {
 
         // 检查是否是重置角色命令
         if (roleCommands.reset_role.test(input)) {
-            return await this.switchRole(this.roleManager?.personalitySystem?.default_role || 'professional_assistant');
+            const result = await this.switchRole(this.roleManager?.personalitySystem?.default_role || 'professional_assistant');
+            // 清除项目角色配置，恢复到默认状态
+            if (result.success && this.roleManager?.clearProjectRoleConfig) {
+                await this.roleManager.clearProjectRoleConfig();
+            }
+            return result;
         }
 
         return null; // 不是角色命令
