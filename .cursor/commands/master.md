@@ -1,3 +1,11 @@
+---
+command: master
+description: "🎯 Master智能命令中心 - 统一AI编程助手入口，提供全方位的开发支持和智能指导"
+alwaysApply: true
+handler: "./master-handler.js"
+context: ["currentFile", "selectedText", "cursorPosition", "openFiles", "workspace", "projectStructure"]
+---
+
 # 🎯 Master智能命令中心
 
 ## 概述
@@ -24,6 +32,51 @@ Cursor AI Rules的智能Master控制器 - 你的AI编程助手和命令中心，
 - **CI/CD配置**: 自动化流水线设计和实现
 - **容器化方案**: Docker和Kubernetes部署指导
 - **监控告警**: 系统监控和日志收集方案
+
+## 🔄 工作流程
+
+### 🎯 Master智能处理流程
+
+```mermaid
+graph TD
+    A[用户输入 /master] --> B[宪法合规检查]
+    B --> C{是否合规?}
+    C -->|合规| D[Parser意图分析]
+    C -->|违规| E[STOP机制 + 合规响应]
+    D --> F[Router智能编排]
+    F --> G[能力映射查询]
+    G --> H[执行器分发]
+    H --> I[规则系统]
+    H --> J[技能系统]
+    H --> K[脚本系统]
+    H --> L[MCP工具]
+    I --> M[结果整合]
+    J --> M
+    K --> M
+    L --> M
+    M --> N[学习优化]
+    N --> O[个性化反馈]
+```
+
+### 🧠 智能意图识别流程
+
+```mermaid
+graph TD
+    A[自然语言输入] --> B[上下文感知]
+    B --> C[技术栈检测]
+    C --> D[项目状态分析]
+    D --> E[意图分类]
+    E --> F{意图类型}
+    F -->|学习| G[学习路径推荐]
+    F -->|创建| H[项目脚手架生成]
+    F -->|优化| I[性能分析优化]
+    F -->|架构| J[架构设计方案]
+    G --> K[执行编排]
+    H --> K
+    I --> K
+    J --> K
+    K --> L[结果反馈]
+```
 
 ## 📋 命令使用指南
 
