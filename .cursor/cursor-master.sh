@@ -28,6 +28,39 @@ source "$SCRIPT_DIR/.cursor/core/path-config.sh"
 # 移除复杂的AI系统初始化，保持轻量级
 
 
+# 🧮 Token使用量估算函数
+estimate_tokens() {
+    local operation_type="$1"
+    local input_length="$2"
+
+    # 基于操作类型和输入长度的简单估算
+    case "$operation_type" in
+        "intelligent_operation")
+            # 智能操作的基础token消耗 + 输入长度估算
+            local base_tokens=100  # 基础系统开销
+            local input_tokens=$((input_length / 4))  # 粗略估算：每4个字符约1个token
+            local processing_tokens=50  # 处理开销
+            echo $((base_tokens + input_tokens + processing_tokens))
+            ;;
+        "analysis")
+            # 分析操作的token估算
+            local base_tokens=80
+            local input_tokens=$((input_length / 4))
+            echo $((base_tokens + input_tokens))
+            ;;
+        "learning")
+            # 学习操作的token估算
+            local base_tokens=120
+            local input_tokens=$((input_length / 4))
+            echo $((base_tokens + input_tokens))
+            ;;
+        *)
+            # 默认估算
+            echo $((input_length / 3))
+            ;;
+    esac
+}
+
 # 🌱 初始化项目生长目录
 GROWTH_DIR="$CURSOR_GROWTH"
 init_growth_directory() {

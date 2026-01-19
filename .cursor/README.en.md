@@ -2,7 +2,7 @@
 
 [![Cursor](https://img.shields.io/badge/Cursor-AI-blue?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
 [![Version](https://img.shields.io/badge/version-6.1.0--polite-green?style=for-the-badge)](https://github.com/wangqiqi/cursor-ai-rules/releases)
-[![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](.cursor/LICENSE)
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
@@ -265,48 +265,68 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 
 ## 🚀 Quick Start
 
-### 🌐 Method 1: Web UI Mode (Recommended)
+### 🎯 Four Usage Methods - Complete AI Programming Assistant
+
+#### **Method 1: Chat Command** `/master` (Recommended for Beginners)
 ```bash
-cd your-project
-# Place the .cursor directory in the project root
+# 💬 Input in Cursor IDE chat dialog
+/master Learn JavaScript basics
+/master Create a React project
+/master Optimize code performance
+/master Analyze project architecture
 
-# 🚀 Launch modern Web UI
-.cursor/start-web.sh
-
-# 🌐 Open in browser: http://localhost:3000
-
-# 💬 Natural language input:
-# "Create a React project"  # ⚖️ Constitution STOP mechanism activation
-# "Optimize code quality"   # 🔍 Smart analysis and fixes
-# "Analyze project status"  # 📊 Comprehensive diagnostics
+# ✨ Features: AI-enhanced understanding, natural language interaction, intelligent suggestions
+# 🚀 Start: No additional configuration needed, use directly in chat
 ```
 
-### 🧠 Method 2: Command Line Master Mode
+#### **Method 2: Code Comment Command** `@master` (Deep IDE Integration)
 ```bash
-# 🚀 Constitution-driven AI - Three axioms mandatory execution
-@master I want to create a React project  # ⚖️ Triggers constitution protection
-@master Need to optimize code quality     # 🛠️ Smart repair suggestions
-@master Help me analyze project status    # 📈 Performance monitoring reports
-@master Debug this error                  # 🔧 Smart error handling
-@master Set up CI/CD pipeline           # 🚀 Automated deployment
+# 🚀 Use in code comments
+// @master I want to create a React project  # ⚖️ Triggers constitution protection
+// @master Need to optimize code quality     # 🛠️ Smart repair suggestions
+// @master Help me analyze project status    # 📈 Performance monitoring reports
+// @master Debug this error                  # 🔧 Smart error handling
+// @master Set up CI/CD pipeline           # 🚀 Automated deployment
 
-# ✨ Polite Response Mode - Always responds politely
-@master any command  # Always responds with: "Boss, received, what can I do for you? Based on your question, I have the following suggestions!"
+# ✨ Features: IDE context awareness, constitution enforcement, polite response mode
+# 📍 Location: Any comment in code editor
 ```
 
-### 💬 Method 3: VIBE Development Methodology
+#### **Method 3: Terminal Script Command** `cursor-master.sh` (Batch Processing)
 ```bash
-# 📋 Documentation-driven development flow
+# 🖥️ Run directly in terminal
+.cursor/cursor-master.sh learn  # Start learning mode
+.cursor/cursor-master.sh create-react-project  # Project scaffolding
+.cursor/cursor-master.sh optimize-code-quality  # Smart code optimization
+.cursor/cursor-master.sh run-tests  # Automated test execution
+.cursor/cursor-master.sh deploy-app  # One-click deployment
+
+# ✨ Features: Script automation, batch processing, CI/CD integration
+# 📍 Location: Terminal in project root directory
+```
+
+#### **Method 4: Web GUI** (Modern Experience)
+```bash
+# 🌐 Launch modern web interface
+cd .cursor/web && npm install && npm start
+# Visit http://localhost:3000
+
+# ✨ Features: Modern UI, responsive design, real-time status monitoring
+# 🎨 Interface: Graphical operation, natural language input, execution history
+```
+
+### 💬 VIBE Development Methodology (All Methods Supported)
+```bash
+# 📋 Documentation-driven development flow (supports all four methods)
 @master VIBE project creation task management app
-
-# 🧪 Test-first development
+@master VIBE requirements analysis user management system
 @master VIBE code generation user login function
-
-# 🔗 Frontend-backend interface alignment
 @master VIBE interface alignment
-
-# 🚀 Quality gate verification
 @master VIBE quality check
+@master VIBE deployment configuration
+
+# ✨ VIBE: Documentation-driven, test-first, frontend-backend alignment
+```
 ```
 
 ### 🔗 Method 3: Master Smart Orchestration + VIBE Integration

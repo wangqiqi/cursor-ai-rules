@@ -264,8 +264,20 @@ class MasterCommandExecutor {
 
         const technology = parameters.technology || 'general';
 
-        // 提供学习资源
-        return this.createSuccessResult(`为您准备${technology}的学习资源，请查看相关文档`);
+        // 提供学习资源数据
+        const learningResources = this.generateLearningResources(technology);
+
+        return this.createSuccessResult(`为您准备${technology}的学习资源，请查看相关文档`, {
+            technology: technology,
+            resources: learningResources,
+            recommendedPath: this.getRecommendedLearningPath(technology),
+            nextSteps: [
+                '查看项目文档',
+                '运行示例代码',
+                '参与社区讨论',
+                '实践项目开发'
+            ]
+        });
     }
 
     /**
@@ -327,6 +339,112 @@ class MasterCommandExecutor {
         console.log(`🎯 处理通用意图: ${intent}`);
 
         return this.createSuccessResult(`已识别意图"${intent}"，功能开发中`);
+    }
+
+    /**
+     * 生成学习资源
+     * @param {string} technology - 技术名称
+     * @returns {Object} 学习资源
+     */
+    generateLearningResources(technology) {
+        const resources = {
+            general: {
+                documentation: [
+                    { title: '项目README', path: 'README.md', type: 'markdown' },
+                    { title: 'ROADMAP规划', path: 'ROADMAP.md', type: 'markdown' },
+                    { title: '智能Master控制器指南', path: '.cursor/README.md', type: 'markdown' }
+                ],
+                scripts: [
+                    { name: 'cursor-master.sh', description: '主控制器脚本', path: '.cursor/cursor-master.sh' },
+                    { name: 'env-perception.sh', description: '环境感知脚本', path: '.cursor/core/env-perception.sh' },
+                    { name: 'quality-manager.sh', description: '质量管理脚本', path: '.cursor/core/quality-manager.sh' }
+                ],
+                rules: [
+                    { name: 'constitution', description: 'AI共生宪法', path: '.cursor/rules/constitution.md' },
+                    { name: 'vibe-coding', description: 'VIBE开发原则', path: '.cursor/rules/vibe-coding.md' },
+                    { name: 'javascript', description: 'JavaScript开发规则', path: '.cursor/rules/javascript.md' }
+                ]
+            },
+            javascript: {
+                documentation: [
+                    { title: 'JavaScript开发规则', path: '.cursor/rules/javascript.md', type: 'markdown' },
+                    { title: 'ESLint配置', path: '.eslintrc.json', type: 'json' }
+                ],
+                examples: [
+                    { name: '智能Master处理器', path: '.cursor/commands/master-handler.js', type: 'javascript' },
+                    { name: '路由器实现', path: '.cursor/commands/master-router.js', type: 'javascript' },
+                    { name: '执行器逻辑', path: '.cursor/commands/master-executor.js', type: 'javascript' }
+                ]
+            },
+            react: {
+                documentation: [
+                    { title: 'React学习资源', path: 'https://reactjs.org/docs/getting-started.html', type: 'external' },
+                    { title: '现代React开发', path: 'https://beta.reactjs.org/', type: 'external' }
+                ],
+                examples: [
+                    { name: '组件开发模式', description: '学习React组件开发的最佳实践' },
+                    { name: '状态管理', description: '理解React状态管理和数据流' },
+                    { name: '性能优化', description: 'React应用性能优化技巧' }
+                ]
+            },
+            nodejs: {
+                documentation: [
+                    { title: 'Node.js官方文档', path: 'https://nodejs.org/docs/', type: 'external' },
+                    { title: 'Express框架', path: 'https://expressjs.com/', type: 'external' }
+                ],
+                examples: [
+                    { name: '服务器构建', path: '.cursor/commands/master-executor.js', type: 'javascript' },
+                    { name: 'API开发', description: 'RESTful API开发模式' },
+                    { name: '中间件使用', description: 'Express中间件开发' }
+                ]
+            }
+        };
+
+        return resources[technology] || resources.general;
+    }
+
+    /**
+     * 获取推荐学习路径
+     * @param {string} technology - 技术名称
+     * @returns {Array} 学习路径步骤
+     */
+    getRecommendedLearningPath(technology) {
+        const paths = {
+            general: [
+                '1. 阅读项目README.md了解项目概况',
+                '2. 查看ROADMAP.md了解开发规划',
+                '3. 运行.cursor/cursor-master.sh学习基本用法',
+                '4. 探索.cursor目录结构和规则',
+                '5. 尝试不同的智能命令',
+                '6. 参与项目贡献和发展'
+            ],
+            javascript: [
+                '1. 学习JavaScript基础语法和ES6+特性',
+                '2. 了解Node.js运行时和模块系统',
+                '3. 学习.cursor/rules/javascript.md规则',
+                '4. 分析现有JavaScript代码结构',
+                '5. 尝试修改和扩展功能',
+                '6. 学习测试和代码质量保证'
+            ],
+            react: [
+                '1. 学习React基础概念和组件',
+                '2. 理解JSX语法和虚拟DOM',
+                '3. 掌握状态管理和生命周期',
+                '4. 学习现代Hook API',
+                '5. 了解性能优化技巧',
+                '6. 实践项目开发'
+            ],
+            nodejs: [
+                '1. 了解Node.js事件循环和异步编程',
+                '2. 学习Express框架和中间件',
+                '3. 掌握RESTful API设计',
+                '4. 理解包管理和依赖管理',
+                '5. 学习数据库集成和部署',
+                '6. 实践后端服务开发'
+            ]
+        };
+
+        return paths[technology] || paths.general;
     }
 
     /**
