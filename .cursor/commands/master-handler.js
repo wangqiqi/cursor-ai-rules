@@ -75,6 +75,45 @@ class MasterCommandHandler {
     // 删除getDefaultPersonalitySystem方法，现在由RoleManager处理
 
     /**
+     * 强制角色激活 - 确保项目角色正确加载
+     */
+    async forceRoleActivation() {
+        try {
+            console.log('🎭 执行项目角色激活检查...');
+
+            // 检查项目角色配置
+            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            if (fs.existsSync(projectConfigPath)) {
+                const configContent = fs.readFileSync(projectConfigPath, 'utf8');
+                const config = JSON.parse(configContent);
+
+                if (config.currentRole) {
+                    console.log(`✅ 项目角色配置: ${config.currentRole}`);
+
+                    // 确保RoleManager设置为项目配置的角色
+                    if (this.roleManager && this.roleManager.currentRole !== config.currentRole) {
+                        console.log(`🎭 激活项目角色: ${config.currentRole}`);
+                        const result = await this.roleManager.switchRole(config.currentRole, 'project_restore');
+                        if (result.success) {
+                            console.log(`✅ 项目角色激活成功: ${result.newRole}`);
+                        } else {
+                            console.log(`⚠️ 项目角色激活失败: ${result.message}`);
+                        }
+                    } else if (this.roleManager) {
+                        console.log(`✅ 项目角色已激活: ${this.roleManager.currentRole}`);
+                    }
+                } else {
+                    console.log('⚠️ 项目配置中没有角色信息');
+                }
+            } else {
+                console.log('ℹ️ 无项目角色配置文件，使用默认角色');
+            }
+        } catch (error) {
+            console.log(`⚠️ 项目角色激活检查出错: ${error.message}`);
+        }
+    }
+
+    /**
      * 切换角色
      */
     async switchRole(roleName) {
@@ -202,9 +241,13 @@ class MasterCommandHandler {
      */
     selectWelcomeTemplate(result, context) {
         if (!this.roleManager) {
-            return "处理结果：\n\n{content}";
+            // 回退到maid模板
+            return this.getMaidWelcomeTemplate(result);
         }
-        return this.roleManager.selectWelcomeTemplate(result, context);
+
+        const template = this.roleManager.selectWelcomeTemplate(result, context);
+        // 如果模板为空或不存在，回退到maid模板
+        return template || this.getMaidWelcomeTemplate(result);
     }
 
     /**
@@ -217,7 +260,12 @@ class MasterCommandHandler {
                 return result;
             }
 
+            // 🎭 确保项目角色正确激活
+            this.ensureProjectRole();
+
+            // 根据当前激活的角色选择模板
             const template = this.selectWelcomeTemplate(result, context);
+            console.log(`🎭 使用角色模板，当前角色: ${this.roleManager?.currentRole || 'unknown'}`);
             if (!template) {
                 return result;
             }
@@ -245,6 +293,64 @@ class MasterCommandHandler {
         } catch (error) {
             console.warn('⚠️ 角色包装失败:', error.message);
             return result;
+        }
+    }
+
+    /**
+     * 获取maid角色的欢迎模板
+     */
+    getMaidWelcomeTemplate(result) {
+        console.log(`🧹 获取maid模板，结果类型: ${result.type}, 成功: ${result.success}`);
+        const maidTemplates = {
+            general: "欢迎回来，主人！女仆随时准备为您服务：\n\n🧹 {content}",
+            success: "任务完成了，主人！女仆做得还满意吗？\n\n✅ {content}",
+            error: "非常抱歉，主人！女仆一定会改进的：\n\n😰 {content}",
+            learning: "主人想学习吗？女仆来为您讲解：\n\n📚 {content}",
+            code: "主人的代码真棒！女仆来帮您整理：\n\n💻 {content}",
+            project: "主人要开始新项目了吗？女仆全力协助：\n\n🏠 {content}"
+        };
+
+        // 根据结果类型选择模板
+        if (result.success === false) {
+            return maidTemplates.error;
+        } else if (result.type === 'code' || result.message?.includes('代码')) {
+            return maidTemplates.code;
+        } else if (result.type === 'project' || result.message?.includes('项目')) {
+            return maidTemplates.project;
+        } else if (result.type === 'learning' || result.message?.includes('学习')) {
+            return maidTemplates.learning;
+        } else {
+            return maidTemplates.success;
+        }
+    }
+
+    /**
+     * 确保maid角色激活
+     */
+    ensureMaidRole() {
+        try {
+            // 检查项目配置
+            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            if (fs.existsSync(projectConfigPath)) {
+                const configContent = fs.readFileSync(projectConfigPath, 'utf8');
+                const config = JSON.parse(configContent);
+
+                if (config.currentRole === 'maid') {
+                    // 确保RoleManager设置为maid
+                    if (this.roleManager && this.roleManager.currentRole !== 'maid') {
+                        // 同步切换角色（不使用await，因为这在同步方法中）
+                        try {
+                            this.roleManager.switchRole('maid', 'ensure_maid').catch(err => {
+                                console.warn('角色切换警告:', err.message);
+                            });
+                        } catch (syncError) {
+                            console.warn('同步角色切换警告:', syncError.message);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('确保maid角色出错:', error.message);
         }
     }
 
@@ -554,6 +660,9 @@ class MasterCommandHandler {
     async execute(input, context = {}) {
         try {
             console.log(`🎯 处理IDE /master 命令: ${input}`);
+
+            // 🎭 强制角色激活 - 确保每次执行都激活项目角色
+            await this.forceRoleActivation();
 
             // 🔄 更新IDE上下文
             this.updateIdeContext(context);

@@ -36,12 +36,48 @@ class MasterCommandExecutor {
     }
 
     /**
+     * 强制角色激活
+     */
+    async forceRoleActivation() {
+        try {
+            if (!this.roleManager) {
+                console.log('⚠️ 执行器角色管理器不可用');
+                return;
+            }
+
+            // 检查项目角色配置
+            const projectRoleConfig = this.roleManager.loadProjectRoleConfig();
+            if (projectRoleConfig && this.roleManager.personalitySystem.roles[projectRoleConfig]) {
+                // 检查当前角色是否已经是项目角色
+                if (this.roleManager.currentRole !== projectRoleConfig) {
+                    console.log(`🎭 执行器强制激活项目角色: ${projectRoleConfig}`);
+                    const result = await this.roleManager.switchRole(projectRoleConfig, 'force_activation_executor');
+                    if (result.success) {
+                        console.log(`✅ 执行器角色激活成功: ${this.roleManager.personalitySystem.roles[projectRoleConfig].name}`);
+                    } else {
+                        console.log(`⚠️ 执行器角色激活失败: ${result.message}`);
+                    }
+                } else {
+                    console.log(`✅ 执行器角色已激活: ${this.roleManager.personalitySystem.roles[projectRoleConfig].name}`);
+                }
+            } else {
+                console.log('ℹ️ 执行器无项目角色配置');
+            }
+        } catch (error) {
+            console.log(`⚠️ 执行器强制角色激活出错: ${error.message}`);
+        }
+    }
+
+    /**
      * 执行解析后的命令
      * @param {Object} parseResult - 解析结果
      * @returns {Promise<Object>} 执行结果
      */
     async execute(parseResult) {
         try {
+            // 🎭 强制角色激活
+            await this.forceRoleActivation();
+
             if (!parseResult || !parseResult.success) {
                 return this.createErrorResult('无效的解析结果');
             }
