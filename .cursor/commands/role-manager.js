@@ -48,12 +48,21 @@ class RoleManager {
             }
         }
 
+        // 设置当前角色：优先使用项目配置，否则使用默认角色
+        this.currentRole = this.personalitySystem.default_role;
+
         // 加载项目特定角色配置，如果存在的话
         const projectRoleConfig = this.loadProjectRoleConfig();
-
-        // 设置当前角色：优先使用项目配置，否则使用默认角色
-        this.currentRole = projectRoleConfig || this.personalitySystem.default_role;
-        this.addToHistory(this.currentRole, projectRoleConfig ? 'project_restore' : 'initialization');
+        if (projectRoleConfig && this.personalitySystem.roles[projectRoleConfig]) {
+            this.currentRole = projectRoleConfig;
+            this.addToHistory(this.currentRole, 'project_restore');
+            console.log(`✅ 恢复项目角色: ${this.personalitySystem.roles[projectRoleConfig].name}`);
+        } else {
+            if (projectRoleConfig) {
+                console.log(`⚠️ 项目角色 "${projectRoleConfig}" 不存在，使用默认角色`);
+            }
+            this.addToHistory(this.currentRole, 'initialization');
+        }
     }
 
     /**
@@ -392,12 +401,12 @@ class RoleManager {
                 const content = fs.readFileSync(this.projectRoleConfigPath, 'utf8');
                 const config = JSON.parse(content);
 
-                // 验证角色是否存在
-                if (config.currentRole && this.personalitySystem?.roles[config.currentRole]) {
-                    console.log(`✅ 加载项目角色配置: ${config.currentRole}`);
+                // 只返回角色ID，验证在调用处进行
+                if (config.currentRole) {
+                    console.log(`✅ 读取项目角色配置: ${config.currentRole}`);
                     return config.currentRole;
                 } else {
-                    console.log('⚠️ 项目角色配置无效，使用默认角色');
+                    console.log('⚠️ 项目角色配置无效');
                 }
             }
         } catch (error) {
