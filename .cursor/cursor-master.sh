@@ -12,7 +12,7 @@ set -e
 
 # 🔧 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/.cursor/core/shared-functions.sh"
+source "$SCRIPT_DIR/core/shared-functions.sh"
 
 # 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
 validate_project_context || {
@@ -22,7 +22,7 @@ validate_project_context || {
 }
 
 # 🔧 加载统一路径配置（会自动查找项目路径）
-source "$SCRIPT_DIR/.cursor/core/path-config.sh"
+source "$SCRIPT_DIR/core/path-config.sh"
 
 # 🌱 简化初始化：只保留基础生长目录初始化
 # 移除复杂的AI系统初始化，保持轻量级
@@ -114,8 +114,8 @@ ensure_gitignore_protection() {
 .cursorGrowth/
 
 # Cursor AI Rules - 通用规则保持跟踪
-!.cursor/
-!.cursor/**
+!cursor/
+!cursor/**
 
 EOF
         echo -e "${GREEN}✅ 已创建.gitignore文件并添加隐私保护${NC}" >&2
@@ -2413,7 +2413,7 @@ show_traditional_commands() {
 # 🎯 Skills执行器
 execute_skill() {
     local skill_name="$1"
-    local skill_file="$PROJECT_ROOT/.cursor/skills/${skill_name}.md"
+    local skill_file="$CURSOR_DIR/skills/${skill_name}.md"
 
     echo -e "${PURPLE}🎯 调用Skills: ${CYAN}$skill_name${NC}"
 
@@ -2425,8 +2425,8 @@ execute_skill() {
         echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
 
         # 尝试自动发现和转换
-        if [ -f "$PROJECT_ROOT/.cursor/skills/discovery.sh" ]; then
-            bash "$PROJECT_ROOT/.cursor/skills/discovery.sh" load "$skill_name"
+        if [ -f "$CURSOR_DIR/skills/discovery.sh" ]; then
+            bash "$CURSOR_DIR/skills/discovery.sh" load "$skill_name"
         fi
     fi
 }
