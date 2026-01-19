@@ -9,6 +9,7 @@
 - **[使用指南](usage-guide.md)**: 详细的使用方法和最佳实践
 
 ### 🧠 高级功能系列
+- **[角色系统指南](role-guide.md)**: 16种AI人格角色切换和个性化体验 🎭 ⭐
 - **[智能进化指南](intelligent-evolution-guide.md)**: AI学习和持续优化机制
 - **[智能提交指南](smart-commit-guide.md)**: 标准化Git提交和质量保证 ⭐
 - **[系统信息指南](system-info-guide.md)**: 环境检测和系统状态监控
@@ -25,7 +26,8 @@
 ### 新用户
 1. **[快速开始](quick-start.md)** - 5分钟上手
 2. **[使用指南](usage-guide.md)** - 详细功能介绍
-3. **[系统信息指南](system-info-guide.md)** - 了解系统状态
+3. **[角色系统指南](role-guide.md)** - 个性化AI体验 🎭
+4. **[系统信息指南](system-info-guide.md)** - 了解系统状态
 
 ### 进阶用户
 4. **[智能进化指南](intelligent-evolution-guide.md)** - AI学习机制

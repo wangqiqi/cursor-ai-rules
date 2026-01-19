@@ -224,38 +224,42 @@ ${key}=\"${value}\""
 # 自动创建项目目录结构
 # ------------------------------------------------------------------------------
 
-# 统一目录创建函数 (严格按照迁移指南的7个核心目录)
+# 统一目录创建函数 (按照path-config.sh的完整目录结构)
 ensure_directory_structure() {
-    # 严格按照迁移指南：只有7个核心顶级目录
-    local core_dirs=(
-        "$PERCEPTION_DIR"      # 环境感知数据
-        "$USER_DATA_DIR"       # 用户相关数据
-        "$PROJECT_DATA_DIR"    # 项目相关数据
-        "$AI_DIR"              # AI相关数据
-        "$ANALYTICS_DIR"       # 分析数据
-        "$MONITORING_DIR"      # 系统监控
-        "$INTEGRATIONS_DIR"    # 第三方集成
+    # 按照path-config.sh中定义的完整目录结构创建
+    local all_dirs=(
+        # 7个核心顶级目录
+        "$PERCEPTION_DIR"          # 环境感知数据
+        "$USER_DATA_DIR"           # 用户相关数据
+        "$PROJECT_DATA_DIR"        # 项目相关数据
+        "$AI_DIR"                  # AI相关数据
+        "$ANALYTICS_DIR"           # 分析数据
+        "$MONITORING_DIR"          # 系统监控
+        "$INTEGRATIONS_DIR"        # 第三方集成
+
+        # AI相关子目录
+        "$AI_MODELS_DIR"           # AI_DIR/models
+        "$AI_TRAINING_DATA_DIR"    # AI_DIR/training_data
+        "$AI_METRICS_DIR"          # AI_DIR/metrics
+        "$AI_RESULTS_DIR"          # AI_DIR/results
+        "$AI_DIR/skills"           # 已加载的AI技能 (兼容旧代码)
+        "$AI_DIR/cache"            # AI缓存数据 (兼容旧代码)
+
+        # Analytics相关子目录
+        "$ANALYTICS_DATA_DIR"      # ANALYTICS_DIR/data
+        "$ANALYTICS_CACHE_DIR"     # ANALYTICS_DIR/cache
+
+        # Monitoring相关子目录
+        "$SYSTEM_LOGS_DIR"         # MONITORING_DIR/logs (系统日志)
+        "$MONITORING_DIR/pids"     # 进程ID文件 (兼容旧代码)
     )
 
-    # 只创建这7个核心目录
-    for dir in "${core_dirs[@]}"; do
+    # 创建所有定义的目录
+    for dir in "${all_dirs[@]}"; do
         safe_file_operation "mkdir" "$dir"
     done
 
-    # 创建核心目录的子目录结构
-    local sub_dirs=(
-        "$AI_DIR/skills"           # 已加载的AI技能
-        "$AI_DIR/cache"            # AI缓存数据
-        "$MONITORING_DIR/logs"     # 系统日志
-        "$MONITORING_DIR/pids"     # 进程ID文件
-    )
-
-    # 创建子目录
-    for dir in "${sub_dirs[@]}"; do
-        safe_file_operation "mkdir" "$dir"
-    done
-
-    log_message "INFO" "项目目录结构创建完成 (7目录 + 子目录结构)"
+    log_message "INFO" "项目目录结构创建完成 (完整path-config.sh目录结构)"
 }
 
 # ------------------------------------------------------------------------------

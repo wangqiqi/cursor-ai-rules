@@ -25,6 +25,10 @@ class MasterCommandHandler {
         // 🚀 集成我们的智能系统
         this.intelligentSystem = null;
         this.initializeIntelligentSystem();
+
+        // 🎭 角色管理系统
+        this.roleManager = null;
+        this.initializeRoleManager();
     }
 
     /**
@@ -43,6 +47,199 @@ class MasterCommandHandler {
         } catch (error) {
             console.warn('⚠️ 智能系统初始化失败，回退到传统模式:', error.message);
             this.intelligentSystem = null;
+        }
+    }
+
+    /**
+     * 初始化角色管理器
+     */
+    async initializeRoleManager() {
+        try {
+            const RoleManager = require('./role-manager');
+            this.roleManager = new RoleManager(this.cursorDir);
+            await this.roleManager.initialize();
+            console.log('🎭 角色管理器初始化成功');
+        } catch (error) {
+            console.warn('⚠️ 角色管理器初始化失败:', error.message);
+            // 创建一个简化的备用系统
+            this.roleManager = {
+                currentRole: 'professional_assistant',
+                selectWelcomeTemplate: () => "处理结果：\n\n{content}",
+                getCurrentRole: () => ({ success: true, role: { id: 'professional_assistant', name: '专业助手' } }),
+                getAvailableRoles: () => ({ success: true, roles: [{ id: 'professional_assistant', name: '专业助手' }] }),
+                switchRole: () => ({ success: false, message: '角色系统不可用' })
+            };
+        }
+    }
+
+    // 删除getDefaultPersonalitySystem方法，现在由RoleManager处理
+
+    /**
+     * 切换角色
+     */
+    async switchRole(roleName) {
+        if (!this.roleManager) {
+            return { success: false, message: '角色系统不可用' };
+        }
+        return await this.roleManager.switchRole(roleName, 'manual');
+    }
+
+    /**
+     * 获取可用角色列表
+     */
+    getAvailableRoles() {
+        if (!this.roleManager) {
+            return { success: false, message: '角色系统不可用' };
+        }
+        return this.roleManager.getAvailableRoles();
+    }
+
+    /**
+     * 处理角色相关命令
+     */
+    async handleRoleCommand(input) {
+        const roleCommands = {
+            'list_roles': /^列出.*角色|角色.*列表|show.*roles|roles.*list$/i,
+            'current_role': /^当前.*角色|角色.*状态|get.*role|role.*info$/i,
+            'switch_role': /^(切换|设置|switch|set).*(角色|role)\s+(.+)$/i,
+            'reset_role': /^重置.*角色|默认.*角色|reset.*role|default.*role$/i
+        };
+
+        // 检查是否是角色列表命令
+        if (roleCommands.list_roles.test(input)) {
+            return this.getAvailableRoles();
+        }
+
+        // 检查是否是当前角色查询
+        if (roleCommands.current_role.test(input)) {
+            const currentRoleInfo = this.getAvailableRoles();
+            if (currentRoleInfo.success) {
+                const current = currentRoleInfo.roles.find(r => r.id === currentRoleInfo.currentRole);
+                return {
+                    success: true,
+                    message: `当前角色：${current ? current.name : '未知'} (${currentRoleInfo.currentRole})`,
+                    currentRole: currentRoleInfo.currentRole,
+                    roleInfo: current
+                };
+            }
+            return currentRoleInfo;
+        }
+
+        // 检查是否是角色切换命令
+        const switchMatch = input.match(roleCommands.switch_role);
+        if (switchMatch) {
+            const targetRole = switchMatch[3]?.trim();
+            if (targetRole) {
+                return await this.switchRole(targetRole);
+            }
+        }
+
+        // 检查是否是重置角色命令
+        if (roleCommands.reset_role.test(input)) {
+            return await this.switchRole(this.roleManager?.personalitySystem?.default_role || 'professional_assistant');
+        }
+
+        return null; // 不是角色命令
+    }
+
+    /**
+     * 解析欢迎语模板
+     */
+    parseWelcomeTemplates(content) {
+        const templates = {};
+
+        // 简单的Markdown解析，提取代码块中的模板
+        const codeBlockRegex = /```[\s\S]*?```/g;
+        const matches = content.match(codeBlockRegex);
+
+        if (matches) {
+            matches.forEach(match => {
+                const cleanMatch = match.replace(/```/g, '').trim();
+                // 根据内容特征分类模板
+                if (cleanMatch.includes('老板真威武')) {
+                    templates.general = cleanMatch;
+                } else if (cleanMatch.includes('搞定') || cleanMatch.includes('成功')) {
+                    templates.success = cleanMatch;
+                } else if (cleanMatch.includes('学习') || cleanMatch.includes('📚')) {
+                    templates.learning = cleanMatch;
+                } else if (cleanMatch.includes('代码') || cleanMatch.includes('💻')) {
+                    templates.code = cleanMatch;
+                } else if (cleanMatch.includes('项目') || cleanMatch.includes('🚀')) {
+                    templates.project = cleanMatch;
+                } else if (cleanMatch.includes('错误') || cleanMatch.includes('⚠️')) {
+                    templates.error = cleanMatch;
+                }
+            });
+        }
+
+        return templates;
+    }
+
+    /**
+     * 获取默认欢迎语模板
+     */
+    getDefaultWelcomeTemplates() {
+        return {
+            general: `老板真威武，你一定会发财，我有如下建议：
+
+💡 {content}`,
+            success: `🎉 搞定！老板你的指令执行完美，我来汇报一下：
+
+✅ {content}`,
+            error: `🤔 哎呀，遇到点小问题，不过别担心，老板我们一起解决：
+
+⚠️ {content}`
+        };
+    }
+
+    /**
+     * 根据场景选择合适的欢迎语模板（使用角色管理器）
+     */
+    selectWelcomeTemplate(result, context) {
+        if (!this.roleManager) {
+            return "处理结果：\n\n{content}";
+        }
+        return this.roleManager.selectWelcomeTemplate(result, context);
+    }
+
+    /**
+     * 使用角色系统包装回复内容
+     */
+    wrapWithWelcome(result, context) {
+        try {
+            // 如果结果已经有包装过，直接返回
+            if (result.wrapped) {
+                return result;
+            }
+
+            const template = this.selectWelcomeTemplate(result, context);
+            if (!template) {
+                return result;
+            }
+
+            // 提取原始消息
+            const originalMessage = result.message || result.output || '操作完成';
+
+            // 替换模板中的占位符
+            const wrappedMessage = template.replace('{content}', originalMessage);
+
+            // 添加角色信息
+            const currentRoleInfo = this.roleManager?.getCurrentRole();
+            const roleData = currentRoleInfo?.success ? currentRoleInfo.role : { id: 'unknown', name: '未知', attitude: 'unknown' };
+
+            // 返回包装后的结果
+            return {
+                ...result,
+                message: wrappedMessage,
+                originalMessage: originalMessage,
+                wrapped: true,
+                welcomeTemplate: template,
+                role: roleData
+            };
+
+        } catch (error) {
+            console.warn('⚠️ 角色包装失败:', error.message);
+            return result;
         }
     }
 
@@ -326,10 +523,20 @@ class MasterCommandHandler {
             // 🎯 显示IDE上下文信息
             this.displayIdeContext();
 
-            // 0. 检查直接调用 (rule/script/skill/hook)
+            // 0. 检查角色相关命令
+            const roleCommandResult = await this.handleRoleCommand(input);
+            if (roleCommandResult) {
+                const enhancedResult = this.enhanceWithIdeContext(roleCommandResult);
+                // 🎭 使用角色系统包装回复
+                return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system' });
+            }
+
+            // 0.1 检查直接调用 (rule/script/skill/hook)
             const directCallResult = await this.handleDirectCall(input);
             if (directCallResult) {
-                return this.enhanceWithIdeContext(directCallResult);
+                const enhancedResult = this.enhanceWithIdeContext(directCallResult);
+                // 🎉 包装欢迎语
+                return this.wrapWithWelcome(enhancedResult, { input, context });
             }
 
             // 🚀 优先使用AI共生宪法智能系统
@@ -344,7 +551,10 @@ class MasterCommandHandler {
                     const result = await this.intelligentSystem.route(input, enhancedContext);
 
                     // 为结果添加IDE特定的增强
-                    return this.enhanceResultForIde(result, context);
+                    const enhancedResult = this.enhanceResultForIde(result, context);
+
+                    // 🎉 包装欢迎语
+                    return this.wrapWithWelcome(enhancedResult, { input, context });
 
                 } catch (intelligentError) {
                     console.warn('⚠️ 智能系统调用失败，回退到传统模式:', intelligentError.message);
@@ -372,7 +582,10 @@ class MasterCommandHandler {
 
             // 2. 根据能力执行相应操作
             const result = await this.executeCapability(matchResult.capability, input, context);
-            return this.enhanceWithIdeContext(result);
+            const enhancedResult = this.enhanceWithIdeContext(result);
+
+            // 🎉 包装欢迎语
+            return this.wrapWithWelcome(enhancedResult, { input, context });
 
         } catch (error) {
             console.error('❌ IDE Master命令执行失败:', error);
@@ -380,12 +593,15 @@ class MasterCommandHandler {
             // 提供错误恢复建议
             const recoverySuggestions = this.generateErrorRecoverySuggestions(error, context);
 
-            return {
+            const errorResult = {
                 success: false,
                 message: error.message,
                 recoverySuggestions: recoverySuggestions,
                 ideContext: this.getIdeContextSummary()
             };
+
+            // 🎉 包装欢迎语
+            return this.wrapWithWelcome(errorResult, { input, context });
         }
     }
 

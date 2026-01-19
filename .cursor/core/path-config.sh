@@ -99,6 +99,9 @@ find_project_paths() {
     PROJECT_ROOT="$(cd "$PROJECT_ROOT" && pwd)"
     CURSOR_DIR="$(cd "$CURSOR_DIR" && pwd)"
 
+    # 🧹 清理可能存在的错误位置目录
+    cleanup_misplaced_growth_dirs
+
     # 🎯 现在检查缓存文件是否与动态查找的结果一致
     local cache_file="$PROJECT_ROOT/.cursorGrowth/PROJECT_ROOT"
     if [[ -f "$cache_file" ]]; then
@@ -116,6 +119,13 @@ find_project_paths() {
             # 移除PROJECT_ROOT缓存文件创建
         fi
     else
+        # 🛡️ 安全验证：确保PROJECT_ROOT不是.cursor目录
+        if [[ "$PROJECT_ROOT" == *"/.cursor" || "$PROJECT_ROOT" == ".cursor" ]]; then
+            echo "❌ 错误: PROJECT_ROOT 不能是.cursor目录: $PROJECT_ROOT"
+            echo "🔧 请从项目根目录运行脚本，或检查脚本的执行上下文"
+            return 1
+        fi
+
         # 💾 确保.cursorGrowth目录存在
         if [[ ! -d "$PROJECT_ROOT/.cursorGrowth" ]]; then
             mkdir -p "$PROJECT_ROOT/.cursorGrowth"
@@ -128,6 +138,43 @@ find_project_paths() {
 }
 
 # 项目标识符生成现在使用共享函数库中的实现
+
+# 🧹 清理错误位置的.cursorGrowth目录
+cleanup_misplaced_growth_dirs() {
+    local current_dir="$(pwd)"
+    local misplaced_dirs=()
+
+    # 检查.cursor目录中的.cursorGrowth
+    if [[ -d "$CURSOR_DIR/.cursorGrowth" ]]; then
+        misplaced_dirs+=("$CURSOR_DIR/.cursorGrowth")
+    fi
+
+    # 检查其他可能的错误位置
+    local possible_misplaced=(
+        "$current_dir/.cursorGrowth"
+        "/tmp/.cursorGrowth"
+        "$HOME/.cursorGrowth"
+    )
+
+    for dir in "${possible_misplaced[@]}"; do
+        if [[ -d "$dir" && "$dir" != "$PROJECT_ROOT/.cursorGrowth" ]]; then
+            # 检查是否真的是错误位置（不包含项目特定的标识符）
+            if [[ ! -f "$dir/growth_meta.json" || "$(cat "$dir/growth_meta.json" 2>/dev/null | grep -o '"project_id":"[^"]*"' | cut -d'"' -f4)" != "$PROJECT_ID" ]]; then
+                misplaced_dirs+=("$dir")
+            fi
+        fi
+    done
+
+    # 清理错误位置的目录
+    if [[ ${#misplaced_dirs[@]} -gt 0 ]]; then
+        echo "🧹 发现错误位置的.cursorGrowth目录，正在清理..."
+        for dir in "${misplaced_dirs[@]}"; do
+            echo "  删除: $dir"
+            rm -rf "$dir" 2>/dev/null || true
+        done
+        echo "✅ 清理完成"
+    fi
+}
 
 # 🔍 项目上下文验证函数
 validate_project_structure() {
