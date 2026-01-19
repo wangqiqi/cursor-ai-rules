@@ -136,16 +136,16 @@ main() {
     # 检查是否是相关的钩子事件
     case "$HOOK_EVENT" in
         "beforeSubmitPrompt")
-            log "📝 检测到提示提交，检查是否需要角色激活..."
+            log "📝 检测到提示提交，执行角色激活检查..."
+
+            # 检查Node.js环境
+            if ! check_nodejs; then
+                return 1
+            fi
 
             # 检查输入是否包含.cursor规则调用
             if [[ "$HOOK_DATA" == *rule* ]] || [[ "$HOOK_DATA" == *script* ]] || [[ "$HOOK_DATA" == *skill* ]] || [[ "$HOOK_DATA" == *hook* ]] || [[ "$HOOK_DATA" == *master* ]]; then
                 log "🎯 检测到.cursor规则调用，执行角色激活"
-
-                # 检查Node.js环境
-                if ! check_nodejs; then
-                    return 1
-                fi
 
                 # 显示当前角色状态
                 show_current_role
@@ -163,7 +163,20 @@ main() {
                     log "ℹ️ 无项目角色配置，使用当前角色"
                 fi
             else
-                log "ℹ️ 非.cursor规则调用，跳过角色激活"
+                log "🔄 普通提示，确保角色激活"
+
+                # 即使不是.cursor调用，也要确保角色是激活的
+                local project_role
+                if project_role=$(get_project_role); then
+                    # 强制激活角色，确保状态最新
+                    if activate_role "$project_role"; then
+                        log "✅ 角色激活确认: $project_role"
+                    else
+                        log "⚠️ 角色激活失败，请检查配置"
+                    fi
+                else
+                    log "ℹ️ 无项目角色配置"
+                fi
             fi
             ;;
 
@@ -182,6 +195,27 @@ main() {
             local project_role
             if project_role=$(get_project_role); then
                 activate_role "$project_role" || log "⚠️ 会话开始角色激活失败"
+            fi
+            ;;
+
+        "onConversationStart")
+            log "💬 新对话框开始，自动激活角色"
+
+            # 检查Node.js环境
+            if ! check_nodejs; then
+                return 1
+            fi
+
+            # 直接激活项目角色，不需要显示状态
+            local project_role
+            if project_role=$(get_project_role); then
+                if activate_role "$project_role"; then
+                    log "✅ 对话框角色激活成功: $project_role"
+                else
+                    log "⚠️ 对话框角色激活失败"
+                fi
+            else
+                log "ℹ️ 对话框中无项目角色配置"
             fi
             ;;
 

@@ -148,6 +148,14 @@
     ],
     "beforeSubmitPrompt": [
       {
+        "name": "role-sync",
+        "description": "强制角色同步 - 确保每个对话框都有正确的角色状态",
+        "command": "features/hooks/role-sync.sh",
+        "timeout": 5000,
+        "async": false,
+        "enabled": true
+      },
+      {
         "name": "role-activation",
         "description": "自动角色激活 - 在.cursor规则执行前激活当前项目角色",
         "command": "features/hooks/role-activation.sh",
@@ -224,6 +232,24 @@
         "description": "后提交日志记录和分析",
         "command": "features/hooks/post-commit-logger.sh",
         "timeout": 10000,
+        "async": true,
+        "enabled": true
+      }
+    ],
+    "onConversationStart": [
+      {
+        "name": "conversation-init",
+        "description": "新对话框初始化和角色激活",
+        "command": "features/hooks/conversation-init.sh",
+        "timeout": 3000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "conversation-role-activation",
+        "description": "新对话框开始时自动激活项目角色",
+        "command": "features/hooks/role-activation.sh",
+        "timeout": 5000,
         "async": true,
         "enabled": true
       }
