@@ -142,6 +142,51 @@ class MasterCommandHandler {
     }
 
     /**
+     * 根据能力确定意图类型
+     */
+    determineIntentFromCapability(capability, input) {
+        // 根据能力映射到意图
+        switch (capability) {
+            case 'learning':
+            case 'study':
+            case 'teach':
+                return 'learning';
+            case 'code':
+            case 'programming':
+            case 'debug':
+            case 'optimize':
+                return 'code';
+            case 'project':
+            case 'create':
+            case 'scaffold':
+            case 'initialize':
+                return 'project';
+            case 'git':
+            case 'deploy':
+            case 'build':
+                return 'system';
+            default:
+                // 从输入内容分析意图
+                const inputLower = input.toLowerCase();
+                if (inputLower.includes('学习') || inputLower.includes('学习') ||
+                    inputLower.includes('教') || inputLower.includes('study') ||
+                    inputLower.includes('learn')) {
+                    return 'learning';
+                }
+                if (inputLower.includes('代码') || inputLower.includes('编程') ||
+                    inputLower.includes('debug') || inputLower.includes('修复') ||
+                    inputLower.includes('优化')) {
+                    return 'code';
+                }
+                if (inputLower.includes('项目') || inputLower.includes('创建') ||
+                    inputLower.includes('初始化') || inputLower.includes('搭建')) {
+                    return 'project';
+                }
+                return 'general';
+        }
+    }
+
+    /**
      * 确保项目角色配置存在并激活
      */
     async ensureProjectRoleConfig() {
@@ -730,7 +775,7 @@ class MasterCommandHandler {
             if (roleCommandResult) {
                 const enhancedResult = this.enhanceWithIdeContext(roleCommandResult);
                 // 🎭 使用角色系统包装回复
-                return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system' });
+                return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'role' });
             }
 
             // 0.1 检查直接调用 (rule/script/skill/hook)
@@ -738,7 +783,7 @@ class MasterCommandHandler {
             if (directCallResult) {
                 const enhancedResult = this.enhanceWithIdeContext(directCallResult);
                 // 🎉 包装欢迎语
-                return this.wrapWithWelcome(enhancedResult, { input, context });
+                return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'direct' });
             }
 
             // 🚀 优先使用AI共生宪法智能系统
@@ -756,7 +801,7 @@ class MasterCommandHandler {
                     const enhancedResult = this.enhanceResultForIde(result, context);
 
                     // 🎉 包装欢迎语
-                    return this.wrapWithWelcome(enhancedResult, { input, context });
+                    return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'general' });
 
                 } catch (intelligentError) {
                     console.warn('⚠️ 智能系统调用失败，回退到传统模式:', intelligentError.message);
@@ -787,7 +832,8 @@ class MasterCommandHandler {
             const enhancedResult = this.enhanceWithIdeContext(result);
 
             // 🎉 包装欢迎语
-            return this.wrapWithWelcome(enhancedResult, { input, context });
+            const intent = this.determineIntentFromCapability(matchResult.capability, input);
+            return this.wrapWithWelcome(enhancedResult, { input, context, intent });
 
         } catch (error) {
             console.error('❌ IDE Master命令执行失败:', error);
@@ -803,7 +849,7 @@ class MasterCommandHandler {
             };
 
             // 🎉 包装欢迎语
-            return this.wrapWithWelcome(errorResult, { input, context });
+            return this.wrapWithWelcome(errorResult, { input, context, intent: 'error' });
         }
     }
 
