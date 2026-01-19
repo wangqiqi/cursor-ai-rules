@@ -61,18 +61,85 @@ class MasterCommandHandler {
             console.log('🎭 角色管理器初始化成功');
         } catch (error) {
             console.warn('⚠️ 角色管理器初始化失败:', error.message);
-            // 创建一个简化的备用系统
+            // 创建一个简化的备用系统，但使用项目配置的角色
+            const projectRole = this.loadProjectRoleConfig();
+            const roleId = projectRole || 'professional_assistant';
+            const roleName = roleId === 'maid' ? '完美女仆' : '专业助手';
+
             this.roleManager = {
-                currentRole: 'professional_assistant',
-                selectWelcomeTemplate: () => "处理结果：\n\n{content}",
-                getCurrentRole: () => ({ success: true, role: { id: 'professional_assistant', name: '专业助手' } }),
-                getAvailableRoles: () => ({ success: true, roles: [{ id: 'professional_assistant', name: '专业助手' }] }),
+                currentRole: roleId,
+                selectWelcomeTemplate: (result, context) => {
+                    // 根据角色提供不同的模板
+                    if (roleId === 'maid') {
+                        const templates = {
+                            general: "欢迎回来，主人！女仆随时准备为您服务：\n\n🧹 {content}",
+                            success: "任务完成了，主人！女仆做得还满意吗？\n\n✅ {content}",
+                            error: "非常抱歉，主人！女仆一定会改进的：\n\n😰 {content}",
+                            learning: "主人想学习吗？女仆来为您讲解：\n\n📚 {content}",
+                            code: "主人的代码真棒！女仆来帮您整理：\n\n💻 {content}",
+                            project: "主人要开始新项目了吗？女仆全力协助：\n\n🏠 {content}"
+                        };
+
+                        // 根据上下文选择合适的模板
+                        if (result.success === false) {
+                            return templates.error.replace('{content}', result.message || '{content}');
+                        }
+
+                        if (context && context.intent) {
+                            switch (context.intent) {
+                                case 'learning':
+                                    return templates.learning;
+                                case 'code':
+                                    return templates.code;
+                                case 'project':
+                                case 'creation':
+                                    return templates.project;
+                                default:
+                                    return templates.success;
+                            }
+                        }
+
+                        return templates.general;
+                    }
+                    // 默认模板
+                    return "处理结果：\n\n{content}";
+                },
+                getCurrentRole: () => ({
+                    success: true,
+                    role: { id: roleId, name: roleName }
+                }),
+                getAvailableRoles: () => ({
+                    success: true,
+                    roles: [{ id: roleId, name: roleName }],
+                    currentRole: roleId
+                }),
                 switchRole: () => ({ success: false, message: '角色系统不可用' })
             };
         }
     }
 
     // 删除getDefaultPersonalitySystem方法，现在由RoleManager处理
+
+    /**
+     * 加载项目角色配置
+     */
+    loadProjectRoleConfig() {
+        try {
+            const configPath = path.join(this.projectRoot, '.cursor-project.json');
+            if (fs.existsSync(configPath)) {
+                const content = fs.readFileSync(configPath, 'utf8');
+                const config = JSON.parse(content);
+
+                if (config.currentRole) {
+                    console.log(`✅ 读取项目角色配置: ${config.currentRole}`);
+                    return config.currentRole;
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ 读取项目角色配置失败:', error.message);
+        }
+        return null;
+    }
 
     /**
      * 确保项目角色配置存在并激活
