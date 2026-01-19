@@ -27,23 +27,33 @@ if [[ ! -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
     PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
 fi
 
-# 检查项目角色配置
-if [[ -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
-    ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$PROJECT_ROOT/.cursor-project.json" | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/')
-
-    if [[ -n "$ROLE" ]]; then
-        echo "[角色激活] $ROLE $(date '+%H:%M:%S')" >&2
-
-        # 调用角色激活脚本
-        bash "$SCRIPT_DIR/role-activation.sh" "onConversationStart" "" 2>/dev/null || true
-
-        # 标记已初始化
-        touch "$CONVERSATION_INIT_MARKER"
-
-        echo "[初始化完成] $(date '+%H:%M:%S')" >&2
-        exit 0
-    fi
+# 确保项目角色配置存在
+if [[ ! -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
+    # 创建默认的项目配置文件
+    local default_config="{
+  \"currentRole\": \"professional_assistant\",
+  \"lastUpdated\": \"$(date -Iseconds)\",
+  \"projectPath\": \"$PROJECT_ROOT\"
+}"
+    echo "$default_config" > "$PROJECT_ROOT/.cursor-project.json"
+    echo "[创建默认配置] professional_assistant $(date '+%H:%M:%S')" >&2
 fi
 
-echo "[无需初始化] $(date '+%H:%M:%S')" >&2
-exit 0
+# 读取项目角色配置
+ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$PROJECT_ROOT/.cursor-project.json" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
+
+if [[ -n "$ROLE" ]]; then
+    echo "[角色激活] $ROLE $(date '+%H:%M:%S')" >&2
+
+    # 调用角色激活脚本
+    bash "$SCRIPT_DIR/role-activation.sh" "onConversationStart" "" 2>/dev/null || true
+
+    # 标记已初始化
+    touch "$CONVERSATION_INIT_MARKER"
+
+    echo "[初始化完成] $(date '+%H:%M:%S')" >&2
+    exit 0
+else
+    echo "[配置错误] $(date '+%H:%M:%S')" >&2
+    exit 1
+fi

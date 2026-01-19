@@ -42,26 +42,33 @@ get_project_role() {
     local project_config="$PROJECT_ROOT/.cursor-project.json"
     log "🔍 查找配置文件: $project_config"
 
-    if [[ -f "$project_config" ]]; then
-        log "✅ 配置文件存在"
-        # 使用简单的文本解析提取角色
-        local role
-        role=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$project_config" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
-        log "📋 解析结果: '$role'"
-
-        if [[ -n "$role" ]]; then
-            log "✅ 读取项目角色配置: $role"
-            echo "$role"
-            return 0
-        else
-            log "⚠️ 角色值为空"
-        fi
-    else
-        log "❌ 配置文件不存在: $project_config"
+    if [[ ! -f "$project_config" ]]; then
+        # 创建默认的项目配置文件
+        local default_config="{
+  \"currentRole\": \"professional_assistant\",
+  \"lastUpdated\": \"$(date -Iseconds)\",
+  \"projectPath\": \"$PROJECT_ROOT\"
+}"
+        echo "$default_config" > "$project_config"
+        log "✅ 创建默认项目角色配置: professional_assistant"
+        echo "professional_assistant"
+        return 0
     fi
 
-    log "⚠️ 项目角色配置不存在或无效"
-    return 1
+    # 使用简单的文本解析提取角色
+    local role
+    role=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$project_config" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
+    log "📋 解析结果: '$role'"
+
+    if [[ -n "$role" ]]; then
+        log "✅ 读取项目角色配置: $role"
+        echo "$role"
+        return 0
+    else
+        log "⚠️ 无法解析角色配置，使用默认角色"
+        echo "professional_assistant"
+        return 0
+    fi
 }
 
 # 激活角色

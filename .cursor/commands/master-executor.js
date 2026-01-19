@@ -36,9 +36,9 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 强制角色激活
+     * 确保项目角色配置正确
      */
-    async forceRoleActivation() {
+    async ensureProjectRoleConfig() {
         try {
             if (!this.roleManager) {
                 console.log('⚠️ 执行器角色管理器不可用');
@@ -50,8 +50,8 @@ class MasterCommandExecutor {
             if (projectRoleConfig && this.roleManager.personalitySystem.roles[projectRoleConfig]) {
                 // 检查当前角色是否已经是项目角色
                 if (this.roleManager.currentRole !== projectRoleConfig) {
-                    console.log(`🎭 执行器强制激活项目角色: ${projectRoleConfig}`);
-                    const result = await this.roleManager.switchRole(projectRoleConfig, 'force_activation_executor');
+                    console.log(`🎭 执行器激活项目角色: ${projectRoleConfig}`);
+                    const result = await this.roleManager.switchRole(projectRoleConfig, 'project_config_executor');
                     if (result.success) {
                         console.log(`✅ 执行器角色激活成功: ${this.roleManager.personalitySystem.roles[projectRoleConfig].name}`);
                     } else {
@@ -61,10 +61,20 @@ class MasterCommandExecutor {
                     console.log(`✅ 执行器角色已激活: ${this.roleManager.personalitySystem.roles[projectRoleConfig].name}`);
                 }
             } else {
-                console.log('ℹ️ 执行器无项目角色配置');
+                // 如果没有项目配置，使用默认角色
+                const defaultRole = this.roleManager.personalitySystem.default_role || 'professional_assistant';
+                if (this.roleManager.currentRole !== defaultRole) {
+                    console.log(`🎭 执行器激活默认角色: ${defaultRole}`);
+                    const result = await this.roleManager.switchRole(defaultRole, 'default_role_executor');
+                    if (result.success) {
+                        console.log(`✅ 执行器默认角色激活成功: ${defaultRole}`);
+                    }
+                } else {
+                    console.log(`✅ 执行器默认角色已激活: ${defaultRole}`);
+                }
             }
         } catch (error) {
-            console.log(`⚠️ 执行器强制角色激活出错: ${error.message}`);
+            console.log(`⚠️ 执行器项目角色配置出错: ${error.message}`);
         }
     }
 
@@ -75,8 +85,8 @@ class MasterCommandExecutor {
      */
     async execute(parseResult) {
         try {
-            // 🎭 强制角色激活
-            await this.forceRoleActivation();
+            // 🎭 确保项目角色配置正确
+            await this.ensureProjectRoleConfig();
 
             if (!parseResult || !parseResult.success) {
                 return this.createErrorResult('无效的解析结果');

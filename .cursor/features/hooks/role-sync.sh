@@ -23,40 +23,47 @@ fi
 
 log "开始角色同步检查..."
 
-# 检查项目角色配置
-if [[ -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
-    ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$PROJECT_ROOT/.cursor-project.json" | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/')
+# 确保项目角色配置存在
+if [[ ! -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
+    # 创建默认的项目配置文件
+    local default_config="{
+  \"currentRole\": \"professional_assistant\",
+  \"lastUpdated\": \"$(date -Iseconds)\",
+  \"projectPath\": \"$PROJECT_ROOT\"
+}"
+    echo "$default_config" > "$PROJECT_ROOT/.cursor-project.json"
+    log "✅ 创建默认项目角色配置: professional_assistant"
+    ROLE="professional_assistant"
+else
+    # 读取现有配置
+    ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$PROJECT_ROOT/.cursor-project.json" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
+fi
 
-    if [[ -n "$ROLE" ]]; then
-        log "检测到项目角色: $ROLE"
+if [[ -n "$ROLE" ]]; then
+    log "激活项目角色: $ROLE"
 
-        # 强制激活角色
-        ROLE_MANAGER="$CURSOR_DIR/../commands/role-manager.js"
-        if [[ -f "$ROLE_MANAGER" ]]; then
-            cd "$PROJECT_ROOT" || exit 1
-            RESULT=$(node "$ROLE_MANAGER" switch "$ROLE" "force_sync" 2>&1)
+    # 强制激活角色
+    ROLE_MANAGER="$CURSOR_DIR/../commands/role-manager.js"
+    if [[ -f "$ROLE_MANAGER" ]]; then
+        cd "$PROJECT_ROOT" || exit 1
+        RESULT=$(node "$ROLE_MANAGER" switch "$ROLE" "force_sync" 2>&1)
 
-            if [[ $? -eq 0 ]]; then
-                log "✅ 角色同步成功: $ROLE"
-                echo "角色同步完成: $ROLE"
-            else
-                log "❌ 角色同步失败: $RESULT"
-                echo "角色同步失败"
-                exit 1
-            fi
+        if [[ $? -eq 0 ]]; then
+            log "✅ 角色同步成功: $ROLE"
+            echo "角色同步完成: $ROLE"
         else
-            log "❌ 角色管理器不存在: $ROLE_MANAGER"
-            echo "角色管理器不存在"
+            log "❌ 角色同步失败: $RESULT"
+            echo "角色同步失败"
             exit 1
         fi
     else
-        log "⚠️ 项目角色配置无效"
-        echo "项目角色配置无效"
+        log "❌ 角色管理器不存在: $ROLE_MANAGER"
+        echo "角色管理器不存在"
         exit 1
     fi
 else
-    log "⚠️ 未找到项目角色配置"
-    echo "未找到项目角色配置"
+    log "⚠️ 无法确定角色配置"
+    echo "无法确定角色配置"
     exit 1
 fi
 
