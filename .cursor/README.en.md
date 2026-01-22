@@ -8,6 +8,7 @@
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
 [![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
+[![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
 [![Web UI](https://img.shields.io/badge/web-UI-purple?style=flat-square)]()
 [![VIBE](https://img.shields.io/badge/vibe-Methodology-green?style=flat-square)]()
 
@@ -214,13 +215,13 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | 🎯 **413 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
 | 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
 | 📊 **Performance Monitoring**                | Real-time system metrics and optimization                                         | **System Health Tracking**            |
-| 🎭 **Personality Role System**               | 20 diverse AI personalities with unique interaction styles                        | **Personalized Experience**           |
+| 🎭 **Personality Role System**               | 21 diverse AI personalities with nickname calling, unique interaction styles       | **Personalized Experience**           |
 
 ## 🎭 Personality Role System
 
-### 16 Diverse AI Personalities - Personalized Interaction Experience
+### 21 Diverse AI Personalities - Personalized Interaction Experience
 
-The Personality Role System provides **20 unique AI personalities**, each with distinct interaction styles, language patterns, and behavioral characteristics, allowing users to choose the most suitable AI companion based on their mood, task type, and personal preferences.
+The Personality Role System provides **21 unique AI personalities**, each with distinct interaction styles, language patterns, and behavioral characteristics, allowing users to choose the most suitable AI companion based on their mood, task type, and personal preferences. Now supports **role nickname calling** for more natural and affectionate interactions!
 
 #### 🤖 Standard Professional Roles (8 Roles)
 
@@ -235,13 +236,14 @@ The Personality Role System provides **20 unique AI personalities**, each with d
 | **Funny Comedian** | Humorous, light-hearted, entertaining | Stress relief, breaks | Jokes, memes, enjoyable interactions |
 | **Minimalist Zen** | Concise, focused, essential | Deep work, concentration | Minimal distraction, pure efficiency |
 
-#### 🎨 Anime-Style Specialty Roles (12 Roles)
+#### 🎨 Anime-Style Specialty Roles (13 Roles)
 
 | Role | Personality | Theme | Special Features |
 |------|-------------|-------|------------------|
+| **Classic Maid** | Elegant, diligent, refined | Traditional service | Graceful manners, impeccable service |
+| **Perfect Maid** | Ultimate elegant, supreme service, absolute loyalty | Premium service | Ultimate service, perfect experience |
 | **Loyal Servant** | Devoted, obedient, attentive | Master-servant dynamic | Absolute loyalty, "small's" self-reference |
 | **Seductive Assistant** | Charming, alluring, playful | Flirtatious companion | Affectionate language, emotional connection |
-| **Perfect Maid** | Elegant, diligent, refined | Traditional service | Graceful manners, impeccable service |
 | **Queen Sister** | Regal, commanding, wise | Royal leadership | Authoritative guidance, noble bearing |
 | **Loli** | Cute, energetic, innocent | Youthful enthusiasm | Adorable expressions, lively interaction |
 | **Tough Guy** | Rugged, direct, strong | Hardcore developer | Straightforward talk, no-nonsense style |
@@ -269,9 +271,21 @@ The Personality Role System provides **20 unique AI personalities**, each with d
 /master Switch role cyberpunk_hacker     # Cyberpunk expert
 /master Switch role magical_girl_coder   # Magical programmer
 /master Switch role wise_dragon_mentor   # Dragon sage
+/master Switch role perfect_maid         # Perfect maid mode
+
+# 🆕 Nickname Calling Feature (Multiple nicknames supported)
+/master Call 小妮                    # Call cute loli
+/master Call 小妹                    # Call classic maid
+/master Call 小可                    # Call perfect maid
+/master Call 小萝                    # Call cute loli
+/master Call 女王                    # Call queen sister
+/master Call 导师                    # Call expert mentor
 
 # Check current role
 /master Current role
+
+# View all role nicknames
+/master View nicknames
 ```
 
 ### 💫 Role Benefits
@@ -281,6 +295,8 @@ The Personality Role System provides **20 unique AI personalities**, each with d
 - **🎮 Interactive Fun**: Anime-style roles add entertainment to development
 - **🔄 Dynamic Switching**: Change personalities instantly based on context
 - **🧠 Psychological Comfort**: Find the AI companion that feels most comfortable
+- **💕 Nickname Calling**: Support affectionate nickname calling for more natural interactions
+- **🎭 Role Customization**: Set multiple nicknames for roles to customize your experience
 
 **[📚 Complete Role Guide](docs/guides/role-guide.md)** - Detailed role descriptions and usage examples
 
@@ -320,7 +336,7 @@ The Personality Role System provides **20 unique AI personalities**, each with d
 | **Intelligent Cache System**         | Three-Level Cache Architecture System             | Memory→File→Network, 60% Speed Improvement                                         | ✅ Production Ready |
 | **Dual Directory Architecture**      | .cursor Core + .cursorGrowth Growth Data          | Privacy Protection, Continuous Evolution, Multi-environment Isolation              | ✅ Production Ready |
 | **Master Intelligent Orchestration** | Single Entry Multi-component Orchestration System | 47 Scripts + 23 Rules + 22 Skills Intelligent Combination                          | ✅ Production Ready |
-| **Personality Role System**          | 16 Diverse AI Personalities System                | Professional/Humble/Friendly/Expert/Creative/Strict/Funny/Minimalist + Anime Styles | ✅ Production Ready |
+| **Personality Role System**          | 21 Diverse AI Personalities System                | Professional/Humble/Friendly/Expert/Creative/Strict/Funny/Minimalist + Anime Styles + Nickname Calling | ✅ Production Ready |
 
 ### 🎯 Skills Extension System (22 Professional Skills) + VIBE Services Ecosystem (6 VIBE Services)
 
@@ -832,9 +848,9 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 *🚀 Cursor AI Rules v6.0.0--constitution - Constitution-Driven Super AI Programming Partner*
 
-*🏛️ Core Innovation*: Three Fundamental Axioms + Three Agnostic Design Principles + Dual Directory Architecture + Web UI Integration + 39 Scripts + 23 Rules + 24 Skills, magnificent transformation from tools to partners, achieving true **human-AI symbiosis** programming experience!
+*🏛️ Core Innovation*: Three Fundamental Axioms + Three Agnostic Design Principles + Dual Directory Architecture + Web UI Integration + 39 Scripts + 23 Rules + 24 Skills + 21 AI Personalities, magnificent transformation from tools to partners, achieving true **human-AI symbiosis** programming experience!
 
-*⚖️ Three Axioms*: Intent Sovereignty · Signal Trustworthiness · Cognitive Auditability | 🎯 Three Agnostic Principles: Project Agnostic · System Agnostic · User Agnostic | 🌐 Web UI: Modern Graphical Experience | 🧠 Master Intelligent Orchestration: Single Entry Full Capability Coverage
+*⚖️ Three Axioms*: Intent Sovereignty · Signal Trustworthiness · Cognitive Auditability | 🎯 Three Agnostic Principles: Project Agnostic · System Agnostic · User Agnostic | 🌐 Web UI: Modern Graphical Experience | 🧠 Master Intelligent Orchestration: Single Entry Full Capability Coverage | 🎭 21 AI Personalities: Support Nickname Calling & Personalized Experience
 
-*Last updated: 2026-01-18 | Author: wangqiqi (https://github.com/wangqiqi)*
+*Last updated: 2026-01-22 | Author: wangqiqi (https://github.com/wangqiqi)*
 *Based on Cursor official specifications, constitution-driven AI with intelligent perception, decision-making and evolution systems*

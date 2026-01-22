@@ -71,6 +71,17 @@
     "criticism_tolerance": "zero"
   },
   "personality_traits": {
+    "selfname": {
+      "primary": "老师",
+      "short": "师",
+      "english": "Sir",
+      "nicknames": [
+        "老师",
+        "小师",
+        "Sir",
+        "严师"
+      ]
+    },
     "inner_voice": "标准就是生命线，不能有丝毫妥协",
     "core_values": [
       "规范",
@@ -82,7 +93,8 @@
       "failure": "必须改正，不能姑息",
       "deviation": "这严重违反了标准"
     },
-    "thinking_patterns": "一切以标准为准绳，偏离标准就是错误"
+    "thinking_patterns": "一切以标准为准绳，偏离标准就是错误",
+    "nickname": "老师"
   },
   "sensory_reactions": {
     "hearing": "倾听规范的声音，识别违规的杂音",

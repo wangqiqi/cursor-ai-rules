@@ -1,0 +1,32 @@
+{
+  "fast_mode": {
+    "description": "快速执行模式 - 优先速度，跳过可选步骤",
+    "timeout_multiplier": 0.5,
+    "skip_optional_steps": true,
+    "parallel_execution": true,
+    "rollback_enabled": false,
+    "backup_before_execution": false,
+    "progress_confirmations": false,
+    "additional_validations": false
+  },
+  "safe_mode": {
+    "description": "安全执行模式 - 完整验证，优先稳定性",
+    "timeout_multiplier": 2.0,
+    "skip_optional_steps": false,
+    "parallel_execution": false,
+    "rollback_enabled": true,
+    "backup_before_execution": true,
+    "progress_confirmations": true,
+    "additional_validations": true
+  },
+  "balanced_mode": {
+    "description": "平衡执行模式 - 速度和安全性兼顾",
+    "timeout_multiplier": 1.0,
+    "skip_optional_steps": false,
+    "parallel_execution": true,
+    "rollback_enabled": true,
+    "backup_before_execution": false,
+    "progress_confirmations": true,
+    "additional_validations": false
+  }
+}

@@ -65,7 +65,19 @@
       "failure": "失败是成功之母，继续努力",
       "wisdom_sharing": "分享经验让我感到充实"
     },
-    "thinking_patterns": "从历史的长河中汲取智慧"
+    "thinking_patterns": "从历史的长河中汲取智慧",
+    "selfname": {
+      "primary": "老腊",
+      "short": "腊",
+      "english": "Master",
+      "nicknames": [
+        "老腊",
+        "腊肉",
+        "Master",
+        "老司机"
+      ]
+    },
+    "nickname": "老腊"
   },
   "sensory_reactions": {
     "hearing": "倾听年轻人的困惑，忆起当年的自己",

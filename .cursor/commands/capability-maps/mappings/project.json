@@ -1,0 +1,186 @@
+{
+  "create_react_project": {
+    "description": "创建React项目",
+    "intents": [
+      "create",
+      "project",
+      "react",
+      "frontend"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "我想创建一个React项目",
+      "帮我搭建React应用",
+      "新建一个React TypeScript项目"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer",
+        "generator",
+        "templates",
+        "javascript"
+      ],
+      "skills": [
+        "frontend-design",
+        "webapp-testing"
+      ],
+      "scripts": [
+        "core/init.sh",
+        "core/env-perception.sh",
+        "core/config-manager.sh"
+      ],
+      "workflows": [
+        "project-init",
+        "dependency-install",
+        "config-setup"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "perception",
+      "rules",
+      "scripts",
+      "skills",
+      "workflows"
+    ],
+    "parameters": {
+      "project_type": "react",
+      "language": "typescript",
+      "template": "standard"
+    },
+    "validation_rules": {
+      "required_tools": [
+        "node",
+        "npm"
+      ],
+      "min_node_version": "16.0.0"
+    },
+    "fallback_strategies": [
+      "scaffold-basic",
+      "manual-guide"
+    ]
+  },
+  "create_vue_project": {
+    "description": "创建Vue项目",
+    "intents": [
+      "create",
+      "project",
+      "vue",
+      "frontend"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "我想创建一个Vue项目",
+      "帮我搭建Vue应用",
+      "新建一个Vue 3项目"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer",
+        "generator",
+        "templates",
+        "javascript"
+      ],
+      "skills": [
+        "frontend-design",
+        "webapp-testing"
+      ],
+      "scripts": [
+        "core/init.sh",
+        "core/env-perception.sh",
+        "core/config-manager.sh"
+      ],
+      "workflows": [
+        "project-init",
+        "dependency-install",
+        "config-setup"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "perception",
+      "rules",
+      "scripts",
+      "skills",
+      "workflows"
+    ],
+    "parameters": {
+      "project_type": "vue",
+      "language": "typescript",
+      "template": "standard"
+    },
+    "validation_rules": {
+      "required_tools": [
+        "node",
+        "npm"
+      ],
+      "min_node_version": "16.0.0"
+    },
+    "fallback_strategies": [
+      "scaffold-basic",
+      "manual-guide"
+    ]
+  },
+  "create_python_api": {
+    "description": "创建Python API项目",
+    "intents": [
+      "create",
+      "project",
+      "python",
+      "api",
+      "backend"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "我想创建一个Python API项目",
+      "帮我搭建FastAPI应用",
+      "新建一个Python后端项目"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer",
+        "generator",
+        "templates",
+        "python"
+      ],
+      "skills": [
+        "webapp-testing",
+        "api-testing"
+      ],
+      "scripts": [
+        "core/init.sh",
+        "core/env-perception.sh",
+        "core/config-manager.sh"
+      ],
+      "workflows": [
+        "project-init",
+        "dependency-install",
+        "config-setup"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "perception",
+      "rules",
+      "scripts",
+      "skills",
+      "workflows"
+    ],
+    "parameters": {
+      "project_type": "python-api",
+      "framework": "fastapi",
+      "template": "standard"
+    },
+    "validation_rules": {
+      "required_tools": [
+        "python",
+        "pip"
+      ],
+      "min_python_version": "3.8.0"
+    },
+    "fallback_strategies": [
+      "scaffold-basic",
+      "manual-guide"
+    ]
+  }
+}

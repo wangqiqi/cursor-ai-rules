@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-01-16T10:00:00Z",
+  "last_updated": "2026-01-22T16:00:00Z",
+  "author": "wangqiqi",
+  "compatibility": ">=4.0.0",
+  "description": "模块化能力映射表元数据",
+  "version": "2.0.0",
+  "structure": "modular"
+}

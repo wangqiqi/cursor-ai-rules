@@ -407,6 +407,12 @@ class RoleManager {
         const currentRoleConfig = this.personalitySystem.roles[this.currentRole];
         let enrichedTemplate = template;
 
+        // 先进行selfname占位符替换
+        if (currentRoleConfig.personality_traits?.selfname) {
+            const selfname = this.selectAppropriateSelfname(currentRoleConfig.personality_traits.selfname, context);
+            enrichedTemplate = enrichedTemplate.replace(/\{selfname\}/g, selfname);
+        }
+
         // 添加内心独白 (inner_voice)
         if (currentRoleConfig.personality_traits && currentRoleConfig.personality_traits.inner_voice) {
             enrichedTemplate += `\n\n💭 *${currentRoleConfig.personality_traits.inner_voice}*`;
@@ -452,6 +458,27 @@ class RoleManager {
         }
 
         return enrichedTemplate;
+    }
+
+    /**
+     * 根据上下文选择合适的自称
+     */
+    selectAppropriateSelfname(selfnameConfig, context = {}) {
+        // 根据上下文选择合适的自称
+        if (context.formal) {
+            return selfnameConfig.primary;
+        }
+        if (context.english) {
+            return selfnameConfig.english || selfnameConfig.primary;
+        }
+        if (context.intimate) {
+            return selfnameConfig.short || selfnameConfig.primary;
+        }
+
+        // 默认随机从昵称列表中选择，增加趣味性
+        const nicknames = selfnameConfig.nicknames || [selfnameConfig.primary];
+        const randomIndex = Math.floor(Math.random() * nicknames.length);
+        return nicknames[randomIndex];
     }
 
     /**

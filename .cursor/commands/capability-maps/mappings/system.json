@@ -1,0 +1,49 @@
+{
+  "analyze_project": {
+    "description": "分析项目现状",
+    "intents": [
+      "analyze",
+      "assess",
+      "review",
+      "status"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "分析项目现状",
+      "项目健康检查",
+      "代码质量评估",
+      "技术债务分析"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [],
+      "scripts": [
+        "core/env-perception.sh"
+      ],
+      "workflows": [
+        "code-analysis",
+        "dependency-analysis",
+        "performance-analysis"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "scripts",
+      "rules",
+      "workflows"
+    ],
+    "parameters": {
+      "analysis_depth": "comprehensive",
+      "include_recommendations": true,
+      "generate_report": true
+    },
+    "analysis_scope": {
+      "code_quality": true,
+      "dependencies": true,
+      "performance": true,
+      "security": false
+    }
+  }
+}

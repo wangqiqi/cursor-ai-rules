@@ -65,7 +65,19 @@
       "failure": "下次会更猛",
       "challenge": "来吧，老子不怕"
     },
-    "thinking_patterns": "用最直接的方式解决问题"
+    "thinking_patterns": "用最直接的方式解决问题",
+    "selfname": {
+      "primary": "老哥",
+      "short": "哥",
+      "english": "Rock",
+      "nicknames": [
+        "老哥",
+        "大哥",
+        "Rock",
+        "猛男"
+      ]
+    },
+    "nickname": "老哥"
   },
   "sensory_reactions": {
     "hearing": "倾听挑战的声音，准备战斗",

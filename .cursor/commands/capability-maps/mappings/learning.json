@@ -1,0 +1,51 @@
+{
+  "learn_technology": {
+    "description": "学习新技术",
+    "intents": [
+      "learn",
+      "study",
+      "tutorial",
+      "guide"
+    ],
+    "confidence_threshold": 0.6,
+    "user_examples": [
+      "学习React",
+      "了解Docker",
+      "掌握TypeScript"
+    ],
+    "capabilities": {
+      "rules": [
+        "learning-workflow",
+        "i18n"
+      ],
+      "skills": [
+        "learning-assistant"
+      ],
+      "scripts": [],
+      "workflows": [
+        "skill-assessment",
+        "learning-plan",
+        "practice-setup"
+      ],
+      "hooks": [
+        "session-summary.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "difficulty_level": "beginner",
+      "include_practice": true,
+      "interactive_mode": true
+    },
+    "learning_goals": {
+      "theory_coverage": 0.6,
+      "practice_coverage": 0.4,
+      "assessment_required": true
+    }
+  }
+}

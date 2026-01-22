@@ -4,7 +4,7 @@
   "description": "🎯 统一能力映射表 - 将用户意图映射到具体的执行能力组合",
   "metadata": {
     "created_at": "2026-01-16T10:00:00Z",
-    "last_updated": "2026-01-17T14:00:00Z",
+    "last_updated": "2026-01-22T15:30:00Z",
     "author": "wangqiqi",
     "compatibility": ">=4.0.0"
   },
@@ -14,9 +14,7 @@
     "error_handling_strategy": "graceful_degradation",
     "logging_level": "info",
     "telemetry_enabled": false,
-    "learning_enabled": true,
-    "mcp_priority_enabled": true,
-    "mcp_fallback_enabled": true
+    "learning_enabled": true
   },
   "mappings": {
     "create_react_project": {
@@ -5662,6 +5660,165 @@
     "parameters": {
       "skill_name": "auto",
       "execution_mode": "sync"
+    }
+  },
+  "role_switch": {
+    "description": "切换AI人格角色",
+    "intents": [
+      "role",
+      "switch",
+      "切换",
+      "人格",
+      "角色"
+    ],
+    "confidence_threshold": 0.9,
+    "user_examples": [
+      "切换到专业助手",
+      "切换角色 loli",
+      "设置人格为女王",
+      "变成可爱萝莉"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "role_name": "auto",
+      "switch_mode": "immediate"
+    }
+  },
+  "role_call": {
+    "description": "通过昵称呼叫AI角色",
+    "intents": [
+      "call",
+      "呼叫",
+      "召唤",
+      "昵称",
+      "角色"
+    ],
+    "confidence_threshold": 0.9,
+    "user_examples": [
+      "呼叫 小妮",
+      "召唤 小妹",
+      "叫小萝来",
+      "请女王过来"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "nickname": "auto",
+      "call_mode": "friendly"
+    }
+  },
+  "role-nickname-manage": {
+    "description": "Manage role nicknames",
+    "intents": [
+      "nickname",
+      "set",
+      "add",
+      "remove"
+    ],
+    "confidence_threshold": 0.85,
+    "user_examples": [
+      "给可爱萝莉设置昵称 小妮",
+      "添加昵称 小妹",
+      "查看所有昵称",
+      "重置角色昵称"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "action": "auto",
+      "role_name": "auto",
+      "nickname": "auto"
+    }
+  },
+  "role_list": {
+    "description": "列出所有可用角色",
+    "intents": [
+      "list",
+      "列出",
+      "角色",
+      "人格",
+      "查看"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "列出所有角色",
+      "查看可用人格",
+      "有哪些AI角色",
+      "显示角色列表"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "list_mode": "detailed",
+      "include_nicknames": true
+    }
+  },
+  "role_current": {
+    "description": "查看当前激活的角色",
+    "intents": [
+      "current",
+      "当前",
+      "激活",
+      "状态"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "当前是什么角色",
+      "查看激活人格",
+      "现在用的是哪个AI",
+      "角色状态"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "show_details": true,
+      "include_personality": true
     }
   }
 }

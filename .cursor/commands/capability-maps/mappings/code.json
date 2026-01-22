@@ -1,0 +1,107 @@
+{
+  "check_code_quality": {
+    "description": "检查代码质量",
+    "intents": [
+      "check",
+      "quality",
+      "code",
+      "lint",
+      "audit"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "检查代码质量",
+      "运行代码检查",
+      "代码质量审计",
+      "修复代码问题"
+    ],
+    "capabilities": {
+      "rules": [
+        "eslint",
+        "intelligent_evolution"
+      ],
+      "skills": [],
+      "scripts": [
+        "core/quality-manager.sh"
+      ],
+      "workflows": [
+        "lint",
+        "audit",
+        "report"
+      ],
+      "hooks": [
+        "code-quality.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "hooks",
+      "workflows"
+    ],
+    "parameters": {
+      "scope": "all",
+      "fix_issues": true,
+      "generate_report": true
+    },
+    "quality_gates": {
+      "max_warnings": 10,
+      "max_errors": 0,
+      "coverage_min": 80
+    }
+  },
+  "commit_code": {
+    "description": "智能提交代码到Git (增强版)",
+    "intents": [
+      "commit",
+      "git",
+      "save",
+      "push"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "提交代码到Git",
+      "智能提交更改",
+      "生成提交信息",
+      "推送代码"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "skills": [
+        "git-management"
+      ],
+      "scripts": [
+        "core/git-manager.sh"
+      ],
+      "workflows": [
+        "pre-commit-checks",
+        "commit-message-generation",
+        "push-to-remote"
+      ],
+      "hooks": [
+        "pre-commit.sh",
+        "commit-msg.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "generate_message": true,
+      "run_checks": true,
+      "auto_push": false,
+      "conventional_commits": true
+    },
+    "validation_rules": {
+      "require_tests": false,
+      "require_lint": true,
+      "max_commit_size": 100
+    }
+  }
+}

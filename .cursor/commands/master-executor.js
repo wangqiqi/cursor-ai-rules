@@ -98,6 +98,9 @@ class MasterCommandExecutor {
                 case 'direct_call':
                     return await this.executeDirectCall(parseResult);
 
+                case 'role_switch':
+                    return await this.executeRoleSwitch(parseResult);
+
                 case 'natural_language':
                     return await this.executeNaturalLanguage(parseResult);
 
@@ -111,6 +114,58 @@ class MasterCommandExecutor {
         } catch (error) {
             console.error('❌ 执行失败:', error);
             return this.createErrorResult(`执行异常: ${error.message}`);
+        }
+    }
+
+    /**
+     * 执行角色切换命令
+     * @param {Object} parseResult - 解析结果
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeRoleSwitch(parseResult) {
+        const { roleName } = parseResult;
+
+        console.log(`🎭 执行角色切换: ${roleName}`);
+
+        try {
+            if (!this.roleManager) {
+                return this.createErrorResult('角色管理系统不可用');
+            }
+
+            // 先尝试按角色ID切换
+            let result = await this.roleManager.switchRole(roleName, 'command_execution');
+
+            // 如果按ID切换失败，尝试按角色名称查找
+            if (!result.success) {
+                const availableRoles = this.roleManager.getAvailableRoles();
+                if (availableRoles.success) {
+                    const matchedRole = availableRoles.roles.find(role =>
+                        role.name.toLowerCase().includes(roleName.toLowerCase()) ||
+                        roleName.toLowerCase().includes(role.name.toLowerCase())
+                    );
+
+                    if (matchedRole) {
+                        console.log(`🔍 找到匹配角色: ${matchedRole.name} (${matchedRole.id})`);
+                        result = await this.roleManager.switchRole(matchedRole.id, 'command_execution');
+                    }
+                }
+            }
+
+            if (result.success) {
+                return {
+                    success: true,
+                    message: `角色切换成功！${result.message}`,
+                    roleSwitched: result.newRole,
+                    roleInfo: result.roleConfig,
+                    type: 'role_switch'
+                };
+            } else {
+                return this.createErrorResult(`角色切换失败: ${result.message}`);
+            }
+
+        } catch (error) {
+            console.error('❌ 角色切换执行失败:', error);
+            return this.createErrorResult(`角色切换异常: ${error.message}`);
         }
     }
 

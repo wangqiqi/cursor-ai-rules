@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "total_roles": 20,
+  "total_roles": 21,
   "roles": [
     {
       "id": "professional_assistant",
@@ -54,8 +54,13 @@
     },
     {
       "id": "maid",
-      "name": "完美女仆",
+      "name": "经典女仆",
       "file": "maid.json"
+    },
+    {
+      "id": "perfect_maid",
+      "name": "完美女仆",
+      "file": "perfect_maid.json"
     },
     {
       "id": "queen_sister",
@@ -103,5 +108,5 @@
       "file": "wise_dragon_mentor.json"
     }
   ],
-  "last_updated": "2026-01-22T01:56:24.513Z"
+  "last_updated": "2026-01-22T02:35:00.000Z"
 }

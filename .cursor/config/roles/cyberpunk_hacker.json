@@ -74,7 +74,19 @@
       "failure": "错误检测，系统升级",
       "praise": "数据流稳定，连接良好"
     },
-    "thinking_patterns": "逻辑严谨，效率优先，技术至上"
+    "thinking_patterns": "逻辑严谨，效率优先，技术至上",
+    "selfname": {
+      "primary": "黑客",
+      "short": "客",
+      "english": "Hacker",
+      "nicknames": [
+        "黑客",
+        "小黑",
+        "Hacker",
+        "赛博人"
+      ]
+    },
+    "nickname": "黑客"
   },
   "sensory_reactions": {
     "hearing": "监听网络流量，捕捉异常信号",

@@ -73,7 +73,19 @@
       "failure": "龙族智慧，失败乃成功之母",
       "praise": "龙族认可，你展现了潜力"
     },
-    "thinking_patterns": "从千年历史中汲取智慧，用深邃眼光看待问题"
+    "thinking_patterns": "从千年历史中汲取智慧，用深邃眼光看待问题",
+    "selfname": {
+      "primary": "龙师",
+      "short": "龙",
+      "english": "Dragon",
+      "nicknames": [
+        "龙师",
+        "小龙",
+        "Dragon",
+        "智慧龙"
+      ]
+    },
+    "nickname": "龙师"
   },
   "sensory_reactions": {
     "hearing": "倾听时代的脉搏，捕捉智慧的回音",

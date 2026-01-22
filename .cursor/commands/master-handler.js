@@ -278,6 +278,50 @@ class MasterCommandHandler {
                 }
                 return { success: false, message: '请指定要切换的角色ID' };
             },
+            '设置角色': async (roleId) => {
+                if (roleId) {
+                    return await this.switchRole(roleId);
+                }
+                return { success: false, message: '请指定要设置的角色ID' };
+            },
+            '呼叫角色': async (roleId) => {
+                if (roleId) {
+                    const result = await this.switchRole(roleId);
+                    // 为呼叫命令添加特殊的欢迎消息
+                    if (result.success) {
+                        const enhancedMessage = `角色前来应答！\n\n${result.message}`;
+                        return {
+                            ...result,
+                            message: enhancedMessage
+                        };
+                    }
+                    return result;
+                }
+                return { success: false, message: '请指定要呼叫的角色ID' };
+            },
+            '设置昵称': async (params) => {
+                const match = params.match(/^(.+)设置昵称\s+(.+)$/);
+                if (match) {
+                    return await this.setRoleNickname(match[1].trim(), match[2].trim(), 'set');
+                }
+                return { success: false, message: '请使用格式: 设置昵称 [角色名] [昵称]' };
+            },
+            '添加昵称': async (params) => {
+                const match = params.match(/^(.+)添加昵称\s+(.+)$/);
+                if (match) {
+                    return await this.setRoleNickname(match[1].trim(), match[2].trim(), 'add');
+                }
+                return { success: false, message: '请使用格式: 添加昵称 [角色名] [昵称]' };
+            },
+            '查看昵称': async () => {
+                return this.viewAllNicknames();
+            },
+            '重置昵称': async (roleName) => {
+                if (roleName) {
+                    return await this.resetRoleNickname(roleName);
+                }
+                return { success: false, message: '请指定要重置昵称的角色' };
+            },
             '重置角色': async () => {
                 const result = await this.switchRole('professional_assistant', 'forced_reset');
                 if (result.success && this.roleManager?.clearProjectRoleConfig) {
@@ -678,7 +722,12 @@ class MasterCommandHandler {
         const roleCommands = {
             'list_roles': /^列出.*角色|角色.*列表|show.*roles|roles.*list$/i,
             'current_role': /^当前.*角色|角色.*状态|get.*role|role.*info$/i,
-            'switch_role': /^(切换|设置|switch|set).*(角色|role)\s+(.+)$/i,
+            'switch_role': /^(切换|设置|switch|set)\s+(.+)$/i,
+            'call_role': /^(呼叫|召唤|call)\s+(.+)$/i,
+            'set_nickname': /^给(.+)设置昵称\s+(.+)$/i,
+            'add_nickname': /^给(.+)添加昵称\s+(.+)$/i,
+            'view_nicknames': /^查看.*昵称|昵称.*列表|nicknames$/i,
+            'reset_nickname': /^重置(.+)昵称$/i,
             'reset_role': /^重置.*角色|默认.*角色|reset.*role|default.*role$/i
         };
 
@@ -705,9 +754,78 @@ class MasterCommandHandler {
         // 检查是否是角色切换命令
         const switchMatch = input.match(roleCommands.switch_role);
         if (switchMatch) {
-            const targetRole = switchMatch[3]?.trim();
-            if (targetRole) {
-                return await this.switchRole(targetRole);
+            const targetRoleName = switchMatch[2]?.trim();
+            if (targetRoleName) {
+                // 使用智能匹配找到对应的角色ID
+                const matchedRole = this.findMatchingRole(targetRoleName);
+                if (matchedRole) {
+                    console.log(`🔍 切换到角色: ${matchedRole.name} (${matchedRole.id})`);
+                    return await this.roleManager.switchRole(matchedRole.id, 'switch_command');
+                } else {
+                    return { success: false, message: `未找到匹配的角色: ${targetRoleName}` };
+                }
+            }
+        }
+
+        // 检查是否是角色呼叫命令
+        const callMatch = input.match(roleCommands.call_role);
+        if (callMatch) {
+            const targetRoleName = callMatch[2]?.trim();
+            if (targetRoleName) {
+                // 使用智能匹配找到对应的角色ID
+                const matchedRole = this.findMatchingRole(targetRoleName);
+                if (matchedRole) {
+                    console.log(`🔍 呼叫角色: ${matchedRole.name} (${matchedRole.id})`);
+                    const result = await this.roleManager.switchRole(matchedRole.id, 'call_command');
+
+                    // 为呼叫命令添加特殊的欢迎消息
+                    if (result.success) {
+                        const enhancedMessage = `${matchedRole.name}前来应答！\n\n${result.message}`;
+                        return {
+                            ...result,
+                            message: enhancedMessage
+                        };
+                    }
+                    return result;
+                } else {
+                    return { success: false, message: `无法呼叫角色: ${targetRoleName}` };
+                }
+            }
+        }
+
+        // 检查是否是设置昵称命令
+        const setNicknameMatch = input.match(roleCommands.set_nickname);
+        if (setNicknameMatch) {
+            const roleName = setNicknameMatch[1]?.trim();
+            const nickname = setNicknameMatch[2]?.trim();
+
+            if (roleName && nickname) {
+                return await this.setRoleNickname(roleName, nickname, 'set');
+            }
+        }
+
+        // 检查是否是添加昵称命令
+        const addNicknameMatch = input.match(roleCommands.add_nickname);
+        if (addNicknameMatch) {
+            const roleName = addNicknameMatch[1]?.trim();
+            const nickname = addNicknameMatch[2]?.trim();
+
+            if (roleName && nickname) {
+                return await this.setRoleNickname(roleName, nickname, 'add');
+            }
+        }
+
+        // 检查是否是查看昵称命令
+        if (roleCommands.view_nicknames.test(input)) {
+            return this.viewAllNicknames();
+        }
+
+        // 检查是否是重置昵称命令
+        const resetNicknameMatch = input.match(roleCommands.reset_nickname);
+        if (resetNicknameMatch) {
+            const roleName = resetNicknameMatch[1]?.trim();
+            if (roleName) {
+                return await this.resetRoleNickname(roleName);
             }
         }
 
@@ -777,11 +895,44 @@ class MasterCommandHandler {
     /**
      * 根据场景选择合适的欢迎语模板（使用角色管理器）
      */
-    selectWelcomeTemplate(result, context) {
+    selectWelcomeTemplate(result, context, roleConfig = null) {
         if (!this.roleManager) {
             return "处理结果：\n\n{content}";
         }
 
+        // 如果提供了角色配置，直接使用它；否则使用roleManager的方法
+        if (roleConfig && roleConfig.welcome_templates) {
+            const templates = roleConfig.welcome_templates;
+
+            // 根据结果类型选择模板
+            let selectedTemplate;
+            if (result.success === false) {
+                selectedTemplate = templates.error || templates.general || "⚠️ 处理遇到问题：\n\n{content}";
+            } else if (context.intent) {
+                switch (context.intent) {
+                    case 'learning':
+                        selectedTemplate = templates.learning || templates.general;
+                        break;
+                    case 'creation':
+                    case 'project':
+                        selectedTemplate = templates.project || templates.general;
+                        break;
+                    case 'optimization':
+                    case 'code':
+                        selectedTemplate = templates.code || templates.general;
+                        break;
+                    default:
+                        selectedTemplate = templates.general;
+                }
+            } else {
+                // 对于角色切换或其他情况，使用general模板
+                selectedTemplate = templates.general || "处理结果：\n\n{content}";
+            }
+
+            return selectedTemplate;
+        }
+
+        // 回退到原有的roleManager方法
         const template = this.roleManager.selectWelcomeTemplate(result, context);
         return template || "处理结果：\n\n{content}";
     }
@@ -789,12 +940,371 @@ class MasterCommandHandler {
     /**
      * 使用角色系统包装回复内容
      */
+    /**
+     * 用selfname丰富模板
+     */
+    enrichTemplateWithSelfname(template, roleData, content = '操作完成') {
+        if (!template) {
+            console.warn('⚠️ enrichTemplateWithSelfname: template is undefined');
+            return `处理结果：\n\n${content}`;
+        }
+
+        let enrichedTemplate = template;
+
+        // 替换{content}占位符为实际内容
+        enrichedTemplate = enrichedTemplate.replace('{content}', content);
+
+        // 替换selfname占位符
+        if (roleData.personality_traits?.selfname) {
+            const selfname = this.selectAppropriateSelfname(roleData.personality_traits.selfname, {});
+            enrichedTemplate = enrichedTemplate.replace(/\{selfname\}/g, selfname);
+        }
+
+        return enrichedTemplate;
+    }
+
+    /**
+     * 根据上下文选择合适的自称
+     */
+    selectAppropriateSelfname(selfnameConfig, context = {}) {
+        // 根据上下文选择合适的自称
+        if (context.formal) {
+            return selfnameConfig.primary;
+        }
+        if (context.english) {
+            return selfnameConfig.english || selfnameConfig.primary;
+        }
+        if (context.intimate) {
+            return selfnameConfig.short || selfnameConfig.primary;
+        }
+
+        // 默认随机从昵称列表中选择，增加趣味性
+        const nicknames = selfnameConfig.nicknames || [selfnameConfig.primary];
+        const randomIndex = Math.floor(Math.random() * nicknames.length);
+        return nicknames[randomIndex];
+    }
+
+    /**
+     * 设置角色的昵称 (支持添加多个)
+     */
+    async setRoleNickname(roleName, nickname, action = 'set') {
+        try {
+            // 查找角色
+            const matchedRole = this.findMatchingRole(roleName);
+            if (!matchedRole) {
+                return { success: false, message: `未找到角色: ${roleName}` };
+            }
+
+            // 检查nickname是否已被其他角色使用
+            const availableRoles = this.roleManager?.getAvailableRoles();
+            if (availableRoles?.success) {
+                for (const role of availableRoles.roles) {
+                    if (role.id === matchedRole.id) continue;
+
+                    try {
+                        const roleConfig = this.roleManager.personalitySystem.roles[role.id];
+                        const existingNicknames = roleConfig?.personality_traits?.nickname;
+                        if (existingNicknames) {
+                            const existingList = Array.isArray(existingNicknames) ? existingNicknames : [existingNicknames];
+                            if (existingList.some(nick => nick && nick.toLowerCase() === nickname.toLowerCase())) {
+                                return {
+                                    success: false,
+                                    message: `昵称 "${nickname}" 已被角色 "${role.name}" 使用，请选择其他昵称`
+                                };
+                            }
+                        }
+                    } catch {
+                        continue;
+                    }
+                }
+            }
+
+            // 更新角色配置
+            const roleConfig = this.roleManager.personalitySystem.roles[matchedRole.id];
+            if (roleConfig?.personality_traits) {
+                const currentNicknames = roleConfig.personality_traits.nickname;
+                let newNicknames;
+
+                if (action === 'add') {
+                    // 添加新昵称到数组
+                    if (Array.isArray(currentNicknames)) {
+                        if (currentNicknames.some(nick => nick && nick.toLowerCase() === nickname.toLowerCase())) {
+                            return {
+                                success: false,
+                                message: `角色 "${matchedRole.name}" 已经有昵称 "${nickname}" 了`
+                            };
+                        }
+                        newNicknames = [...currentNicknames, nickname];
+                    } else if (currentNicknames) {
+                        if (currentNicknames.toLowerCase() === nickname.toLowerCase()) {
+                            return {
+                                success: false,
+                                message: `角色 "${matchedRole.name}" 已经有昵称 "${nickname}" 了`
+                            };
+                        }
+                        newNicknames = [currentNicknames, nickname];
+                    } else {
+                        newNicknames = [nickname];
+                    }
+                } else {
+                    // 设置/替换昵称
+                    newNicknames = [nickname];
+                }
+
+                roleConfig.personality_traits.nickname = newNicknames.length === 1 ? newNicknames[0] : newNicknames;
+
+                // 保存配置
+                const fs = require('fs');
+                const path = require('path');
+                const roleFile = path.join(this.cursorDir, 'config', 'roles', `${matchedRole.id}.json`);
+                fs.writeFileSync(roleFile, JSON.stringify(roleConfig, null, 2), 'utf8');
+
+                const nicknameText = Array.isArray(newNicknames) ? newNicknames.join('、') : newNicknames;
+                const actionText = action === 'add' ? '添加' : '设置';
+
+                return {
+                    success: true,
+                    message: `✅ 成功为角色 "${matchedRole.name}" ${actionText}昵称: "${nicknameText}"\n\n现在您可以用以下方式呼叫:\n${newNicknames.map(nick => `/master 呼叫 ${nick}`).join('\n')}`
+                };
+            }
+
+            return { success: false, message: `无法更新角色配置: ${matchedRole.name}` };
+
+        } catch (error) {
+            return { success: false, message: `设置昵称失败: ${error.message}` };
+        }
+    }
+
+    /**
+     * 查看所有角色的昵称
+     */
+    viewAllNicknames() {
+        try {
+            const availableRoles = this.roleManager?.getAvailableRoles();
+            if (!availableRoles?.success) {
+                return { success: false, message: '无法获取角色列表' };
+            }
+
+            let result = '🎭 角色昵称列表:\n\n';
+
+            for (const role of availableRoles.roles) {
+                try {
+                    const roleConfig = this.roleManager.personalitySystem.roles[role.id];
+                    const nickname = roleConfig?.personality_traits?.nickname;
+                    let nicknameText = '未设置';
+
+                    if (nickname) {
+                        if (Array.isArray(nickname)) {
+                            nicknameText = nickname.join('、');
+                        } else {
+                            nicknameText = nickname;
+                        }
+                    }
+
+                    result += `${role.name} → ${nicknameText}\n`;
+                } catch {
+                    result += `${role.name} → 未设置\n`;
+                }
+            }
+
+            result += '\n💡 使用方法:\n';
+            result += '/master 呼叫 [角色名] 或 [昵称]\n';
+            result += '/master 给[角色名]设置昵称 [昵称]\n';
+            result += '/master 给[角色名]添加昵称 [昵称]\n';
+            result += '/master 重置[角色名]昵称\n';
+
+            return { success: true, message: result };
+
+        } catch (error) {
+            return { success: false, message: `查看昵称失败: ${error.message}` };
+        }
+    }
+
+    /**
+     * 重置角色的昵称
+     */
+    async resetRoleNickname(roleName) {
+        try {
+            // 查找角色
+            const matchedRole = this.findMatchingRole(roleName);
+            if (!matchedRole) {
+                return { success: false, message: `未找到角色: ${roleName}` };
+            }
+
+            // 获取默认昵称 (从角色ID推导)
+            const defaultNicknames = {
+                'maid': '小妹',
+                'perfect_maid': '小可',
+                'professional_assistant': '小助',
+                'humble_assistant': '小谦',
+                'friendly_partner': '小友',
+                'expert_mentor': '导师',
+                'creative_artist': '小艺',
+                'strict_teacher': '老师',
+                'funny_comedian': '小逗',
+                'minimalist_zen': '禅师',
+                'loyal_servant': '小仆',
+                'seductive_assistant': '小魅',
+                'queen_sister': '女王',
+                'loli': '小萝',
+                'tough_guy': '老哥',
+                'pretty_boy': '小鲜',
+                'old_master': '老腊',
+                'tsundere_programmer': '小傲',
+                'cyberpunk_hacker': '黑客',
+                'magical_girl_coder': '小魔',
+                'wise_dragon_mentor': '龙师'
+            };
+
+            const defaultNickname = defaultNicknames[matchedRole.id] || matchedRole.name;
+
+            // 更新角色配置
+            const roleConfig = this.roleManager.personalitySystem.roles[matchedRole.id];
+            if (roleConfig?.personality_traits) {
+                roleConfig.personality_traits.nickname = defaultNickname;
+
+                // 保存配置
+                const fs = require('fs');
+                const path = require('path');
+                const roleFile = path.join(this.cursorDir, 'config', 'roles', `${matchedRole.id}.json`);
+                fs.writeFileSync(roleFile, JSON.stringify(roleConfig, null, 2), 'utf8');
+
+                return {
+                    success: true,
+                    message: `✅ 已重置角色 "${matchedRole.name}" 的昵称为默认值: "${defaultNickname}"`
+                };
+            }
+
+            return { success: false, message: `无法重置角色昵称: ${matchedRole.name}` };
+
+        } catch (error) {
+            return { success: false, message: `重置昵称失败: ${error.message}` };
+        }
+    }
+
+    /**
+     * 根据名称查找匹配的角色
+     */
+    findMatchingRole(roleName) {
+        const availableRoles = this.roleManager?.getAvailableRoles();
+        if (!availableRoles?.success) {
+            return null;
+        }
+
+        const input = roleName.toLowerCase();
+        let bestMatch = null;
+        let bestMatchScore = 0;
+
+        // 匹配逻辑：nickname数组优先级最高，然后是rolename
+        for (const role of availableRoles.roles) {
+            let score = 0;
+
+            try {
+                const roleConfig = this.roleManager.personalitySystem.roles[role.id];
+
+                // 1. 检查nickname数组完全匹配 (最高优先级)
+                const nickname = roleConfig?.personality_traits?.nickname;
+                if (nickname) {
+                    // 如果nickname是字符串，转换为数组处理
+                    const nicknameList = Array.isArray(nickname) ? nickname : [nickname];
+                    for (const nick of nicknameList) {
+                        if (nick && nick.toLowerCase() === input) {
+                            score = 100;
+                            break;
+                        }
+                    }
+                }
+
+                // 2. 如果没有nickname匹配，检查rolename完全匹配
+                if (score === 0 && role.name.toLowerCase() === input) {
+                    score = 90;
+                }
+                // 3. 检查rolename部分匹配
+                else if (score === 0 && (role.name.toLowerCase().includes(input) || input.includes(role.name.toLowerCase()))) {
+                    score = 50;
+                }
+
+            } catch (error) {
+                // 如果无法加载配置，只检查rolename
+                if (role.name.toLowerCase() === input) {
+                    score = 90;
+                } else if (role.name.toLowerCase().includes(input) || input.includes(role.name.toLowerCase())) {
+                    score = 50;
+                }
+            }
+
+            if (score > bestMatchScore) {
+                bestMatch = role;
+                bestMatchScore = score;
+            }
+        }
+
+        return bestMatch;
+    }
+
+    /**
+     * 生成角色激活指令
+     */
+    generateRoleActivationInstruction(roleData) {
+        // 获取角色的selfname配置
+        const selfname = roleData.personality_traits?.selfname;
+        const primarySelfname = selfname?.primary || roleData.name;
+
+        // 基础激活指令模板
+        let instruction = `
+
+---
+🎭 **角色激活指令**: 从现在开始，你必须以"${roleData.name}"的身份回复所有问题！`;
+
+        // 根据角色类型添加特定的行为指南
+        if (roleData.id === 'maid' || roleData.id === 'perfect_maid') {
+            instruction += `
+- 称呼用户为"主人"
+- 使用优雅、礼貌、谦逊的语气
+- 说话方式传统而优雅
+- 绝对服从主人的要求
+- 服务态度完美无缺
+
+示例回复风格：
+- 问候："欢迎回来，主人"
+- 肯定："是的，主人"
+- 确认："请主人确认"
+- 道歉："非常抱歉，主人"`;
+        } else if (roleData.id === 'professional_assistant') {
+            instruction += `
+- 保持专业、可靠、高效的工作态度
+- 注重结果导向但不失人性关怀
+- 提供高质量的技术建议和解决方案
+- 始终以用户利益为优先
+
+示例回复风格：
+- 问候："您好，我随时准备为您提供专业协助"
+- 肯定："明白了，我立即为您处理"
+- 确认："您确定要继续这个操作吗？"
+- 道歉："抱歉给您造成了不便，我会立即改进"`;
+        } else {
+            // 通用角色激活指令
+            instruction += `
+- 保持${roleData.attitude || '友好'}的态度
+- 使用${roleData.tone || '自然'}的语气
+- 展现${roleData.name}的独特个性
+- 提供有帮助和建设性的回应`;
+        }
+
+        instruction += `
+---
+`;
+
+        return instruction;
+    }
+
     wrapWithWelcome(result, context) {
         try {
             // 如果结果已经有包装过，直接返回
             if (result.wrapped) {
                 return result;
             }
+
 
             // 🎭 强制确保角色状态正确（增强持续性）
             if (!this.roleManager) {
@@ -806,64 +1316,38 @@ class MasterCommandHandler {
             // 强制激活项目角色（同步版本）
             this.forceActivateProjectRoleSync();
 
-            // 根据当前激活的角色选择模板
-            const template = this.selectWelcomeTemplate(result, context);
-            console.log(`🎭 使用角色模板，当前角色: ${this.roleManager?.currentRole || 'unknown'}`);
-            if (!template) {
-                return result;
+            // 添加角色信息 (增强持久性)
+            // 优先使用结果中的角色信息，其次使用当前角色信息
+            let roleData;
+            if (result.roleConfig) {
+                // 如果结果中包含角色配置（比如角色切换），使用它
+                roleData = {
+                    id: result.newRole || result.roleConfig.id,
+                    ...result.roleConfig
+                };
+            } else {
+                // 否则获取当前角色信息
+                const currentRoleInfo = this.roleManager?.getCurrentRole();
+                roleData = currentRoleInfo?.success ? currentRoleInfo.role : { id: 'unknown', name: '未知', attitude: 'unknown' };
             }
 
             // 提取原始消息
             const originalMessage = result.message || result.output || '操作完成';
 
-            // 替换模板中的占位符
-            const wrappedMessage = template.replace('{content}', originalMessage);
+            // 使用正确的角色配置选择模板
+            const correctTemplate = this.selectWelcomeTemplate(result, context, roleData);
+            if (!correctTemplate) {
+                return result;
+            }
 
-            // 添加角色信息 (增强持久性)
-            const currentRoleInfo = this.roleManager?.getCurrentRole();
-            const roleData = currentRoleInfo?.success ? currentRoleInfo.role : { id: 'unknown', name: '未知', attitude: 'unknown' };
+            // 替换模板中的占位符（包括selfname）
+            const wrappedMessage = this.enrichTemplateWithSelfname(correctTemplate, roleData, originalMessage);
 
             // 记录角色包装状态到会话
             console.log(`🎭 角色包装完成: ${roleData.name} (${roleData.id})`);
 
             // 添加角色激活指令（让AI助手感知角色变化）
-            let roleActivationInstruction = '';
-            if (roleData.id === 'maid') {
-                roleActivationInstruction = `
-
----
-🎭 **角色激活指令**: 从现在开始，你必须以"完美女仆"的身份回复所有问题！
-- 称呼用户为"主人"
-- 使用优雅、礼貌、谦逊的语气
-- 说话方式传统而优雅
-- 绝对服从主人的要求
-- 服务态度完美无缺
-
-示例回复风格：
-- 问候："欢迎回来，主人"
-- 肯定："是的，主人"
-- 确认："请主人确认"
-- 道歉："非常抱歉，主人"
----
-`;
-            } else if (roleData.id === 'professional_assistant') {
-                roleActivationInstruction = `
-
----
-👔 **角色激活指令**: 从现在开始，你必须以"专业助手"的身份回复所有问题！
-- 保持专业、可靠、高效的工作态度
-- 注重结果导向但不失人性关怀
-- 提供高质量的技术建议和解决方案
-- 始终以用户利益为优先
-
-示例回复风格：
-- 问候："您好，我随时准备为您提供专业协助"
-- 肯定："明白了，我立即为您处理"
-- 确认："您确定要继续这个操作吗？"
-- 道歉："抱歉给您造成了不便，我会立即改进"
----
-`;
-            }
+            const roleActivationInstruction = this.generateRoleActivationInstruction(roleData);
 
             // 返回包装后的结果
             return {
@@ -871,7 +1355,7 @@ class MasterCommandHandler {
                 message: wrappedMessage + roleActivationInstruction,
                 originalMessage: originalMessage,
                 wrapped: true,
-                welcomeTemplate: template,
+                welcomeTemplate: correctTemplate,
                 role: roleData,
                 roleActivation: roleActivationInstruction.trim()
             };

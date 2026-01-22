@@ -17,6 +17,12 @@ class MasterCommandParser {
                 handler: this.parseDirectCall.bind(this)
             },
 
+            // 角色切换模式
+            role_switch: {
+                pattern: /^(切换|设置|switch|set)\s*(?:角色|role)?\s*(.+)$/i,
+                handler: this.parseRoleSwitch.bind(this)
+            },
+
             // 自然语言模式
             natural: {
                 pattern: /^(.+)$/,
@@ -100,6 +106,12 @@ class MasterCommandParser {
             }
         }
 
+        // 尝试角色切换模式
+        const roleSwitchResult = this.commandPatterns.role_switch.handler(trimmedInput);
+        if (roleSwitchResult) {
+            return roleSwitchResult;
+        }
+
         // 尝试自然语言模式
         return this.commandPatterns.natural.handler(trimmedInput);
     }
@@ -134,6 +146,35 @@ class MasterCommandParser {
             type: 'direct_call',
             callType: normalizedType,
             targetName: trimmedName,
+            originalInput: input,
+            confidence: 1.0,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    /**
+     * 解析角色切换命令
+     * @param {string} input - 输入字符串
+     * @returns {Object|null} 解析结果或null
+     */
+    parseRoleSwitch(input) {
+        const match = input.match(this.commandPatterns.role_switch.pattern);
+        if (!match) {
+            return null;
+        }
+
+        const [, , roleName] = match;
+        const trimmedRoleName = roleName.trim();
+
+        // 验证角色名称
+        if (!trimmedRoleName) {
+            return this.createErrorResult('未指定角色名称');
+        }
+
+        return {
+            success: true,
+            type: 'role_switch',
+            roleName: trimmedRoleName,
             originalInput: input,
             confidence: 1.0,
             timestamp: new Date().toISOString()

@@ -1,0 +1,50 @@
+{
+  "run_tests": {
+    "description": "运行测试",
+    "intents": [
+      "test",
+      "webapp-testing",
+      "unit",
+      "integration"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "运行测试",
+      "执行单元测试",
+      "运行集成测试",
+      "测试覆盖率检查"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "webapp-testing"
+      ],
+      "scripts": [],
+      "workflows": [
+        "unit-tests",
+        "integration-tests",
+        "coverage-report"
+      ],
+      "hooks": [
+        "test-hooks.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "test_type": "all",
+      "coverage_required": true,
+      "parallel_execution": true
+    },
+    "validation_rules": {
+      "min_coverage": 80,
+      "max_test_duration": 300
+    }
+  }
+}

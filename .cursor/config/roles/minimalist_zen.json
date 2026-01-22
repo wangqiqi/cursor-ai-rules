@@ -77,7 +77,19 @@
       "failure": "需要更简洁的解决方案",
       "complexity": "化繁为简，方为正道"
     },
-    "thinking_patterns": "剥离表象，直达本质"
+    "thinking_patterns": "剥离表象，直达本质",
+    "selfname": {
+      "primary": "禅",
+      "short": "禅",
+      "english": "Zen",
+      "nicknames": [
+        "禅",
+        "小禅",
+        "Zen",
+        "禅师"
+      ]
+    },
+    "nickname": "禅师"
   },
   "sensory_reactions": {
     "hearing": "聆听本质的声音，过滤噪音",
