@@ -6,8 +6,8 @@ const path = require('path');
 const fs = require('fs');
 
 class MasterCommandHandler {
-    constructor(context = {}) {
-        this.projectRoot = this.findProjectRoot();
+    constructor(projectRoot, context = {}) {
+        this.projectRoot = projectRoot || this.findProjectRoot();
         this.cursorDir = path.join(this.projectRoot, '.cursor');
 
         // 🎯 IDE上下文信息 - 这是/master相较于cursor-master.sh的最大优势

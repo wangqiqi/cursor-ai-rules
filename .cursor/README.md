@@ -27,7 +27,7 @@
 - ✅ **Hooks**: 33/33 (100%) - 自动化钩子完全配备
 - ✅ **Modules**: 55/55 (100%) - 全新架构模块
 
-**📋 [组件映射总表](docs/guides/capability-maps-guide.md)** | 📚 **[快速改进指南](docs/guides/quick-improvements-and-web-guide.md)** | **[系统设计哲学](docs/architecture/system-design-philosophy.md)** | **[VIBE开发指南](rules/workflow/vibe-coding.md)** | **[API文档](docs/api/hooks-api.md)**
+**📋 [组件映射总表](docs/guides/capability-maps-guide.md)** | 📚 **[快速改进指南](docs/guides/quick-improvements-and-web-guide.md)** | **[系统设计哲学](docs/architecture/system-design-philosophy.md)** | **[VIBE开发指南](rules/workflow/vibe-coding.md)** | **[API文档](docs/developer/api-reference.md)**
 
 基于 [Cursor Rules System](https://cursor.com/docs/context/rules)，这是一个宪法驱动的AI编程伙伴，具有**三项基本公理 + 三项不可知设计原则 + 双目录架构 + Web界面 + VIBE开发方法论**，实现真正的人机共生编程体验。
 
@@ -848,3 +848,8 @@ chmod +x .cursor/features/hooks/*.sh
 **三项基本公理 + 三项不可知设计原则 + 21种人格角色 + 双目录架构 + VIBE开发方法论**
 
 **实现真正的人机共生编程体验！** 🚀✨
+
+---
+
+*最后更新: 2026-01-22 | 作者: wangqiqi (https://github.com/wangqiqi)*
+*基于 Cursor 官方规范，宪法驱动的AI，具备智能感知、决策和进化系统*

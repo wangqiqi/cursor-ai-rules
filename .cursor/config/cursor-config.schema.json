@@ -1,4 +1,5 @@
 {
+  "version": "1.0.0",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cursor-ai-rules.com/schema/config/v1.0.0",
   "title": "Cursor AI Rules Configuration Schema",

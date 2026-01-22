@@ -1,3 +1,8 @@
+---
+command: capability-maps
+description: "模块化能力映射系统 - 统一管理系统的所有能力和配置"
+---
+
 # 模块化能力映射系统
 
 ## 📁 目录结构

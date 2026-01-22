@@ -1,5 +1,6 @@
 {
   "version": "1.0.0",
+  "description": "全局配置模板，定义系统的全局行为和默认设置",
   "metadata": {
     "created_at": "2024-01-15T10:00:00Z",
     "last_updated": "2026-01-16T10:00:00Z",
