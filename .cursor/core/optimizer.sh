@@ -9,10 +9,8 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 加载统一路径配置
 source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
-source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 source "$SCRIPT_DIR/batch-executor.sh"
-source "$SCRIPT_DIR/performance-monitor.sh"
 source "$SCRIPT_DIR/token-compression.sh"
 
 # 优化配置
@@ -411,6 +409,516 @@ show_optimizer_help() {
   MAX_PARALLEL          最大并行数
 
 EOF
+}
+
+# =============================================================================
+# 集成缓存功能 (从performance-cache.sh合并)
+# =============================================================================
+
+# 缓存配置
+CACHE_DIR="$ANALYTICS_DIR"
+CACHE_TTL=300  # 5分钟缓存有效期
+PERFORMANCE_LOG="$CACHE_DIR/performance.log"
+
+# 获取缓存键
+get_cache_key() {
+    local type="$1"
+    local input="$2"
+    echo "$type:$(echo "$input" | md5sum | cut -d' ' -f1)"
+}
+
+# 检查缓存是否有效
+is_cache_valid() {
+    local cache_file="$1"
+    if [ ! -f "$cache_file" ]; then
+        return 1
+    fi
+
+    local cache_time=$(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null || echo "0")
+    local current_time=$(date +%s)
+    local age=$((current_time - cache_time))
+
+    [ $age -lt $CACHE_TTL ]
+}
+
+# 从缓存读取数据
+read_cache() {
+    local cache_key="$1"
+    local cache_file="$CACHE_DIR/$cache_key.cache"
+
+    if is_cache_valid "$cache_file"; then
+        cat "$cache_file" 2>/dev/null
+        return 0
+    else
+        return 1
+    fi
+}
+
+# 写入缓存数据
+write_cache() {
+    local cache_key="$1"
+    local data="$2"
+    local cache_file="$CACHE_DIR/$cache_key.cache"
+
+    echo "$data" > "$cache_file"
+}
+
+# 清除过期缓存
+clean_expired_cache() {
+    find "$CACHE_DIR" -name "*.cache" -type f -mmin +5 -delete 2>/dev/null || true
+}
+
+# 记录性能指标
+log_performance() {
+    local operation="$1"
+    local start_time="$2"
+    local end_time="$3"
+    local token_estimate="$4"
+    local cache_hit="${5:-false}"
+
+    local duration=$((end_time - start_time))
+    echo "$(date '+%Y-%m-%d %H:%M:%S'),$operation,$duration,$token_estimate,$cache_hit" >> "$PERFORMANCE_LOG"
+}
+
+# 获取性能统计
+get_performance_stats() {
+    if [ ! -f "$PERFORMANCE_LOG" ]; then
+        echo '{"error": "No performance data available"}'
+        return
+    fi
+
+    # 分析最近的性能数据
+    local recent_data=$(tail -n 100 "$PERFORMANCE_LOG" 2>/dev/null || cat "$PERFORMANCE_LOG")
+
+    # 计算平均响应时间
+    local avg_duration=$(echo "$recent_data" | awk -F',' '{sum += $3; count++} END {print count > 0 ? sum/count : 0}')
+
+    # 计算缓存命中率
+    local total_requests=$(echo "$recent_data" | wc -l)
+    local cache_hits=$(echo "$recent_data" | grep ",true$" | wc -l)
+    local cache_hit_rate=0
+    if [ "$total_requests" -gt 0 ]; then
+        cache_hit_rate=$((cache_hits * 100 / total_requests))
+    fi
+
+    # 计算平均token消耗
+    local avg_tokens=$(echo "$recent_data" | awk -F',' '{sum += $4; count++} END {print count > 0 ? sum/count : 0}')
+
+    cat << EOF
+{
+  "performance_stats": {
+    "average_response_time_ms": ${avg_duration:-0},
+    "cache_hit_rate_percent": $cache_hit_rate,
+    "average_token_consumption": ${avg_tokens:-0},
+    "total_requests_analyzed": $total_requests,
+    "time_range": "last_100_requests"
+  }
+}
+EOF
+}
+
+# 智能缓存的环境感知
+cached_env_perception() {
+    local cache_key=$(get_cache_key "env_perception" "full_scan")
+    local start_time=$(date +%s)
+
+    # 尝试从缓存读取
+    if read_cache "$cache_key" >/dev/null 2>&1; then
+        # 缓存命中：读取并输出缓存内容
+        local cached_data=$(read_cache "$cache_key")
+        local end_time=$(date +%s)
+        log_performance "env_perception" "$start_time" "$end_time" "50" "true"
+        echo "$cached_data"
+        return 0
+    fi
+
+    # 缓存未命中，执行实际感知（精简版）
+    local result=$(quick_env_scan)
+    write_cache "$cache_key" "$result"
+
+    local end_time=$(date +%s)
+    log_performance "env_perception" "$start_time" "$end_time" "500" "false"
+
+    echo "$result"
+}
+
+# 快速环境扫描（精简版）
+quick_env_scan() {
+    cat << EOF
+{
+  "quick_env_scan": {
+    "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')",
+    "project_type": "$(detect_project_type)",
+    "has_git": $(git rev-parse --git-dir >/dev/null 2>&1 && echo "true" || echo "false"),
+    "has_package_json": $([ -f "package.json" ] && echo "true" || echo "false"),
+    "has_requirements_txt": $([ -f "requirements.txt" ] || [ -f "pyproject.toml" ] && echo "true" || echo "false"),
+    "working_directory": "$PWD"
+  }
+}
+EOF
+}
+
+# 快速项目类型检测
+detect_project_type() {
+    if [ -f "package.json" ]; then
+        echo "javascript"
+    elif [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
+        echo "python"
+    elif [ -f "go.mod" ]; then
+        echo "golang"
+    elif [ -f "Cargo.toml" ]; then
+        echo "rust"
+    else
+        echo "unknown"
+    fi
+}
+
+# 智能缓存的意图分析
+cached_intent_analysis() {
+    local user_input="$1"
+    local cache_key=$(get_cache_key "intent_analysis" "$user_input")
+    local start_time=$(date +%s)
+
+    # 尝试从缓存读取
+    if read_cache "$cache_key" >/dev/null 2>&1; then
+        # 缓存命中：读取并输出缓存内容
+        local cached_data=$(read_cache "$cache_key")
+        local end_time=$(date +%s)
+        log_performance "intent_analysis" "$start_time" "$end_time" "30" "true"
+        echo "$cached_data"
+        return 0
+    fi
+
+    # 执行简化的意图分析
+    local result=$(quick_intent_analysis "$user_input")
+    write_cache "$cache_key" "$result"
+
+    local end_time=$(date +%s)
+    log_performance "intent_analysis" "$start_time" "$end_time" "150" "false"
+
+    echo "$result"
+}
+
+# 快速意图分析（精简版）
+quick_intent_analysis() {
+    local user_input="$1"
+
+    # 简单的意图识别规则
+    local intent_type="unknown"
+    local confidence=0
+
+    if echo "$user_input" | grep -qiE "(创建|开发|构建|搭建|做一个)"; then
+        intent_type="project_creation"
+        confidence=90
+    elif echo "$user_input" | grep -qiE "(优化|改进|重构|质量|检查)"; then
+        intent_type="code_optimization"
+        confidence=85
+    elif echo "$user_input" | grep -qiE "(分析|评估|诊断|状态)"; then
+        intent_type="project_analysis"
+        confidence=80
+    elif echo "$user_input" | grep -qiE "(提交|推送|push)"; then
+        intent_type="git_operation"
+        confidence=95
+    fi
+
+    cat << EOF
+{
+  "quick_intent_analysis": {
+    "user_input": "$user_input",
+    "intent_type": "$intent_type",
+    "confidence": $confidence,
+    "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')"
+  }
+}
+EOF
+}
+
+# =============================================================================
+# 集成监控功能 (从performance-monitor.sh合并)
+# =============================================================================
+
+# 监控配置
+METRICS_FILE="$ANALYTICS_DATA_DIR/analytics-monitoring-metrics.json"
+TOKEN_LOG="$ANALYTICS_DATA_DIR/analytics-monitoring-token-usage.log"
+PERFORMANCE_LOG_MONITOR="$ANALYTICS_DATA_DIR/analytics-monitoring-performance.log"
+
+# 初始化监控系统
+init_monitoring() {
+    safe_file_operation "mkdir" "$ANALYTICS_DATA_DIR"
+    safe_file_operation "mkdir" "$ANALYTICS_CACHE_DIR"
+
+    # 初始化指标文件
+    if [ ! -f "$METRICS_FILE" ]; then
+        cat > "$METRICS_FILE" << EOF
+{
+  "monitoring_start": "$(date '+%Y-%m-%d %H:%M:%S')",
+  "total_interactions": 0,
+  "performance_metrics": {
+    "average_response_time_ms": 0,
+    "cache_hit_rate_percent": 0,
+    "average_token_consumption": 0,
+    "peak_memory_usage_mb": 0,
+    "error_rate_percent": 0
+  },
+  "token_economics": {
+    "total_tokens_consumed": 0,
+    "tokens_saved_by_cache": 0,
+    "cost_savings_usd": 0,
+    "efficiency_rating": "unknown"
+  },
+  "system_health": {
+    "uptime_percent": 100,
+    "error_count": 0,
+    "warning_count": 0,
+    "last_health_check": "$(date '+%Y-%m-%d %H:%M:%S')"
+  }
+}
+EOF
+    fi
+
+    smart_echo "监控系统初始化完成" "info"
+}
+
+# 记录token使用情况
+log_token_usage() {
+    local operation="$1"
+    local tokens_used="$2"
+    local tokens_estimated="$3"
+    local cache_hit="$4"
+
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "$timestamp,$operation,$tokens_used,$tokens_estimated,$cache_hit" >> "$TOKEN_LOG"
+}
+
+# 记录性能指标
+log_performance_metric() {
+    local operation="$1"
+    local response_time_ms="$2"
+    local memory_usage_kb="$3"
+    local cpu_usage_percent="$4"
+    local status="${5:-success}"
+
+    # 统一使用5列格式，与cache.sh保持一致
+    # timestamp,operation,duration,token_estimate,cache_hit
+    local token_estimate=$(estimate_tokens "$operation" "${#status}")
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "$timestamp,$operation,$response_time_ms,$token_estimate,$cpu_usage_percent" >> "$PERFORMANCE_LOG_MONITOR"
+}
+
+# 估算token消耗（基于操作类型）
+estimate_tokens() {
+    local operation="$1"
+    local data_size="${2:-0}"
+
+    case "$operation" in
+        "env_perception")
+            echo $((50 + data_size / 100))  # 基础50 + 每100字符额外token
+            ;;
+        "intent_analysis")
+            echo $((30 + data_size / 50))   # 基础30 + 每50字符额外token
+            ;;
+        "file_read")
+            echo $((20 + data_size / 200))  # 基础20 + 每200字符额外token
+            ;;
+        "code_execution")
+            echo $((100 + data_size / 20))  # 基础100 + 代码复杂度
+            ;;
+        "git_operation")
+            echo "25"  # Git操作相对固定
+            ;;
+        "cache_hit")
+            echo "5"   # 缓存命中消耗很少
+            ;;
+        *)
+            echo "50"  # 默认估算
+            ;;
+    esac
+}
+
+# 获取当前内存使用情况
+get_memory_usage() {
+    # 尝试多种方式获取内存使用
+    if command -v free >/dev/null 2>&1; then
+        free -k | awk 'NR==2{printf "%.0f", $3/1024}'  # MB
+    elif command -v vm_stat >/dev/null 2>&1; then
+        # macOS
+        vm_stat | awk '/Pages active/ {print int($3 * 4096 / 1024 / 1024)}'
+    else
+        echo "0"
+    fi
+}
+
+# 获取CPU使用率
+get_cpu_usage() {
+    if command -v top >/dev/null 2>&1; then
+        top -bn1 | awk '/Cpu/ {print int($2)}' 2>/dev/null || echo "0"
+    elif command -v iostat >/dev/null 2>&1; then
+        iostat -c 1 1 | awk 'NR==4{print int(100 - $6)}' 2>/dev/null || echo "0"
+    else
+        echo "0"
+    fi
+}
+
+# 更新监控指标
+update_metrics() {
+    if [ ! -f "$METRICS_FILE" ]; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: metrics.json file not found" >&2
+        return 1
+    fi
+
+    # 计算token统计 (token_usage.log: timestamp,operation,tokens,cache_hit)
+    local total_tokens=0
+    local cached_tokens=0
+    if [ -f "$TOKEN_LOG" ] && [ -s "$TOKEN_LOG" ]; then
+        total_tokens=$(awk -F',' 'NF>=3 {sum += $3} END {print sum+0}' "$TOKEN_LOG" 2>/dev/null || echo "0")
+        cached_tokens=$(awk -F',' 'NF>=4 && $4=="true" {sum += $3} END {print sum+0}' "$TOKEN_LOG" 2>/dev/null || echo "0")
+    fi
+    local cache_savings=$((total_tokens - cached_tokens))
+
+    # 计算性能统计 (performance.log: timestamp,operation,duration,token_estimate,cache_hit)
+    local total_requests=0
+    local avg_response_time=0
+    if [ -f "$PERFORMANCE_LOG_MONITOR" ] && [ -s "$PERFORMANCE_LOG_MONITOR" ]; then
+        # 过滤掉注释行和空行
+        total_requests=$(grep -v '^#' "$PERFORMANCE_LOG_MONITOR" | grep -v '^$' | wc -l)
+        if [ "$total_requests" -gt 0 ]; then
+            avg_response_time=$(grep -v '^#' "$PERFORMANCE_LOG_MONITOR" | grep -v '^$' | awk -F',' '{sum += $3} END {print int(sum/NR)}' 2>/dev/null || echo "0")
+        fi
+    fi
+
+    # 计算缓存命中率 (基于token日志)
+    local cache_hit_rate=0
+    if [ "$total_tokens" -gt 0 ]; then
+        cache_hit_rate=$((cached_tokens * 100 / total_tokens))
+    fi
+
+    # 计算错误率 (暂时设为0，未来可以扩展)
+    local error_rate=0
+
+    # 更新指标文件
+    if jq --arg total_tokens "$total_tokens" \
+          --arg cache_savings "$cache_savings" \
+          --arg total_requests "$total_requests" \
+          --arg avg_response_time "$avg_response_time" \
+          --arg cache_hit_rate "$cache_hit_rate" \
+          --arg error_rate "$error_rate" \
+          --arg current_time "$(date '+%Y-%m-%d %H:%M:%S')" \
+          '.total_interactions = ($total_requests | tonumber) |
+           .performance_metrics.average_response_time_ms = ($avg_response_time | tonumber) |
+           .performance_metrics.cache_hit_rate_percent = ($cache_hit_rate | tonumber) |
+           .performance_metrics.error_rate_percent = ($error_rate | tonumber) |
+           .token_economics.total_tokens_consumed = ($total_tokens | tonumber) |
+           .token_economics.tokens_saved_by_cache = ($cache_savings | tonumber) |
+           .system_health.last_health_check = $current_time' "$METRICS_FILE" > "${METRICS_FILE}.tmp" 2>/dev/null; then
+        mv "${METRICS_FILE}.tmp" "$METRICS_FILE"
+    else
+        # jq失败，清理临时文件并记录错误
+        rm -f "${METRICS_FILE}.tmp"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: Failed to update metrics.json" >&2
+        return 1
+    fi
+}
+
+# 显示性能报告
+show_performance_report() {
+    if [ ! -f "$METRICS_FILE" ]; then
+        echo "⚠️  性能监控数据不可用"
+        return 1
+    fi
+
+    echo "📊 性能监控报告"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+    # 读取指标
+    local total_interactions=$(jq -r '.total_interactions' "$METRICS_FILE")
+    local avg_response_time=$(jq -r '.performance_metrics.average_response_time_ms' "$METRICS_FILE")
+    local cache_hit_rate=$(jq -r '.performance_metrics.cache_hit_rate_percent' "$METRICS_FILE")
+    local error_rate=$(jq -r '.performance_metrics.error_rate_percent' "$METRICS_FILE")
+    local total_tokens=$(jq -r '.token_economics.total_tokens_consumed' "$METRICS_FILE")
+    local tokens_saved=$(jq -r '.token_economics.tokens_saved_by_cache' "$METRICS_FILE")
+
+    echo "🎯 总交互次数: $total_interactions"
+    echo "⚡ 平均响应时间: ${avg_response_time}ms"
+    echo "💾 缓存命中率: ${cache_hit_rate}%"
+    echo "❌ 错误率: ${error_rate}%"
+    echo "🎫 Token消耗: $total_tokens (节省: $tokens_saved)"
+
+    # 性能评分
+    local performance_score=100
+    [ "$avg_response_time" -gt 2000 ] && performance_score=$((performance_score - 20))
+    [ "$cache_hit_rate" -lt 50 ] && performance_score=$((performance_score - 15))
+    [ "$error_rate" -gt 10 ] && performance_score=$((performance_score - 25))
+
+    echo "🏆 性能评分: $performance_score/100"
+
+    # 优化建议
+    echo ""
+    echo "💡 优化建议:"
+    if [ "$cache_hit_rate" -lt 50 ]; then
+        echo "  • 启用更激进的缓存策略"
+    fi
+    if [ "$avg_response_time" -gt 2000 ]; then
+        echo "  • 考虑使用精简输出模式"
+    fi
+    if [ "$error_rate" -gt 10 ]; then
+        echo "  • 检查系统配置和依赖"
+    fi
+}
+
+# 健康检查
+health_check() {
+    local issues=0
+    local warnings=0
+
+    echo "🔍 系统健康检查"
+
+    # 检查缓存目录
+    if [ ! -d "$ANALYTICS_DATA_DIR" ]; then
+        echo "❌ 缓存目录不存在"
+        issues=$((issues + 1))
+    fi
+
+    # 检查监控文件
+    if [ ! -f "$METRICS_FILE" ]; then
+        echo "❌ 指标文件不存在"
+        issues=$((issues + 1))
+    fi
+
+    # 检查磁盘空间
+    local disk_usage=$(df . | tail -1 | awk '{print $5}' | sed 's/%//')
+    if [ "$disk_usage" -gt 90 ]; then
+        echo "⚠️  磁盘空间不足: ${disk_usage}%"
+        warnings=$((warnings + 1))
+    fi
+
+    # 检查内存使用
+    local mem_usage=$(get_memory_usage)
+    if [ "$mem_usage" -gt 80 ]; then
+        echo "⚠️  内存使用过高: ${mem_usage}%"
+        warnings=$((warnings + 1))
+    fi
+
+    # 总结
+    if [ $issues -eq 0 ] && [ $warnings -eq 0 ]; then
+        echo "✅ 系统健康"
+        return 0
+    elif [ $issues -eq 0 ]; then
+        echo "⚠️  系统有 $warnings 个警告"
+        return 1
+    else
+        echo "❌ 系统有 $issues 个问题和 $warnings 个警告"
+        return 2
+    fi
+}
+
+# 清理旧数据
+cleanup_old_data() {
+    local days_to_keep="${1:-30}"
+
+    # 清理旧的日志文件
+    find "$ANALYTICS_DATA_DIR" -name "*.log" -mtime +$days_to_keep -delete 2>/dev/null || true
+
+    echo "🧹 已清理 $days_to_keep 天前的监控数据"
 }
 
 # 运行主函数
