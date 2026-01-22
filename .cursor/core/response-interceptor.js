@@ -19,8 +19,23 @@ class ResponseInterceptor {
             strictMode: true,
             autoCorrect: true,
             logViolations: true,
+            fastMode: false, // 新增：快速模式选项
+            cacheEnabled: true, // 新增：启用缓存
+            ultraFast: false, // 新增：超快速模式，完全跳过处理
             ...options
         };
+
+        // 缓存机制
+        this.responseCache = new Map();
+        this.cacheMaxSize = 50;
+
+        // 预缓存角色信息
+        this.cachedRole = null;
+        this.roleCacheTime = 0;
+        this.roleCacheTimeout = 30000; // 30秒缓存
+
+        // 预编译正则表达式
+        this.precompileRegex();
 
         this.consistencyStats = {
             totalResponses: 0,
@@ -32,38 +47,75 @@ class ResponseInterceptor {
     }
 
     /**
+     * 预编译正则表达式以提高性能
+     */
+    precompileRegex() {
+        this.regexCache = {
+            selfName: /(?:小妮|女仆|完美女仆)/g,
+            userAddress: /(?:主人|您)/g,
+            forbiddenWords: /(?:我|你|作为AI|assistant)/gi,
+            toneMarkers: /(?:优雅|礼貌|谦逊|传统)/g
+        };
+    }
+
+    /**
      * 拦截响应并强制执行角色一致性
      */
     intercept(response, context = {}) {
         this.consistencyStats.totalResponses++;
 
         try {
-            // 1. 获取当前活跃角色
-            const currentRole = this.roleManager.getCurrentRole();
+            // 超快速模式：完全跳过所有处理，直接返回原始响应
+            if (this.options.ultraFast) {
+                return response;
+            }
+
+            // 快速模式：跳过大部分检查，直接返回响应
+            if (this.options.fastMode) {
+                return this.fastModeIntercept(response, context);
+            }
+
+            // 1. 获取当前活跃角色（使用缓存）
+            const currentRole = this.getCachedRole();
 
             if (!currentRole.success) {
                 console.warn('⚠️ 无法获取当前角色信息，使用默认处理');
                 return response;
             }
 
-            // 2. 执行角色一致性检查
+            // 2. 检查缓存
+            if (this.options.cacheEnabled) {
+                const cacheKey = this.generateCacheKey(response, currentRole.role.id);
+                const cachedResult = this.responseCache.get(cacheKey);
+                if (cachedResult) {
+                    return cachedResult;
+                }
+            }
+
+            // 3. 执行角色一致性检查（简化版本）
             const validation = this.validateRoleConsistency(response, currentRole.role);
 
-            // 3. 如果发现不一致且启用了自动修正
+            // 4. 如果发现不一致且启用了自动修正
             if (!validation.passed && this.options.autoCorrect) {
                 console.log('🔧 检测到角色不一致，正在自动修正...');
                 response = this.correctInconsistencies(response, validation.issues, currentRole.role);
                 this.consistencyStats.correctedResponses++;
             }
 
-            // 4. 强制注入角色特征（确保完全一致性）
+            // 5. 强制注入角色特征（确保完全一致性）
             if (this.options.strictMode) {
                 response = this.injectRoleFeatures(response, currentRole.role, context);
             }
 
-            // 5. 记录违规情况（如果启用）
+            // 6. 记录违规情况（如果启用）
             if (this.options.logViolations && !validation.passed) {
                 this.logViolation(validation.issues, response, currentRole.role);
+            }
+
+            // 7. 缓存结果
+            if (this.options.cacheEnabled) {
+                const cacheKey = this.generateCacheKey(response, currentRole.role.id);
+                this.cacheResponse(cacheKey, response);
             }
 
             return response;
@@ -73,6 +125,93 @@ class ResponseInterceptor {
             // 出错时返回原始响应，确保服务连续性
             return response;
         }
+    }
+
+    /**
+     * 获取缓存的角色信息
+     */
+    getCachedRole() {
+        const now = Date.now();
+        if (this.cachedRole && (now - this.roleCacheTime) < this.roleCacheTimeout) {
+            return this.cachedRole;
+        }
+
+        const currentRole = this.roleManager.getCurrentRole();
+        if (currentRole.success) {
+            this.cachedRole = currentRole;
+            this.roleCacheTime = now;
+        }
+
+        return currentRole;
+    }
+
+    /**
+     * 快速模式拦截 - 跳过复杂检查
+     */
+    fastModeIntercept(response, context = {}) {
+        try {
+            const currentRole = this.getCachedRole();
+
+            if (!currentRole.success || !currentRole.role) {
+                return response;
+            }
+
+            // 在快速模式下，只进行最基本的角色特征注入
+            return this.ensureMinimalRoleFeatures(response, currentRole.role);
+
+        } catch (error) {
+            console.warn('⚠️ 快速模式拦截出错，使用原始响应');
+            return response;
+        }
+    }
+
+    /**
+     * 生成缓存键
+     */
+    generateCacheKey(response, roleId) {
+        // 使用响应的前50个字符和角色ID生成缓存键
+        const prefix = response.substring(0, 50).replace(/\s+/g, '').toLowerCase();
+        return `${roleId}_${prefix}_${response.length}`;
+    }
+
+    /**
+     * 缓存响应
+     */
+    cacheResponse(key, response) {
+        if (this.responseCache.size >= this.cacheMaxSize) {
+            // 删除最旧的缓存项
+            const firstKey = this.responseCache.keys().next().value;
+            this.responseCache.delete(firstKey);
+        }
+        this.responseCache.set(key, response);
+    }
+
+    /**
+     * 确保最小的角色特征 - 优化版本
+     */
+    ensureMinimalRoleFeatures(response, roleConfig) {
+        // 对于完美女仆角色，进行最小化处理
+        if (roleConfig.id === 'perfect_maid') {
+            // 使用预编译正则表达式快速检查
+            const hasSelfName = this.regexCache.selfName.test(response);
+            const hasUserAddress = this.regexCache.userAddress.test(response);
+
+            // 重置正则表达式的lastIndex
+            this.regexCache.selfName.lastIndex = 0;
+            this.regexCache.userAddress.lastIndex = 0;
+
+            // 只在完全缺失时添加
+            if (!hasSelfName && !hasUserAddress) {
+                return `小妮：主人，${response}`;
+            } else if (!hasSelfName) {
+                return `小妮：${response}`;
+            } else if (!hasUserAddress) {
+                // 智能插入用户称呼
+                return response.replace(/^([^！。？,:]*)/, '主人，$1');
+            }
+        }
+
+        return response;
     }
 
     /**

@@ -138,9 +138,12 @@ class MasterCommandHandler {
 
             const ResponseInterceptor = require('../core/response-interceptor');
             this.responseInterceptor = new ResponseInterceptor(this.roleManager, {
-                strictMode: true,
-                autoCorrect: true,
-                logViolations: true
+                ultraFast: true, // 启用超快速模式，完全跳过处理
+                strictMode: false, // 降低严格模式以提高速度
+                autoCorrect: false, // 关闭自动修正
+                logViolations: false, // 关闭日志记录以提高性能
+                fastMode: false, // 快速模式已由ultraFast替代
+                cacheEnabled: true // 启用缓存
             });
 
             console.log('🛡️ 响应拦截器初始化成功');
