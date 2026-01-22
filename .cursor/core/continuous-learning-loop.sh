@@ -8,7 +8,8 @@ set -e
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
-source "$SCRIPT_DIR/self-learning-engine.sh"
+# TODO: 合并 self-learning-engine.sh 的功能到此脚本
+# source "$SCRIPT_DIR/self-learning-engine.sh"
 source "$SCRIPT_DIR/adaptive-optimization-engine.sh"
 source "$SCRIPT_DIR/experiment-framework.sh"
 source "$SCRIPT_DIR/performance-dashboard.sh"

@@ -51,21 +51,21 @@
 |---------|---------|---------|------|
 | config-validator | `features/hooks/config-validator.sh` | `features/hooks/config-validator.sh` (保留) | ✅ 无需更改 |
 | performance-monitor | `features/hooks/performance-monitor.sh` | `features/hooks/performance-monitor.sh` (保留) | ✅ 无需更改 |
-| quality-reporter | `core/quality-reporter.sh` | `core/quality-manager.sh` (合并后) | ❌ 需要更新 |
-| session-learning | `core/self-learning-engine.sh` | `core/continuous-learning-loop.sh` (合并后) | ❌ 需要更新 |
+| quality-reporter | `core/quality-reporter.sh` | `core/quality-manager.sh` (合并后) | ✅ 已更新 |
+| session-learning | `core/self-learning-engine.sh` | `core/continuous-learning-loop.sh` (合并后) | ✅ 已更新 |
 
 #### 2. 脚本内部引用更新
-| 脚本文件 | 需要移除的引用 | 原因 |
-|---------|---------------|------|
-| `optimizer.sh` | `performance-monitor.sh`, `performance-cache.sh` | 合并到主脚本 |
-| `continuous-learning-loop.sh` | `self-learning-engine.sh` | 合并到主脚本 |
+| 脚本文件 | 需要移除的引用 | 原因 | 状态 |
+|---------|---------------|------|------|
+| `optimizer.sh` | `performance-monitor.sh`, `performance-cache.sh` | 合并到主脚本 | ✅ 已完成 (仅注释引用) |
+| `continuous-learning-loop.sh` | `self-learning-engine.sh` | 合并到主脚本 | ⚠️ 待处理 (脚本仍存在) |
 
 #### 3. 文档和配置引用
-| 文件类型 | 可能位置 | 更新策略 |
-|---------|---------|---------|
-| README文件 | `README.md`, `README.en.md` | 检查是否引用了要删除的脚本 |
-| 文档文件 | `docs/` 目录 | 更新使用说明和示例 |
-| 配置文件 | 所有 `.json` 配置文件 | 检查脚本路径引用 |
+| 文件类型 | 可能位置 | 更新策略 | 状态 |
+|---------|---------|---------|------|
+| README文件 | `README.md`, `README.en.md` | 检查是否引用了要删除的脚本 | ✅ 已更新 |
+| 文档文件 | `docs/` 目录 | 更新使用说明和示例 | ✅ 已检查 (目录不存在) |
+| 配置文件 | 所有 `.json` 配置文件 | 检查脚本路径引用 | ✅ 已检查 (无引用) |
 
 ### ⚠️ 重要同步提醒
 

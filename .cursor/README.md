@@ -615,7 +615,7 @@ chmod +x .cursor/features/hooks/*.sh
 #### 配置问题
 ```bash
 # 验证配置文件
-.cursor/core/config-validator.sh
+.cursor/core/config-manager.sh validate_enhanced
 
 # 重置配置
 .cursor/core/config-reset.sh

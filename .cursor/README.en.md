@@ -527,8 +527,8 @@ cd .cursor/web && npm install && npm start
 # Re-run perception analysis
 ./.cursor/core/env-perception.sh
 
-# Performance monitoring
-./.cursor/core/performance-monitor.sh
+# Performance monitoring and optimization
+./.cursor/core/optimizer.sh analyze
 
 # System optimization
 ./.cursor/core/optimizer.sh
