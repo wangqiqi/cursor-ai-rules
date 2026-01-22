@@ -334,7 +334,7 @@ analyze_project_comprehensive() {
     fi
 
     # 5. 系统环境感知
-    echo "🖥️  感知系统环境..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "🖥️  感知系统环境..." >&2
     local os_info=$(uname -s 2>/dev/null || echo "Unknown")
     local arch_info=$(uname -m 2>/dev/null || echo "Unknown")
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S %Z')
@@ -551,7 +551,7 @@ generate_advanced_analysis() {
     local project_scale="$3"
     local dev_stage="$4"
 
-    echo "🔮 执行高级项目分析..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "🔮 执行高级项目分析..." >&2
 
     # 趋势预测
     local trend_analysis=$(predict_trends "$tech_stack" "$dev_stage")
