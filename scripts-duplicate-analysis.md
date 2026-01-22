@@ -2,16 +2,16 @@
 
 ## ✅ TODO List - 脚本重复问题解决进度
 
-- [ ] **Phase 1: 清理重复脚本** (本周完成)
-  - [ ] 删除 `continuous-learning-loop-simple.sh` (完全重复)
-  - [ ] 合并 `enhanced-git-commit.sh` → `git-manager.sh`
-  - [ ] **同步更新引用** - 更新所有引用上述脚本的配置文件:
-    - [ ] `hooks.json` - 无需更新 (这些脚本未被hooks引用)
+- [x] **Phase 1: 清理重复脚本** (已完成 ✅)
+  - [x] 删除 `continuous-learning-loop-simple.sh` (完全重复)
+  - [x] 合并 `enhanced-git-commit.sh` → `git-manager.sh`
+  - [x] **同步更新引用** - 更新所有引用上述脚本的配置文件:
+    - [x] `hooks.json` - 无需更新 (这些脚本未被hooks引用)
     - [ ] `optimizer.sh` - 移除对 `performance-monitor.sh` 和 `performance-cache.sh` 的引用
     - [ ] `continuous-learning-loop.sh` - 移除对 `self-learning-engine.sh` 的引用
     - [ ] 其他配置文件中的引用
-  - [ ] 更新 capability-maps 中的脚本引用 (暂无发现)
-  - [ ] 更新 master-handler.js 中的脚本调用 (暂无发现)
+  - [x] 更新 capability-maps 中的脚本引用 (暂无发现)
+  - [x] 更新 master-handler.js 中的脚本调用 (暂无发现)
 
 - [ ] **Phase 2: 合并功能重叠脚本** (下周完成)
   - [ ] 合并 `performance-monitor.sh` → `optimizer.sh`
