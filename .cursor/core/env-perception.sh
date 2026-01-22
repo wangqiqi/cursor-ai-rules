@@ -257,7 +257,7 @@ analyze_project_comprehensive() {
     fi
 
     # 2. 团队规模分析
-    echo "👥 分析团队规模..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "👥 分析团队规模..." >&2
     local team_size="个人项目"
     local contributor_count=0
 
@@ -275,7 +275,7 @@ analyze_project_comprehensive() {
     fi
 
     # 3. 项目规模评估
-    echo "📏 评估项目规模..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "📏 评估项目规模..." >&2
     local total_files=$(find . -type f -not -path './.*' -not -path './node_modules/*' -not -path './.git/*' 2>/dev/null | wc -l || echo "0")
     local code_lines=0
     local project_scale="小型项目"
@@ -296,7 +296,7 @@ analyze_project_comprehensive() {
     fi
 
     # 4. 开发阶段判断
-    echo "📈 判断开发阶段..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "📈 判断开发阶段..." >&2
     local dev_stage="未知"
     local commit_count=0
     local has_tests=false
