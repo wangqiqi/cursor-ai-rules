@@ -792,7 +792,7 @@ EOF
 # 🎯 智能能力映射引擎 (利用capability-map.json)
 map_capabilities_from_json() {
     local intent_type="$1"
-    local capability_map_file="$CURSOR_DIR/commands/capability-maps/_index.json"
+    local capability_map_file="$CURSOR_DIR/commands/capability-map.json"
 
     if [ ! -f "$capability_map_file" ]; then
         echo "{}"
