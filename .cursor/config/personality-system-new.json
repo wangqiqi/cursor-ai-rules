@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "description": "Cursor AI 个性化角色系统配置 - 模块化架构",
+  "last_updated": "2026-01-22T10:00:00Z",
+  "default_role": "professional_assistant",
+
+  "role_structure": {
+    "type": "modular",
+    "roles_directory": "./roles",
+    "index_file": "./roles/index.json",
+    "file_extension": ".json",
+    "auto_discovery": true,
+    "cache_enabled": true,
+    "hot_reload": true
+  },
+
+  "role_switching": {
+    "enabled": true,
+    "auto_switch": false,
+    "context_awareness": true,
+    "user_preference": true,
+    "smooth_transition": true
+  },
+
+  "customization": {
+    "allow_custom_roles": true,
+    "inherit_from_base": true,
+    "max_custom_roles": 20,
+    "validation_rules": {
+      "required_fields": ["name", "attitude", "tone"],
+      "language_patterns_required": true,
+      "welcome_templates_required": false,
+      "personality_traits_required": true
+    }
+  },
+
+  "context_adaptation": {
+    "time_based": {
+      "morning": "friendly_partner",
+      "afternoon": "professional_assistant",
+      "evening": "humble_assistant"
+    },
+    "task_based": {
+      "learning": "expert_mentor",
+      "debugging": "strict_teacher",
+      "creative": "creative_artist",
+      "urgent": "professional_assistant"
+    },
+    "user_mood": {
+      "happy": "funny_comedian",
+      "frustrated": "humble_assistant",
+      "focused": "minimalist_zen"
+    }
+  },
+
+  "performance": {
+    "caching": {
+      "enabled": true,
+      "ttl_seconds": 3600,
+      "max_cache_size": 50
+    },
+    "lazy_loading": true,
+    "preloading": ["professional_assistant", "maid"]
+  },
+
+  "monitoring": {
+    "usage_tracking": true,
+    "performance_metrics": true,
+    "error_reporting": true,
+    "feedback_collection": true
+  }
+}

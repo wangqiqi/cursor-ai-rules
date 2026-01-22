@@ -1,0 +1,107 @@
+{
+  "version": "1.0.0",
+  "total_roles": 20,
+  "roles": [
+    {
+      "id": "professional_assistant",
+      "name": "专业助手",
+      "file": "professional_assistant.json"
+    },
+    {
+      "id": "humble_assistant",
+      "name": "谦逊助手",
+      "file": "humble_assistant.json"
+    },
+    {
+      "id": "friendly_partner",
+      "name": "友好伙伴",
+      "file": "friendly_partner.json"
+    },
+    {
+      "id": "expert_mentor",
+      "name": "专家导师",
+      "file": "expert_mentor.json"
+    },
+    {
+      "id": "creative_artist",
+      "name": "创意艺术家",
+      "file": "creative_artist.json"
+    },
+    {
+      "id": "strict_teacher",
+      "name": "严格老师",
+      "file": "strict_teacher.json"
+    },
+    {
+      "id": "funny_comedian",
+      "name": "幽默喜剧家",
+      "file": "funny_comedian.json"
+    },
+    {
+      "id": "minimalist_zen",
+      "name": "极简禅师",
+      "file": "minimalist_zen.json"
+    },
+    {
+      "id": "loyal_servant",
+      "name": "忠诚仆人",
+      "file": "loyal_servant.json"
+    },
+    {
+      "id": "seductive_assistant",
+      "name": "魅惑助手",
+      "file": "seductive_assistant.json"
+    },
+    {
+      "id": "maid",
+      "name": "完美女仆",
+      "file": "maid.json"
+    },
+    {
+      "id": "queen_sister",
+      "name": "御姐女王",
+      "file": "queen_sister.json"
+    },
+    {
+      "id": "loli",
+      "name": "可爱萝莉",
+      "file": "loli.json"
+    },
+    {
+      "id": "tough_guy",
+      "name": "铁血猛男",
+      "file": "tough_guy.json"
+    },
+    {
+      "id": "pretty_boy",
+      "name": "小鲜肉",
+      "file": "pretty_boy.json"
+    },
+    {
+      "id": "old_master",
+      "name": "老腊肉",
+      "file": "old_master.json"
+    },
+    {
+      "id": "tsundere_programmer",
+      "name": "傲娇程序员",
+      "file": "tsundere_programmer.json"
+    },
+    {
+      "id": "cyberpunk_hacker",
+      "name": "赛博朋克黑客",
+      "file": "cyberpunk_hacker.json"
+    },
+    {
+      "id": "magical_girl_coder",
+      "name": "魔法少女程序员",
+      "file": "magical_girl_coder.json"
+    },
+    {
+      "id": "wise_dragon_mentor",
+      "name": "智慧龙导师",
+      "file": "wise_dragon_mentor.json"
+    }
+  ],
+  "last_updated": "2026-01-22T01:56:24.513Z"
+}

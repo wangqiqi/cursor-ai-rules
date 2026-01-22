@@ -40,8 +40,18 @@ class RoleManager {
         } else {
             try {
                 const content = fs.readFileSync(configPath, 'utf8');
-                this.personalitySystem = JSON.parse(content);
+                const config = JSON.parse(content);
                 console.log('✅ 角色系统配置加载成功');
+
+                // 检查是否使用模块化架构
+                if (config.role_structure && config.role_structure.type === 'modular') {
+                    console.log('🔄 检测到模块化角色结构，开始加载角色文件...');
+                    this.personalitySystem = await this.loadModularRoles(config);
+                } else {
+                    // 向后兼容：直接使用内联角色
+                    console.log('📋 使用传统内联角色结构');
+                    this.personalitySystem = config;
+                }
             } catch (error) {
                 console.warn('⚠️ 解析角色配置文件失败，使用默认配置:', error.message);
                 this.personalitySystem = this.getDefaultPersonalitySystem();
@@ -63,6 +73,70 @@ class RoleManager {
             }
             this.addToHistory(this.currentRole, 'initialization');
         }
+    }
+
+    /**
+     * 加载模块化角色系统
+     */
+    async loadModularRoles(config) {
+        const configDir = path.join(this.cursorDir, 'config');
+        const rolesDir = path.resolve(configDir, config.role_structure.roles_directory);
+        const indexFilePath = config.role_structure.index_file.startsWith('./')
+            ? config.role_structure.index_file.substring(2)
+            : config.role_structure.index_file;
+        const indexFile = path.resolve(configDir, indexFilePath);
+
+        console.log(`📂 角色目录: ${rolesDir}`);
+        console.log(`📋 索引文件: ${indexFile}`);
+
+        // 合并基础配置
+        const personalitySystem = {
+            ...config,
+            roles: {}
+        };
+
+        try {
+            // 读取角色索引
+            if (fs.existsSync(indexFile)) {
+                const indexContent = fs.readFileSync(indexFile, 'utf8');
+                const indexData = JSON.parse(indexContent);
+
+                console.log(`📊 发现 ${indexData.total_roles} 个角色`);
+
+                // 加载每个角色文件
+                for (const roleInfo of indexData.roles) {
+                    const roleFile = path.join(rolesDir, roleInfo.file);
+
+                    try {
+                        if (fs.existsSync(roleFile)) {
+                            const roleContent = fs.readFileSync(roleFile, 'utf8');
+                            const roleData = JSON.parse(roleContent);
+
+                            // 移除元数据，只保留角色配置
+                            const { _metadata, ...roleConfig } = roleData;
+                            personalitySystem.roles[roleData.id] = roleConfig;
+
+                            console.log(`✅ 加载角色: ${roleData.name} (${roleData.id})`);
+                        } else {
+                            console.warn(`⚠️ 角色文件不存在: ${roleFile}`);
+                        }
+                    } catch (error) {
+                        console.warn(`⚠️ 加载角色文件失败 ${roleFile}:`, error.message);
+                    }
+                }
+
+                console.log(`🎭 成功加载 ${Object.keys(personalitySystem.roles).length} 个角色`);
+            } else {
+                console.warn(`⚠️ 角色索引文件不存在: ${indexFile}`);
+                // 回退到默认配置
+                return this.getDefaultPersonalitySystem();
+            }
+        } catch (error) {
+            console.warn('⚠️ 加载模块化角色失败，使用默认配置:', error.message);
+            return this.getDefaultPersonalitySystem();
+        }
+
+        return personalitySystem;
     }
 
     /**
