@@ -3,8 +3,9 @@
   "structure": "modular",
   "description": "🎯 模块化能力映射表 - 主索引文件",
   "compatibility": ">=1.0.0",
-  "last_updated": "2026-01-22T16:00:00Z",
+  "last_updated": "2026-01-22T17:00:00Z",
   "author": "wangqiqi",
+  "total_mappings": 32,
 
   "structure_definition": {
     "global": "全局配置和元数据",
@@ -21,6 +22,8 @@
     "mappings/testing.json",
     "mappings/learning.json",
     "mappings/system.json",
+    "mappings/hooks-execution.json",
+    "mappings/skills-execution.json",
     "mappings/role-system.json",
     "advanced/intent-patterns.json",
     "advanced/execution-presets.json",

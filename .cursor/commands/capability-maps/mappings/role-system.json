@@ -158,5 +158,104 @@
       "show_details": true,
       "include_personality": true
     }
+  },
+  "manage_role_preferences": {
+    "description": "管理角色偏好设置",
+    "intents": [
+      "preference",
+      "偏好",
+      "设置",
+      "配置",
+      "个性化"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "设置角色偏好",
+      "配置人格参数",
+      "个性化角色行为",
+      "调整交互风格"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "preference_type": "auto",
+      "apply_to_current": true,
+      "persist_settings": true
+    }
+  },
+  "view_role_history": {
+    "description": "查看角色使用历史",
+    "intents": [
+      "history",
+      "历史",
+      "记录",
+      "日志",
+      "使用记录"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "查看角色历史",
+      "显示人格切换记录",
+      "分析角色使用模式",
+      "查看交互历史"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "history_type": "switch",
+      "time_range": "all",
+      "include_statistics": true
+    }
+  },
+  "reset_role_settings": {
+    "description": "重置角色设置",
+    "intents": [
+      "reset",
+      "重置",
+      "恢复",
+      "默认",
+      "清除"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "重置角色设置",
+      "恢复默认人格",
+      "清除角色偏好",
+      "重置到初始状态"
+    ],
+    "capabilities": {
+      "rules": [
+        "conversation_intent_analyzer"
+      ],
+      "scripts": [
+        "core/role-manager.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts"
+    ],
+    "parameters": {
+      "reset_type": "all",
+      "confirm_action": true,
+      "backup_before_reset": true
+    }
   }
 }

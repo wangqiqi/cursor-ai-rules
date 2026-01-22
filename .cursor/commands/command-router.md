@@ -12,7 +12,7 @@ alwaysApply: true
 
 **颠覆传统调用模式**：不再需要用户记忆各种规则、技能、脚本的调用语法，通过智能意图解析，自动路由到最合适的执行组合。
 
-**🎭 角色系统智能路由**：支持21种AI人格的智能切换，包含昵称呼叫、角色管理和个性化体验。
+**🎭 角色系统智能路由**：支持21种AI人格的智能切换，包含昵称呼叫、角色管理和个性化体验。系统会根据用户意图自动选择最适合的人格，或通过昵称快速呼叫特定角色。
 
 ### 🎯 MCP优先级路由机制
 
@@ -248,6 +248,10 @@ class IntentParser {
       "测试", "单元测试", "集成测试", "端到端测试",
       "test", "unit", "integration", "e2e"
     ],
+    "role_management": [
+      "角色", "人格", "切换", "呼叫", "昵称", "设置",
+      "role", "personality", "switch", "call", "nickname", "set"
+    ],
     "deployment": [
       "部署", "发布", "上线", "交付",
       "deploy", "release", "publish", "deliver"
@@ -321,6 +325,73 @@ class ExecutionOrchestrator {
 
     return Promise.resolve(graph);
   }
+}
+```
+
+### 🎭 角色系统路由逻辑
+
+#### 角色意图识别与路由
+```typescript
+class RoleSystemRouter {
+  async routeRoleIntent(input: string): Promise<RoleAction> {
+    // 1. 检测角色相关关键词
+    const roleKeywords = this.extractRoleKeywords(input);
+
+    // 2. 确定角色操作类型
+    const actionType = this.determineRoleAction(roleKeywords);
+
+    // 3. 解析目标角色
+    const targetRole = await this.resolveTargetRole(input, roleKeywords);
+
+    // 4. 验证权限和状态
+    const validation = await this.validateRoleAction(actionType, targetRole);
+
+    return {
+      action: actionType,
+      role: targetRole,
+      validation: validation,
+      executionPlan: this.createRoleExecutionPlan(actionType, targetRole)
+    };
+  }
+
+  private determineRoleAction(keywords: string[]): RoleActionType {
+    if (keywords.includes('switch') || keywords.includes('切换')) {
+      return 'switch_role';
+    }
+    if (keywords.includes('call') || keywords.includes('呼叫')) {
+      return 'call_role';
+    }
+    if (keywords.includes('set') || keywords.includes('设置') ||
+        keywords.includes('add') || keywords.includes('添加')) {
+      return 'manage_nickname';
+    }
+    if (keywords.includes('list') || keywords.includes('列出')) {
+      return 'list_roles';
+    }
+    if (keywords.includes('current') || keywords.includes('当前')) {
+      return 'get_current_role';
+    }
+    return 'unknown';
+  }
+}
+```
+
+#### 角色执行计划
+```typescript
+interface RoleExecutionPlan {
+  action: RoleActionType;
+  steps: RoleExecutionStep[];
+  estimatedDuration: number;
+  requiredPermissions: string[];
+  rollbackStrategy?: RollbackStrategy;
+}
+
+interface RoleExecutionStep {
+  id: string;
+  type: 'validation' | 'switch' | 'notification' | 'persistence';
+  parameters: Record<string, any>;
+  timeout: number;
+  retryPolicy?: RetryPolicy;
 }
 ```
 

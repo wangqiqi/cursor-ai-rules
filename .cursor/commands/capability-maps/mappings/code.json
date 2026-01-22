@@ -103,5 +103,272 @@
       "require_lint": true,
       "max_commit_size": 100
     }
+  },
+  "format_code": {
+    "description": "格式化代码",
+    "intents": [
+      "format",
+      "formatting",
+      "prettier",
+      "beautify",
+      "style"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "格式化代码",
+      "运行Prettier",
+      "美化代码格式",
+      "统一代码风格"
+    ],
+    "capabilities": {
+      "rules": [
+        "platform_adapter"
+      ],
+      "skills": [
+        "code-formatting"
+      ],
+      "scripts": [
+        "core/format-manager.sh"
+      ],
+      "workflows": [
+        "format-check",
+        "format-apply",
+        "format-verify"
+      ],
+      "hooks": [
+        "pre-commit-format.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "formatter": "prettier",
+      "file_extensions": [".js", ".ts", ".jsx", ".tsx", ".json", ".md"],
+      "write_changes": true,
+      "check_only": false
+    },
+    "validation_rules": {
+      "max_line_length": 120,
+      "indent_style": "spaces",
+      "indent_size": 2
+    }
+  },
+  "refactor_code": {
+    "description": "重构代码",
+    "intents": [
+      "refactor",
+      "refactoring",
+      "restructure",
+      "improve",
+      "optimize"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "重构这段代码",
+      "优化代码结构",
+      "改进代码设计",
+      "重构函数逻辑"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "code-analysis",
+        "refactoring-tools"
+      ],
+      "scripts": [
+        "core/refactor-manager.sh"
+      ],
+      "workflows": [
+        "code-analysis",
+        "refactor-suggestions",
+        "refactor-apply",
+        "refactor-verify"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "refactor_type": "auto",
+      "scope": "function",
+      "safety_level": "high",
+      "generate_tests": true
+    },
+    "validation_rules": {
+      "require_tests": true,
+      "require_reviews": true,
+      "max_complexity_increase": 10
+    }
+  },
+  "optimize_performance": {
+    "description": "性能优化",
+    "intents": [
+      "optimize",
+      "performance",
+      "speed",
+      "efficiency",
+      "bottleneck"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "优化代码性能",
+      "提高运行速度",
+      "解决性能瓶颈",
+      "优化内存使用"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "performance-analysis",
+        "optimization-tools"
+      ],
+      "scripts": [
+        "core/optimizer.sh"
+      ],
+      "workflows": [
+        "performance-analysis",
+        "bottleneck-identification",
+        "optimization-suggestions",
+        "optimization-apply"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "analysis_type": "comprehensive",
+      "optimization_focus": "auto",
+      "target_improvement": 20,
+      "safety_first": true
+    },
+    "validation_rules": {
+      "max_performance_degradation": 5,
+      "require_benchmarks": true,
+      "require_approvals": true
+    }
+  },
+  "generate_documentation": {
+    "description": "生成代码文档",
+    "intents": [
+      "document",
+      "documentation",
+      "docs",
+      "javadoc",
+      "comments"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "生成代码文档",
+      "添加代码注释",
+      "创建API文档",
+      "生成JSDoc注释"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "documentation-tools",
+        "code-analysis"
+      ],
+      "scripts": [
+        "core/docs-generator.sh"
+      ],
+      "workflows": [
+        "code-analysis",
+        "doc-generation",
+        "doc-validation",
+        "doc-integration"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "doc_type": "auto",
+      "include_examples": true,
+      "update_existing": true,
+      "generate_api_docs": true
+    },
+    "validation_rules": {
+      "min_coverage": 80,
+      "require_examples": true,
+      "validate_links": true
+    }
+  },
+  "analyze_security": {
+    "description": "安全漏洞分析",
+    "intents": [
+      "security",
+      "vulnerability",
+      "audit",
+      "secure",
+      "safety"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "检查安全漏洞",
+      "进行安全审计",
+      "分析代码安全性",
+      "修复安全问题"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "security-analysis",
+        "vulnerability-scanning"
+      ],
+      "scripts": [
+        "core/security-auditor.sh"
+      ],
+      "workflows": [
+        "security-scan",
+        "vulnerability-analysis",
+        "security-recommendations",
+        "security-fixes"
+      ],
+      "hooks": [
+        "security-pre-commit.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "scan_type": "comprehensive",
+      "severity_threshold": "medium",
+      "auto_fix": false,
+      "generate_report": true
+    },
+    "validation_rules": {
+      "max_critical_vulnerabilities": 0,
+      "max_high_vulnerabilities": 5,
+      "require_fixes": true
+    }
   }
 }
