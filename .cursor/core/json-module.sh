@@ -401,12 +401,30 @@ json_stats() {
 # =============================================================================
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    cli_main_template "JSON Module" "JSON处理模块" \
-        "validate" "验证JSON文件" \
-        "get" "获取JSON值" \
-        "set" "设置JSON值" \
-        "stats" "显示统计信息" \
-        "test" "测试JSON功能"
+    # 解析CLI参数
+    parse_cli_args "$@" || exit 1
+
+    # 处理全局标志
+    for flag in "${CLI_FLAGS[@]}"; do
+        case "$flag" in
+            "help")
+                cli_show_help "JSON Module" "JSON处理模块" \
+                    "validate" "验证JSON文件" \
+                    "get" "获取JSON值" \
+                    "set" "设置JSON值" \
+                    "stats" "显示统计信息" \
+                    "test" "测试JSON功能"
+                exit 0
+                ;;
+            "version")
+                cli_show_version "JSON Module"
+                exit 0
+                ;;
+        esac
+    done
+
+    # 验证命令
+    cli_validate_command "validate" "get" "set" "stats" "test" || exit 1
 
     case "$CLI_COMMAND" in
         "validate")

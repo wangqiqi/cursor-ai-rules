@@ -515,16 +515,34 @@ file_stats() {
 # =============================================================================
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    cli_main_template "File Module" "文件操作模块" \
-        "create" "创建文件" \
-        "delete" "删除文件" \
-        "copy" "复制文件" \
-        "move" "移动文件" \
-        "info" "获取文件信息" \
-        "find" "查找文件" \
-        "backup" "备份文件" \
-        "stats" "显示统计信息" \
-        "test" "测试文件操作功能"
+    # 解析CLI参数
+    parse_cli_args "$@" || exit 1
+
+    # 处理全局标志
+    for flag in "${CLI_FLAGS[@]}"; do
+        case "$flag" in
+            "help")
+                cli_show_help "File Module" "文件操作模块" \
+                    "create" "创建文件" \
+                    "delete" "删除文件" \
+                    "copy" "复制文件" \
+                    "move" "移动文件" \
+                    "info" "获取文件信息" \
+                    "find" "查找文件" \
+                    "backup" "备份文件" \
+                    "stats" "显示统计信息" \
+                    "test" "测试文件操作功能"
+                exit 0
+                ;;
+            "version")
+                cli_show_version "File Module"
+                exit 0
+                ;;
+        esac
+    done
+
+    # 验证命令
+    cli_validate_command "create" "delete" "copy" "move" "info" "find" "backup" "stats" "test" || exit 1
 
     case "$CLI_COMMAND" in
         "create")

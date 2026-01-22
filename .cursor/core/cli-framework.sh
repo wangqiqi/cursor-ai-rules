@@ -460,11 +460,29 @@ cli_cleanup() {
 # =============================================================================
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    cli_main_template "CLI Framework" "统一CLI框架" \
-        "help" "显示帮助信息" \
-        "version" "显示版本信息" \
-        "test" "测试CLI功能"
+    # 解析CLI参数
+    parse_cli_args "$@" || exit 1
 
+    # 处理全局标志
+    for flag in "${CLI_FLAGS[@]}"; do
+        case "$flag" in
+            "help")
+                cli_show_help "CLI Framework" "统一CLI框架" \
+                    "test" "测试CLI功能" \
+                    "version" "显示版本信息"
+                exit 0
+                ;;
+            "version")
+                cli_show_version "CLI Framework"
+                exit 0
+                ;;
+        esac
+    done
+
+    # 验证命令
+    cli_validate_command "test" "version" || exit 1
+
+    # 执行命令
     case "$CLI_COMMAND" in
         "test")
             cli_info "CLI框架测试"
@@ -477,11 +495,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
             cli_confirm "这是一个测试确认" || cli_info "用户取消了"
             ;;
-        *)
-            cli_show_help "CLI Framework" "统一CLI框架" \
-                "help" "显示帮助信息" \
-                "version" "显示版本信息" \
-                "test" "测试CLI功能"
+        "version"|*)
+            cli_show_version "CLI Framework"
             ;;
     esac
 fi

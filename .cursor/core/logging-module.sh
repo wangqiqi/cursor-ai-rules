@@ -284,12 +284,31 @@ log_debug() { logging_debug "$1"; }
 # =============================================================================
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    cli_main_template "Logging Module" "日志记录模块" \
-        "test" "测试日志功能" \
-        "analyze" "分析当前日志文件" \
-        "set-level" "设置日志级别" \
-        "set-file" "设置日志文件"
+    # 解析CLI参数
+    parse_cli_args "$@" || exit 1
 
+    # 处理全局标志
+    for flag in "${CLI_FLAGS[@]}"; do
+        case "$flag" in
+            "help")
+                cli_show_help "Logging Module" "日志记录模块" \
+                    "test" "测试日志功能" \
+                    "analyze" "分析当前日志文件" \
+                    "set-level" "设置日志级别" \
+                    "set-file" "设置日志文件"
+                exit 0
+                ;;
+            "version")
+                cli_show_version "Logging Module"
+                exit 0
+                ;;
+        esac
+    done
+
+    # 验证命令
+    cli_validate_command "test" "analyze" "set-level" "set-file" || exit 1
+
+    # 执行命令
     case "$CLI_COMMAND" in
         "test")
             cli_info "测试日志功能"
@@ -315,13 +334,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         "set-file")
             local file="${CLI_ARGS[0]}"
             logging_set_file "$file"
-            ;;
-        *)
-            cli_show_help "Logging Module" "日志记录模块" \
-                "test" "测试日志功能" \
-                "analyze" "分析当前日志文件" \
-                "set-level" "设置日志级别" \
-                "set-file" "设置日志文件"
             ;;
     esac
 fi

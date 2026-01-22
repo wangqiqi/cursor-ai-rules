@@ -267,7 +267,8 @@
       {
         "name": "session-learning",
         "description": "会话结束学习总结",
-        "command": "core/self-learning-engine.sh",
+        "command": "core/continuous-learning-loop.sh",
+        "args": ["session_summary"],
         "timeout": 15000,
         "async": true,
         "enabled": true
