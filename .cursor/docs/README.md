@@ -27,7 +27,10 @@ docs/
 │   ├── architecture.md      # 系统架构
 │   └── development-guidelines.md # 开发指南
 ├── architecture/            # 架构相关文档
-│   └── project-growth-architecture.md # 项目生长架构
+│   ├── project-growth-architecture.md # 项目生长架构
+│   ├── script-architecture.md         # 脚本架构
+│   ├── system-design-philosophy.md    # 系统设计哲学
+│   └── project-completion-report.md   # 项目完成报告
 ├── rules/                   # 规则相关文档
 │   └── team-rules-example.md # 团队规则示例
 ├── skills/                  # 技能相关文档
@@ -138,8 +141,8 @@ docs/
 
 ## 📊 文档统计
 
-- **总文档数**: 20+ 个文件
-- **覆盖功能**: 100% 系统功能
+- **总文档数**: 32+ 个文件
+- **覆盖功能**: 100% 系统功能 + 完整完成记录
 - **支持语言**: 中文（主要）、英文（部分）
 - **更新频率**: 随系统版本更新
 
