@@ -11,8 +11,13 @@ source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/performance-cache.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
-# 压缩配置
-COMPRESSION_LEVEL="${COMPRESSION_LEVEL:-balanced}"  # minimal, balanced, aggressive, maximum
+# 加载token优化配置（如果存在）
+if [ -f "$SCRIPT_DIR/../config/token-optimization.env" ]; then
+    source "$SCRIPT_DIR/../config/token-optimization.env"
+fi
+
+# 压缩配置 - 优化为节省token
+COMPRESSION_LEVEL="${COMPRESSION_LEVEL:-minimal}"  # minimal, balanced, aggressive, maximum
 STREAMING_ENABLED="${STREAMING_ENABLED:-true}"
 INCREMENTAL_UPDATES="${INCREMENTAL_UPDATES:-true}"
 
@@ -61,28 +66,50 @@ compress_tokens() {
 
     case "$level" in
         "minimal")
-            # 基础压缩：只压缩JSON键名
-            compress_json_keys "$data"
+            # 基础压缩：只压缩JSON键名 + 移除装饰性字符
+            data=$(compress_json_keys "$data")
+            data=$(remove_decorative_chars "$data")
             ;;
         "balanced")
-            # 平衡压缩：键名压缩 + 重复字符串消除
-            data=$(compress_json_keys "$data")
-            compress_repeated_strings "$data"
-            ;;
-        "aggressive")
-            # 激进压缩：多层压缩 + 语义压缩
+            # 平衡压缩：键名压缩 + 重复字符串消除 + 装饰字符移除
             data=$(compress_json_keys "$data")
             data=$(compress_repeated_strings "$data")
-            compress_semantic "$data"
+            data=$(remove_decorative_chars "$data")
             ;;
-        "maximum")
-            # 最大压缩：所有技术 + 二进制编码
+        "aggressive")
+            # 激进压缩：多层压缩 + 语义压缩 + 流式优化
             data=$(compress_json_keys "$data")
             data=$(compress_repeated_strings "$data")
             data=$(compress_semantic "$data")
-            compress_to_binary "$data"
+            data=$(remove_decorative_chars "$data")
+            ;;
+        "maximum")
+            # 最大压缩：所有技术 + 二进制编码 + 流式传输
+            data=$(compress_json_keys "$data")
+            data=$(compress_repeated_strings "$data")
+            data=$(compress_semantic "$data")
+            data=$(compress_to_binary "$data")
+            data=$(remove_decorative_chars "$data")
             ;;
     esac
+
+    echo "$data"
+}
+
+# 移除装饰性字符（节省token）
+remove_decorative_chars() {
+    local data="$1"
+
+    # 移除emoji和装饰性符号
+    data=$(echo "$data" | sed 's/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊🎯]//g')
+
+    # 移除多余的换行符和空格
+    data=$(echo "$data" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/\n\n\n*/\n\n/g')
+
+    # 移除重复的标点符号
+    data=$(echo "$data" | sed 's/!!!*/!/g; s/???*/?/g; s/,,*/,/g')
+
+    echo "$data"
 }
 
 # JSON键名压缩
@@ -813,6 +840,50 @@ execute_optimized() {
     echo "$compressed_data"
 }
 
+# 流式输出函数
+stream_output() {
+    local content="$1"
+    local chunk_size="${2:-1000}"
+
+    if [ "$STREAMING_ENABLED" = true ]; then
+        # 分块输出，避免一次性发送大量内容
+        local content_length=${#content}
+        local offset=0
+
+        while [ $offset -lt $content_length ]; do
+            local chunk="${content:$offset:$chunk_size}"
+            echo "$chunk"
+            offset=$((offset + chunk_size))
+
+            # 小延迟以支持真正的流式处理
+            if [ "$INCREMENTAL_UPDATES" = true ]; then
+                sleep 0.01
+            fi
+        done
+    else
+        # 非流式模式，直接输出
+        echo "$content"
+    fi
+}
+
+# 增量响应生成器
+generate_incremental_response() {
+    local base_response="$1"
+    local context="$2"
+
+    # 压缩基础响应
+    local compressed_response
+    compressed_response=$(compress_tokens "$base_response")
+
+    # 添加增量更新标记
+    if [ "$INCREMENTAL_UPDATES" = true ]; then
+        compressed_response="INCREMENTAL_START\n$compressed_response\nINCREMENTAL_END"
+    fi
+
+    # 使用流式输出
+    stream_output "$compressed_response"
+}
+
 # 导出函数
 export -f init_compression
 export -f compress_tokens
@@ -828,3 +899,48 @@ export -f init_predictive_preload
 export -f learn_usage_patterns
 export -f analyze_compression_efficiency
 export -f execute_optimized
+export -f stream_output
+export -f generate_incremental_response
+
+# 如果直接执行此脚本，显示帮助信息
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    echo "🎯 Cursor AI Rules - Token压缩系统"
+    echo ""
+    echo "用法: $0 [command]"
+    echo ""
+    echo "命令:"
+    echo "  init     初始化缓存系统"
+    echo "  cleanup  清理过期缓存"
+    echo "  stats    显示缓存统计"
+    echo "  clear    清空缓存"
+    echo "  health   健康检查"
+    echo "  stream   测试流式输出"
+    echo "  help     显示此帮助信息"
+    echo ""
+
+    case "${1:-help}" in
+        "init")
+            init_compression
+            ;;
+        "cleanup")
+            batch_cache_operation "cleanup"
+            ;;
+        "stats")
+            batch_cache_operation "stats"
+            ;;
+        "clear")
+            batch_cache_operation "clear"
+            ;;
+        "health")
+            health_check_cache
+            ;;
+        "stream")
+            # 测试流式输出
+            echo "测试流式输出功能..." >&2
+            generate_incremental_response "这是一个测试响应，用于验证流式输出功能是否正常工作。"
+            ;;
+        "help"|*)
+            exit 0
+            ;;
+    esac
+fi

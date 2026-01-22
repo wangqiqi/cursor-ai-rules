@@ -11,6 +11,7 @@
  */
 
 const path = require('path');
+const TokenMonitor = require('./token-monitor');
 
 class ResponseInterceptor {
     constructor(roleManager, options = {}) {
@@ -43,7 +44,25 @@ class ResponseInterceptor {
             violations: []
         };
 
-        console.log('🎭 响应拦截器初始化完成');
+        // 上下文缓存优化器
+        this.contextCache = new Map();
+        this.contextCacheTimeout = 30 * 60 * 1000; // 30分钟
+        this.maxContextCacheSize = 50;
+
+        // 项目信息缓存
+        this.projectInfoCache = null;
+        this.projectInfoCacheTime = 0;
+        this.projectInfoCacheTimeout = 10 * 60 * 1000; // 10分钟
+
+        // Token监控器
+        this.tokenMonitor = new TokenMonitor({
+            warningThreshold: 800,
+            criticalThreshold: 1000,
+            monitoringEnabled: true,
+            alertEnabled: true
+        });
+
+        console.log('🎭 响应拦截器初始化完成 (含上下文缓存和Token监控优化)');
     }
 
     /**
@@ -70,9 +89,12 @@ class ResponseInterceptor {
                 return response;
             }
 
+            // 0. 上下文缓存优化 - 避免重复传递项目信息
+            const optimizedContext = this.cacheContextInfo(context);
+
             // 快速模式：跳过大部分检查，直接返回响应
             if (this.options.fastMode) {
-                return this.fastModeIntercept(response, context);
+                return this.fastModeIntercept(response, optimizedContext);
             }
 
             // 1. 获取当前活跃角色（使用缓存）
@@ -117,6 +139,12 @@ class ResponseInterceptor {
                 const cacheKey = this.generateCacheKey(response, currentRole.role.id);
                 this.cacheResponse(cacheKey, response);
             }
+
+            // 8. Token优化：移除冗余装饰字符
+            response = this.optimizeResponseTokens(response);
+
+            // 9. 记录token使用情况
+            this.recordTokenUsage(response, context);
 
             return response;
 
@@ -172,6 +200,137 @@ class ResponseInterceptor {
         // 使用响应的前50个字符和角色ID生成缓存键
         const prefix = response.substring(0, 50).replace(/\s+/g, '').toLowerCase();
         return `${roleId}_${prefix}_${response.length}`;
+    }
+
+    /**
+     * 缓存上下文信息，避免重复传递项目数据
+     */
+    cacheContextInfo(context) {
+        const now = Date.now();
+        const contextKey = this.generateContextKey(context);
+
+        // 检查是否已缓存且未过期
+        const cached = this.contextCache.get(contextKey);
+        if (cached && (now - cached.timestamp) < this.contextCacheTimeout) {
+            return cached.data;
+        }
+
+        // 压缩上下文信息
+        const compressedContext = this.compressContext(context);
+
+        // 缓存新上下文
+        if (this.contextCache.size >= this.maxContextCacheSize) {
+            // 删除最旧的缓存项
+            const firstKey = this.contextCache.keys().next().value;
+            this.contextCache.delete(firstKey);
+        }
+
+        this.contextCache.set(contextKey, {
+            data: compressedContext,
+            timestamp: now
+        });
+
+        return compressedContext;
+    }
+
+    /**
+     * 生成上下文缓存键
+     */
+    generateContextKey(context) {
+        const keyParts = [];
+
+        // 基于上下文的关键字段生成键
+        if (context.currentFile) keyParts.push(`file:${context.currentFile}`);
+        if (context.selectedText) keyParts.push(`text:${context.selectedText.length}`);
+        if (context.projectStructure) keyParts.push(`proj:${Object.keys(context.projectStructure).length}`);
+
+        return keyParts.join('|') || 'general';
+    }
+
+    /**
+     * 压缩上下文信息以节省token
+     */
+    compressContext(context) {
+        const compressed = {};
+
+        // 只保留关键信息，移除冗余数据
+        if (context.currentFile) {
+            compressed.currentFile = context.currentFile;
+        }
+
+        if (context.selectedText && context.selectedText.length > 100) {
+            // 长文本截断并添加摘要
+            compressed.selectedText = context.selectedText.substring(0, 100) + '...[truncated]';
+            compressed.textLength = context.selectedText.length;
+        } else if (context.selectedText) {
+            compressed.selectedText = context.selectedText;
+        }
+
+        // 项目结构只保留文件数量统计
+        if (context.projectStructure) {
+            const stats = this.generateProjectStats(context.projectStructure);
+            compressed.projectStats = stats;
+        }
+
+        // 移除不需要的用户偏好等信息
+        // compressed.userPreferences = undefined;
+
+        return compressed;
+    }
+
+    /**
+     * 生成项目统计信息替代完整结构
+     */
+    generateProjectStats(projectStructure) {
+        const stats = {
+            totalFiles: 0,
+            fileTypes: {},
+            directories: 0
+        };
+
+        const processNode = (node) => {
+            if (node.type === 'file') {
+                stats.totalFiles++;
+                const ext = node.name.split('.').pop() || 'no-ext';
+                stats.fileTypes[ext] = (stats.fileTypes[ext] || 0) + 1;
+            } else if (node.type === 'directory') {
+                stats.directories++;
+                if (node.children) {
+                    node.children.forEach(processNode);
+                }
+            }
+        };
+
+        if (projectStructure.children) {
+            projectStructure.children.forEach(processNode);
+        }
+
+        return stats;
+    }
+
+    /**
+     * 获取缓存的项目信息
+     */
+    getCachedProjectInfo() {
+        const now = Date.now();
+
+        if (this.projectInfoCache &&
+            (now - this.projectInfoCacheTime) < this.projectInfoCacheTimeout) {
+            return this.projectInfoCache;
+        }
+
+        // 这里可以从项目配置或其他来源获取项目信息
+        // 暂时返回基础信息
+        this.projectInfoCache = {
+            name: 'cursor-ai-rules',
+            type: 'development_tool',
+            language: 'mixed',
+            cached: true,
+            timestamp: now
+        };
+
+        this.projectInfoCacheTime = now;
+        return this.projectInfoCache;
     }
 
     /**
@@ -654,6 +813,67 @@ class ResponseInterceptor {
             correctedResponses: 0,
             violations: []
         };
+    }
+
+    /**
+     * Token优化：移除响应中的冗余字符
+     */
+    optimizeResponseTokens(response) {
+        let optimized = response;
+
+        // 移除多余的emoji和装饰字符
+        optimized = optimized.replace(/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊🎉😊💕🎀🌟💎🧹✨🔍💻📖🎈🎤]/g, '');
+
+        // 压缩多余的换行符
+        optimized = optimized.replace(/\n\n\n+/g, '\n\n');
+
+        // 移除行首多余空格
+        optimized = optimized.replace(/^\s+/gm, '');
+
+        // 压缩重复标点
+        optimized = optimized.replace(/!{2,}/g, '!');
+        optimized = optimized.replace(/\?{2,}/g, '?');
+        optimized = optimized.replace(/,{2,}/g, ',');
+
+        return optimized;
+    }
+
+    /**
+     * 记录token使用情况
+     */
+    recordTokenUsage(response, context) {
+        try {
+            // 估算token使用量 (粗略计算：中文约1.5个字符=1个token，英文约4个字符=1个token)
+            const chineseChars = (response.match(/[\u4e00-\u9fff]/g) || []).length;
+            const englishChars = response.length - chineseChars;
+            const estimatedTokens = Math.round(chineseChars * 0.67 + englishChars * 0.25);
+
+            // 记录到监控器
+            this.tokenMonitor.recordUsage('response_intercept', estimatedTokens, {
+                responseLength: response.length,
+                chineseChars,
+                englishChars,
+                contextKeys: Object.keys(context || {}).length
+            });
+
+        } catch (error) {
+            // 静默处理监控错误，不影响主要功能
+            console.warn('Token监控记录失败:', error.message);
+        }
+    }
+
+    /**
+     * 获取token使用统计
+     */
+    getTokenUsageStats() {
+        return this.tokenMonitor.getUsageStats();
+    }
+
+    /**
+     * 获取token优化建议
+     */
+    getTokenOptimizationSuggestions() {
+        return this.tokenMonitor.getOptimizationSuggestions();
     }
 }
 

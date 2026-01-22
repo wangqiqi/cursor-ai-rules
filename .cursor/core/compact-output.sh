@@ -25,8 +25,8 @@ else
     NC=''
 fi
 
-# 精简输出模式控制
-COMPACT_MODE="${COMPACT_MODE:-false}"
+# 精简输出模式控制 - 启用以节省token
+COMPACT_MODE="${COMPACT_MODE:-true}"
 
 # 智能输出函数
 smart_echo() {

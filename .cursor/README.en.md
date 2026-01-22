@@ -95,10 +95,13 @@ Based on three fundamental axioms, this creates a **human-AI symbiosis** collabo
 - **Learning Data Isolation**: `.cursorGrowth/` privacy protection design
 
 ### ⚡ Token Optimization System (25-35% Savings)
-- **Context Sharing**: Intelligent context pool management to avoid duplicate transmission
-- **Smart Caching**: Multi-layer caching strategy to improve response speed
-- **Compression Algorithms**: Repeat pattern recognition and semantic compression
-- **Performance Monitoring**: Real-time Token consumption monitoring and optimization suggestions
+- **Multi-layer Compression**: Support for minimal/balanced/aggressive/maximum four-level compression
+- **Streaming Output**: Chunked output to avoid large one-time responses and reduce network overhead
+- **Context Caching Optimization**: Intelligent context information caching to avoid duplicate project data transmission
+- **Decorative Character Auto-removal**: Automatic cleanup of emojis and redundant formatting characters
+- **Real-time Token Monitoring**: Intelligent warning system with automatic optimization reminders when thresholds exceeded
+- **Performance Cache System**: Unified caching infrastructure supporting memory/file/network three-layer architecture
+- **Compact Output Mode**: Default compact mode enabled to reduce unnecessary output content
 
 ### 🧠 Self-Learning & Adaptation
 - **Pattern Learning**: Identify user behavior patterns and system performance based on historical data
