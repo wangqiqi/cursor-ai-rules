@@ -19,11 +19,19 @@ check_dependencies() {
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 check_dependencies
 
-# 加载标准日志库
-source "$SCRIPT_DIR/logging.sh"
-init_logging "INFO" "env-perception"
+# 检查是否为安静模式 (JSON 输出模式)
+QUIET_MODE=false
+if [[ "$1" == "--json" ]] || [[ "$1" == "--quiet" ]] || [[ "$1" == "json" ]]; then
+    QUIET_MODE=true
+    shift  # 移除参数
+fi
 
-log_info "启动统一环境感知引擎"
+# 只在非安静模式下加载日志库
+if [[ "$QUIET_MODE" != true ]]; then
+    source "$SCRIPT_DIR/logging.sh"
+    init_logging "INFO" "env-perception"
+    log_info "启动统一环境感知引擎"
+fi
 
 # 🎯 核心功能：统一环境检测与感知分析
 
@@ -118,7 +126,7 @@ perform_environment_check() {
 
 # 🧠 对话意图分析功能
 analyze_conversation_intent() {
-    echo "💬 执行对话意图分析..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "💬 执行对话意图分析..." >&2
 
     # 从环境变量或参数获取对话内容
     local conversation_text="${CONVERSATION_TEXT:-}"
@@ -204,10 +212,10 @@ EOF
 
 # 📊 项目感知分析功能
 analyze_project_comprehensive() {
-    echo "🔍 执行项目综合感知分析..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "🔍 执行项目综合感知分析..." >&2
 
     # 1. 技术栈分析
-    echo "📊 分析技术栈..." >&2
+    [[ "$QUIET_MODE" != true ]] && echo "📊 分析技术栈..." >&2
     local tech_stack="未知"
     local tech_details=""
 
