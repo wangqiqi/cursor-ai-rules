@@ -369,26 +369,26 @@
 | code-analysis | `.cursor/features/skills/code-analysis.md` | ✅ 存在 |
 | refactoring-tools | `.cursor/features/skills/refactoring-tools.md` | ✅ 存在 |
 | performance-analysis | `.cursor/features/skills/performance-analysis.md` | ✅ 存在 |
-| **optimization-tools** | ❌ 未找到 | ❌ 不存在 |
-| **documentation-tools** | ❌ 未找到 | ❌ 不存在 |
+| optimization-tools | `.cursor/features/skills/optimization-tools.md` | ✅ 存在 |
+| documentation-tools | `.cursor/features/skills/documentation-tools.md` | ✅ 存在 |
 | security-analysis | `.cursor/features/skills/security-analysis.md` | ✅ 存在 |
 | **vulnerability-scanning** | ❌ 未找到 | ❌ 不存在 |
 | learning-assistant | `.cursor/features/skills/learning-assistant.md` | ✅ 存在 |
 | **code-examples** | ❌ 未找到 | ❌ 不存在 |
-| **test-automation** | ❌ 未找到 | ❌ 不存在 |
+| test-automation | `.cursor/features/skills/test-automation.md` | ✅ 存在 |
 | frontend-design | `.cursor/features/skills/frontend-design.md` | ✅ 存在 |
 | webapp-testing | `.cursor/features/skills/webapp-testing.md` | ✅ 存在 |
 | backend-development | `.cursor/features/skills/backend-development.md` | ✅ 存在 |
-| **api-design** | ❌ 未找到 | ❌ 不存在 |
+| api-design | `.cursor/features/skills/api-design.md` | ✅ 存在 |
 | **fullstack-development** | ❌ 未找到 | ❌ 不存在 |
 | **ssr-optimization** | ❌ 未找到 | ❌ 不存在 |
 | **api-testing** | ❌ 未找到 | ❌ 不存在 |
-| **system-analysis** | ❌ 未找到 | ❌ 不存在 |
+| system-analysis | `.cursor/features/skills/system-analysis.md` | ✅ 存在 |
 | docx | `.cursor/features/skills/docx.md` | ✅ 存在 |
 | pdf | `.cursor/features/skills/pdf.md` | ✅ 存在 |
 | debug-assistant | `.cursor/features/skills/debug-assistant.md` | ✅ 存在 |
 
-**Skills总结**: 13/24 个skills有实际对应文件，11个缺失。
+**Skills总结**: 17/24 个skills有实际对应文件，7个缺失。
 
 ### 🔄 Workflows - 架构设计
 **Workflows**: 这些是动态工作流定义，没有实际文件对应，但架构设计完整。
@@ -400,11 +400,11 @@
 | **Rules** | 12个 | **12个** | **100%** | ✅ **完全存在** |
 | **Scripts** | 15个 | **15个** | **100%** | ✅ **完全存在** |
 | **Hooks** | 14个 | **14个** | **100%** | ✅ **完全存在** |
-| **Skills** | 24个 | **13个** | **54%** | 🟡 大部分存在 |
+| **Skills** | 24个 | **17个** | **71%** | 🟡 大部分存在 |
 | **Workflows** | 53个 | 架构完整 | 100% | ✅ 架构完整 |
 | **Modules** | - | **4个** | **新增** | ✅ **全新架构** |
 
-**总体存在率: 93%** (大幅提升!)
+**总体存在率: 92%** (大幅提升!)
 
 ### 🔧 Modules - 全新架构模块 (Phase 3新增)
 
@@ -435,7 +435,7 @@
 | 阶段 | Rules | Scripts | Hooks | Skills | Modules | 总体 |
 |-----|-------|---------|-------|--------|--------|------|
 | **优化前** | 92% | 53% | 50% | 25% | - | ~60% |
-| **优化后** | **100%** | **100%** | **93%** | **38%** | **全新** | **86%** |
+| **优化后** | **100%** | **100%** | **100%** | **71%** | **全新** | **92%** |
 
 ### 🆕 新增组件详情
 
@@ -444,6 +444,16 @@
 #### **Scripts (2个新增)**
 - `core/refactor-manager.sh` - 智能代码重构分析和执行
 - `core/learning-manager.sh` - 统一学习内容管理和进度跟踪
+
+#### **Skills (6个新增)**
+- `git-management.md` - Git版本控制管理技能
+- `code-formatting.md` - 代码格式化技能
+- `refactoring-tools.md` - 代码重构工具技能
+- `optimization-tools.md` - 性能优化工具技能
+- `documentation-tools.md` - 文档生成工具技能
+- `test-automation.md` - 测试自动化技能
+- `api-design.md` - API设计技能
+- `system-analysis.md` - 系统分析技能
 
 #### **Modules (4个新增)**
 - `cli-framework.sh` - 统一CLI框架和参数解析
