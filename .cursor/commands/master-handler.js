@@ -29,6 +29,14 @@ class MasterCommandHandler {
         // 🎭 角色管理系统
         this.roleManager = null;
         this.initializeRoleManager();
+
+        // 🛡️ 响应输出拦截器 - 确保角色一致性
+        this.responseInterceptor = null;
+        this.initializeResponseInterceptor();
+
+        // 🛡️ 响应输出拦截器 - 确保角色一致性
+        this.responseInterceptor = null;
+        this.initializeResponseInterceptor();
     }
 
     /**
@@ -115,6 +123,30 @@ class MasterCommandHandler {
                 }),
                 switchRole: () => ({ success: false, message: '角色系统不可用' })
             };
+        }
+    }
+
+    /**
+     * 初始化响应拦截器
+     */
+    async initializeResponseInterceptor() {
+        try {
+            // 等待角色管理器初始化完成
+            if (this.roleManager && typeof this.roleManager.initialize === 'function') {
+                await this.roleManager.initialize();
+            }
+
+            const ResponseInterceptor = require('../core/response-interceptor');
+            this.responseInterceptor = new ResponseInterceptor(this.roleManager, {
+                strictMode: true,
+                autoCorrect: true,
+                logViolations: true
+            });
+
+            console.log('🛡️ 响应拦截器初始化成功');
+        } catch (error) {
+            console.warn('⚠️ 响应拦截器初始化失败:', error.message);
+            this.responseInterceptor = null;
         }
     }
 
@@ -1762,10 +1794,25 @@ class MasterCommandHandler {
             // 添加角色激活指令（让AI助手感知角色变化）
             const roleActivationInstruction = this.generateRoleActivationInstruction(roleData);
 
+            // 🛡️ 通过响应拦截器确保角色一致性
+            let finalMessage = wrappedMessage + roleActivationInstruction;
+            if (this.responseInterceptor) {
+                try {
+                    finalMessage = this.responseInterceptor.intercept(finalMessage, {
+                        intent: context.intent,
+                        roleId: roleData.id,
+                        originalMessage: originalMessage
+                    });
+                } catch (interceptError) {
+                    console.warn('⚠️ 响应拦截失败:', interceptError.message);
+                    // 拦截失败时使用原始消息
+                }
+            }
+
             // 返回包装后的结果
             return {
                 ...result,
-                message: wrappedMessage + roleActivationInstruction,
+                message: finalMessage,
                 originalMessage: originalMessage,
                 wrapped: true,
                 welcomeTemplate: correctTemplate,
