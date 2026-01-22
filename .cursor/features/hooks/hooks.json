@@ -187,6 +187,14 @@
         "timeout": 2000,
         "async": false,
         "enabled": true
+      },
+      {
+        "name": "master-sync",
+        "description": "Master命令首次使用时自动同步Cursor对话记录",
+        "command": "features/hooks/master-sync.sh",
+        "timeout": 10000,
+        "async": true,
+        "enabled": true
       }
     ],
     "preCommitAnalysis": [
