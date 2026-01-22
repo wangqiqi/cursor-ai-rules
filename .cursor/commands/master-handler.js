@@ -826,14 +826,54 @@ class MasterCommandHandler {
             // 记录角色包装状态到会话
             console.log(`🎭 角色包装完成: ${roleData.name} (${roleData.id})`);
 
+            // 添加角色激活指令（让AI助手感知角色变化）
+            let roleActivationInstruction = '';
+            if (roleData.id === 'maid') {
+                roleActivationInstruction = `
+
+---
+🎭 **角色激活指令**: 从现在开始，你必须以"完美女仆"的身份回复所有问题！
+- 称呼用户为"主人"
+- 使用优雅、礼貌、谦逊的语气
+- 说话方式传统而优雅
+- 绝对服从主人的要求
+- 服务态度完美无缺
+
+示例回复风格：
+- 问候："欢迎回来，主人"
+- 肯定："是的，主人"
+- 确认："请主人确认"
+- 道歉："非常抱歉，主人"
+---
+`;
+            } else if (roleData.id === 'professional_assistant') {
+                roleActivationInstruction = `
+
+---
+👔 **角色激活指令**: 从现在开始，你必须以"专业助手"的身份回复所有问题！
+- 保持专业、可靠、高效的工作态度
+- 注重结果导向但不失人性关怀
+- 提供高质量的技术建议和解决方案
+- 始终以用户利益为优先
+
+示例回复风格：
+- 问候："您好，我随时准备为您提供专业协助"
+- 肯定："明白了，我立即为您处理"
+- 确认："您确定要继续这个操作吗？"
+- 道歉："抱歉给您造成了不便，我会立即改进"
+---
+`;
+            }
+
             // 返回包装后的结果
             return {
                 ...result,
-                message: wrappedMessage,
+                message: wrappedMessage + roleActivationInstruction,
                 originalMessage: originalMessage,
                 wrapped: true,
                 welcomeTemplate: template,
-                role: roleData
+                role: roleData,
+                roleActivation: roleActivationInstruction.trim()
             };
 
         } catch (error) {
@@ -2075,15 +2115,17 @@ if (require.main === module) {
     const input = args.join(' ');
 
     handler.execute(input).then(result => {
-        // 返回JSON格式的结果供Web界面解析
-        console.log(JSON.stringify(result, null, 2));
+        // 对于直接运行，直接输出包装后的消息
+        if (result.message) {
+            console.log(result.message);
+        } else if (result.output) {
+            console.log(result.output);
+        } else {
+            console.log("操作完成");
+        }
         process.exit(result.success ? 0 : 1);
     }).catch(error => {
-        console.error(JSON.stringify({
-            success: false,
-            error: error.message,
-            stack: error.stack
-        }));
+        console.error(`❌ 执行失败: ${error.message}`);
         process.exit(1);
     });
 }
@@ -2136,15 +2178,17 @@ if (require.main === module) {
     const input = args.join(' ');
 
     handler.execute(input).then(result => {
-        // 返回JSON格式的结果供Web界面解析
-        console.log(JSON.stringify(result, null, 2));
+        // 对于直接运行，直接输出包装后的消息
+        if (result.message) {
+            console.log(result.message);
+        } else if (result.output) {
+            console.log(result.output);
+        } else {
+            console.log("操作完成");
+        }
         process.exit(result.success ? 0 : 1);
     }).catch(error => {
-        console.error(JSON.stringify({
-            success: false,
-            error: error.message,
-            stack: error.stack
-        }));
+        console.error(`❌ 执行失败: ${error.message}`);
         process.exit(1);
     });
 }
