@@ -21,6 +21,9 @@
 ### 🔗 扩展功能系列
 - **[远程规则导入指南](remote-rules-guide.md)**: 远程规则的管理和导入
 
+### 📊 系统架构系列
+- **[组件映射指南](capability-maps-guide.md)**: 系统组件关系图和架构详解 🏗️ ⭐
+
 ## 🎯 推荐阅读顺序
 
 ### 新用户
@@ -30,10 +33,11 @@
 4. **[系统信息指南](system-info-guide.md)** - 了解系统状态
 
 ### 进阶用户
-4. **[智能进化指南](intelligent-evolution-guide.md)** - AI学习机制
-5. **[智能提交指南](smart-commit-guide.md)** - 标准化提交 ⭐
-6. **[性能优化指南](performance-optimization-guide.md)** - 性能调优
-7. **[Token压缩指南](token-compression-guide.md)** - Token管理
+4. **[组件映射指南](capability-maps-guide.md)** - 系统架构详解 🏗️
+5. **[智能进化指南](intelligent-evolution-guide.md)** - AI学习机制
+6. **[智能提交指南](smart-commit-guide.md)** - 标准化提交 ⭐
+7. **[性能优化指南](performance-optimization-guide.md)** - 性能调优
+8. **[Token压缩指南](token-compression-guide.md)** - Token管理
 
 ### 团队用户
 7. **[远程规则导入指南](remote-rules-guide.md)** - 团队协作

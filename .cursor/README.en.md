@@ -16,7 +16,7 @@
 
 **🌟 Constitution-Driven Super AI Programming Partner - Three Axioms + Three Agnostic Principles + Dual Directory Architecture + Web UI + Continuous Evolution**
 
-📚 **[Quick Improvements Guide](docs/guides/quick-improvements-and-web-guide.md)** | **[System Design Philosophy](docs/architecture/system-design-philosophy.md)** | **[VIBE Development Guide](rules/workflow/vibe-coding.md)** | **[API Documentation](docs/api/hooks-api.md)**
+📚 **[Quick Improvements Guide](docs/guides/quick-improvements-and-web-guide.md)** | **[System Design Philosophy](docs/architecture/system-design-philosophy.md)** | **[Capability Maps Guide](docs/guides/capability-maps-guide.md)** | **[VIBE Development Guide](rules/workflow/vibe-coding.md)** | **[API Documentation](docs/api/hooks-api.md)**
 
 Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), a constitution-driven AI programming partner with **three fundamental axioms + three agnostic design principles + dual directory architecture + Web UI + VIBE development methodology**, achieving true **human-AI symbiosis** programming experience.
 
