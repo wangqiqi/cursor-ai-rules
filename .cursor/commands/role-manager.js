@@ -79,12 +79,9 @@ class RoleManager {
      * 加载模块化角色系统
      */
     async loadModularRoles(config) {
-        const configDir = path.join(this.cursorDir, 'config');
-        const rolesDir = path.resolve(configDir, config.role_structure.roles_directory);
-        const indexFilePath = config.role_structure.index_file.startsWith('./')
-            ? config.role_structure.index_file.substring(2)
-            : config.role_structure.index_file;
-        const indexFile = path.resolve(configDir, indexFilePath);
+        // 角色目录和索引文件相对于cursorDir
+        const rolesDir = path.join(this.cursorDir, 'config', 'roles');
+        const indexFile = path.join(this.cursorDir, 'config', 'roles', 'index.json');
 
         console.log(`📂 角色目录: ${rolesDir}`);
         console.log(`📋 索引文件: ${indexFile}`);
@@ -294,6 +291,104 @@ class RoleManager {
             defaultRole: this.personalitySystem.default_role,
             roles: roles,
             total: roles.length
+        };
+    }
+
+    /**
+     * 通过昵称查找角色
+     */
+    findRoleByNickname(nickname) {
+        // 首先检查已加载的角色系统
+        if (this.personalitySystem && this.personalitySystem.roles) {
+            for (const [roleId, roleConfig] of Object.entries(this.personalitySystem.roles)) {
+                // 检查personality_traits中的nickname字段
+                if (roleConfig.personality_traits &&
+                    roleConfig.personality_traits.nickname &&
+                    Array.isArray(roleConfig.personality_traits.nickname)) {
+                    if (roleConfig.personality_traits.nickname.includes(nickname)) {
+                        return {
+                            success: true,
+                            roleId: roleId,
+                            roleConfig: roleConfig,
+                            matchedBy: 'personality_traits_nickname'
+                        };
+                    }
+                }
+                // 检查根级别的nickname字段
+                if (roleConfig.nickname && Array.isArray(roleConfig.nickname)) {
+                    if (roleConfig.nickname.includes(nickname)) {
+                        return {
+                            success: true,
+                            roleId: roleId,
+                            roleConfig: roleConfig,
+                            matchedBy: 'root_nickname'
+                        };
+                    }
+                }
+                // 检查selfname配置中的昵称
+                if (roleConfig.personality_traits &&
+                    roleConfig.personality_traits.selfname &&
+                    roleConfig.personality_traits.selfname.nicknames) {
+                    if (roleConfig.personality_traits.selfname.nicknames.includes(nickname)) {
+                        return {
+                            success: true,
+                            roleId: roleId,
+                            roleConfig: roleConfig,
+                            matchedBy: 'selfname_nicknames'
+                        };
+                    }
+                }
+            }
+        }
+
+        // 如果没有找到，尝试加载角色文件进行查找
+        try {
+            const rolesDir = path.join(this.cursorDir, 'config', 'roles');
+            if (fs.existsSync(rolesDir)) {
+                const roleFiles = fs.readdirSync(rolesDir).filter(file => file.endsWith('.json') && file !== 'index.json');
+
+                for (const roleFile of roleFiles) {
+                    try {
+                        const rolePath = path.join(rolesDir, roleFile);
+                        const roleContent = fs.readFileSync(rolePath, 'utf8');
+                        const roleData = JSON.parse(roleContent);
+
+                        // 检查昵称配置
+                        if (roleData.nickname && Array.isArray(roleData.nickname)) {
+                            if (roleData.nickname.includes(nickname)) {
+                                return {
+                                    success: true,
+                                    roleId: roleData.id,
+                                    roleConfig: roleData,
+                                    matchedBy: 'file_nickname'
+                                };
+                            }
+                        }
+                        // 检查selfname配置
+                        if (roleData.personality_traits &&
+                            roleData.personality_traits.selfname &&
+                            roleData.personality_traits.selfname.nicknames) {
+                            if (roleData.personality_traits.selfname.nicknames.includes(nickname)) {
+                                return {
+                                    success: true,
+                                    roleId: roleData.id,
+                                    roleConfig: roleData,
+                                    matchedBy: 'file_selfname_nicknames'
+                                };
+                            }
+                        }
+                    } catch (error) {
+                        console.warn(`加载角色文件 ${roleFile} 失败:`, error.message);
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('查找角色昵称时出错:', error.message);
+        }
+
+        return {
+            success: false,
+            message: `未找到昵称为"${nickname}"的角色`
         };
     }
 

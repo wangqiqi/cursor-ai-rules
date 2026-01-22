@@ -196,6 +196,10 @@ class MasterCommandExecutor {
                 case 'workflow':
                     return await this.executeWorkflow(targetName);
 
+                case 'call':
+                case 'nickname':
+                    return await this.executeRoleCall(targetName);
+
                 default:
                     return this.createErrorResult(`不支持的调用类型: ${callType}`);
             }
@@ -799,6 +803,72 @@ class MasterCommandExecutor {
 
         } catch (error) {
             return this.createErrorResult(`技能执行失败: ${error.message}`);
+        }
+    }
+
+    /**
+     * 执行角色呼叫（通过昵称）
+     * @param {string} nickname - 角色昵称
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeRoleCall(nickname) {
+        console.log(`🎭 执行角色呼叫: ${nickname}`);
+
+        try {
+            // 确保角色管理器已初始化
+            if (!this.roleManager) {
+                return this.createErrorResult('角色管理系统不可用');
+            }
+
+            // 通过昵称查找角色
+            const roleResult = this.roleManager.findRoleByNickname(nickname);
+
+            if (!roleResult.success) {
+                return this.createErrorResult(roleResult.message);
+            }
+
+            // 切换到找到的角色
+            const switchResult = await this.roleManager.switchRole(roleResult.roleId, 'nickname_call');
+
+            if (!switchResult.success) {
+                return this.createErrorResult(`角色切换失败: ${switchResult.message}`);
+            }
+
+            // 生成亲切的欢迎消息
+            const roleConfig = roleResult.roleConfig;
+            let welcomeMessage = `🎭 已切换到角色: **${roleConfig.name}**\n\n`;
+
+            // 添加角色的个性描述
+            if (roleConfig.description) {
+                welcomeMessage += `💫 ${roleConfig.description}\n\n`;
+            }
+
+            // 添加角色特色
+            if (roleConfig.personality_traits && roleConfig.personality_traits.inner_voice) {
+                welcomeMessage += `💭 *${roleConfig.personality_traits.inner_voice}*\n\n`;
+            }
+
+            // 添加感官反应
+            if (roleConfig.sensory_reactions) {
+                const senses = roleConfig.sensory_reactions;
+                if (senses.vision) welcomeMessage += `👁️ ${senses.vision}\n`;
+                if (senses.hearing) welcomeMessage += `👂 ${senses.hearing}\n`;
+                if (senses.touch) welcomeMessage += `✋ ${senses.touch}\n`;
+                if (senses.intuition) welcomeMessage += `🔮 ${senses.intuition}\n`;
+                welcomeMessage += '\n';
+            }
+
+            welcomeMessage += `✨ 现在可以用这个角色的风格与你交流了！有什么需要帮助的吗？`;
+
+            return this.createSuccessResult(welcomeMessage, {
+                role: roleResult.roleId,
+                nickname: nickname,
+                roleConfig: roleConfig,
+                matchedBy: roleResult.matchedBy
+            });
+
+        } catch (error) {
+            return this.createErrorResult(`角色呼叫失败: ${error.message}`);
         }
     }
 

@@ -6,97 +6,106 @@
 
 ```
 docs/
-├── guides/                  # 用户指南合集
-│   ├── quick-start.md       # 快速开始指南
-│   ├── usage-guide.md       # 使用指南
-│   ├── intelligent-evolution-guide.md  # 智能进化指南
-│   ├── system-info-guide.md # 系统信息指南
-│   ├── remote-rules-guide.md # 远程规则导入指南
-│   ├── performance-optimization-guide.md # 性能优化指南
-│   └── token-compression-guide.md # Token压缩指南
-├── user/                    # 用户相关文档
-│   ├── getting-started.md   # 新手入门
-│   ├── basic-usage.md       # 基础使用
-│   ├── core-features.md     # 核心功能
-│   └── advanced-config.md   # 高级配置
-├── config/                  # 配置相关文档
-│   ├── component-selection-guide.md # 组件选择指南
-│   ├── configuration-standards.md   # 配置标准
-│   └── README.md             # 配置文档说明
-├── development/             # 开发相关文档
-│   ├── architecture.md      # 系统架构
-│   └── development-guidelines.md # 开发指南
-├── architecture/            # 架构相关文档
-│   ├── project-growth-architecture.md # 项目生长架构
-│   ├── script-architecture.md         # 脚本架构
-│   ├── system-design-philosophy.md    # 系统设计哲学
-│   └── project-completion-report.md   # 项目完成报告
-├── rules/                   # 规则相关文档
-│   └── team-rules-example.md # 团队规则示例
-├── skills/                  # 技能相关文档
-│   └── mcp-priority-system.md # MCP优先级系统
-├── hooks/                   # 钩子相关文档
-│   └── hooks-integration-guide.md # 钩子集成指南
-├── api/                     # API文档
-│   ├── hooks-api.md         # 钩子API
-│   ├── skills-api.md        # 技能API
-│   └── README.md            # API文档说明
-├── debug/                   # 调试相关文档
-│   └── README.md            # 调试文档说明
-├── growth/                  # 生长相关文档
-│   └── README.md            # 生长文档说明
-└── README.md               # 文档总览
+├── README.md              # 📚 文档导航中心
+├── getting-started.md     # 🚀 快速开始 (5分钟上手)
+├── user-guide.md          # 📖 完整使用指南
+├── developer/             # 🛠️ 开发者文档
+│   ├── api-reference.md   # API接口文档
+│   ├── architecture.md    # 系统架构详解
+│   ├── extension-guide.md # 扩展开发指南
+│   └── project-growth.md  # 项目生长架构
+├── admin/                 # 👔 运维管理文档
+│   └── configuration.md   # 配置管理指南
+├── advanced/              # 🎯 高级特性文档
+│   ├── ai-integration.md  # AI集成深度指南
+│   ├── workflow-automation.md # 工作流自动化
+│   └── performance-tuning.md  # 高级性能调优
+└── reference/             # 📚 参考资料
+    ├── faq.md            # 常见问题解答
+    └── specifications/   # 技术规范
+        └── constitution.md # 宪法规范
 ```
 
 ## 🎯 文档定位
 
-### 用户指南 (User Guides)
-- **目标读者**: 终端用户和项目开发者
-- **内容范围**: 如何使用系统功能，解决常见问题，性能优化，系统配置
-- **组织方式**: 按使用场景分类在 `guides/` 和 `user/` 文件夹中
-- **阅读顺序**: 从 `user/getting-started.md` 开始
+### 🚀 快速开始 (Getting Started)
+- **目标读者**: 完全新手用户
+- **内容范围**: 5分钟快速安装和基础体验
+- **文件**: `getting-started.md`
+- **适用场景**: 首次接触系统，不知从何开始
 
-### 开发者指南 (Developer Guides)
-- **目标读者**: 系统扩展开发者和贡献者
-- **内容范围**: 系统架构、API使用、扩展开发、配置标准
-- **组织方式**: 按技术领域分类在 `development/`, `api/`, `config/` 文件夹中
-- **阅读顺序**: 从 `development/architecture.md` 开始
+### 📖 完整使用指南 (User Guide)
+- **目标读者**: 普通用户，需要全面了解功能
+- **内容范围**: 核心功能详解、使用场景、最佳实践
+- **文件**: `user-guide.md`
+- **适用场景**: 已经上手，需要深入了解各项功能
 
-### 技能手册 (Skills Manual)
-- **目标读者**: 需要使用特定技能的用户
-- **内容范围**: 各技能的功能说明和使用方法
-- **组织方式**: 按功能分类
+### 🛠️ 开发者文档 (Developer Docs)
+- **目标读者**: 二次开发者和系统扩展者
+- **内容范围**: API接口、系统架构、扩展开发、项目生长
+- **目录**: `developer/`
+- **适用场景**: 需要自定义功能或深入理解系统
 
-### 技术文档 (Technical Docs)
-- **目标读者**: 系统维护者和高级开发者
-- **内容范围**: 内部实现、配置系统、性能优化
-- **技术深度**: 深入系统内部
+### 👔 运维管理文档 (Admin Docs)
+- **目标读者**: 项目管理员和运维人员
+- **内容范围**: 配置管理、部署运维、安全管理
+- **目录**: `admin/`
+- **适用场景**: 负责系统配置、部署和维护
+
+### 🎯 高级特性文档 (Advanced Docs)
+- **目标读者**: 高级用户和资深开发者
+- **内容范围**: AI集成、工作流自动化、性能调优
+- **目录**: `advanced/`
+- **适用场景**: 需要高级功能和深度优化
+
+### 📚 参考资料 (Reference)
+- **目标读者**: 所有用户，查阅具体信息
+- **内容范围**: 常见问题、技术规范、术语表
+- **目录**: `reference/`
+- **适用场景**: 快速查找特定信息和规范
 
 ## 🚀 快速开始
 
-### 新用户
-1. 阅读 `user-guide/getting-started.md`
-2. 阅读 `usage-guide.md` 了解基本使用
-3. 根据需要查阅特定功能的文档
+### 📚 推荐阅读路径
 
-### 开发者
-1. 了解 `developer-guide/architecture.md` 的系统架构
-2. 阅读 `api/` 中的API文档
-3. 参考 `team-rules-example.md` 中的实际示例
+#### 完全新手 (首次使用)
+1. **[快速开始](getting-started.md)** - 5分钟安装和体验
+2. **[完整使用指南](user-guide.md)** - 全面了解各项功能
+3. **[常见问题](reference/faq.md)** - 快速解决使用疑问
+
+#### 开发者用户 (需要扩展)
+1. **[系统架构](developer/architecture.md)** - 理解核心设计
+2. **[API参考](developer/api-reference.md)** - 接口使用指南
+3. **[扩展开发](developer/extension-guide.md)** - 自定义功能开发
+
+#### 管理员用户 (负责运维)
+1. **[配置管理](admin/configuration.md)** - 系统配置详解
+2. **[AI集成](advanced/ai-integration.md)** - 高级AI特性
+3. **[性能调优](advanced/performance-tuning.md)** - 系统优化指南
 
 ## 🔍 文档导航
 
-### 按任务查找
-- **项目初始化**: `user-guide/getting-started.md`
-- **代码质量**: `usage-guide.md#质量工具`
-- **技能使用**: `api/skills-api.md`
-- **问题解决**: `usage-guide.md#故障排除`
+### 按使用场景查找
 
-### 按组件查找
-- **配置系统**: `project-growth-architecture.md`
-- **命令路由**: `../commands/command-router.md`
-- **感知引擎**: `guides/system-info-guide.md`
-- **质量系统**: `guides/performance-optimization-guide.md`
+#### 🚀 入门学习
+- **快速上手**: [快速开始](getting-started.md)
+- **完整功能**: [使用指南](user-guide.md)
+- **常见问题**: [FAQ](reference/faq.md)
+
+#### 🛠️ 开发扩展
+- **系统架构**: [架构详解](developer/architecture.md)
+- **API接口**: [API参考](developer/api-reference.md)
+- **自定义开发**: [扩展指南](developer/extension-guide.md)
+
+#### ⚙️ 系统管理
+- **配置管理**: [配置指南](admin/configuration.md)
+- **AI特性**: [AI集成](advanced/ai-integration.md)
+- **性能优化**: [调优指南](advanced/performance-tuning.md)
+
+#### 🔄 工作流
+- **自动化流程**: [工作流自动化](advanced/workflow-automation.md)
+- **项目生长**: [生长架构](developer/project-growth.md)
+- **宪法规范**: [宪法规范](reference/specifications/constitution.md)
 
 ## 📝 文档规范
 
@@ -141,10 +150,11 @@ docs/
 
 ## 📊 文档统计
 
-- **总文档数**: 32+ 个文件
-- **覆盖功能**: 100% 系统功能 + 完整完成记录
+- **总文档数**: 15 个核心文档 (-53% 优化)
+- **目录结构**: 6个主要目录 (从13个精简)
+- **覆盖功能**: 100% 系统功能，结构化组织
 - **支持语言**: 中文（主要）、英文（部分）
-- **更新频率**: 随系统版本更新
+- **更新频率**: 随系统版本更新，持续优化
 
 ---
 

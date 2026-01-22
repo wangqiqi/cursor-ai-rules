@@ -23,6 +23,12 @@ class MasterCommandParser {
                 handler: this.parseRoleSwitch.bind(this)
             },
 
+            // 角色呼叫模式
+            role_call: {
+                pattern: /^(呼叫|叫|召唤)\s+(.+)$/i,
+                handler: this.parseRoleCall.bind(this)
+            },
+
             // 自然语言模式
             natural: {
                 pattern: /^(.+)$/,
@@ -80,6 +86,13 @@ class MasterCommandParser {
                 keywords: ['提交', '推送', '保存', '上传', '同步'],
                 confidence: 0.85,
                 category: 'commit'
+            },
+
+            // 角色呼叫意图
+            role_call: {
+                keywords: ['呼叫', '叫', '召唤', '切换到', '使用角色', '角色'],
+                confidence: 0.95,
+                category: 'role_management'
             }
         };
     }
@@ -112,6 +125,12 @@ class MasterCommandParser {
             return roleSwitchResult;
         }
 
+        // 尝试角色呼叫模式
+        const roleCallResult = this.commandPatterns.role_call.handler(trimmedInput);
+        if (roleCallResult) {
+            return roleCallResult;
+        }
+
         // 尝试自然语言模式
         return this.commandPatterns.natural.handler(trimmedInput);
     }
@@ -132,7 +151,7 @@ class MasterCommandParser {
         const trimmedName = targetName.trim();
 
         // 验证调用类型
-        if (!['rule', 'script', 'skill', 'hook', 'workflow'].includes(normalizedType)) {
+        if (!['rule', 'script', 'skill', 'hook', 'workflow', 'call', 'nickname'].includes(normalizedType)) {
             return this.createErrorResult(`未知的调用类型: ${callType}`);
         }
 
@@ -175,6 +194,36 @@ class MasterCommandParser {
             success: true,
             type: 'role_switch',
             roleName: trimmedRoleName,
+            originalInput: input,
+            confidence: 1.0,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    /**
+     * 解析角色呼叫命令
+     * @param {string} input - 输入字符串
+     * @returns {Object|null} 解析结果或null
+     */
+    parseRoleCall(input) {
+        const match = input.match(this.commandPatterns.role_call.pattern);
+        if (!match) {
+            return null;
+        }
+
+        const [, , nickname] = match;
+        const trimmedNickname = nickname.trim();
+
+        // 验证昵称
+        if (!trimmedNickname) {
+            return this.createErrorResult('未指定角色昵称');
+        }
+
+        return {
+            success: true,
+            type: 'direct_call',
+            callType: 'call',
+            targetName: trimmedNickname,
             originalInput: input,
             confidence: 1.0,
             timestamp: new Date().toISOString()
@@ -296,6 +345,19 @@ class MasterCommandParser {
                         parameters.technology = tech;
                         break;
                     }
+                }
+                break;
+
+            case 'role_call':
+                // 提取角色昵称或名称
+                const nicknameMatch = input.match(/(?:呼叫|叫|召唤)\s*([^\s]+)/);
+                if (nicknameMatch) {
+                    parameters.nickname = nicknameMatch[1].trim();
+                }
+                // 也可以通过角色名称匹配
+                const roleNameMatch = input.match(/(?:切换到|使用角色)\s*([^\s]+)/);
+                if (roleNameMatch) {
+                    parameters.roleName = roleNameMatch[1].trim();
                 }
                 break;
         }
