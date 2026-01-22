@@ -652,14 +652,42 @@ class RoleManager {
      */
     async saveProjectRoleConfig(roleId) {
         try {
+            // 读取现有的项目配置，获取或生成项目ID
+            let existingConfig = {};
+            let projectId;
+
+            if (fs.existsSync(this.projectRoleConfigPath)) {
+                try {
+                    const content = fs.readFileSync(this.projectRoleConfigPath, 'utf8');
+                    existingConfig = JSON.parse(content);
+                    projectId = existingConfig.projectId;
+                } catch (error) {
+                    console.warn('⚠️ 无法读取现有配置，将创建新的');
+                }
+            }
+
+            // 如果没有项目ID，生成一个新的
+            if (!projectId) {
+                const crypto = require('crypto');
+                const projectPathHash = crypto.createHash('md5')
+                    .update(path.resolve(this.projectDir))
+                    .digest('hex')
+                    .substring(0, 16);
+                projectId = `proj_${projectPathHash}`;
+                console.log(`✅ 生成新的项目ID: ${projectId}`);
+            }
+
+            // 创建完整的配置
             const config = {
-                currentRole: roleId,
-                lastUpdated: new Date().toISOString(),
-                projectPath: this.projectDir
+                ...existingConfig, // 先保留现有字段
+                currentRole: roleId, // 然后覆盖角色
+                lastUpdated: new Date().toISOString(), // 更新时间戳
+                projectPath: path.resolve(this.projectDir), // 确保绝对路径
+                projectId: projectId // 确保项目ID存在
             };
 
             fs.writeFileSync(this.projectRoleConfigPath, JSON.stringify(config, null, 2), 'utf8');
-            console.log(`✅ 项目角色配置已保存: ${roleId}`);
+            console.log(`✅ 项目角色配置已保存: ${roleId} (项目ID: ${projectId})`);
             return { success: true, message: "项目角色配置保存成功" };
         } catch (error) {
             console.error('❌ 保存项目角色配置失败:', error.message);
