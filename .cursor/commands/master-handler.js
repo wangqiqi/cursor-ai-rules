@@ -780,6 +780,7 @@ class MasterCommandHandler {
                 perception_data: perceptionData
             };
 
+            // 写入干净的JSON，不包含任何额外输出
             fs.writeFileSync(filepath, JSON.stringify(perceptionResult, null, 2));
 
             console.log(`✅ 自动感知结果已保存: ${filepath}`);
