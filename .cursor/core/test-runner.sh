@@ -1,11 +1,16 @@
 #!/bin/bash
-# 加载统一路径配置
+# 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
-GROWTH_DIR="$CURSOR_GROWTH"
+source "$SCRIPT_DIR/cli-framework.sh"
+source "$SCRIPT_DIR/path-config.sh"
 
-# 🌟 Cursor AI Rules - 测试运行器
+# 初始化CLI框架
+cli_init "Test Runner"
+
+# ========================================
+# Cursor AI Rules - 测试运行器
 # 统一测试执行，支持多种测试框架和测试类型
+# ========================================
 
 set -e
 
@@ -473,62 +478,86 @@ run_full_test_suite() {
 }
 
 # 主函数
+# 主函数 - 使用CLI框架
 main() {
-    local command="$1"
-    shift
+    # 解析CLI参数
+    parse_cli_args "$@" || return 1
 
-    case "$command" in
+    # 处理全局标志
+    for flag in "${CLI_FLAGS[@]}"; do
+        case "$flag" in
+            "help")
+                cli_show_help "Test Runner" "统一测试执行，支持多种测试框架和测试类型" \
+                    "run" "运行指定框架的测试" \
+                    "auto" "自动检测并运行测试" \
+                    "coverage" "运行测试并生成覆盖率报告" \
+                    "detect" "检测可用的测试框架" \
+                    "report" "生成测试报告"
+                return 0
+                ;;
+            "version")
+                cli_show_version "Test Runner"
+                return 0
+                ;;
+        esac
+    done
+
+    # 验证命令
+    cli_validate_command "run" "auto" "coverage" "detect" "report" || return 1
+
+    # 执行命令
+    case "$CLI_COMMAND" in
         "run")
-            local framework="$1"
-            local coverage="${2:-false}"
+            local framework="${CLI_ARGS[0]}"
+            local coverage="${CLI_ARGS[1]:-false}"
+            if [[ -z "$framework" ]]; then
+                cli_error "请指定测试框架 (jest, vitest, pytest, go-test, cargo-test)"
+                return 1
+            fi
             if run_full_test_suite "$framework" "$coverage"; then
-                log_success "测试运行完成"
+                cli_success "测试运行完成"
             else
-                log_error "测试运行失败"
-                exit 1
+                cli_error "测试运行失败"
+                return 1
             fi
             ;;
         "detect")
             detect_test_frameworks
             ;;
         "auto")
-            local framework=$(auto_detect_framework)
-            if [ -n "$framework" ]; then
-                log_info "推荐测试框架: $framework"
-                run_full_test_suite "$framework"
+            local framework
+            framework=$(auto_detect_framework)
+            if [[ -n "$framework" ]]; then
+                cli_info "推荐测试框架: $framework"
+                if run_full_test_suite "$framework"; then
+                    cli_success "自动测试完成"
+                else
+                    cli_error "自动测试失败"
+                    return 1
+                fi
             else
-                log_error "无法自动检测测试框架"
-                exit 1
+                cli_error "无法自动检测测试框架"
+                return 1
             fi
             ;;
         "coverage")
-            run_full_test_suite "" "true"
+            if run_full_test_suite "" "true"; then
+                cli_success "覆盖率测试完成"
+            else
+                cli_error "覆盖率测试失败"
+                return 1
+            fi
             ;;
         "report")
             generate_test_report
             ;;
-        *)
-            echo "用法: $0 <command> [options]"
-            echo ""
-            echo "命令:"
-            echo "  run <framework> [coverage]   运行指定框架的测试"
-            echo "  auto                         自动检测并运行测试"
-            echo "  coverage                     运行测试并生成覆盖率报告"
-            echo "  detect                       检测可用的测试框架"
-            echo "  report                       生成测试报告"
-            echo ""
-            echo "支持的框架: jest, vitest, pytest, go-test, cargo-test"
-            echo ""
-            echo "示例:"
-            echo "  $0 auto                      # 自动检测并运行"
-            echo "  $0 run jest true             # 运行Jest测试并生成覆盖率"
-            echo "  $0 coverage                  # 生成覆盖率报告"
-            return 1
-            ;;
     esac
+
+    return 0
 }
 
-# 如果直接运行此脚本
+# 如果直接运行此脚本，执行主函数
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"
+    exit $?
 fi
