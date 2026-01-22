@@ -64,8 +64,8 @@ find_cursor_transcripts_dir() {
 
 # 初始化同步状态跟踪
 init_sync_tracking() {
-    mkdir -p "$GROWTH_DIR/integrations/sync"
-    local sync_status_file="$GROWTH_DIR/integrations/sync/cursor_sync_status.json"
+    mkdir -p "$INTEGRATIONS_SYNC_DIR"
+    local sync_status_file="$INTEGRATIONS_SYNC_DIR/cursor_sync_status.json"
 
     if [ ! -f "$sync_status_file" ]; then
         cat > "$sync_status_file" << EOF
@@ -91,7 +91,7 @@ sync_transcript_file() {
     local transcripts_dir="$2"
     local filename
     filename=$(basename "$transcript_file" .txt)
-    local growth_conversation_file="$GROWTH_DIR/ai-conversation-cursor-${filename}.json"
+    local growth_conversation_file="$CONVERSATIONS_DIR/cursor_${filename}.json"
 
     # 检查是否已经同步过
     local sync_status_file
@@ -505,7 +505,7 @@ show_sync_status() {
 
     # 显示本地同步的对话文件
     local conversation_count
-    conversation_count=$(find "$GROWTH_DIR" -name "ai-conversation-cursor-*.json" -type f 2>/dev/null | wc -l)
+    conversation_count=$(find "$CONVERSATIONS_DIR" -name "cursor_*.json" -type f 2>/dev/null | wc -l)
     echo -e "${BLUE}💬 本地Cursor对话数: ${NC}$conversation_count"
 
     echo -e "${GREEN}🌱 生长目录位置: ${NC}$GROWTH_DIR"

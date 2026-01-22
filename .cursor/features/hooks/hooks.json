@@ -189,9 +189,9 @@
         "enabled": true
       },
       {
-        "name": "master-sync",
-        "description": "Master命令首次使用时自动同步Cursor对话记录",
-        "command": "features/hooks/master-sync.sh",
+        "name": "master-sync-trigger",
+        "description": "检测对话框首次使用/master命令并触发同步",
+        "command": "features/hooks/master-sync-trigger.sh",
         "timeout": 10000,
         "async": true,
         "enabled": true
@@ -259,6 +259,14 @@
         "description": "新对话框开始时自动激活项目角色",
         "command": "features/hooks/role-activation.sh",
         "timeout": 5000,
+        "async": true,
+        "enabled": true
+      },
+      {
+        "name": "master-sync-init",
+        "description": "新对话框开始时初始化Master同步状态",
+        "command": "features/hooks/master-sync-init.sh",
+        "timeout": 2000,
         "async": true,
         "enabled": true
       }

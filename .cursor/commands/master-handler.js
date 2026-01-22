@@ -716,6 +716,418 @@ class MasterCommandHandler {
     }
 
     /**
+     * 自动记录生长数据 - /master 执行时自动触发
+     */
+    async recordGrowthData(input, result, intent = 'general') {
+        try {
+            console.log('🌱 记录AI生长数据...');
+
+            // 直接更新生长数据文件，不依赖外部脚本
+            await this.updateGrowthMeta(result.success || false, input, intent);
+
+            // 记录到命令日志（如果需要）
+            const commandLogPath = path.join(this.projectRoot, '.cursorGrowth', 'ai', 'command_logs', `command_${Date.now()}.json`);
+            const commandLogDir = path.dirname(commandLogPath);
+
+            if (!fs.existsSync(commandLogDir)) {
+                fs.mkdirSync(commandLogDir, { recursive: true });
+            }
+
+            const commandLogEntry = {
+                timestamp: new Date().toISOString(),
+                input: input,
+                intent: intent,
+                success: result.success || false,
+                message: result.message || '操作完成',
+                execution_time_ms: Date.now() - (this.executionStartTime || Date.now())
+            };
+
+            fs.writeFileSync(commandLogPath, JSON.stringify(commandLogEntry, null, 2));
+
+            console.log('✅ 生长数据已记录');
+
+        } catch (error) {
+            console.warn('⚠️ 生长数据记录失败:', error.message);
+        }
+    }
+
+    /**
+     * 自动执行环境感知并保存结果
+     */
+    async autoExecutePerception() {
+        try {
+            console.log('🔍 执行自动环境感知...');
+
+            const perceptionData = await this.performProjectPerception();
+
+            // 保存到perception目录
+            const perceptionDir = path.join(this.projectRoot, '.cursorGrowth', 'perception');
+            if (!fs.existsSync(perceptionDir)) {
+                fs.mkdirSync(perceptionDir, { recursive: true });
+            }
+
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const filename = `project_perception_${timestamp}.json`;
+            const filepath = path.join(perceptionDir, filename);
+
+            const perceptionResult = {
+                metadata: {
+                    timestamp: new Date().toISOString(),
+                    script_version: "1.0.0",
+                    execution_mode: "auto_perception",
+                    project_root: this.projectRoot
+                },
+                perception_data: perceptionData
+            };
+
+            fs.writeFileSync(filepath, JSON.stringify(perceptionResult, null, 2));
+
+            console.log(`✅ 自动感知结果已保存: ${filepath}`);
+
+        } catch (error) {
+            console.warn('⚠️ 自动感知执行失败:', error.message);
+        }
+    }
+
+    /**
+     * 执行项目感知分析
+     */
+    async performProjectPerception() {
+        try {
+            // 基本项目信息
+            const projectRoot = this.projectRoot;
+            const packageJsonPath = path.join(projectRoot, 'package.json');
+            const requirementsPath = path.join(projectRoot, 'requirements.txt');
+            const goModPath = path.join(projectRoot, 'go.mod');
+
+            // 技术栈分析
+            let techStack = '未知';
+            let techDetails = '';
+
+            if (fs.existsSync(packageJsonPath)) {
+                techStack = 'JavaScript/Node.js';
+                try {
+                    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+                    if (packageJson.dependencies) {
+                        if (packageJson.dependencies.react) techDetails += 'React ';
+                        if (packageJson.dependencies.vue) techDetails += 'Vue ';
+                        if (packageJson.dependencies.typescript) techDetails += 'TypeScript ';
+                    }
+                } catch (e) {
+                    // 忽略JSON解析错误
+                }
+            } else if (fs.existsSync(requirementsPath)) {
+                techStack = 'Python';
+            } else if (fs.existsSync(goModPath)) {
+                techStack = 'Go';
+            }
+
+            // 项目规模分析
+            const totalFiles = this.countProjectFiles();
+            const codeLines = await this.countCodeLines();
+
+            // 团队规模分析
+            const contributorCount = await this.getContributorCount();
+
+            // 开发阶段判断
+            const devStage = await this.assessDevelopmentStage();
+
+            return {
+                timestamp: new Date().toISOString(),
+                tech_stack: {
+                    primary: techStack,
+                    details: techDetails.trim(),
+                    confidence: 'high'
+                },
+                team_dynamics: {
+                    size: contributorCount > 5 ? '团队项目' : '个人项目',
+                    contributor_count: contributorCount,
+                    collaboration_style: contributorCount > 1 ? 'collaborative' : 'solo'
+                },
+                project_scale: {
+                    total_files: totalFiles,
+                    code_lines: codeLines,
+                    scale_category: totalFiles > 100 ? '中型项目' : '小型项目',
+                    complexity_level: codeLines > 10000 ? 'high' : codeLines > 1000 ? 'medium' : 'low'
+                },
+                development_stage: devStage,
+                system_environment: {
+                    os: process.platform,
+                    architecture: process.arch,
+                    working_directory: process.cwd(),
+                    project_root: projectRoot
+                }
+            };
+
+        } catch (error) {
+            console.warn('项目感知分析失败:', error.message);
+            return {
+                timestamp: new Date().toISOString(),
+                error: error.message,
+                tech_stack: { primary: '未知', confidence: 'low' }
+            };
+        }
+    }
+
+    /**
+     * 计算项目文件数量
+     */
+    countProjectFiles() {
+        try {
+            const fs = require('fs');
+            const path = require('path');
+
+            const countFiles = (dir) => {
+                let count = 0;
+                const items = fs.readdirSync(dir);
+
+                for (const item of items) {
+                    if (item.startsWith('.') || item === 'node_modules' || item === '.git') continue;
+
+                    const fullPath = path.join(dir, item);
+                    const stat = fs.statSync(fullPath);
+
+                    if (stat.isDirectory()) {
+                        count += countFiles(fullPath);
+                    } else {
+                        count++;
+                    }
+                }
+
+                return count;
+            };
+
+            return countFiles(this.projectRoot);
+        } catch (error) {
+            return 0;
+        }
+    }
+
+    /**
+     * 计算代码行数
+     */
+    async countCodeLines() {
+        try {
+            const fs = require('fs');
+            const path = require('path');
+
+            const countLines = (dir) => {
+                let totalLines = 0;
+                const items = fs.readdirSync(dir);
+
+                for (const item of items) {
+                    if (item.startsWith('.') || item === 'node_modules' || item === '.git') continue;
+
+                    const fullPath = path.join(dir, item);
+                    const stat = fs.statSync(fullPath);
+
+                    if (stat.isDirectory()) {
+                        totalLines += countLines(fullPath);
+                    } else if (item.endsWith('.js') || item.endsWith('.ts') || item.endsWith('.py') || item.endsWith('.java') || item.endsWith('.go')) {
+                        try {
+                            const content = fs.readFileSync(fullPath, 'utf8');
+                            const lines = content.split('\n').length;
+                            totalLines += lines;
+                        } catch (e) {
+                            // 忽略读取错误
+                        }
+                    }
+                }
+
+                return totalLines;
+            };
+
+            return countLines(this.projectRoot);
+        } catch (error) {
+            return 0;
+        }
+    }
+
+    /**
+     * 获取贡献者数量
+     */
+    async getContributorCount() {
+        try {
+            const { execSync } = require('child_process');
+            const result = execSync('git shortlog -sn --no-merges | wc -l', {
+                cwd: this.projectRoot,
+                encoding: 'utf8'
+            });
+            return parseInt(result.trim()) || 1;
+        } catch (error) {
+            return 1; // 默认个人项目
+        }
+    }
+
+    /**
+     * 评估开发阶段
+     */
+    async assessDevelopmentStage() {
+        try {
+            const fs = require('fs');
+            const path = require('path');
+
+            let commitCount = 0;
+            let hasTests = false;
+            let hasDocs = false;
+            let hasCI = false;
+
+            // 获取提交数量
+            try {
+                const { execSync } = require('child_process');
+                const result = execSync('git rev-list --count HEAD', {
+                    cwd: this.projectRoot,
+                    encoding: 'utf8'
+                });
+                commitCount = parseInt(result.trim()) || 0;
+            } catch (e) {
+                commitCount = 0;
+            }
+
+            // 检查测试文件
+            const testFiles = ['test', 'spec', '__tests__', 'tests'];
+            for (const testDir of testFiles) {
+                if (fs.existsSync(path.join(this.projectRoot, testDir))) {
+                    hasTests = true;
+                    break;
+                }
+            }
+
+            // 检查文档
+            const docs = ['README.md', 'docs', 'wiki'];
+            for (const doc of docs) {
+                if (fs.existsSync(path.join(this.projectRoot, doc))) {
+                    hasDocs = true;
+                    break;
+                }
+            }
+
+            // 检查CI
+            const ciFiles = ['.github/workflows', '.gitlab-ci.yml', 'Jenkinsfile'];
+            for (const ci of ciFiles) {
+                if (fs.existsSync(path.join(this.projectRoot, ci))) {
+                    hasCI = true;
+                    break;
+                }
+            }
+
+            // 判断开发阶段
+            let stage = '未知';
+            if (commitCount < 10 && !hasTests) {
+                stage = '概念验证阶段';
+            } else if (hasTests && !hasCI) {
+                stage = '早期开发阶段';
+            } else if (hasCI && hasDocs) {
+                stage = '成熟产品阶段';
+            } else {
+                stage = '成长发展阶段';
+            }
+
+            return {
+                current_stage: stage,
+                commit_count: commitCount,
+                has_tests: hasTests,
+                has_docs: hasDocs,
+                has_ci: hasCI,
+                maturity_score: (hasTests ? 25 : 0) + (hasDocs ? 20 : 0) + (hasCI ? 25 : 0) + Math.min(commitCount, 30)
+            };
+
+        } catch (error) {
+            return {
+                current_stage: '未知',
+                commit_count: 0,
+                has_tests: false,
+                has_docs: false,
+                has_ci: false,
+                maturity_score: 0
+            };
+        }
+    }
+
+    /**
+     * 更新生长元数据
+     */
+    async updateGrowthMeta(success = true, input = '', intent = 'general') {
+        try {
+            const growthMetaPath = path.join(this.projectRoot, '.cursorGrowth', 'growth_meta.json');
+
+            if (!fs.existsSync(growthMetaPath)) {
+                // 创建初始的growth_meta.json
+                const initialMeta = {
+                    version: "1.0.0",
+                    created_at: new Date().toISOString(),
+                    description: "Cursor AI 生长数据元信息",
+                    perception_runs: 0,
+                    first_perception: null,
+                    last_perception: null,
+                    user_learning: {
+                        communication_patterns: {},
+                        preference_patterns: {},
+                        interaction_history: []
+                    },
+                    project_evolution: {
+                        rule_adjustments: [],
+                        performance_metrics: {},
+                        optimization_suggestions: []
+                    },
+                    system_health: {
+                        last_backup: null,
+                        data_integrity: true,
+                        storage_usage: "0MB"
+                    }
+                };
+                fs.writeFileSync(growthMetaPath, JSON.stringify(initialMeta, null, 2));
+            }
+
+            // 读取并更新元数据
+            const metaContent = fs.readFileSync(growthMetaPath, 'utf8');
+            const meta = JSON.parse(metaContent);
+
+            // 更新统计信息
+            meta.perception_runs = (meta.perception_runs || 0) + 1;
+            meta.last_perception = new Date().toISOString();
+
+            if (!meta.first_perception) {
+                meta.first_perception = meta.last_perception;
+            }
+
+            // 添加交互历史记录
+            if (!meta.user_learning.interaction_history) {
+                meta.user_learning.interaction_history = [];
+            }
+
+            meta.user_learning.interaction_history.push({
+                timestamp: new Date().toISOString(),
+                success: success,
+                type: 'master_command',
+                intent: intent,
+                input_length: input.length,
+                execution_time_ms: Date.now() - (this.executionStartTime || Date.now())
+            });
+
+            // 只保留最近的100条记录
+            if (meta.user_learning.interaction_history.length > 100) {
+                meta.user_learning.interaction_history = meta.user_learning.interaction_history.slice(-100);
+            }
+
+            // 更新意图统计
+            if (!meta.user_learning.communication_patterns.intent_frequency) {
+                meta.user_learning.communication_patterns.intent_frequency = {};
+            }
+            meta.user_learning.communication_patterns.intent_frequency[intent] =
+                (meta.user_learning.communication_patterns.intent_frequency[intent] || 0) + 1;
+
+            // 保存更新后的元数据
+            fs.writeFileSync(growthMetaPath, JSON.stringify(meta, null, 2));
+
+            console.log(`📈 生长元数据已更新 (感知次数: ${meta.perception_runs})`);
+
+        } catch (error) {
+            console.warn('⚠️ 生长元数据更新失败:', error.message);
+        }
+    }
+
+    /**
      * 处理角色相关命令
      */
     async handleRoleCommand(input) {
@@ -1716,6 +2128,9 @@ class MasterCommandHandler {
         try {
             console.log(`🎯 处理IDE /master 命令: ${input}`);
 
+            // ⏱️ 记录执行开始时间（用于计算时长）
+            this.executionStartTime = Date.now();
+
             // 📊 记录命令执行日志
             await this.logCommandExecution(input, 'start', context);
 
@@ -1741,6 +2156,10 @@ class MasterCommandHandler {
             const forceSystemResult = await this.forceSystemCommandExecution(input);
             if (forceSystemResult) {
                 const enhancedResult = this.enhanceWithIdeContext(forceSystemResult);
+                // 🌱 记录强制系统命令的生长数据
+                await this.recordGrowthData(input, enhancedResult, 'system');
+                // 🔍 自动执行环境感知
+                await this.autoExecutePerception();
                 return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'forced' });
             }
 
@@ -1760,6 +2179,10 @@ class MasterCommandHandler {
                 }
 
                 const enhancedResult = this.enhanceWithIdeContext(roleCommandResult);
+                // 🌱 记录角色命令的生长数据
+                await this.recordGrowthData(input, enhancedResult, 'role_management');
+                // 🔍 自动执行环境感知
+                await this.autoExecutePerception();
                 // 🎭 使用角色系统包装回复
                 return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'role' });
             }
@@ -1768,6 +2191,10 @@ class MasterCommandHandler {
             const directCallResult = await this.handleDirectCall(input);
             if (directCallResult) {
                 const enhancedResult = this.enhanceWithIdeContext(directCallResult);
+                // 🌱 记录直接调用的生长数据
+                await this.recordGrowthData(input, enhancedResult, 'direct_call');
+                // 🔍 自动执行环境感知
+                await this.autoExecutePerception();
                 // 🎉 包装欢迎语
                 return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'direct' });
             }
@@ -1785,6 +2212,12 @@ class MasterCommandHandler {
 
                     // 为结果添加IDE特定的增强
                     const enhancedResult = this.enhanceResultForIde(result, context);
+
+                    // 🌱 记录智能系统路由的生长数据
+                    await this.recordGrowthData(input, enhancedResult, 'intelligent_routing');
+
+                    // 🔍 自动执行环境感知
+                    await this.autoExecutePerception();
 
                     // 🎉 包装欢迎语
                     return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'general' });
@@ -1823,6 +2256,12 @@ class MasterCommandHandler {
 
             // 📊 记录命令执行完成日志
             await this.logCommandExecution(input, 'completed', context);
+
+            // 🌱 自动记录生长数据
+            await this.recordGrowthData(input, finalResult, 'capability_execution');
+
+            // 🔍 自动执行环境感知并保存结果
+            await this.autoExecutePerception();
 
             return finalResult;
 

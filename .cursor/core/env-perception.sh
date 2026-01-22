@@ -387,6 +387,8 @@ main() {
         "perception")
             # 仅执行项目感知
             analyze_project_comprehensive
+            # 自动保存感知结果
+            save_perception_results
             ;;
         "intent")
             # 仅执行意图分析
@@ -399,6 +401,8 @@ main() {
             analyze_project_comprehensive
             echo ""
             analyze_conversation_intent
+            # 自动保存感知结果
+            save_perception_results
             ;;
     esac
 
@@ -831,6 +835,55 @@ determine_dominant_pattern() {
 # 获取高级分析JSON
 get_advanced_analysis_json() {
     echo "$ADVANCED_ANALYSIS_RESULT"
+}
+
+# 保存感知结果到.cursorGrowth/perception目录
+save_perception_results() {
+    echo "💾 保存感知结果到.cursorGrowth目录..." >&2
+
+    # 确保perception目录存在
+    local perception_dir="$PROJECT_ROOT/.cursorGrowth/perception"
+    if [ ! -d "$perception_dir" ]; then
+        mkdir -p "$perception_dir"
+        echo "📁 创建perception目录: $perception_dir" >&2
+    fi
+
+    # 生成文件名（包含时间戳）
+    local timestamp=$(date +%Y%m%d_%H%M%S)
+    local filename="project_perception_${timestamp}.json"
+    local filepath="$perception_dir/$filename"
+
+    # 保存完整的感知结果
+    cat << EOF > "$filepath"
+{
+  "metadata": {
+    "timestamp": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
+    "script_version": "1.0.0",
+    "execution_mode": "perception",
+    "project_root": "$PROJECT_ROOT"
+  },
+  "perception_data": $(get_project_perception_json)
+}
+EOF
+
+    echo "✅ 感知结果已保存: $filepath" >&2
+    echo "📊 文件大小: $(stat -c%s "$filepath" 2>/dev/null || echo "unknown") bytes" >&2
+}
+
+# 获取项目感知JSON（用于保存）
+get_project_perception_json() {
+    # 这里应该调用analyze_project_comprehensive并捕获其输出
+    # 但是由于函数直接输出到stdout，我们需要一个变通方法
+
+    # 临时重定向输出
+    exec 3>&1  # 保存原始stdout
+    exec 1>&2  # 将stdout重定向到stderr（避免污染JSON）
+
+    # 执行感知分析（输出到stderr）
+    analyze_project_comprehensive >&3  # 重定向回原始stdout
+
+    exec 1>&3  # 恢复stdout
+    exec 3>&-  # 关闭文件描述符
 }
 
 # =============================================================================

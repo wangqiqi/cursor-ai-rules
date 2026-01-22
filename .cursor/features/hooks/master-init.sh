@@ -14,7 +14,9 @@ if [[ "$command_text" =~ "/master" ]] || [[ "$prompt_text" =~ "/master" ]] || [[
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 加载统一路径配置
 source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
-    GROWTH_DIR="$CURSOR_GROWTH"
+# 加载共享函数库
+source "$SCRIPT_DIR/../../core/shared-functions.sh"  # 统一目录创建
+GROWTH_DIR="$CURSOR_GROWTH"
 
     # 检查$CURSOR_GROWTH目录是否存在
     if [ ! -d "$GROWTH_DIR" ]; then
@@ -27,18 +29,19 @@ source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
                 echo "✅ 生长目录初始化完成" >&2
             else
                 echo "⚠️ 生长目录初始化失败，使用备用方案" >&2
-                # 使用新的7目录结构
-                mkdir -p "$GROWTH_DIR"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
+                # 使用统一目录创建函数
+                ensure_directory_structure
                 echo "{}" > "$GROWTH_DIR/.gitkeep"
             fi
         else
             echo "⚠️ 未找到生长初始化脚本，使用备用方案" >&2
-            mkdir -p "$GROWTH_DIR"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
+            # 使用统一目录创建函数
+            ensure_directory_structure
             echo "{}" > "$GROWTH_DIR/.gitkeep"
         fi
 
-        # 确保核心目录存在
-        mkdir -p "$GROWTH_DIR"/{perception,user_data,project_data,ai,analytics,monitoring,integrations}
+        # 确保核心目录存在（额外保险）
+        ensure_directory_structure
 
         # 创建学习配置文件
         cat > "$GROWTH_DIR/ai-profile.json" << EOF

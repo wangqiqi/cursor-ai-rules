@@ -249,7 +249,7 @@ export STRICT_MODE="${STRICT_MODE:-0}"
 # 标准目录结构定义 (优化版 - 消除概念重叠，逻辑清晰)
 declare -a STANDARD_DIRS=(
     # ============================================================================
-    # 🎯 严格按照迁移指南的7个核心顶级目录
+    # 🎯 严格按照迁移指南的核心顶级目录
     # ============================================================================
     "perception"           # 环境感知数据
     "user_data"            # 用户相关数据
@@ -258,6 +258,7 @@ declare -a STANDARD_DIRS=(
     "analytics"            # 分析数据
     "monitoring"           # 系统监控
     "integrations"         # 第三方集成
+    "conversations"        # 对话记录 (Cursor同步)
 )
 
 # ============================================================================
@@ -270,6 +271,7 @@ declare -a STANDARD_DIRS=(
 export PERCEPTION_DIR="$CURSOR_GROWTH/perception"
 export USER_DATA_DIR="$CURSOR_GROWTH/user_data"
 export PROJECT_DATA_DIR="$CURSOR_GROWTH/project_data"
+export CONVERSATIONS_DIR="$CURSOR_GROWTH/conversations"
 
 # AI相关目录 (顶级ai目录下的子目录)
 export AI_DIR="$CURSOR_GROWTH/ai"
@@ -289,6 +291,8 @@ export MONITORING_DIR="$CURSOR_GROWTH/monitoring"
 # 日志整合到监控目录中
 export SYSTEM_LOGS_DIR="$MONITORING_DIR/logs"
 export INTEGRATIONS_DIR="$CURSOR_GROWTH/integrations"
+export INTEGRATIONS_SYNC_DIR="$INTEGRATIONS_DIR/sync"
+export INTEGRATIONS_MCP_CONFIGS_DIR="$INTEGRATIONS_DIR/mcp-configs"
 
 # 注意: 这是完整重构，移除所有向后兼容性变量
 # .cursorGrowth 随时可删除重建，不需要兼容性

@@ -277,7 +277,7 @@ ${key}=\"${value}\""
 ensure_directory_structure() {
     # 按照path-config.sh中定义的完整目录结构创建
     local all_dirs=(
-        # 7个核心顶级目录
+        # 核心顶级目录
         "$PERCEPTION_DIR"          # 环境感知数据
         "$USER_DATA_DIR"           # 用户相关数据
         "$PROJECT_DATA_DIR"        # 项目相关数据
@@ -285,6 +285,7 @@ ensure_directory_structure() {
         "$ANALYTICS_DIR"           # 分析数据
         "$MONITORING_DIR"          # 系统监控
         "$INTEGRATIONS_DIR"        # 第三方集成
+        "$CONVERSATIONS_DIR"       # 对话记录
 
         # AI相关子目录
         "$AI_MODELS_DIR"           # AI_DIR/models
@@ -301,6 +302,10 @@ ensure_directory_structure() {
         # Monitoring相关子目录
         "$SYSTEM_LOGS_DIR"         # MONITORING_DIR/logs (系统日志)
         "$MONITORING_DIR/pids"     # 进程ID文件 (兼容旧代码)
+
+        # Integrations相关子目录
+        "$INTEGRATIONS_SYNC_DIR"       # INTEGRATIONS_DIR/sync (同步状态)
+        "$INTEGRATIONS_MCP_CONFIGS_DIR" # INTEGRATIONS_DIR/mcp-configs (MCP配置)
     )
 
     # 创建所有定义的目录

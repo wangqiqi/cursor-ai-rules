@@ -285,8 +285,8 @@ optimize_directory_structure() {
     # 重新组织遗留文件到integrations目录（如果需要）
     if [ -d "$GROWTH_DIR/mcps" ] && [ "$(find "$GROWTH_DIR/mcps" -maxdepth 1 -name "*.json" | wc -l)" -gt 0 ]; then
         echo -e "${BLUE}  🔄 迁移遗留MCP文件到integrations目录...${NC}"
-        mkdir -p "$GROWTH_DIR/integrations/mcp-configs"
-        find "$GROWTH_DIR/mcps" -maxdepth 1 -name "*.json" -exec mv {} "$GROWTH_DIR/integrations/mcp-configs/" \; 2>/dev/null
+        mkdir -p "$INTEGRATIONS_MCP_CONFIGS_DIR"
+        find "$GROWTH_DIR/mcps" -maxdepth 1 -name "*.json" -exec mv {} "$INTEGRATIONS_MCP_CONFIGS_DIR/" \; 2>/dev/null
         rmdir "$GROWTH_DIR/mcps" 2>/dev/null
     fi
 
