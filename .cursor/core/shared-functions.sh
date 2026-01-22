@@ -35,8 +35,38 @@ generate_project_identifier() {
     PROJECT_IDENTIFIER="proj_${project_hash}"
     export PROJECT_IDENTIFIER
 
-    # 持久化存储项目标识 (写入项目 .cursor 目录)
-    echo "$PROJECT_IDENTIFIER" > "$project_path/.cursor/project_id"
+    # 统一管理：写入项目配置到 .cursor-project.json
+    local project_config_file="$project_path/.cursor-project.json"
+    local current_time
+    current_time=$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S%z)
+
+    # 读取现有配置或创建默认配置
+    local project_config="{}"
+    if [[ -f "$project_config_file" ]]; then
+        project_config=$(cat "$project_config_file" 2>/dev/null || echo "{}")
+    fi
+
+    # 使用jq更新项目ID，如果没有jq则手动更新JSON
+    if command -v jq >/dev/null 2>&1; then
+        # 使用jq更新配置
+        project_config=$(echo "$project_config" | jq --arg id "$PROJECT_IDENTIFIER" --arg time "$current_time" '.projectId = $id | .lastUpdated = $time | .projectPath = "'$project_path'"')
+    else
+        # 手动更新JSON (简化实现)
+        local temp_config="$project_config"
+        # 移除可能存在的旧projectId
+        temp_config=$(echo "$temp_config" | sed 's/"projectId":[^,]*,\?//g' | sed 's/,$//' | sed 's/{\s*,/{/' | sed 's/,\s*}/}/')
+        # 添加新的projectId
+        if [[ "$temp_config" == "{}" ]]; then
+            project_config="{\"projectId\":\"$PROJECT_IDENTIFIER\",\"lastUpdated\":\"$current_time\",\"projectPath\":\"$project_path\"}"
+        else
+            # 确保JSON格式正确
+            temp_config=$(echo "$temp_config" | sed 's/}$/,\"projectId\":\"'$PROJECT_IDENTIFIER'\",\"lastUpdated\":\"'$current_time'\",\"projectPath\":\"'$project_path'\"}/')
+            project_config="$temp_config"
+        fi
+    fi
+
+    # 写入更新后的配置
+    echo "$project_config" > "$project_config_file"
 }
 
 # 获取项目根目录路径
@@ -78,6 +108,16 @@ get_project_root_path() {
 validate_project_context() {
     local stored_project_id
 
+    # 确保PROJECT_ROOT已设置
+    if [[ -z "$PROJECT_ROOT" ]]; then
+        PROJECT_ROOT=$(get_project_root_path)
+        if [[ $? -ne 0 || -z "$PROJECT_ROOT" ]]; then
+            echo "❌ 项目上下文验证失败: 无法确定项目根目录" >&2
+            return 1
+        fi
+        export PROJECT_ROOT
+    fi
+
     # 生成当前项目标识
     if ! generate_project_identifier; then
         echo "❌ 项目上下文验证失败: 无法生成项目标识" >&2
@@ -86,11 +126,20 @@ validate_project_context() {
 
     local current_project_id="$PROJECT_IDENTIFIER"
 
-    if [[ -f "$PROJECT_ROOT/.cursor/project_id" ]]; then
-        stored_project_id=$(cat "$PROJECT_ROOT/.cursor/project_id")
-    else
-        # 首次运行，创建项目标识文件
-        echo "$current_project_id" > "$PROJECT_ROOT/.cursor/project_id"
+    # 从统一的项目配置文件中读取项目ID
+    local project_config_file="$PROJECT_ROOT/.cursor-project.json"
+    if [[ -f "$project_config_file" ]]; then
+        # 从.cursor-project.json中读取项目ID
+        if command -v jq >/dev/null 2>&1; then
+            stored_project_id=$(jq -r '.projectId // empty' "$project_config_file" 2>/dev/null)
+        else
+            # 如果没有jq，手动解析JSON中的projectId
+            stored_project_id=$(grep -o '"projectId"\s*:\s*"[^"]*"' "$project_config_file" 2>/dev/null | sed 's/.*"projectId"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
+        fi
+    fi
+
+    # 如果配置文件中没有项目ID，使用当前生成的ID
+    if [[ -z "$stored_project_id" ]]; then
         stored_project_id="$current_project_id"
     fi
 

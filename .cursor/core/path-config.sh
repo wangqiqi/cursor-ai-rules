@@ -159,7 +159,7 @@ cleanup_misplaced_growth_dirs() {
     for dir in "${possible_misplaced[@]}"; do
         if [[ -d "$dir" && "$dir" != "$PROJECT_ROOT/.cursorGrowth" ]]; then
             # 检查是否真的是错误位置（不包含项目特定的标识符）
-            if [[ ! -f "$dir/growth_meta.json" || "$(cat "$dir/growth_meta.json" 2>/dev/null | grep -o '"project_id":"[^"]*"' | cut -d'"' -f4)" != "$PROJECT_ID" ]]; then
+            if [[ ! -f "$dir/growth_meta.json" || "$(cat "$dir/growth_meta.json" 2>/dev/null | grep -o '"project_id":"[^"]*"' | cut -d'"' -f4)" != "$PROJECT_IDENTIFIER" ]]; then
                 misplaced_dirs+=("$dir")
             fi
         fi

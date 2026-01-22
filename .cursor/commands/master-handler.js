@@ -251,6 +251,427 @@ class MasterCommandHandler {
     }
 
     /**
+     * 强制执行系统命令 - 防止AI助手绕过系统功能
+     */
+    async forceSystemCommandExecution(input) {
+        // 强制执行命令映射 - 这些命令的意图识别必须是100%确定的，不能被AI助手覆盖
+        // 确定性指令：意图明确，执行确定，不需要AI判断
+        const forceCommands = {
+            // 🎭 角色管理系统 - 确定性指令
+            '列出角色': async () => await this.getAvailableRoles(),
+            '当前角色': async () => {
+                const currentRoleInfo = this.getAvailableRoles();
+                if (currentRoleInfo.success) {
+                    const current = currentRoleInfo.roles.find(r => r.id === currentRoleInfo.currentRole);
+                    return {
+                        success: true,
+                        message: `当前角色：${current ? current.name : '未知'} (${currentRoleInfo.currentRole})`,
+                        currentRole: currentRoleInfo.currentRole,
+                        roleInfo: current
+                    };
+                }
+                return currentRoleInfo;
+            },
+            '切换角色': async (roleId) => {
+                if (roleId) {
+                    return await this.switchRole(roleId);
+                }
+                return { success: false, message: '请指定要切换的角色ID' };
+            },
+            '重置角色': async () => {
+                const result = await this.switchRole('professional_assistant', 'forced_reset');
+                if (result.success && this.roleManager?.clearProjectRoleConfig) {
+                    await this.roleManager.clearProjectRoleConfig();
+                }
+                return result;
+            },
+
+            // 🔧 直接系统调用 - 确定性指令
+            'rule': async (ruleName) => {
+                if (ruleName) {
+                    return await this.executeRule(ruleName);
+                }
+                return { success: false, message: '请指定规则名称' };
+            },
+            'script': async (scriptName) => {
+                if (scriptName) {
+                    return await this.executeScript(scriptName);
+                }
+                return { success: false, message: '请指定脚本名称' };
+            },
+            'skill': async (skillName) => {
+                if (skillName) {
+                    return await this.executeSkill(skillName);
+                }
+                return { success: false, message: '请指定技能名称' };
+            },
+            'hook': async (hookName) => {
+                if (hookName) {
+                    return await this.executeHook(hookName);
+                }
+                return { success: false, message: '请指定钩子名称' };
+            }
+        };
+
+        // 检查是否是强制执行命令 (精确匹配和参数提取)
+        for (const [command, handler] of Object.entries(forceCommands)) {
+            // 检查直接命令匹配
+            if (input.includes(command) && !input.includes(' ')) {
+                console.log(`🔧 强制执行系统命令: ${command}`);
+                return await handler();
+            }
+
+            // 检查带参数的命令 (如 "rule constitution", "script init.sh")
+            const commandRegex = new RegExp(`^${command}\\s+(.+)$`, 'i');
+            const paramMatch = input.match(commandRegex);
+            if (paramMatch) {
+                const param = paramMatch[1].trim();
+                console.log(`🔧 强制执行系统命令: ${command} ${param}`);
+                return await handler(param);
+            }
+        }
+
+        // 检查角色切换命令 (支持多种格式)
+        const switchMatch = input.match(/(?:切换|设置|switch|set).*\s+(\w+)/i);
+        if (switchMatch) {
+            const roleId = switchMatch[1].trim();
+            console.log(`🔧 强制执行角色切换: ${roleId}`);
+            return await forceCommands['切换角色'](roleId);
+        }
+
+        return null; // 不是强制执行命令
+    }
+
+    /**
+     * 创建角色状态快照 - 用于跨对话框同步
+     */
+    createRoleStateSnapshot() {
+        try {
+            if (!this.roleManager) return null;
+
+            // 读取项目配置
+            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            let projectRole = 'professional_assistant'; // 默认值
+            if (fs.existsSync(projectConfigPath)) {
+                const configContent = fs.readFileSync(projectConfigPath, 'utf8');
+                const config = JSON.parse(configContent);
+                projectRole = config.currentRole || projectRole;
+            }
+
+            const snapshot = {
+                projectRole: projectRole,
+                activeRole: this.roleManager.currentRole,
+                timestamp: new Date().toISOString(),
+                sessionId: this.generateSessionId(),
+                checksum: null
+            };
+
+            // 生成校验和 (只基于角色状态，不包含时间戳和会话ID)
+            const checksumData = {
+                projectRole: snapshot.projectRole,
+                activeRole: snapshot.activeRole
+            };
+            snapshot.checksum = this.generateChecksum(JSON.stringify(checksumData));
+
+            return snapshot;
+        } catch (error) {
+            console.warn('⚠️ 创建角色状态快照失败:', error.message);
+            return null;
+        }
+    }
+
+    /**
+     * 验证角色状态一致性 - 检测跨对话框状态同步
+     */
+    validateRoleStateConsistency(snapshot) {
+        try {
+            if (!snapshot || !this.roleManager) return false;
+
+            const currentRole = this.roleManager.currentRole;
+            const projectRole = snapshot.projectRole;
+
+            // 检查角色一致性
+            const isConsistent = currentRole === projectRole;
+
+            if (!isConsistent) {
+                console.warn(`⚠️ 检测到角色状态不一致: 当前=${currentRole}, 项目=${projectRole}`);
+                return false;
+            }
+
+            // 验证校验和 (只验证角色状态)
+            const currentChecksumData = {
+                projectRole: projectRole,
+                activeRole: currentRole
+            };
+            const currentChecksum = this.generateChecksum(JSON.stringify(currentChecksumData));
+
+            if (currentChecksum !== snapshot.checksum) {
+                console.warn('⚠️ 角色状态校验和不匹配，可能存在状态污染');
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.warn('⚠️ 验证角色状态一致性失败:', error.message);
+            return false;
+        }
+    }
+
+    /**
+     * 生成会话ID - 用于跟踪跨对话框状态
+     */
+    generateSessionId() {
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substr(2, 9);
+        return `session_${timestamp}_${random}`;
+    }
+
+    /**
+     * 生成校验和 - 用于状态完整性验证
+     */
+    generateChecksum(data) {
+        let hash = 0;
+        for (let i = 0; i < data.length; i++) {
+            const char = data.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // 转换为32位整数
+        }
+        return hash.toString(36);
+    }
+
+    /**
+     * 强制激活项目角色 - 增强角色持续性
+     */
+    async forceActivateProjectRole() {
+        try {
+            console.log('🎭 强制激活项目角色配置...');
+
+            // 1. 读取项目配置
+            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            let targetRole = 'professional_assistant'; // 默认角色
+
+            if (fs.existsSync(projectConfigPath)) {
+                const configContent = fs.readFileSync(projectConfigPath, 'utf8');
+                const config = JSON.parse(configContent);
+                targetRole = config.currentRole || targetRole;
+                console.log(`✅ 读取项目角色配置: ${targetRole}`);
+            } else {
+                console.log('⚠️ 项目配置文件不存在，创建默认配置');
+                const defaultConfig = {
+                    currentRole: targetRole,
+                    lastUpdated: new Date().toISOString(),
+                    projectPath: this.projectRoot
+                };
+                fs.writeFileSync(projectConfigPath, JSON.stringify(defaultConfig, null, 2), 'utf8');
+            }
+
+            // 2. 确保角色管理器已初始化
+            if (!this.roleManager) {
+                console.log('⚠️ 角色管理器未初始化，重新初始化...');
+                await this.initializeRoleManager();
+            }
+
+            // 3. 强制切换到项目角色
+            if (this.roleManager.currentRole !== targetRole) {
+                console.log(`🔄 强制切换角色: ${this.roleManager.currentRole} → ${targetRole}`);
+                const result = await this.roleManager.switchRole(targetRole, 'force_activation');
+                if (result.success) {
+                    console.log(`✅ 角色强制激活成功: ${targetRole}`);
+                } else {
+                    console.warn(`⚠️ 角色强制激活失败: ${result.message}`);
+                }
+            } else {
+                console.log(`✅ 项目角色已激活: ${targetRole}`);
+            }
+
+            // 4. 验证角色状态
+            const currentRoleInfo = this.roleManager.getCurrentRole();
+            if (currentRoleInfo.success) {
+                console.log(`🎭 当前活跃角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
+            }
+
+        } catch (error) {
+            console.error('❌ 强制激活项目角色失败:', error.message);
+            // 回退到默认角色
+            if (this.roleManager) {
+                await this.roleManager.switchRole('professional_assistant', 'fallback');
+            }
+        }
+    }
+
+    /**
+     * 初始化角色管理器 - 同步版本 (用于wrapWithWelcome)
+     */
+    initializeRoleManagerSync() {
+        try {
+            console.log('🎭 同步初始化角色管理器...');
+
+            const RoleManager = require('./role-manager');
+            this.roleManager = new RoleManager(this.cursorDir, this.projectRoot);
+
+            // 简化同步初始化（实际项目中可能需要更完整的初始化逻辑）
+            this.roleManager.personalitySystem = this.roleManager.getDefaultPersonalitySystem();
+            this.roleManager.currentRole = this.roleManager.personalitySystem.default_role;
+
+            console.log('✅ 角色管理器同步初始化完成');
+
+        } catch (error) {
+            console.error('❌ 同步初始化角色管理器失败:', error.message);
+            this.roleManager = null;
+        }
+    }
+
+    /**
+     * 强制激活项目角色 - 同步版本 (用于wrapWithWelcome)
+     */
+    forceActivateProjectRoleSync() {
+        try {
+            console.log('🎭 同步激活项目角色...');
+
+            // 读取项目配置
+            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            let targetRole = 'professional_assistant';
+
+            if (fs.existsSync(projectConfigPath)) {
+                const configContent = fs.readFileSync(projectConfigPath, 'utf8');
+                const config = JSON.parse(configContent);
+                targetRole = config.currentRole || targetRole;
+            }
+
+            // 确保角色管理器存在
+            if (!this.roleManager) {
+                console.warn('⚠️ 角色管理器未初始化');
+                return;
+            }
+
+            // 同步切换角色（如果需要）
+            if (this.roleManager.currentRole !== targetRole) {
+                console.log(`🔄 同步切换角色: ${this.roleManager.currentRole} → ${targetRole}`);
+                // 注意：这里简化处理，实际项目中可能需要更复杂的同步逻辑
+            }
+
+        } catch (error) {
+            console.error('❌ 同步激活项目角色失败:', error.message);
+        }
+    }
+
+    /**
+     * 同步会话角色状态 - 增强跨对话框持续性
+     */
+    async syncSessionRoleState(context) {
+        try {
+            // 创建当前状态快照
+            const currentSnapshot = this.createRoleStateSnapshot();
+
+            // 检查上下文中的角色快照
+            const contextSnapshot = context?.roleSnapshot;
+
+            if (contextSnapshot && currentSnapshot) {
+                // 验证状态一致性
+                const isConsistent = this.validateRoleStateConsistency(contextSnapshot);
+
+                if (!isConsistent) {
+                    console.log(`🔄 检测到跨对话框状态不一致，执行同步修复`);
+                    // 强制同步到项目角色
+                    await this.forceActivateProjectRole();
+                } else {
+                    console.log(`✅ 跨对话框状态一致: ${currentSnapshot.activeRole}`);
+                }
+            }
+
+            // 检查上下文中的角色信息 (向后兼容)
+            const contextRole = context?.currentRole || context?.sessionRole;
+            if (contextRole && this.roleManager) {
+                const currentRole = this.roleManager.currentRole;
+                if (currentRole !== contextRole) {
+                    console.log(`🔄 检测到会话角色不一致: ${currentRole} ≠ ${contextRole}`);
+                    await this.forceActivateProjectRole();
+                }
+            }
+
+            // 将当前角色信息和快照添加到上下文
+            if (context && this.roleManager) {
+                context.sessionRole = this.roleManager.currentRole;
+                context.roleActivated = true;
+                context.roleSnapshot = currentSnapshot; // 添加状态快照
+                context.sessionId = currentSnapshot?.sessionId; // 添加会话ID
+            }
+
+        } catch (error) {
+            console.warn('⚠️ 会话角色状态同步失败:', error.message);
+        }
+    }
+
+    /**
+     * 验证命令执行结果 - 确保系统功能被正确调用
+     */
+    validateCommandExecution(input, result, expectedType) {
+        if (!result) {
+            console.warn(`⚠️ 命令 "${input}" 没有返回结果`);
+            return false;
+        }
+
+        // 根据期望类型验证结果
+        switch (expectedType) {
+            case 'role_list':
+                if (!result.roles || !Array.isArray(result.roles) || result.roles.length === 0) {
+                    console.warn(`⚠️ 角色列表命令 "${input}" 返回了无效结果`);
+                    return false;
+                }
+                break;
+            case 'role_switch':
+                if (!result.success || !result.newRole) {
+                    console.warn(`⚠️ 角色切换命令 "${input}" 执行失败`);
+                    return false;
+                }
+                break;
+            case 'role_info':
+                if (!result.currentRole) {
+                    console.warn(`⚠️ 角色信息命令 "${input}" 返回了无效结果`);
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    /**
+     * 记录命令执行日志 - 用于审计和调试
+     */
+    async logCommandExecution(input, stage, context = {}) {
+        const logEntry = {
+            timestamp: new Date().toISOString(),
+            input: input,
+            stage: stage,
+            context: {
+                currentFile: context.currentFile,
+                hasSelection: context.hasSelection,
+                projectType: context.projectType
+            },
+            systemState: {
+                roleManagerReady: !!this.roleManager,
+                intelligentSystemReady: !!this.intelligentSystem,
+                ideContextReady: !!this.ideContext
+            }
+        };
+
+        // 写入到项目成长目录
+        const fs = require('fs');
+        const path = require('path');
+        const growthDir = path.join(this.projectRoot, '.cursorGrowth', 'ai', 'command_logs');
+
+        if (!fs.existsSync(growthDir)) {
+            fs.mkdirSync(growthDir, { recursive: true });
+        }
+
+        const logFile = path.join(growthDir, `command_${Date.now()}.json`);
+        fs.writeFileSync(logFile, JSON.stringify(logEntry, null, 2));
+
+        console.log(`📊 命令日志已记录: ${stage} - ${input}`);
+    }
+
+    /**
      * 处理角色相关命令
      */
     async handleRoleCommand(input) {
@@ -375,8 +796,15 @@ class MasterCommandHandler {
                 return result;
             }
 
-            // 🎭 确保项目角色配置正确（同步检查）
-            this.ensureProjectRoleConfigSync();
+            // 🎭 强制确保角色状态正确（增强持续性）
+            if (!this.roleManager) {
+                console.warn('⚠️ 角色管理器不存在，重新初始化...');
+                // 注意：这里是同步方法，不能使用await
+                this.initializeRoleManagerSync();
+            }
+
+            // 强制激活项目角色（同步版本）
+            this.forceActivateProjectRoleSync();
 
             // 根据当前激活的角色选择模板
             const template = this.selectWelcomeTemplate(result, context);
@@ -391,9 +819,12 @@ class MasterCommandHandler {
             // 替换模板中的占位符
             const wrappedMessage = template.replace('{content}', originalMessage);
 
-            // 添加角色信息
+            // 添加角色信息 (增强持久性)
             const currentRoleInfo = this.roleManager?.getCurrentRole();
             const roleData = currentRoleInfo?.success ? currentRoleInfo.role : { id: 'unknown', name: '未知', attitude: 'unknown' };
+
+            // 记录角色包装状态到会话
+            console.log(`🎭 角色包装完成: ${roleData.name} (${roleData.id})`);
 
             // 返回包装后的结果
             return {
@@ -761,8 +1192,17 @@ class MasterCommandHandler {
         try {
             console.log(`🎯 处理IDE /master 命令: ${input}`);
 
-            // 🎭 确保项目角色配置存在并激活
-            await this.ensureProjectRoleConfig();
+            // 📊 记录命令执行日志
+            await this.logCommandExecution(input, 'start', context);
+
+            // 🎭 强制激活项目角色配置 (增强持续性)
+            await this.forceActivateProjectRole();
+
+            // 📸 创建角色状态快照 (用于跨对话框同步)
+            const roleSnapshot = this.createRoleStateSnapshot();
+            if (roleSnapshot) {
+                console.log(`📸 角色状态快照: ${roleSnapshot.activeRole} (${roleSnapshot.sessionId})`);
+            }
 
             // 🔄 更新IDE上下文
             this.updateIdeContext(context);
@@ -770,9 +1210,31 @@ class MasterCommandHandler {
             // 🎯 显示IDE上下文信息
             this.displayIdeContext();
 
-            // 0. 检查角色相关命令
+            // 🔄 同步会话角色状态 (增强跨对话框持续性)
+            await this.syncSessionRoleState(context);
+
+            // 0. 强制执行系统命令 - 防止AI助手绕过
+            const forceSystemResult = await this.forceSystemCommandExecution(input);
+            if (forceSystemResult) {
+                const enhancedResult = this.enhanceWithIdeContext(forceSystemResult);
+                return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'forced' });
+            }
+
+            // 0.1 检查角色相关命令 (AI助手自主调用 + 验证)
             const roleCommandResult = await this.handleRoleCommand(input);
             if (roleCommandResult) {
+                // 验证命令执行结果
+                const isValid = this.validateCommandExecution(input, roleCommandResult, 'role_command');
+                if (!isValid) {
+                    console.warn(`⚠️ 角色命令验证失败，强制重新执行`);
+                    // 如果验证失败，尝试强制执行
+                    const forceResult = await this.forceSystemCommandExecution(input);
+                    if (forceResult) {
+                        const enhancedResult = this.enhanceWithIdeContext(forceResult);
+                        return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'forced_recovery' });
+                    }
+                }
+
                 const enhancedResult = this.enhanceWithIdeContext(roleCommandResult);
                 // 🎭 使用角色系统包装回复
                 return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'role' });
@@ -833,10 +1295,18 @@ class MasterCommandHandler {
 
             // 🎉 包装欢迎语
             const intent = this.determineIntentFromCapability(matchResult.capability, input);
-            return this.wrapWithWelcome(enhancedResult, { input, context, intent });
+            const finalResult = this.wrapWithWelcome(enhancedResult, { input, context, intent });
+
+            // 📊 记录命令执行完成日志
+            await this.logCommandExecution(input, 'completed', context);
+
+            return finalResult;
 
         } catch (error) {
             console.error('❌ IDE Master命令执行失败:', error);
+
+            // 📊 记录命令执行失败日志
+            await this.logCommandExecution(input, 'failed', context);
 
             // 提供错误恢复建议
             const recoverySuggestions = this.generateErrorRecoverySuggestions(error, context);

@@ -3,7 +3,6 @@
 .cursorGrowth/
 
 # Cursor 系统文件
-.cursor/project_id
 .cursor/web/node_modules/
 .cursor/web/package-lock.json
 .cursor/web/server.pid
