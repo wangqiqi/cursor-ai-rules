@@ -1,31 +1,13 @@
 {
   "version": "1.0.0",
-  "description": "向后兼容层 - 自动路由到新的模块化能力映射系统",
-  "compatibility_layer": {
+  "description": "向后兼容层 - 重定向到新的模块化能力映射系统",
+  "redirect": {
     "enabled": true,
-    "redirect_to_modular": true,
-    "index_file": "capability-maps/_index.json",
-    "fallback_mode": true
+    "new_system": "capability-maps/",
+    "index_file": "_index.json",
+    "compatibility_mode": true
   },
-  "mappings": {
-    "analyze_project": {
-      "description": "分析项目现状",
-      "intents": ["analyze", "assess", "review", "status"],
-      "confidence_threshold": 0.7,
-      "capabilities": {
-        "rules": ["intelligent_evolution"],
-        "scripts": ["core/env-perception.sh"],
-        "workflows": ["code-analysis", "dependency-analysis", "performance-analysis"]
-      }
-    },
-    "check_system_info": {
-      "description": "检查系统信息",
-      "intents": ["system", "info", "status", "health"],
-      "confidence_threshold": 0.8,
-      "capabilities": {
-        "scripts": ["core/env-perception.sh"],
-        "rules": ["constitution"]
-      }
-    }
-  }
+  "mappings": {},
+  "deprecated": true,
+  "migration_guide": "请使用新的模块化能力映射系统 capability-maps/"
 }

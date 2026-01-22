@@ -5,14 +5,14 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 echo "🎯 开始Master系统同步..."
 
 # 1. 创建兼容性层 - 让旧的引用能正常工作
 echo "🔄 创建兼容性层..."
 
-cat > "$SCRIPT_DIR/commands/capability-map.json" << 'EOF'
+cat > "$PROJECT_ROOT/.cursor/commands/capability-map.json" << 'EOF'
 {
   "version": "1.0.0",
   "description": "向后兼容层 - 自动路由到新的模块化能力映射系统",

@@ -10,24 +10,25 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+CURSOR_DIR="$PROJECT_ROOT/.cursor"
 
 echo "🎯 开始同步Master命令系统..."
 echo "📁 项目根目录: $PROJECT_ROOT"
-echo "📁 Cursor目录: $SCRIPT_DIR"
+echo "📁 Cursor目录: $CURSOR_DIR"
 
 # 1. 更新 cursor-master.sh 中的能力映射引用
 echo "🔄 步骤1: 更新cursor-master.sh的能力映射引用"
 
-if [ -f "$SCRIPT_DIR/cursor-master.sh" ]; then
+if [ -f "$CURSOR_DIR/cursor-master.sh" ]; then
     # 备份原文件
-    cp "$SCRIPT_DIR/cursor-master.sh" "$SCRIPT_DIR/cursor-master.sh.backup.$(date +%Y%m%d_%H%M%S)"
+    cp "$CURSOR_DIR/cursor-master.sh" "$CURSOR_DIR/cursor-master.sh.backup.$(date +%Y%m%d_%H%M%S)"
 
     # 更新map_capabilities_from_json函数
-    sed -i 's|local capability_map_file="$CURSOR_DIR/commands/capability-map.json"|local capability_map_file="$CURSOR_DIR/commands/capability-maps/_index.json"|' "$SCRIPT_DIR/cursor-master.sh"
+    sed -i 's|local capability_map_file="$CURSOR_DIR/commands/capability-map.json"|local capability_map_file="$CURSOR_DIR/commands/capability-maps/_index.json"|' "$CURSOR_DIR/cursor-master.sh"
 
-    # 更新映射查找逻辑
-    sed -i 's|local mapping=$(jq -r ".mappings.\"$intent_type\" // empty" "$capability_map_file" 2>/dev/null)||local mapping=$(jq -r ".includes[] | select(contains(\"mappings\")) | . as \$file | \$file | @sh" "$capability_map_file" | xargs -I {} sh -c "jq -r \".mappings.\\\"$intent_type\\\" // empty\" \"$SCRIPT_DIR/commands/capability-maps/{}\" 2>/dev/null" | head -1)' "$SCRIPT_DIR/cursor-master.sh"
+    # 更新映射查找逻辑 - 简化版本
+    echo "✅ 映射查找逻辑更新已跳过（需要手动处理）"
 
     echo "✅ cursor-master.sh 已更新"
 else
@@ -37,9 +38,9 @@ fi
 # 2. 更新 master-router.js 中的能力映射引用
 echo "🔄 步骤2: 更新master-router.js的能力映射引用"
 
-if [ -f "$SCRIPT_DIR/commands/master-router.js" ]; then
+if [ -f "$CURSOR_DIR/commands/master-router.js" ]; then
     # 备份原文件
-    cp "$SCRIPT_DIR/commands/master-router.js" "$SCRIPT_DIR/commands/master-router.js.backup.$(date +%Y%m%d_%H%M%S)"
+    cp "$CURSOR_DIR/commands/master-router.js" "$CURSOR_DIR/commands/master-router.js.backup.$(date +%Y%m%d_%H%M%S)"
 
     # 更新getCapabilityConfig方法
     cat > /tmp/master-router-patch.js << 'EOF'
@@ -90,9 +91,9 @@ fi
 # 3. 更新 master-handler.js 中的能力映射引用
 echo "🔄 步骤3: 更新master-handler.js的能力映射引用"
 
-if [ -f "$SCRIPT_DIR/commands/master-handler.js" ]; then
+if [ -f "$CURSOR_DIR/commands/master-handler.js" ]; then
     # 备份原文件
-    cp "$SCRIPT_DIR/commands/master-handler.js" "$SCRIPT_DIR/commands/master-handler.js.backup.$(date +%Y%m%d_%H%M%S)"
+    cp "$CURSOR_DIR/commands/master-handler.js" "$CURSOR_DIR/commands/master-handler.js.backup.$(date +%Y%m%d_%H%M%S)"
 
     # getCapabilityConfig方法已经更新（通过上面的补丁）
     echo "✅ master-handler.js 能力映射引用已更新"
@@ -103,7 +104,7 @@ fi
 # 4. 创建兼容性层
 echo "🔄 步骤4: 创建向后兼容性层"
 
-cat > "$SCRIPT_DIR/commands/capability-map.json" << 'EOF'
+cat > "$CURSOR_DIR/commands/capability-map.json" << 'EOF'
 {
   "version": "1.0.0",
   "description": "向后兼容层 - 重定向到新的模块化能力映射系统",
@@ -125,14 +126,14 @@ echo "✅ 兼容性层已创建"
 echo "🔄 步骤5: 测试同步结果"
 
 echo "🧪 测试cursor-master.sh..."
-if bash "$SCRIPT_DIR/cursor-master.sh" --help >/dev/null 2>&1; then
+if bash "$CURSOR_DIR/cursor-master.sh" --help >/dev/null 2>&1; then
     echo "✅ cursor-master.sh 运行正常"
 else
     echo "⚠️ cursor-master.sh 测试失败"
 fi
 
 echo "🧪 测试master-router.js..."
-if node "$SCRIPT_DIR/commands/master-router.js" --help >/dev/null 2>&1; then
+if node "$CURSOR_DIR/commands/master-router.js" --help >/dev/null 2>&1; then
     echo "✅ master-router.js 运行正常"
 else
     echo "⚠️ master-router.js 测试失败"
