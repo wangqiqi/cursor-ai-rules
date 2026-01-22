@@ -162,6 +162,196 @@
         ],
         "source": "anthropic-skills"
       },
+      "api-design": {
+        "name": "API设计",
+        "description": "专业的API设计能力，包括RESTful、GraphQL等",
+        "category": "development",
+        "auto_install": true,
+        "path": "api-design.md",
+        "conditions": {
+          "dependencies": ["javascript", "nodejs"]
+        },
+        "dependencies": ["javascript", "nodejs"],
+        "source": "cursor-ai-rules"
+      },
+      "api-testing": {
+        "name": "API测试",
+        "description": "全面的API测试和验证工具",
+        "category": "testing",
+        "auto_install": true,
+        "path": "api-testing.md",
+        "conditions": {
+          "dependencies": ["javascript", "testing"]
+        },
+        "dependencies": ["javascript", "testing"],
+        "source": "cursor-ai-rules"
+      },
+      "backend-development": {
+        "name": "后端开发",
+        "description": "后端系统设计和开发指导",
+        "category": "development",
+        "auto_install": true,
+        "path": "backend-development.md",
+        "conditions": {
+          "dependencies": ["nodejs", "python", "java"]
+        },
+        "dependencies": ["nodejs", "python", "java"],
+        "source": "cursor-ai-rules"
+      },
+      "code-analysis": {
+        "name": "代码分析",
+        "description": "智能代码分析和质量评估",
+        "category": "analysis",
+        "auto_install": true,
+        "path": "code-analysis.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "code-examples": {
+        "name": "代码示例",
+        "description": "丰富的编程语言代码示例库",
+        "category": "learning",
+        "auto_install": true,
+        "path": "code-examples.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "code-formatting": {
+        "name": "代码格式化",
+        "description": "智能代码格式化和美化工具",
+        "category": "formatting",
+        "auto_install": true,
+        "path": "code-formatting.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "documentation-tools": {
+        "name": "文档工具",
+        "description": "文档生成和维护工具",
+        "category": "documentation",
+        "auto_install": true,
+        "path": "documentation-tools.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "fullstack-development": {
+        "name": "全栈开发",
+        "description": "前后端全栈开发指导",
+        "category": "development",
+        "auto_install": true,
+        "path": "fullstack-development.md",
+        "conditions": {
+          "dependencies": ["javascript", "react", "nodejs"]
+        },
+        "dependencies": ["javascript", "react", "nodejs"],
+        "source": "cursor-ai-rules"
+      },
+      "git-management": {
+        "name": "Git管理",
+        "description": "Git版本控制和团队协作工具",
+        "category": "collaboration",
+        "auto_install": true,
+        "path": "git-management.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "learning-assistant": {
+        "name": "学习助手",
+        "description": "编程学习和技能提升助手",
+        "category": "learning",
+        "auto_install": true,
+        "path": "learning-assistant.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "optimization-tools": {
+        "name": "优化工具",
+        "description": "代码和性能优化工具集",
+        "category": "optimization",
+        "auto_install": true,
+        "path": "optimization-tools.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "performance-analysis": {
+        "name": "性能分析",
+        "description": "应用性能分析和优化建议",
+        "category": "analysis",
+        "auto_install": true,
+        "path": "performance-analysis.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "refactoring-tools": {
+        "name": "重构工具",
+        "description": "代码重构和架构优化工具",
+        "category": "refactoring",
+        "auto_install": true,
+        "path": "refactoring-tools.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "security-analysis": {
+        "name": "安全分析",
+        "description": "代码安全漏洞检测和修复",
+        "category": "security",
+        "auto_install": true,
+        "path": "security-analysis.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "ssr-optimization": {
+        "name": "SSR优化",
+        "description": "服务器端渲染优化和性能提升",
+        "category": "optimization",
+        "auto_install": false,
+        "path": "ssr-optimization.md",
+        "conditions": {
+          "dependencies": ["react", "nextjs"]
+        },
+        "dependencies": ["react", "nextjs"],
+        "source": "cursor-ai-rules"
+      },
+      "system-analysis": {
+        "name": "系统分析",
+        "description": "系统架构和设计分析工具",
+        "category": "analysis",
+        "auto_install": true,
+        "path": "system-analysis.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "test-automation": {
+        "name": "测试自动化",
+        "description": "自动化测试框架和工具",
+        "category": "testing",
+        "auto_install": true,
+        "path": "test-automation.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
+      "vulnerability-scanning": {
+        "name": "漏洞扫描",
+        "description": "安全漏洞扫描和修复建议",
+        "category": "security",
+        "auto_install": true,
+        "path": "vulnerability-scanning.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules"
+      },
       "theme-factory": {
         "name": "主题工厂",
         "description": "设计主题创建和管理",

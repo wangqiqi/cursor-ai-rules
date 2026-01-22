@@ -6,8 +6,8 @@
 
   "role_structure": {
     "type": "modular",
-    "roles_directory": "./roles",
-    "index_file": "./roles/index.json",
+    "roles_directory": "./config/roles",
+    "index_file": "./config/roles/index.json",
     "file_extension": ".json",
     "auto_discovery": true,
     "cache_enabled": true,
