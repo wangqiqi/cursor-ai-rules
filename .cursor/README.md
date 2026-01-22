@@ -212,13 +212,13 @@ Cursor AI Rules采用创新的双目录架构：
 | 🎯 **413个能力映射**                      | 全面意图到行动映射系统，支持验证和回退                                     | **智能编排**                        |
 | 🌱 **项目成长系统**                       | AI学习和个性化适应                                                         | **持续进化**                        |
 | 📊 **性能监控**                           | 实时系统指标和优化                                                         | **系统健康跟踪**                    |
-| 🎭 **个性角色系统**                       | 16种不同AI人格，独特的交互风格                                             | **个性化体验**                      |
+| 🎭 **个性角色系统**                       | 20种不同AI人格，独特的交互风格                                             | **个性化体验**                      |
 
 ## 🎭 个性角色系统
 
-### 16种AI人格 - 个性化交互体验
+### 20种AI人格 - 个性化交互体验
 
-角色系统提供**16种独特的AI人格**，每种都有独特的交互风格、语言模式和行为特征，让你可以根据心情、任务类型和个人偏好选择最适合的AI伙伴。
+角色系统提供**20种独特的AI人格**，每种都有独特的交互风格、语言模式和行为特征，让你可以根据心情、任务类型和个人偏好选择最适合的AI伙伴。
 
 #### 🤖 标准专业角色 (8种)
 
@@ -233,7 +233,7 @@ Cursor AI Rules采用创新的双目录架构：
 | `funny_comedian` | 幽默喜剧家 | 风趣、轻松、有趣 | 缓解压力、娱乐开发 |
 | `minimalist_zen` | 极简禅师 | 简洁、专注、本质 | 深度工作、高效编程 |
 
-#### 🎨 动漫风格特色角色 (8种)
+#### 🎨 动漫风格特色角色 (12种)
 
 | 角色ID | 角色名称 | 特色风格 | 适用场景 |
 |--------|----------|----------|----------|
@@ -243,6 +243,10 @@ Cursor AI Rules采用创新的双目录架构：
 | `tough_guy` | 铁血猛男 | 强壮豪爽、直接粗暴、阳刚十足 | 硬核开发、问题解决 |
 | `pretty_boy` | 小鲜肉 | 帅气温柔、文艺细腻、多情体贴 | 优雅编程、情感交流 |
 | `old_master` | 老腊肉 | 经验丰富、睿智幽默、充满人生智慧 | 人生导师、哲学讨论 |
+| `tsundere_programmer` | 傲娇程序员 | 表面傲娇内心温柔、技术宅风格 | 技术交流、代码审查 |
+| `cyberpunk_hacker` | 赛博朋克黑客 | 未来感十足、精通网络技术、个性酷炫 | 系统安全、高级编程 |
+| `magical_girl_coder` | 魔法少女程序员 | 充满魔力、用魔法解决编程问题 | 创意编程、灵感激发 |
+| `wise_dragon_mentor` | 智慧龙导师 | 古老智慧、深邃睿智、经验丰富 | 架构设计、深度指导 |
 
 ### 🎯 角色切换命令
 
@@ -251,12 +255,16 @@ Cursor AI Rules采用创新的双目录架构：
 /master 列出角色
 
 # 切换到不同人格
-/master 切换角色 friendly_partner     # 随和同事模式
-/master 切换角色 expert_mentor        # 学习模式
-/master 切换角色 creative_artist      # 创意灵感
-/master 切换角色 loli                 # 欢乐模式
-/master 切换角色 loyal_servant        # 绝对服从
-/master 切换角色 queen_sister         # 王者指导
+/master 切换角色 friendly_partner        # 随和同事模式
+/master 切换角色 expert_mentor           # 学习模式
+/master 切换角色 creative_artist         # 创意灵感
+/master 切换角色 loli                    # 欢乐模式
+/master 切换角色 loyal_servant           # 绝对服从
+/master 切换角色 queen_sister            # 王者指导
+/master 切换角色 tsundere_programmer    # 傲娇技术宅
+/master 切换角色 cyberpunk_hacker        # 赛博朋克专家
+/master 切换角色 magical_girl_coder     # 魔法少女程序员
+/master 切换角色 wise_dragon_mentor     # 智慧龙导师
 
 # 查看当前角色
 /master 当前角色

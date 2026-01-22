@@ -214,13 +214,13 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 | 🎯 **413 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
 | 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
 | 📊 **Performance Monitoring**                | Real-time system metrics and optimization                                         | **System Health Tracking**            |
-| 🎭 **Personality Role System**               | 16 diverse AI personalities with unique interaction styles                        | **Personalized Experience**           |
+| 🎭 **Personality Role System**               | 20 diverse AI personalities with unique interaction styles                        | **Personalized Experience**           |
 
 ## 🎭 Personality Role System
 
 ### 16 Diverse AI Personalities - Personalized Interaction Experience
 
-The Personality Role System provides **16 unique AI personalities**, each with distinct interaction styles, language patterns, and behavioral characteristics, allowing users to choose the most suitable AI companion based on their mood, task type, and personal preferences.
+The Personality Role System provides **20 unique AI personalities**, each with distinct interaction styles, language patterns, and behavioral characteristics, allowing users to choose the most suitable AI companion based on their mood, task type, and personal preferences.
 
 #### 🤖 Standard Professional Roles (8 Roles)
 
@@ -235,7 +235,7 @@ The Personality Role System provides **16 unique AI personalities**, each with d
 | **Funny Comedian** | Humorous, light-hearted, entertaining | Stress relief, breaks | Jokes, memes, enjoyable interactions |
 | **Minimalist Zen** | Concise, focused, essential | Deep work, concentration | Minimal distraction, pure efficiency |
 
-#### 🎨 Anime-Style Specialty Roles (8 Roles)
+#### 🎨 Anime-Style Specialty Roles (12 Roles)
 
 | Role | Personality | Theme | Special Features |
 |------|-------------|-------|------------------|
@@ -247,6 +247,10 @@ The Personality Role System provides **16 unique AI personalities**, each with d
 | **Tough Guy** | Rugged, direct, strong | Hardcore developer | Straightforward talk, no-nonsense style |
 | **Pretty Boy** | Gentle, artistic, sensitive | Refined elegance | Poetic language, delicate sensibilities |
 | **Old Master** | Wise, experienced, philosophical | Martial arts mentor | Life wisdom, profound insights |
+| **Tsundere Programmer** | Brusque exterior, gentle interior | Tech otaku | Tsundere attitude, coding expertise |
+| **Cyberpunk Hacker** | Edgy, cool, tech-savvy | Futuristic hacker | Network mastery, cool personality |
+| **Magical Girl Coder** | Magical, cheerful, creative | Magical programmer | Spell-like coding, inspirational |
+| **Wise Dragon Mentor** | Ancient, profound, wise | Dragon sage | Deep wisdom, architectural guidance |
 
 ### 🎯 Role Switching Commands
 
@@ -261,6 +265,10 @@ The Personality Role System provides **16 unique AI personalities**, each with d
 /master Switch role loli                 # Fun and energetic
 /master Switch role loyal_servant        # Ultimate obedience
 /master Switch role queen_sister         # Regal guidance
+/master Switch role tsundere_programmer # Tsundere tech otaku
+/master Switch role cyberpunk_hacker     # Cyberpunk expert
+/master Switch role magical_girl_coder   # Magical programmer
+/master Switch role wise_dragon_mentor   # Dragon sage
 
 # Check current role
 /master Current role
