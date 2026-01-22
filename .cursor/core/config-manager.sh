@@ -514,6 +514,280 @@ main() {
     esac
 }
 
+# =============================================================================
+# 集成验证功能 (从config-validator.sh合并)
+# =============================================================================
+
+# 验证统计
+VALIDATION_CHECKS_TOTAL=0
+VALIDATION_CHECKS_PASSED=0
+VALIDATION_ISSUES_FOUND=0
+VALIDATION_WARNINGS_FOUND=0
+
+# 记录验证结果
+declare -A VALIDATION_RESULTS
+
+# 📋 JSON语法验证
+validate_json_syntax() {
+    local file="$1"
+    local name="$2"
+
+    VALIDATION_CHECKS_TOTAL=$((VALIDATION_CHECKS_TOTAL + 1))
+
+    echo -n "   验证 $name JSON语法..."
+
+    if [ ! -f "$file" ]; then
+        echo " ${RED}失败${NC} - 文件不存在"
+        VALIDATION_ISSUES_FOUND=$((VALIDATION_ISSUES_FOUND + 1))
+        VALIDATION_RESULTS["${name}_syntax"]="file_not_found"
+        return 1
+    fi
+
+    if command -v jq >/dev/null 2>&1; then
+        if jq empty "$file" 2>/dev/null; then
+            echo " ${GREEN}通过${NC}"
+            VALIDATION_CHECKS_PASSED=$((VALIDATION_CHECKS_PASSED + 1))
+            VALIDATION_RESULTS["${name}_syntax"]="valid"
+            return 0
+        else
+            echo " ${RED}失败${NC} - JSON语法错误"
+            VALIDATION_ISSUES_FOUND=$((VALIDATION_ISSUES_FOUND + 1))
+            VALIDATION_RESULTS["${name}_syntax"]="json_syntax_error"
+            return 1
+        fi
+    else
+        echo " ${YELLOW}跳过${NC} - jq未安装"
+        VALIDATION_WARNINGS_FOUND=$((VALIDATION_WARNINGS_FOUND + 1))
+        VALIDATION_RESULTS["${name}_syntax"]="jq_not_available"
+        return 0
+    fi
+}
+
+# 🔑 必需字段验证
+validate_required_fields() {
+    local file="$1"
+    local config_type="$2"
+
+    VALIDATION_CHECKS_TOTAL=$((VALIDATION_CHECKS_TOTAL + 1))
+
+    echo -n "   验证 $config_type 必需字段..."
+
+    if ! command -v jq >/dev/null 2>&1; then
+        echo " ${YELLOW}跳过${NC} - jq未安装"
+        return 0
+    fi
+
+    local missing_fields=()
+
+    case "$config_type" in
+        "global")
+            local required=("version" "system" "features" "performance" "security")
+            for field in "${required[@]}"; do
+                if ! jq -e ".$field" "$file" >/dev/null 2>&1; then
+                    missing_fields+=("$field")
+                fi
+            done
+            ;;
+        "project")
+            local required=("project.name" "project.tech_stack")
+            for field in "${required[@]}"; do
+                if ! jq -e ".$field" "$file" >/dev/null 2>&1; then
+                    missing_fields+=("$field")
+                fi
+            done
+            ;;
+        "system-defaults")
+            local required=("version" "system" "features")
+            for field in "${required[@]}"; do
+                if ! jq -e ".$field" "$file" >/dev/null 2>&1; then
+                    missing_fields+=("$field")
+                fi
+            done
+            ;;
+    esac
+
+    if [ ${#missing_fields[@]} -eq 0 ]; then
+        echo " ${GREEN}通过${NC}"
+        VALIDATION_CHECKS_PASSED=$((VALIDATION_CHECKS_PASSED + 1))
+        VALIDATION_RESULTS["${config_type}_fields"]="valid"
+        return 0
+    else
+        echo " ${RED}失败${NC} - 缺少字段: ${missing_fields[*]}"
+        VALIDATION_ISSUES_FOUND=$((VALIDATION_ISSUES_FOUND + 1))
+        VALIDATION_RESULTS["${config_type}_fields"]="missing_fields:${missing_fields[*]}"
+        return 1
+    fi
+}
+
+# 🔗 字段类型验证
+validate_field_types() {
+    local file="$1"
+    local config_type="$2"
+
+    VALIDATION_CHECKS_TOTAL=$((VALIDATION_CHECKS_TOTAL + 1))
+
+    echo -n "   验证 $config_type 字段类型..."
+
+    if ! command -v jq >/dev/null 2>&1; then
+        echo " ${YELLOW}跳过${NC} - jq未安装"
+        return 0
+    fi
+
+    local type_issues=()
+
+    case "$config_type" in
+        "global")
+            # 验证布尔值字段
+            local bool_fields=(".system.backup_enabled" ".features.automation.enabled")
+            for field in "${bool_fields[@]}"; do
+                local value=$(jq -r "$field" "$file" 2>/dev/null)
+                if [[ ! "$value" =~ ^(true|false)$ ]]; then
+                    type_issues+=("$field: 期望布尔值，实际: $value")
+                fi
+            done
+
+            # 验证数值字段
+            local number_fields=(".system.max_memory_mb" ".performance.cache_size_mb")
+            for field in "${number_fields[@]}"; do
+                local value=$(jq -r "$field" "$file" 2>/dev/null)
+                if ! [[ "$value" =~ ^[0-9]+$ ]]; then
+                    type_issues+=("$field: 期望数值，实际: $value")
+                fi
+            done
+            ;;
+    esac
+
+    if [ ${#type_issues[@]} -eq 0 ]; then
+        echo " ${GREEN}通过${NC}"
+        VALIDATION_CHECKS_PASSED=$((VALIDATION_CHECKS_PASSED + 1))
+        VALIDATION_RESULTS["${config_type}_types"]="valid"
+        return 0
+    else
+        echo " ${RED}失败${NC} - 类型问题: ${type_issues[*]}"
+        VALIDATION_ISSUES_FOUND=$((VALIDATION_ISSUES_FOUND + 1))
+        VALIDATION_RESULTS["${config_type}_types"]="type_issues:${type_issues[*]}"
+        return 1
+    fi
+}
+
+# 🔄 跨配置一致性验证
+validate_cross_config_consistency() {
+    local global_config="$1"
+    local project_config="$2"
+
+    VALIDATION_CHECKS_TOTAL=$((VALIDATION_CHECKS_TOTAL + 1))
+
+    echo -n "   验证跨配置一致性..."
+
+    if ! command -v jq >/dev/null 2>&1; then
+        echo " ${YELLOW}跳过${NC} - jq未安装"
+        return 0
+    fi
+
+    local consistency_issues=()
+
+    # 检查项目技术栈是否在全局支持列表中
+    if [ -f "$global_config" ] && [ -f "$project_config" ]; then
+        local global_tech_stack=$(jq -r '.system.supported_tech_stack[]' "$global_config" 2>/dev/null | tr '\n' ' ')
+        local project_tech_stack=$(jq -r '.project.tech_stack[]' "$project_config" 2>/dev/null | tr '\n' ' ')
+
+        for tech in $project_tech_stack; do
+            if [[ "$tech" != "null" ]] && [[ ! "$global_tech_stack" =~ $tech ]]; then
+                consistency_issues+=("项目使用不支持的技术栈: $tech")
+            fi
+        done
+    fi
+
+    if [ ${#consistency_issues[@]} -eq 0 ]; then
+        echo " ${GREEN}通过${NC}"
+        VALIDATION_CHECKS_PASSED=$((VALIDATION_CHECKS_PASSED + 1))
+        VALIDATION_RESULTS["cross_config_consistency"]="valid"
+        return 0
+    else
+        echo " ${RED}失败${NC} - 一致性问题: ${consistency_issues[*]}"
+        VALIDATION_ISSUES_FOUND=$((VALIDATION_ISSUES_FOUND + 1))
+        VALIDATION_RESULTS["cross_config_consistency"]="consistency_issues:${consistency_issues[*]}"
+        return 1
+    fi
+}
+
+# 📊 生成验证报告
+generate_validation_report() {
+    echo ""
+    echo "🔍 配置验证报告"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+    echo "📊 验证统计:"
+    echo "   总检查数: $VALIDATION_CHECKS_TOTAL"
+    echo "   通过数: $VALIDATION_CHECKS_PASSED"
+    echo "   问题数: $VALIDATION_ISSUES_FOUND"
+    echo "   警告数: $VALIDATION_WARNINGS_FOUND"
+    echo ""
+
+    if [ $VALIDATION_ISSUES_FOUND -gt 0 ] || [ $VALIDATION_WARNINGS_FOUND -gt 0 ]; then
+        echo "⚠️  发现问题:"
+        for key in "${!VALIDATION_RESULTS[@]}"; do
+            if [[ "${VALIDATION_RESULTS[$key]}" != "valid" ]] && [[ "${VALIDATION_RESULTS[$key]}" != *"jq_not_available"* ]]; then
+                echo "   • $key: ${VALIDATION_RESULTS[$key]}"
+            fi
+        done
+        echo ""
+    fi
+
+    echo "💡 验证建议:"
+    echo "   • 确保所有JSON配置文件语法正确"
+    echo "   • 检查必需字段是否完整"
+    echo "   • 验证字段类型是否匹配"
+    echo "   • 保持跨配置的一致性"
+    echo ""
+
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+}
+
+# 增强的配置验证函数
+validate_config_enhanced() {
+    local config_file="$1"
+    local config_type="$2"
+
+    echo "🔍 增强验证$config_type配置文件: $config_file"
+
+    # 基础验证 (原有功能)
+    if ! validate_config "$config_file" "$config_type"; then
+        return 1
+    fi
+
+    # 增强验证 (新增功能)
+    echo "🔧 执行增强验证..."
+
+    # JSON语法验证
+    if ! validate_json_syntax "$config_file" "$config_type"; then
+        return 1
+    fi
+
+    # 必需字段验证
+    if ! validate_required_fields "$config_file" "$config_type"; then
+        return 1
+    fi
+
+    # 字段类型验证
+    if ! validate_field_types "$config_file" "$config_type"; then
+        return 1
+    fi
+
+    # 跨配置一致性验证 (如果是项目配置)
+    if [ "$config_type" = "project" ]; then
+        local global_config=$(get_config_path "global")
+        if [ -f "$global_config" ]; then
+            if ! validate_cross_config_consistency "$global_config" "$config_file"; then
+                return 1
+            fi
+        fi
+    fi
+
+    echo "✅ $config_type配置验证完成"
+    return 0
+}
+
 # 如果直接运行此脚本，执行主函数
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"

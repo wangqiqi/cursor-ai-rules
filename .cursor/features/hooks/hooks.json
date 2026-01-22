@@ -72,7 +72,8 @@
       {
         "name": "config-validator",
         "description": "配置文件自动验证",
-        "command": "features/hooks/config-validator.sh",
+        "command": "core/config-manager.sh",
+        "args": ["validate_enhanced"],
         "timeout": 5000,
         "async": true,
         "enabled": true
@@ -334,7 +335,8 @@
       {
         "name": "quality-reporter",
         "description": "质量报告生成",
-        "command": "core/quality-reporter.sh",
+        "command": "core/quality-manager.sh",
+        "args": ["generate_report"],
         "timeout": 12000,
         "async": true,
         "enabled": true

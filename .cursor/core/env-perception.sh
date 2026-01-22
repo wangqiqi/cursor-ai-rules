@@ -833,6 +833,248 @@ get_advanced_analysis_json() {
     echo "$ADVANCED_ANALYSIS_RESULT"
 }
 
+# =============================================================================
+# 集成增强功能 (从perception-enhancer.sh合并)
+# =============================================================================
+
+# 导入MCP检测器
+source "$SCRIPT_DIR/mcp-detector.sh"
+
+# 增强的感知分析
+enhanced_perception() {
+    local user_input="$1"
+
+    echo -e "${BLUE}🧠 执行增强感知分析...${NC}"
+
+    # 1. 基础意图分析
+    local basic_intent=$(analyze_basic_intent "$user_input")
+
+    # 2. MCP工具可用性检测
+    local mcp_tools=$(detect_mcp_tools_for_intent "$basic_intent")
+
+    # 3. 生成增强的感知结果
+    generate_enhanced_perception_result "$basic_intent" "$mcp_tools"
+}
+
+# 基础意图分析 (简化版)
+analyze_basic_intent() {
+    local user_input="$1"
+
+    # 简单的关键词匹配，实际应该使用更复杂的NLP
+    if echo "$user_input" | grep -qi "提交\|commit\|git"; then
+        echo "git_commit"
+    elif echo "$user_input" | grep -qi "测试\|test"; then
+        echo "run_tests"
+    elif echo "$user_input" | grep -qi "浏览器\|browser\|网页"; then
+        echo "web_browser"
+    elif echo "$user_input" | grep -qi "文件\|file\|read"; then
+        echo "file_operation"
+    elif echo "$user_input" | grep -qi "代码\|code\|编程"; then
+        echo "code_analysis"
+    elif echo "$user_input" | grep -qi "优化\|optimize\|performance"; then
+        echo "performance_optimization"
+    else
+        echo "general_query"
+    fi
+}
+
+# MCP工具可用性检测
+detect_mcp_tools_for_intent() {
+    local intent="$1"
+
+    case "$intent" in
+        "git_commit")
+            detect_git_tools
+            ;;
+        "run_tests")
+            detect_testing_tools
+            ;;
+        "web_browser")
+            detect_browser_tools
+            ;;
+        "file_operation")
+            detect_file_tools
+            ;;
+        "code_analysis")
+            detect_code_analysis_tools
+            ;;
+        "performance_optimization")
+            detect_performance_tools
+            ;;
+        *)
+            echo "general_mcp_tools"
+            ;;
+    esac
+}
+
+# 检测Git相关工具
+detect_git_tools() {
+    local tools="[]"
+
+    # 检查是否有Git MCP工具
+    if command -v git &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["git_cli"]')
+    fi
+
+    # 检查是否有其他Git工具
+    if [ -f ".cursor/rules/workflow/eslint.md" ]; then
+        tools=$(echo "$tools" | jq '. += ["code_quality_checks"]')
+    fi
+
+    echo "$tools"
+}
+
+# 检测测试相关工具
+detect_testing_tools() {
+    local tools="[]"
+
+    if [ -f "package.json" ]; then
+        tools=$(echo "$tools" | jq '. += ["npm_test"]')
+    fi
+
+    if [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
+        tools=$(echo "$tools" | jq '. += ["python_test"]')
+    fi
+
+    if [ -f "Cargo.toml" ]; then
+        tools=$(echo "$tools" | jq '. += ["cargo_test"]')
+    fi
+
+    echo "$tools"
+}
+
+# 检测浏览器相关工具
+detect_browser_tools() {
+    local tools="[]"
+
+    # 检查是否有浏览器自动化工具
+    if command -v google-chrome &> /dev/null || command -v chromium-browser &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["chrome_automation"]')
+    fi
+
+    # 检查是否有Selenium
+    if [ -f "requirements.txt" ] && grep -q "selenium" requirements.txt; then
+        tools=$(echo "$tools" | jq '. += ["selenium"]')
+    fi
+
+    echo "$tools"
+}
+
+# 检测文件操作工具
+detect_file_tools() {
+    local tools="[]"
+
+    # 检查是否有文件处理工具
+    if command -v jq &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["json_processor"]')
+    fi
+
+    if command -v yq &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["yaml_processor"]')
+    fi
+
+    echo "$tools"
+}
+
+# 检测代码分析工具
+detect_code_analysis_tools() {
+    local tools="[]"
+
+    if command -v eslint &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["eslint"]')
+    fi
+
+    if command -v tsc &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["typescript_compiler"]')
+    fi
+
+    if command -v pylint &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["pylint"]')
+    fi
+
+    echo "$tools"
+}
+
+# 检测性能优化工具
+detect_performance_tools() {
+    local tools="[]"
+
+    if command -v lighthouse &> /dev/null; then
+        tools=$(echo "$tools" | jq '. += ["lighthouse"]')
+    fi
+
+    if [ -f "package.json" ] && grep -q "webpack-bundle-analyzer" package.json; then
+        tools=$(echo "$tools" | jq '. += ["bundle_analyzer"]')
+    fi
+
+    echo "$tools"
+}
+
+# 生成增强的感知结果
+generate_enhanced_perception_result() {
+    local intent="$1"
+    local mcp_tools="$2"
+
+    cat << EOF
+{
+  "enhanced_perception": {
+    "user_intent": "$intent",
+    "available_mcp_tools": $mcp_tools,
+    "recommended_actions": $(generate_recommended_actions "$intent" "$mcp_tools"),
+    "confidence_score": $(calculate_confidence_score "$intent" "$mcp_tools"),
+    "timestamp": "$(date '+%Y-%m-%d %H:%M:%S')"
+  }
+}
+EOF
+}
+
+# 生成推荐操作
+generate_recommended_actions() {
+    local intent="$1"
+    local mcp_tools="$2"
+
+    case "$intent" in
+        "git_commit")
+            echo '["validate_code", "run_tests", "create_commit"]'
+            ;;
+        "run_tests")
+            echo '["setup_test_env", "execute_tests", "generate_report"]'
+            ;;
+        "web_browser")
+            echo '["launch_browser", "navigate_to_url", "capture_screenshot"]'
+            ;;
+        "file_operation")
+            echo '["read_file", "process_content", "save_result"]'
+            ;;
+        "code_analysis")
+            echo '["lint_code", "check_types", "run_static_analysis"]'
+            ;;
+        "performance_optimization")
+            echo '["profile_application", "identify_bottlenecks", "apply_optimizations"]'
+            ;;
+        *)
+            echo '["analyze_request", "provide_assistance"]'
+            ;;
+    esac
+}
+
+# 计算置信度分数
+calculate_confidence_score() {
+    local intent="$1"
+    local mcp_tools="$2"
+
+    local base_score=0.7
+    local tool_bonus=$(echo "$mcp_tools" | jq '. | length * 0.1')
+
+    # 计算最终分数 (最高1.0)
+    local final_score=$(echo "$base_score + $tool_bonus" | bc -l)
+    if (( $(echo "$final_score > 1.0" | bc -l) )); then
+        echo "1.0"
+    else
+        printf "%.1f" "$final_score"
+    fi
+}
+
 # 如果直接运行此脚本，执行主函数
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"
