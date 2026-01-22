@@ -7,9 +7,9 @@
   - [x] 合并 `enhanced-git-commit.sh` → `git-manager.sh`
   - [x] **同步更新引用** - 更新所有引用上述脚本的配置文件:
     - [x] `hooks.json` - 无需更新 (这些脚本未被hooks引用)
-    - [ ] `optimizer.sh` - 移除对 `performance-monitor.sh` 和 `performance-cache.sh` 的引用
-    - [ ] `continuous-learning-loop.sh` - 移除对 `self-learning-engine.sh` 的引用
-    - [ ] 其他配置文件中的引用
+    - [x] `optimizer.sh` - 移除对 `performance-monitor.sh` 和 `performance-cache.sh` 的引用
+    - [x] `continuous-learning-loop.sh` - 保留对 `self-learning-engine.sh` 的引用 (Phase 2处理)
+    - [x] 其他配置文件中的引用
   - [x] 更新 capability-maps 中的脚本引用 (暂无发现)
   - [x] 更新 master-handler.js 中的脚本调用 (暂无发现)
 
