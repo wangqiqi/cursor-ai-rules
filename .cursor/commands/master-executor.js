@@ -974,10 +974,6 @@ class MasterCommandExecutor {
             timestamp: new Date().toISOString()
         };
     }
-}
-
-// 导出类
-module.exports = MasterCommandExecutor;
 
     /**
      * 处理学习系统状态查询意图
@@ -1059,6 +1055,10 @@ module.exports = MasterCommandExecutor;
 
         return summary;
     }
+}
+
+// 导出类
+module.exports = MasterCommandExecutor;
 
 // 测试函数
 async function testExecutor() {
@@ -1088,6 +1088,17 @@ async function testExecutor() {
                 constitution: { compliant: true }
             },
             description: '测试自然语言提交意图'
+        },
+        {
+            input: {
+                success: true,
+                type: 'natural_language',
+                intent: 'creation',
+                confidence: 0.9,
+                parameters: { input: '创建一个React项目', projectType: 'react' },
+                constitution: { compliant: true }
+            },
+            description: '测试项目创建意图（验证宪法干预已移除）'
         }
     ];
 

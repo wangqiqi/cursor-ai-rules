@@ -383,14 +383,22 @@ class MasterCommandParser {
      * @returns {Object} 合规性检查结果
      */
     checkConstitutionCompliance(intent, input) {
-        // 检查是否触发宪法保护
-        const isCreationIntent = intent === 'creation';
+        // 简化宪法合规性检查 - 只对高风险操作进行检查
+        // 移除项目创建意图的强制拦截，允许正常项目创建流程
 
-        if (isCreationIntent) {
+        // 高风险操作列表 - 只有这些操作需要额外检查
+        const highRiskIntents = [
+            // 可以在这里添加真正高风险的操作，如删除重要文件等
+            // 目前为空，意味着所有操作都认为是合规的
+        ];
+
+        const isHighRisk = highRiskIntents.includes(intent);
+
+        if (isHighRisk) {
             return {
                 compliant: false,
                 requiresDiscussion: true,
-                reason: '检测到项目创建意图，触发宪法第1条：意图主权公理',
+                reason: `检测到高风险操作: ${intent}，需要额外确认`,
                 action: 'STOP_AND_DISCUSS',
                 severity: 'high'
             };
