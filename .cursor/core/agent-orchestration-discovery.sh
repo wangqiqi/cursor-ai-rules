@@ -18,62 +18,60 @@ source "$SCRIPT_DIR/agent-orchestration-lifecycle.sh"
 
 # 发现所有可用Agent
 discover_agents() {
-    local filter_status="${1:-}"
-    local filter_capability="${2:-}"
+    local registry_file="$AGENT_CONFIG_DIR/agent-registry.json"
 
-    smart_echo "发现Agent (状态: ${filter_status:-全部}, 能力: ${filter_capability:-全部})" "processing"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的discover_agents函数
-    local agents=()
-
-    # 扫描Agent配置文件目录
-    if [[ -d "$AGENT_CONFIG_DIR" ]]; then
-        for config_file in "$AGENT_CONFIG_DIR"/ai-agent-*.json; do
-            if [[ -f "$config_file" ]]; then
-                local agent_id=$(basename "$config_file" | sed 's/ai-agent-\(.*\)\.json/\1/')
-                if agent_matches_filter "$agent_id" "$filter_status" "$filter_capability"; then
-                    agents+=("$agent_id")
-                fi
-            fi
-        done
+    if [[ ! -f "$registry_file" ]]; then
+        echo "[]"
+        return
     fi
 
-    smart_echo "发现 ${#agents[@]} 个Agent" "success"
-    echo "${agents[@]}"
+    # 返回所有活跃的Agent
+    jq '.agents | map(select(.status == "active"))' "$registry_file"
 }
 
 # 根据能力发现Agent
 discover_agents_by_capability() {
     local capability="$1"
-    discover_agents "" "$capability"
+    local agents=$(discover_agents)
+
+    echo "$agents" | jq --arg cap "$capability" '
+        map(select(.capabilities | index($cap)))
+    '
 }
 
-# 根据专业化发现Agent
+# 根据专业领域发现Agent
 discover_agents_by_specialization() {
     local specialization="$1"
-    # TODO: 实现专业化过滤逻辑
-    discover_agents
+    local agents=$(discover_agents)
+
+    echo "$agents" | jq --arg spec "$specialization" '
+        map(select(.specializations | index($spec)))
+    '
 }
 
 # 根据状态发现Agent
 discover_agents_by_status() {
     local status="$1"
-    discover_agents "$status" ""
+    local registry_file="$AGENT_CONFIG_DIR/agent-registry.json"
+
+    if [[ ! -f "$registry_file" ]]; then
+        echo "[]"
+        return
+    fi
+
+    jq --arg status "$status" '.agents | map(select(.status == $status))' "$registry_file"
 }
 
 # 获取Agent详细信息
 get_agent_details() {
     local agent_id="$1"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的get_agent_details函数
     local agent_config="$AGENT_CONFIG_DIR/ai-agent-${agent_id}.json"
 
     if [[ ! -f "$agent_config" ]]; then
-        smart_echo "Agent配置不存在: $agent_id" "error"
-        return 1
+        echo "{}"
+        return
     fi
 
-    # 读取并返回Agent配置
     cat "$agent_config"
 }
 
