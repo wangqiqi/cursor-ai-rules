@@ -27,7 +27,10 @@ class MasterCommandHandler {
             roleConfig: new Map(),
             capabilityMap: new Map(),
             fileContents: new Map(),
-            lastCleanup: Date.now()
+            lastCleanup: Date.now(),
+            // 🚀 新增：角色快速缓存
+            roleNicknames: new Map(),
+            roleSwitchCache: new Map()
         };
         this.cacheTTL = 300000; // 5分钟缓存过期时间
         this.maxCacheSize = 100; // 最大缓存条目数
@@ -46,6 +49,10 @@ class MasterCommandHandler {
 
         // 🏗️ 组件管理器 - 实现架构解耦
         this.componentManager = null;
+
+        // 🚀 新增：快速模式标志 - 用于角色呼召
+        this.fastMode = false;
+        this.fastModeRoleManager = null;
     }
 
     /**
@@ -59,22 +66,141 @@ class MasterCommandHandler {
         console.log('🚀 开始异步初始化Master Command Handler...');
 
         try {
-            // 🏗️ 初始化组件管理器
-            await this.initializeComponentManager();
+            // 🚀 延迟初始化策略 - 只在需要时初始化
+            this.lazyInitComponents = new Map();
 
-            // 🏗️ 通过组件管理器初始化核心组件
-            await this.initializeCoreComponents();
+            // 🏗️ 快速初始化组件管理器（同步）
+            this.initializeComponentManagerSync();
 
-            // 🔗 初始化服务发现
-            await this.initializeServiceDiscovery();
-
+            // 🚀 标记为初始化完成，但实际组件延迟加载
             this.initialized = true;
-            console.log('✅ Master Command Handler初始化完成');
+            console.log('✅ Master Command Handler快速初始化完成');
 
         } catch (error) {
             console.warn('⚠️ 初始化过程中出现错误，但系统将继续运行:', error.message);
             // 不设置initialized标志，让系统在下次调用时重试初始化
         }
+    }
+
+    /**
+     * 🚀 同步初始化组件管理器 - 提升启动速度
+     */
+    initializeComponentManagerSync() {
+        try {
+            const ComponentManager = require('./component-manager');
+            this.componentManager = new ComponentManager(this.projectRoot);
+
+            // 设置组件管理器的事件监听
+            this.componentManager.on('healthChanged', (data) => {
+                console.log(`🏥 组件健康状态变更: ${data.name} -> ${data.state}`);
+                if (data.error) {
+                    console.warn(`   错误: ${data.error}`);
+                }
+            });
+
+            console.log('✅ 组件管理器同步初始化成功');
+        } catch (error) {
+            console.error('❌ 组件管理器同步初始化失败:', error.message);
+            throw error;
+        }
+    }
+
+    /**
+     * 🚀 延迟初始化核心组件 - 只在首次需要时加载
+     */
+    async lazyInitializeCoreComponents() {
+        if (this.coreComponentsInitialized) {
+            return;
+        }
+
+        console.log('🏗️ 延迟初始化核心组件...');
+
+        try {
+            // 获取核心组件实例（延迟加载）
+            this.intelligentSystem = await this.componentManager.getComponent('router');
+            this.roleManager = await this.componentManager.getComponent('roleManager');
+            this.responseInterceptor = await this.componentManager.getComponent('responseInterceptor');
+
+            // 初始化服务发现
+            await this.initializeServiceDiscovery();
+
+            this.coreComponentsInitialized = true;
+            console.log('✅ 核心组件延迟初始化完成');
+
+        } catch (error) {
+            console.error('❌ 核心组件延迟初始化失败:', error.message);
+            // 尝试降级模式
+            await this.createFallbackComponents();
+        }
+    }
+
+    /**
+     * 🚀 快速初始化角色管理器 - 专门用于角色呼召
+     */
+    async fastInitializeRoleManager() {
+        if (this.fastModeRoleManager) {
+            return this.fastModeRoleManager;
+        }
+
+        try {
+            console.log('🚀 快速初始化角色管理器...');
+
+            const RoleManager = require('./role-manager');
+            this.fastModeRoleManager = new RoleManager(this.cursorDir);
+            await this.fastModeRoleManager.initialize();
+
+            // 预构建昵称索引
+            this.buildFastNicknameCache();
+
+            console.log('✅ 快速角色管理器初始化完成');
+            return this.fastModeRoleManager;
+        } catch (error) {
+            console.error('❌ 快速角色管理器初始化失败:', error.message);
+            throw error;
+        }
+    }
+
+    /**
+     * 🚀 构建快速昵称缓存
+     */
+    buildFastNicknameCache() {
+        if (!this.fastModeRoleManager) return;
+
+        const roles = this.fastModeRoleManager.getAvailableRoles();
+        if (!roles.success) return;
+
+        this.cache.roleNicknames.clear();
+
+        for (const role of roles.roles) {
+            try {
+                const roleConfig = this.fastModeRoleManager.personalitySystem.roles[role.id];
+
+                // 收集昵称
+                const nicknames = new Set();
+
+                // 检查personality_traits中的nickname字段
+                if (roleConfig.personality_traits?.nickname) {
+                    if (Array.isArray(roleConfig.personality_traits.nickname)) {
+                        roleConfig.personality_traits.nickname.forEach(nick => nicknames.add(nick));
+                    } else if (typeof roleConfig.personality_traits.nickname === 'string') {
+                        nicknames.add(roleConfig.personality_traits.nickname);
+                    }
+                }
+
+                // 缓存昵称到角色ID的映射
+                nicknames.forEach(nickname => {
+                    this.cache.roleNicknames.set(nickname.toLowerCase(), role.id);
+                });
+
+                // 同时缓存角色名
+                this.cache.roleNicknames.set(role.name.toLowerCase(), role.id);
+
+            } catch (error) {
+                console.warn(`⚠️ 构建昵称缓存失败 ${role.id}:`, error.message);
+            }
+        }
+
+        console.log(`✅ 快速昵称缓存构建完成: ${this.cache.roleNicknames.size} 个条目`);
     }
 
     /**
@@ -1399,6 +1525,50 @@ class MasterCommandHandler {
     }
 
     /**
+     * 🚀 快速角色呼召 - 跳过完整初始化
+     */
+    async fastRoleCall(roleName) {
+        const startTime = Date.now();
+
+        try {
+            console.log(`🚀 开始快速角色呼召: ${roleName}`);
+
+            // 1. 初始化快速角色管理器
+            const roleManager = await this.fastInitializeRoleManager();
+
+            // 2. 快速查找角色
+            const roleId = this.cache.roleNicknames.get(roleName.toLowerCase());
+            if (!roleId) {
+                return { success: false, message: `无法找到角色: ${roleName}` };
+            }
+
+            // 3. 快速切换角色（跳过文件I/O，使用内存缓存）
+            const switchResult = await roleManager.switchRole(roleId, 'fast_call_command');
+
+            // 4. 增强响应消息
+            if (switchResult.success) {
+                const roleConfig = roleManager.personalitySystem.roles[roleId];
+                const enhancedMessage = `${roleConfig.name}闪现前来应答！\n\n${switchResult.message}`;
+
+                const totalTime = Date.now() - startTime;
+                console.log(`✅ 快速角色呼召完成: ${totalTime}ms`);
+
+                return {
+                    ...switchResult,
+                    message: enhancedMessage,
+                    performance: { totalTime: `${totalTime}ms`, mode: 'fast' }
+                };
+            }
+
+            return switchResult;
+
+        } catch (error) {
+            console.error('❌ 快速角色呼召失败:', error.message);
+            return { success: false, message: `快速呼召失败: ${error.message}` };
+        }
+    }
+
+    /**
      * 处理角色相关命令
      */
     async handleRoleCommand(input) {
@@ -2412,16 +2582,31 @@ class MasterCommandHandler {
 
     async execute(input, context = {}) {
         try {
-            // 🚀 异步初始化检查 - 提升响应速度
+            // 🚀 快速路径检测 - 角色呼召命令
+            const roleCallMatch = input.match(/^(呼叫|召唤|call)\s+(.+)$/i);
+            if (roleCallMatch) {
+                const roleName = roleCallMatch[2]?.trim();
+                if (roleName) {
+                    console.log(`🚀 检测到角色呼召命令，使用快速路径: ${roleName}`);
+                    return await this.fastRoleCall(roleName);
+                }
+            }
+
+            // 🚀 快速初始化检查
             if (!this.initialized) {
-                console.log('🚀 执行前进行异步初始化...');
+                console.log('🚀 执行前进行快速初始化...');
                 await this.initialize();
             }
 
             console.log(`🎯 处理IDE /master 命令: ${input}`);
 
-            // ⏱️ 记录执行开始时间（用于计算时长）
+            // ⏱️ 性能监控 - 记录执行开始时间
             this.executionStartTime = Date.now();
+            this.performanceMetrics = {
+                startTime: this.executionStartTime,
+                phases: {},
+                totalTime: 0
+            };
 
             // 📊 记录命令执行日志
             await this.logCommandExecution(input, 'start', context);
@@ -2491,7 +2676,13 @@ class MasterCommandHandler {
                 return this.wrapWithWelcome(enhancedResult, { input, context, intent: 'system', type: 'direct' });
             }
 
-            // 🚀 优先使用AI共生宪法智能系统
+            // 🚀 优先使用AI共生宪法智能系统（延迟初始化）
+            const lazyInitStart = Date.now();
+            if (!this.coreComponentsInitialized) {
+                await this.lazyInitializeCoreComponents();
+            }
+            this.performanceMetrics.phases.lazyInit = Date.now() - lazyInitStart;
+
             if (this.intelligentSystem) {
                 console.log('🧠 使用AI共生宪法智能系统...');
 
@@ -2522,8 +2713,10 @@ class MasterCommandHandler {
 
             // 🔄 传统模式：使用bash脚本进行意图分析
             console.log('📊 使用传统智能匹配模式...');
+            const matcherStart = Date.now();
             const matchResult = await this.callSmartMatcher(input);
-            console.log('🎯 智能匹配结果:', matchResult);
+            this.performanceMetrics.phases.intentMatching = Date.now() - matcherStart;
+            console.log(`🎯 智能匹配结果: ${JSON.stringify(matchResult)} (耗时: ${this.performanceMetrics.phases.intentMatching}ms)`);
 
             if (!matchResult.matched) {
                 console.log('❌ 未能识别命令意图');
@@ -2554,6 +2747,13 @@ class MasterCommandHandler {
 
             // 🔍 自动执行环境感知并保存结果
             await this.autoExecutePerception();
+
+            // 📊 记录总执行时间
+            this.performanceMetrics.totalTime = Date.now() - this.executionStartTime;
+            console.log(`⏱️ 命令执行完成，总耗时: ${this.performanceMetrics.totalTime}ms`);
+            if (Object.keys(this.performanceMetrics.phases).length > 0) {
+                console.log('📈 性能分解:', this.performanceMetrics.phases);
+            }
 
             return finalResult;
 
@@ -2930,7 +3130,132 @@ class MasterCommandHandler {
         return navigation;
     }
 
+    /**
+     * 🚀 快速意图识别器 - 替换bash脚本，提升性能
+     */
+    fastIntentMatcher(input) {
+        // 🚀 初始化意图识别缓存
+        if (!this.intentCache) {
+            this.intentCache = new Map();
+            this.intentCacheTTL = 300000; // 5分钟缓存
+            this.intentCacheSize = 100; // 最大缓存条目数
+        }
+
+        // 检查缓存
+        const cacheKey = input.toLowerCase().trim();
+        const cached = this.intentCache.get(cacheKey);
+        if (cached && (Date.now() - cached.timestamp) < this.intentCacheTTL) {
+            console.log('💾 使用缓存的意图识别结果');
+            return cached.result;
+        }
+
+        // 标准化输入
+        const normalizedInput = input.toLowerCase().replace(/[。！？，、；："''（）《》【】]/g, '').trim();
+
+        // 🎯 意图映射表 - 直接在JavaScript中处理
+        const intentMappings = [
+            {
+                keywords: ['提交', 'commit', '保存', 'save', 'git commit', 'push'],
+                capability: 'commit_code',
+                confidence: 0.9
+            },
+            {
+                keywords: ['检查质量', '质量检查', 'code quality', 'lint', 'audit', 'eslint', 'prettier'],
+                capability: 'check_code_quality',
+                confidence: 0.9
+            },
+            {
+                keywords: ['运行测试', '测试运行', 'run test', 'test', 'jest', 'mocha', '单元测试'],
+                capability: 'run_tests',
+                confidence: 0.9
+            },
+            {
+                keywords: ['部署', 'deploy', '上线', '发布', 'production'],
+                capability: 'deploy_application',
+                confidence: 0.9
+            },
+            {
+                keywords: ['分析项目', '项目分析', 'analyze project', '项目结构', '代码分析'],
+                capability: 'analyze_project',
+                confidence: 0.9
+            },
+            {
+                keywords: ['创建react', 'react项目', 'create react', 'new react'],
+                capability: 'create_react_project',
+                confidence: 0.9
+            },
+            {
+                keywords: ['创建vue', 'vue项目', 'create vue', 'new vue'],
+                capability: 'create_vue_project',
+                confidence: 0.9
+            },
+            {
+                keywords: ['学习', '教程', '指南', 'learn', 'tutorial', 'guide'],
+                capability: 'learning_path',
+                confidence: 0.8
+            },
+            {
+                keywords: ['优化', '性能', 'optimize', 'performance', 'speed'],
+                capability: 'performance_optimization',
+                confidence: 0.8
+            }
+        ];
+
+        // 匹配意图
+        for (const mapping of intentMappings) {
+            for (const keyword of mapping.keywords) {
+                if (normalizedInput.includes(keyword)) {
+                    const result = {
+                        matched: true,
+                        capability: mapping.capability,
+                        config: {},
+                        match_details: {
+                            matched: true,
+                            intent: keyword,
+                            confidence: mapping.confidence,
+                            match_type: 'keyword'
+                        }
+                    };
+
+                    // 添加到缓存
+                    if (this.intentCache.size >= this.intentCacheSize) {
+                        // 简单的LRU：删除最旧的条目
+                        const firstKey = this.intentCache.keys().next().value;
+                        this.intentCache.delete(firstKey);
+                    }
+                    this.intentCache.set(cacheKey, { result, timestamp: Date.now() });
+
+                    return result;
+                }
+            }
+        }
+
+        // 未匹配
+        const noMatchResult = { matched: false, confidence: 0.0 };
+
+        // 缓存未匹配结果
+        this.intentCache.set(cacheKey, { result: noMatchResult, timestamp: Date.now() });
+
+        return noMatchResult;
+    }
+
     async callSmartMatcher(input) {
+        // 🚀 优先使用快速意图识别器
+        try {
+            console.log('🚀 使用快速意图识别器...');
+            const startTime = Date.now();
+            const result = this.fastIntentMatcher(input);
+            const duration = Date.now() - startTime;
+            console.log(`⚡ 快速意图识别完成，耗时: ${duration}ms`);
+
+            if (result.matched) {
+                return result;
+            }
+        } catch (error) {
+            console.warn('⚠️ 快速意图识别器失败，回退到传统方法:', error.message);
+        }
+
+        // 回退到传统bash脚本方法
         return new Promise((resolve, reject) => {
             const matcherScript = path.join(this.cursorDir, 'core', 'smart-intent-matcher.sh');
 
@@ -2945,7 +3270,7 @@ class MasterCommandHandler {
                 const output = execSync(command, {
                     cwd: this.projectRoot,
                     encoding: 'utf8',
-                    timeout: 10000
+                    timeout: 5000 // 减少超时时间
                 });
 
                 // 解析JSON结果

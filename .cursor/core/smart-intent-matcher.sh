@@ -66,66 +66,26 @@ normalize_text() {
     echo "$text"
 }
 
-# 计算Levenshtein距离 (简化版本)
-levenshtein_distance() {
-    local s1="$1"
-    local s2="$2"
-
-    if [ ${#s1} -lt ${#s2} ]; then
-        levenshtein_distance "$s2" "$s1"
-        return
-    fi
-
-    if [ ${#s2} -eq 0 ]; then
-        echo ${#s1}
-        return
-    fi
-
-    local s1_len=${#s1}
-    local s2_len=${#s2}
-
-    # 简单实现：基于字符差异
-    local diff=0
-    local min_len=$(( s1_len < s2_len ? s1_len : s2_len ))
-
-    for ((i=0; i<min_len; i++)); do
-        if [ "${s1:i:1}" != "${s2:i:1}" ]; then
-            ((diff++))
-        fi
-    done
-
-    # 加上长度差异
-    diff=$(( diff + (s1_len - s2_len > 0 ? s1_len - s2_len : s2_len - s1_len) ))
-    echo $diff
-}
-
-# 计算相似度 (0.0-1.0)
+# 🚀 简化相似度计算 - 只用于精确匹配
 calculate_similarity() {
     local s1="$1"
     local s2="$2"
 
+    # 快速精确匹配
     if [ "$s1" = "$s2" ]; then
         echo "1.0"
         return
     fi
 
-    local distance=$(levenshtein_distance "$s1" "$s2")
-    local max_len=$(( ${#s1} > ${#s2} ? ${#s1} : ${#s2} ))
-
-    if [ $max_len -eq 0 ]; then
-        echo "1.0"
-    else
-        # 简单的相似度计算
-        local similarity=$(( 100 - (distance * 100 / max_len) ))
-        echo "scale=1; $similarity / 100" | bc -l 2>/dev/null || echo "0.0"
-    fi
+    # 对于JSON模式，我们不需要复杂计算
+    echo "0.0"
 }
 
 # ================================================================================
 # 🎯 智能意图匹配引擎
 # ================================================================================
 
-# 智能匹配单个意图
+# 🚀 简化意图匹配 - 只做关键词匹配
 smart_match_intent() {
     local input="$1"
     local intent_keywords="$2"  # 空格分隔的关键词
@@ -133,19 +93,10 @@ smart_match_intent() {
     # 标准化输入
     local normalized_input=$(normalize_text "$input")
 
-    # 精确匹配
+    # 只做精确关键词匹配
     for keyword in $intent_keywords; do
         if echo "$normalized_input" | grep -qi "$keyword"; then
-            echo "{\"matched\": true, \"intent\": \"$keyword\", \"confidence\": 0.9, \"match_type\": \"exact\"}"
-            return
-        fi
-    done
-
-    # 模糊匹配 (相似度 > 0.8)
-    for keyword in $intent_keywords; do
-        local similarity=$(calculate_similarity "$normalized_input" "$keyword")
-        if (( $(echo "$similarity > 0.8" | bc -l 2>/dev/null || echo "0") )); then
-            echo "{\"matched\": true, \"intent\": \"$keyword\", \"confidence\": $similarity, \"match_type\": \"fuzzy\"}"
+            echo "{\"matched\": true, \"intent\": \"$keyword\", \"confidence\": 0.9, \"match_type\": \"keyword\"}"
             return
         fi
     done

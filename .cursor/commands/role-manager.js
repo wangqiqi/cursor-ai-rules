@@ -118,8 +118,8 @@ class RoleManager {
         simplified._computed = {
             has_nicknames: !!(roleConfig.nickname || (roleConfig.personality_traits?.selfname?.nicknames)),
             primary_nickname: roleConfig.personality_traits?.selfname?.primary ||
-                             roleConfig.nickname?.[0] ||
-                             roleConfig.name,
+                roleConfig.nickname?.[0] ||
+                roleConfig.name,
             language_style: roleConfig.language_style || 'standard',
             response_speed: roleConfig.response_speed || 'normal'
         };
@@ -398,7 +398,29 @@ class RoleManager {
         this.currentRole = roleId;
         this.addToHistory(roleId, reason);
 
-        // 保存项目角色配置
+        // 🚀 性能优化 - 对于快速呼召，延迟保存配置
+        if (reason === 'fast_call_command') {
+            // 异步延迟保存，不阻塞响应
+            setTimeout(async () => {
+                try {
+                    await this.saveProjectRoleConfig(roleId);
+                    console.log(`💾 异步保存角色配置: ${roleId}`);
+                } catch (error) {
+                    console.warn(`⚠️ 异步保存角色配置失败: ${error.message}`);
+                }
+            }, 100); // 100ms延迟，足够快但不阻塞
+
+            return {
+                success: true,
+                message: `角色切换成功！从 "${this.personalitySystem.roles[oldRole]?.name || oldRole}" 切换到 "${roleConfig.name}"`,
+                oldRole: oldRole,
+                newRole: roleId,
+                roleConfig: roleConfig,
+                fastMode: true
+            };
+        }
+
+        // 普通模式：正常保存配置
         await this.saveProjectRoleConfig(roleId);
 
         return {
@@ -450,8 +472,8 @@ class RoleManager {
 
         if (roleConfig.sensory_reactions) {
             const primarySense = roleConfig.sensory_reactions.hearing ||
-                               roleConfig.sensory_reactions.vision ||
-                               Object.values(roleConfig.sensory_reactions)[0];
+                roleConfig.sensory_reactions.vision ||
+                Object.values(roleConfig.sensory_reactions)[0];
             if (primarySense) {
                 message += `\n🔍 ${primarySense}`;
             }
@@ -545,15 +567,15 @@ class RoleManager {
                 if (roleConfig.personality_traits &&
                     roleConfig.personality_traits.nickname &&
                     Array.isArray(roleConfig.personality_traits.nickname)) {
-                        if (roleConfig.personality_traits.nickname.includes(nickname)) {
-                            return {
-                                success: true,
-                                roleId: roleId,
-                                roleConfig: roleConfig,
-                                matchedBy: 'personality_traits_nickname'
-                            };
-                        }
+                    if (roleConfig.personality_traits.nickname.includes(nickname)) {
+                        return {
+                            success: true,
+                            roleId: roleId,
+                            roleConfig: roleConfig,
+                            matchedBy: 'personality_traits_nickname'
+                        };
                     }
+                }
                 // 检查根级别的nickname字段
                 if (roleConfig.nickname && Array.isArray(roleConfig.nickname)) {
                     if (roleConfig.nickname.includes(nickname)) {
@@ -569,15 +591,15 @@ class RoleManager {
                 if (roleConfig.personality_traits &&
                     roleConfig.personality_traits.selfname &&
                     roleConfig.personality_traits.selfname.nicknames) {
-                        if (roleConfig.personality_traits.selfname.nicknames.includes(nickname)) {
-                            return {
-                                success: true,
-                                roleId: roleId,
-                                roleConfig: roleConfig,
-                                matchedBy: 'selfname_nicknames'
-                            };
-                        }
+                    if (roleConfig.personality_traits.selfname.nicknames.includes(nickname)) {
+                        return {
+                            success: true,
+                            roleId: roleId,
+                            roleConfig: roleConfig,
+                            matchedBy: 'selfname_nicknames'
+                        };
                     }
+                }
             }
         }
 
