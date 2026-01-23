@@ -280,6 +280,9 @@ export AI_TRAINING_DATA_DIR="$AI_DIR/training_data"
 export AI_METRICS_DIR="$AI_DIR/metrics"
 export AI_RESULTS_DIR="$AI_DIR/results"
 
+# 配置数据目录 (用户配置相关)
+export CONFIG_DATA_DIR="$USER_DATA_DIR/config"
+
 # Analytics相关目录 (顶级analytics目录下的子目录)
 export ANALYTICS_DIR="$CURSOR_GROWTH/analytics"
 export ANALYTICS_DATA_DIR="$ANALYTICS_DIR/data"

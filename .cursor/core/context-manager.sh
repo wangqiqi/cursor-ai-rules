@@ -36,7 +36,7 @@ init_context_manager() {
     # 创建必要的目录结构
     mkdir -p "$CONTEXT_CACHE_DIR"
     mkdir -p "$AI_DIR"  # 创建AI目录
-    mkdir -p "$CONFIG_DATA_DIR"
+    mkdir -p "$CONFIG_DATA_DIR"  # 创建配置数据目录
 
     # 初始化上下文数据文件
     [[ ! -f "$CONTEXT_DEPENDENCY_FILE" ]] && echo "{}" > "$CONTEXT_DEPENDENCY_FILE"
