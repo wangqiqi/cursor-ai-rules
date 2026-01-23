@@ -246,6 +246,9 @@ class MasterCommandExecutor {
             case 'commit':
                 return await this.handleCommitIntent(parameters);
 
+            case 'learning_status':
+                return await this.handleLearningStatusIntent(parameters);
+
             default:
                 return await this.handleGenericIntent(intent, parameters);
         }
@@ -975,6 +978,87 @@ class MasterCommandExecutor {
 
 // 导出类
 module.exports = MasterCommandExecutor;
+
+    /**
+     * 处理学习系统状态查询意图
+     * @param {Object} parameters - 参数对象
+     * @returns {Promise<Object>} 处理结果
+     */
+    async handleLearningStatusIntent(parameters) {
+        console.log('🎓 处理学习系统状态查询意图...');
+
+        try {
+            // 调用学习系统状态查询脚本
+            const result = await this.executeScript('agent-orchestration-learning-system.sh', { args: ['get_learning_system_status'] });
+
+            if (result.success) {
+                const status = JSON.parse(result.output);
+                return {
+                    success: true,
+                    message: '学习系统状态查询成功',
+                    data: {
+                        learning_status: status,
+                        summary: this.formatLearningStatusSummary(status)
+                    }
+                };
+            } else {
+                return {
+                    success: false,
+                    message: `学习系统状态查询失败: ${result.message}`,
+                    error: result.message
+                };
+            }
+        } catch (error) {
+            return {
+                success: false,
+                message: `学习系统状态查询异常: ${error.message}`,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * 格式化学习系统状态摘要
+     * @param {Object} status - 学习系统状态
+     * @returns {string} 格式化的摘要
+     */
+    formatLearningStatusSummary(status) {
+        let summary = '## 🎓 自适应学习系统状态\n\n';
+
+        if (status.learning_system) {
+            const system = status.learning_system;
+
+            summary += `### 📊 系统概览\n`;
+            summary += `- **状态**: ${system.status === 'active' ? '✅ 活跃' : '⚠️ 异常'}\n`;
+            summary += `- **功能**: ${system.features ? system.features.length : 0} 个核心功能\n`;
+
+            if (system.user_profiles) {
+                summary += `\n### 👤 用户画像\n`;
+                summary += `- **总交互次数**: ${system.user_profiles.total_interactions || 0}\n`;
+                summary += `- **满意度评分**: ${(system.user_profiles.satisfaction_score * 100 || 0).toFixed(1)}%\n`;
+
+                if (system.user_profiles.mode_usage) {
+                    summary += `- **直接模式**: ${system.user_profiles.mode_usage.direct?.percentage || 0}%\n`;
+                    summary += `- **智能模式**: ${system.user_profiles.mode_usage.intelligent?.percentage || 0}%\n`;
+                }
+            }
+
+            if (system.recent_switches) {
+                summary += `\n### 🔄 模式切换统计\n`;
+                summary += `- **统计周期**: ${system.recent_switches.period_days || 7} 天\n`;
+                summary += `- **总切换次数**: ${system.recent_switches.total_switches || 0}\n`;
+                summary += `- **直接→智能**: ${system.recent_switches.switch_types?.direct_to_intelligent || 0}\n`;
+                summary += `- **智能→直接**: ${system.recent_switches.switch_types?.intelligent_to_direct || 0}\n`;
+            }
+        }
+
+        summary += `\n### 💡 学习成果\n`;
+        summary += `- 系统根据您的使用习惯自动调整执行策略\n`;
+        summary += `- 简单任务优先选择直接模式，提高效率\n`;
+        summary += `- 复杂任务自动启用智能模式，确保质量\n`;
+
+        return summary;
+    }
 
 // 测试函数
 async function testExecutor() {

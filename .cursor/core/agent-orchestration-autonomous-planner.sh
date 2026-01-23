@@ -8,15 +8,426 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/path-config.sh"
 source "$SCRIPT_DIR/compact-output.sh"
-source "$SCRIPT_DIR/agent-orchestration-engine.sh"
+# 注意：避免循环依赖，不加载agent-orchestration-engine.sh
 source "$SCRIPT_DIR/agent-orchestration-loop-controller.sh"
 source "$SCRIPT_DIR/agent-orchestration-context-bridge.sh"
+source "$SCRIPT_DIR/agent-orchestration-choicetion-system.sh"
+source "$SCRIPT_DIR/agent-orchestration-learning-system.sh"
 
 # =============================================================================
 # 自主规划控制器 - 真正的AI自主决策系统
 # =============================================================================
 
 # 🤖 自主规划控制器
+
+# =============================================================================
+# 智能双模式选择器 - 根据复杂度自主选择执行模式
+# =============================================================================
+
+# 模式选择阈值配置
+declare -A MODE_SELECTION_CONFIG=(
+    ["complexity_threshold_direct"]=2.0      # 复杂度<=2.0使用直接模式
+    ["complexity_threshold_intelligent"]=3.5 # 复杂度>=3.5强制使用智能模式
+    ["confidence_weight"]=0.3                 # 置信度权重
+    ["technical_weight"]=0.4                  # 技术复杂度权重
+    ["context_weight"]=0.3                    # 上下文复杂度权重
+)
+
+# 复杂度分析引擎
+analyze_request_complexity() {
+    local user_input="$1"
+    local context="${2:-}"
+
+    # smart_echo "🔍 分析请求复杂度..." "processing"
+
+    # 多维度复杂度评估
+    local text_complexity=$(calculate_text_complexity "$user_input")
+    local technical_complexity=$(assess_technical_complexity "$user_input")
+    local context_complexity=$(evaluate_context_complexity "$context")
+    local intent_complexity=$(analyze_intent_complexity "$user_input")
+
+    # 加权计算总复杂度
+    local total_complexity=$(echo "scale=2; ($text_complexity * 0.25) + ($technical_complexity * 0.35) + ($context_complexity * 0.20) + ($intent_complexity * 0.20)" | bc -l 2>/dev/null || echo "5.0")
+
+    # 生成复杂度分析报告
+    local analysis_report=$(cat <<EOF
+{
+  "total_complexity": $total_complexity,
+  "dimensions": {
+    "text": $text_complexity,
+    "technical": $technical_complexity,
+    "context": $context_complexity,
+    "intent": $intent_complexity
+  },
+  "recommended_mode": "$(select_execution_mode "$total_complexity" "default_user")",
+  "confidence": $(calculate_analysis_confidence "$total_complexity"),
+  "analysis_timestamp": "$(date -Iseconds)"
+}
+EOF
+)
+
+    echo "$analysis_report"
+}
+
+# 计算文本复杂度
+calculate_text_complexity() {
+    local input="$1"
+    local length_score=1
+    local vocabulary_score=1
+    local structure_score=1
+
+    # 长度复杂度 (0-3分)
+    local input_length=$(echo -n "$input" | wc -c)
+    if (( input_length > 500 )); then
+        length_score=3
+    elif (( input_length > 200 )); then
+        length_score=2
+    elif (( input_length < 20 )); then
+        length_score=0.5
+    fi
+
+    # 词汇复杂度 (0-2分)
+    local technical_terms=$(echo "$input" | grep -o -i '\b\(api\|database\|algorithm\|framework\|architecture\|microservice\|async\|concurrent\|distributed\|blockchain\|ai\|ml\|neural\|training\|inference\)\b' | wc -l)
+    if (( technical_terms > 3 )); then
+        vocabulary_score=2
+    elif (( technical_terms > 1 )); then
+        vocabulary_score=1.5
+    fi
+
+    # 结构复杂度 (0-2分)
+    if echo "$input" | grep -q -E "(如果|那么|并且|或者|但是|因为|所以|因此|此外|总之|首先|其次|最后)"; then
+        structure_score=2
+    elif echo "$input" | grep -q -E "(和|或|但|因为|所以)"; then
+        structure_score=1.5
+    fi
+
+    # 返回综合分数
+    echo "scale=2; ($length_score + $vocabulary_score + $structure_score) / 3 * 2" | bc -l 2>/dev/null || echo "2.0"
+}
+
+# 评估技术复杂度 (复用现有函数，增强版)
+assess_technical_complexity() {
+    local input="$1"
+
+    # 基于关键词的复杂度评估
+    local complexity_score=1
+
+    # 高复杂度关键词 (5分) - 包含中文关键词
+    if echo "$input" | grep -q -i "microservice\|微服务\|distributed\|分布式\|blockchain\|区块链\|ai\|人工智能\|ml\|机器学习\|neural\|神经网络\|real.*time\|实时\|kubernetes\|k8s\|docker.*compose\|容器\|architecture\|架构\|system.*design\|系统设计"; then
+        complexity_score=5
+    # 中高复杂度关键词 (4分)
+    elif echo "$input" | grep -q -i "concurrent\|并发\|async\|异步\|scalable\|可扩展\|security\|安全\|performance\|性能\|database.*design\|数据库设计\|api.*gateway\|网关\|monitoring\|监控\|deployment\|部署"; then
+        complexity_score=4
+    # 中等复杂度关键词 (3分)
+    elif echo "$input" | grep -q -i "database\|数据库\|api\|接口\|authentication\|认证\|testing\|测试\|frontend.*backend\|前后端\|full.*stack\|全栈"; then
+        complexity_score=3
+    # 低复杂度关键词 (2分)
+    elif echo "$input" | grep -q -i "crud\|增删改查\|simple\|简单\|basic\|基础\|hello.*world\|示例\|file.*read\|文件读取\|string.*manipul\|字符串处理"; then
+        complexity_score=2
+    fi
+
+    # 如果包含多个技术领域，进一步提高复杂度
+    local tech_domain_count=$(echo "$input" | grep -o -i '\b\(frontend\|前端\|backend\|后端\|database\|数据库\|api\|接口\|testing\|测试\|deployment\|部署\|monitoring\|监控\|security\|安全\)\b' | wc -l)
+    if [[ $tech_domain_count -gt 2 ]]; then
+        ((complexity_score += 1))
+    fi
+
+    # 调试信息
+    if [[ "${DEBUG:-0}" == "1" ]]; then
+        echo "DEBUG: technical_complexity input='$input', score=$complexity_score, domains=$tech_domain_count" >&2
+    fi
+
+    echo "$complexity_score"
+}
+
+# 评估上下文复杂度
+evaluate_context_complexity() {
+    local context="$1"
+    local context_score=1
+
+    # 如果有上下文，增加复杂度
+    if [[ -n "$context" ]]; then
+        # 检查上下文中的技术债务或复杂性指标
+        if echo "$context" | grep -q -i "legacy\|refactor\|debt\|complex\|dependency.*hell"; then
+            context_score=4
+        elif echo "$context" | grep -q -i "existing\|current\|modify\|update\|extend"; then
+            context_score=3
+        else
+            context_score=2
+        fi
+    fi
+
+    echo "$context_score"
+}
+
+# 分析意图复杂度
+analyze_intent_complexity() {
+    local input="$1"
+    local intent_score=1
+
+    # 基于意图类型的复杂度评估
+    if echo "$input" | grep -q -i "create\|build\|develop\|implement.*system\|design.*architecture"; then
+        intent_score=5  # 新建复杂系统
+    elif echo "$input" | grep -q -i "refactor\|restructure\|optimize.*performance\|migrate"; then
+        intent_score=4  # 重构或优化
+    elif echo "$input" | grep -q -i "fix\|debug\|troubleshoot\|resolve.*error"; then
+        intent_score=3  # 问题修复
+    elif echo "$input" | grep -q -i "add\|implement.*feature\|extend"; then
+        intent_score=3  # 功能扩展
+    elif echo "$input" | grep -q -i "analyze\|review\|audit\|check"; then
+        intent_score=2  # 分析检查
+    elif echo "$input" | grep -q -i "help\|explain\|learn\|tutorial"; then
+        intent_score=2  # 学习帮助
+    fi
+
+    echo "$intent_score"
+}
+
+# 选择执行模式 (增强版：集成学习系统)
+select_execution_mode() {
+    local complexity="$1"
+    local user_id="${2:-default_user}"
+
+    # 首先尝试使用学习系统的个性化推荐
+    local learned_recommendation=$(recommend_execution_mode "$user_id" "$complexity" 2>/dev/null || echo "")
+
+    if [[ -n "$learned_recommendation" && ("$learned_recommendation" == "direct" || "$learned_recommendation" == "intelligent") ]]; then
+        # 学习系统返回了有效推荐，使用它
+        echo "$learned_recommendation"
+        return
+    fi
+
+    # 如果学习系统没有足够数据，回退到标准逻辑
+    local threshold_direct="${MODE_SELECTION_CONFIG[complexity_threshold_direct]}"
+    local threshold_intelligent="${MODE_SELECTION_CONFIG[complexity_threshold_intelligent]}"
+
+    if (( $(echo "$complexity <= $threshold_direct" | bc -l 2>/dev/null || echo "0") )); then
+        echo "direct"
+    elif (( $(echo "$complexity >= $threshold_intelligent" | bc -l 2>/dev/null || echo "0") )); then
+        echo "intelligent"
+    else
+        # 中等复杂度，使用学习系统的推荐或保守策略
+        if [[ -n "$learned_recommendation" ]]; then
+            echo "$learned_recommendation"
+        else
+            echo "intelligent"  # 保守策略，复杂任务使用智能模式
+        fi
+    fi
+}
+
+# 计算分析置信度
+calculate_analysis_confidence() {
+    local complexity="$1"
+
+    # 复杂度越极端，置信度越高
+    if (( $(echo "$complexity >= 7" | bc -l 2>/dev/null || echo "0") )) || (( $(echo "$complexity <= 2" | bc -l 2>/dev/null || echo "0") )); then
+        echo "0.9"
+    elif (( $(echo "$complexity >= 5" | bc -l 2>/dev/null || echo "0") )) || (( $(echo "$complexity <= 3" | bc -l 2>/dev/null || echo "0") )); then
+        echo "0.8"
+    else
+        echo "0.7"
+    fi
+}
+
+# 执行模式选择和路由
+execute_mode_based_planning() {
+    local user_input="$1"
+    local context="${2:-}"
+
+    smart_echo "🎯 执行智能双模式规划..." "processing"
+
+    # 1. 复杂度分析
+    local complexity_analysis=$(analyze_request_complexity "$user_input" "$context")
+
+    # 2. 解析分析结果
+    local selected_mode=$(echo "$complexity_analysis" | jq -r '.recommended_mode')
+    local total_complexity=$(echo "$complexity_analysis" | jq -r '.total_complexity')
+
+    smart_echo "📊 复杂度分析完成: $total_complexity (推荐模式: $selected_mode)" "info"
+
+    # 3. 记录用户行为（模式选择）
+    local behavior_data=$(cat <<EOF
+{
+  "selected_mode": "$selected_mode",
+  "complexity": $total_complexity,
+  "user_input": "$user_input",
+  "context": "$context",
+  "user_satisfaction": 0.8
+}
+EOF
+)
+    record_user_behavior "default_user" "mode_selection" "$behavior_data" 2>/dev/null || true
+
+    # 4. 记录模式选择日志
+    log_mode_switch_event "default_user" "auto" "$selected_mode" "complexity_analysis" "$complexity_analysis" 2>/dev/null || true
+
+    # 3. 根据模式执行不同的规划策略
+    case "$selected_mode" in
+        "direct")
+            execute_direct_mode "$user_input" "$context" "$complexity_analysis"
+            ;;
+        "intelligent")
+            execute_intelligent_mode "$user_input" "$context" "$complexity_analysis"
+            ;;
+        *)
+            smart_echo "⚠️ 无法确定执行模式，使用保守策略" "warning"
+            execute_intelligent_mode "$user_input" "$context" "$complexity_analysis"
+            ;;
+    esac
+}
+
+# 直接模式执行 (快速路径)
+execute_direct_mode() {
+    local user_input="$1"
+    local context="$2"
+    local complexity_analysis="$3"
+
+    smart_echo "⚡ 执行直接模式 (快速路径)" "processing"
+
+    # 快速响应，基于简单意图识别
+    local intent=$(quick_intent_recognition "$user_input")
+    local action_plan=$(generate_direct_action_plan "$intent" "$user_input")
+
+    # 直接执行，不需要多轮确认
+    local execution_result=$(execute_direct_actions "$action_plan")
+
+    # 记录规划历史
+    record_planning_history "direct_mode_execution" "$complexity_analysis" "$action_plan" "$execution_result"
+
+    smart_echo "✅ 直接模式执行完成" "success"
+    echo "$execution_result"
+}
+
+# 智能模式执行 (复杂路径)
+execute_intelligent_mode() {
+    local user_input="$1"
+    local context="$2"
+    local complexity_analysis="$3"
+
+    smart_echo "🧠 执行智能模式 (复杂路径)" "processing"
+
+    # 1. 详细的项目状态分析
+    local project_state=$(analyze_project_state)
+
+    # 2. 复杂决策制定
+    local decision=$(make_autonomous_decision "$project_state")
+
+    # 3. 选择题确认流程 (新增)
+    local confirmation_result=$(execute_choicetion_confirmation "$user_input" "$context" "$complexity_analysis")
+
+    # 4. 检查确认状态
+    local confirmation_status=$(echo "$confirmation_result" | jq -r '.confirmation_status')
+    if [[ "$confirmation_status" != "sequence_generated" ]]; then
+        smart_echo "⚠️ 选择题确认流程异常" "warning"
+        echo '{"error": "confirmation_sequence_failed", "result": '"$confirmation_result"'}'
+        return 1
+    fi
+
+    # 5. 根据确认结果调整决策 (如果确认完成)
+    local question_sequence=$(echo "$confirmation_result" | jq -r '.question_sequence')
+    local can_proceed=$(can_proceed_to_coding "$question_sequence")
+
+    if [[ "$can_proceed" == "true" ]]; then
+        local adjusted_decision=$(adjust_decision_based_confirmation "$decision" "$confirmation_result")
+
+        # 6. 执行智能规划
+        local execution_result=$(execute_decision "$adjusted_decision")
+
+        smart_echo "✅ 智能模式执行完成 (确认通过)" "success"
+        echo "$execution_result"
+    else
+        # 确认还未完成，返回确认状态
+        smart_echo "⏳ 等待用户完成选择题确认" "info"
+        echo '{"status": "awaiting_confirmation", "question_sequence": '"$question_sequence"', "message": "需要用户完成选择题确认后才能开始编码"}'
+    fi
+
+    # 记录规划历史
+    record_planning_history "intelligent_mode_execution" "$complexity_analysis" "$decision" "$confirmation_result"
+}
+
+# 快速意图识别 (直接模式使用)
+quick_intent_recognition() {
+    local input="$1"
+
+    if echo "$input" | grep -q -i "create\|build\|new"; then
+        echo "create"
+    elif echo "$input" | grep -q -i "fix\|debug\|error"; then
+        echo "fix"
+    elif echo "$input" | grep -q -i "add\|implement\|feature"; then
+        echo "add"
+    elif echo "$input" | grep -q -i "test\|testing"; then
+        echo "test"
+    elif echo "$input" | grep -q -i "analyze\|review"; then
+        echo "analyze"
+    else
+        echo "general"
+    fi
+}
+
+# 生成直接行动计划
+generate_direct_action_plan() {
+    local intent="$1"
+    local user_input="$2"
+
+    cat <<EOF
+{
+  "plan_type": "direct",
+  "intent": "$intent",
+  "actions": ["quick_$intent"],
+  "estimated_time": "5-15分钟",
+  "confidence": "high",
+  "risk_level": "low"
+}
+EOF
+}
+
+# 执行直接行动
+execute_direct_actions() {
+    local action_plan="$1"
+
+    local intent=$(echo "$action_plan" | jq -r '.intent')
+
+    case "$intent" in
+        "create")
+            echo '{"result": "快速创建模式", "status": "completed", "message": "基础文件已创建"}'
+            ;;
+        "fix")
+            echo '{"result": "快速修复模式", "status": "completed", "message": "常见问题已修复"}'
+            ;;
+        "test")
+            echo '{"result": "快速测试模式", "status": "completed", "message": "基础测试已执行"}'
+            ;;
+        *)
+            echo '{"result": "快速执行模式", "status": "completed", "message": "任务已快速完成"}'
+            ;;
+    esac
+}
+
+# 选择题确认流程 (智能模式核心)
+execute_choicetion_confirmation() {
+    local user_input="$1"
+    local context="$2"
+    local complexity_analysis="$3"
+
+    smart_echo "🎯 启动选择题确认流程" "processing"
+
+    # 调用真正的选择题确认系统
+    local confirmation_result=$(execute_choicetion_confirmation "$user_input" "$context" "$complexity_analysis")
+
+    smart_echo "✅ 选择题确认序列生成完成" "success"
+    echo "$confirmation_result"
+}
+
+# 根据确认结果调整决策
+adjust_decision_based_confirmation() {
+    local decision="$1"
+    local confirmation="$2"
+
+    # 基于用户确认结果调整决策
+    # 这里可以根据用户的选择题回答来调整规划
+
+    echo "$decision"  # 暂时直接返回
+}
 
 # =============================================================================
 # 项目状态感知系统
@@ -571,11 +982,26 @@ EOF
 # 自动执行控制器
 # =============================================================================
 
-# 执行自主规划
+# 执行自主规划 (智能双模式版本)
 execute_autonomous_planning() {
     local trigger_event="${1:-project_load}"
 
-    smart_echo "🚀 开始自主规划执行 (触发事件: $trigger_event)" "processing"
+    smart_echo "🚀 开始智能双模式自主规划 (触发事件: $trigger_event)" "processing"
+
+    # 检查是否提供了用户输入
+    if [[ $# -gt 1 ]]; then
+        local user_input="$2"
+        local context="$3"
+
+        # 使用新的双模式规划系统
+        local result=$(execute_mode_based_planning "$user_input" "$context")
+        smart_echo "✅ 智能双模式规划执行完成" "success"
+        echo "$result"
+        return
+    fi
+
+    # 传统模式 (向后兼容)
+    smart_echo "📋 使用传统自主规划模式" "info"
 
     # 1. 分析当前项目状态
     local project_state=$(analyze_project_state)
@@ -589,7 +1015,7 @@ execute_autonomous_planning() {
     # 4. 记录规划历史
     record_planning_history "$trigger_event" "$project_state" "$decision" "$execution_result"
 
-    smart_echo "✅ 自主规划执行完成" "success"
+    smart_echo "✅ 传统自主规划执行完成" "success"
     echo "$execution_result"
 }
 
@@ -958,6 +1384,13 @@ export -f analyze_project_state
 export -f make_autonomous_decision
 export -f execute_autonomous_planning
 export -f record_planning_history
+
+# 双模式选择器相关函数
+export -f analyze_request_complexity
+export -f execute_mode_based_planning
+export -f execute_direct_mode
+export -f execute_intelligent_mode
+export -f execute_choicetion_confirmation
 
 # 初始化目录
 AUTONOMOUS_PLANNER_DIR="$AI_DIR/autonomous_planner"

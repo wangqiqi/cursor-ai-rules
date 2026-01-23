@@ -93,6 +93,13 @@ class MasterCommandParser {
                 keywords: ['呼叫', '叫', '召唤', '切换到', '使用角色', '角色'],
                 confidence: 0.95,
                 category: 'role_management'
+            },
+
+            // 学习系统状态意图
+            learning_status: {
+                keywords: ['学习系统', 'learning system', '学习状态', 'learning status', '自适应', 'adaptive', '用户画像', 'user profile'],
+                confidence: 0.9,
+                category: 'system_status'
             }
         };
     }
