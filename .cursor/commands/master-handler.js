@@ -22,21 +22,149 @@ class MasterCommandHandler {
             ...context
         };
 
-        // 🚀 集成我们的智能系统
+        // 🚀 性能优化 - 初始化缓存系统
+        this.cache = {
+            roleConfig: new Map(),
+            capabilityMap: new Map(),
+            fileContents: new Map(),
+            lastCleanup: Date.now()
+        };
+        this.cacheTTL = 300000; // 5分钟缓存过期时间
+        this.maxCacheSize = 100; // 最大缓存条目数
+
+        // 🚀 集成我们的智能系统 - 延迟初始化
         this.intelligentSystem = null;
-        this.initializeIntelligentSystem();
 
-        // 🎭 角色管理系统
+        // 🎭 角色管理系统 - 延迟初始化
         this.roleManager = null;
-        this.initializeRoleManager();
 
-        // 🛡️ 响应输出拦截器 - 确保角色一致性
+        // 🛡️ 响应输出拦截器 - 延迟初始化
         this.responseInterceptor = null;
-        this.initializeResponseInterceptor();
 
-        // 🛡️ 响应输出拦截器 - 确保角色一致性
-        this.responseInterceptor = null;
-        this.initializeResponseInterceptor();
+        // 🚀 异步初始化标志
+        this.initialized = false;
+
+        // 🏗️ 组件管理器 - 实现架构解耦
+        this.componentManager = null;
+    }
+
+    /**
+     * 🚀 异步初始化所有组件 - 提升响应速度
+     */
+    async initialize() {
+        if (this.initialized) {
+            return; // 已经初始化过了
+        }
+
+        console.log('🚀 开始异步初始化Master Command Handler...');
+
+        try {
+            // 🏗️ 初始化组件管理器
+            await this.initializeComponentManager();
+
+            // 🏗️ 通过组件管理器初始化核心组件
+            await this.initializeCoreComponents();
+
+            // 🔗 初始化服务发现
+            await this.initializeServiceDiscovery();
+
+            this.initialized = true;
+            console.log('✅ Master Command Handler初始化完成');
+
+        } catch (error) {
+            console.warn('⚠️ 初始化过程中出现错误，但系统将继续运行:', error.message);
+            // 不设置initialized标志，让系统在下次调用时重试初始化
+        }
+    }
+
+    /**
+     * 🏗️ 初始化组件管理器
+     */
+    async initializeComponentManager() {
+        try {
+            const ComponentManager = require('./component-manager');
+            this.componentManager = new ComponentManager(this.projectRoot);
+
+            // 设置组件管理器的事件监听
+            this.componentManager.on('healthChanged', (data) => {
+                console.log(`🏥 组件健康状态变更: ${data.name} -> ${data.state}`);
+                if (data.error) {
+                    console.warn(`   错误: ${data.error}`);
+                }
+            });
+
+            console.log('✅ 组件管理器初始化成功');
+        } catch (error) {
+            console.error('❌ 组件管理器初始化失败:', error.message);
+            throw error;
+        }
+    }
+
+    /**
+     * 🏗️ 初始化核心组件（通过组件管理器）
+     */
+    async initializeCoreComponents() {
+        if (!this.componentManager) {
+            throw new Error('组件管理器未初始化');
+        }
+
+        try {
+            // 获取核心组件实例
+            this.intelligentSystem = await this.componentManager.getComponent('router');
+            this.roleManager = await this.componentManager.getComponent('roleManager');
+            this.responseInterceptor = await this.componentManager.getComponent('responseInterceptor');
+
+            console.log('✅ 核心组件初始化完成');
+
+            // 🔗 初始化服务发现
+            await this.initializeServiceDiscovery();
+        } catch (error) {
+            console.error('❌ 核心组件初始化失败:', error.message);
+            // 尝试降级模式
+            await this.createFallbackComponents();
+        }
+    }
+
+    /**
+     * 🔗 初始化服务发现
+     */
+    async initializeServiceDiscovery() {
+        console.log('🔗 初始化服务发现...');
+
+        try {
+            // 初始化服务映射表
+            this.services = {
+                parser: await this.componentManager.getService('intent-parser'),
+                router: await this.componentManager.getService('command-router'),
+                executor: await this.componentManager.getService('command-executor'),
+                roleManager: await this.componentManager.getService('role-management'),
+                responseInterceptor: await this.componentManager.getService('response-filter')
+            };
+
+            console.log('✅ 服务发现初始化成功');
+        } catch (error) {
+            console.warn('⚠️ 服务发现初始化失败，使用降级模式:', error.message);
+            // 降级到直接组件访问
+            this.services = {
+                parser: this.intelligentSystem,
+                router: this.intelligentSystem,
+                executor: null,
+                roleManager: this.roleManager,
+                responseInterceptor: this.responseInterceptor
+            };
+        }
+    }
+
+    /**
+     * 🛡️ 创建降级组件（当组件管理器失败时）
+     */
+    async createFallbackComponents() {
+        console.log('🛡️ 启用组件降级模式...');
+
+        // 降级初始化原有组件
+        await this.initializeIntelligentSystem();
+        await this.initializeRoleManager();
+        await this.initializeResponseInterceptor();
     }
 
     /**
@@ -63,67 +191,174 @@ class MasterCommandHandler {
      */
     async initializeRoleManager() {
         try {
+            // 检查缓存中是否有角色配置
+            const cacheKey = 'role_manager_config';
+            const cached = this.cache.roleConfig.get(cacheKey);
+
+            if (cached && (Date.now() - cached.timestamp) < this.cacheTTL) {
+                console.log('🎭 使用缓存的角色配置');
+                this.roleManager = cached.roleManager;
+                return;
+            }
+
             const RoleManager = require('./role-manager');
             this.roleManager = new RoleManager(this.cursorDir, this.projectRoot);
             await this.roleManager.initialize();
+
+            // 缓存角色管理器
+            this.cache.roleConfig.set(cacheKey, {
+                roleManager: this.roleManager,
+                timestamp: Date.now()
+            });
+
             console.log('🎭 角色管理器初始化成功');
         } catch (error) {
-            console.warn('⚠️ 角色管理器初始化失败:', error.message);
-            // 创建一个简化的备用系统，但使用项目配置的角色
+            console.warn('⚠️ 角色管理器初始化失败，启用降级模式:', error.message);
+
+            // 🛠️ 使用统一错误处理记录问题
+            this.handleError(error, 'role_initialization', { component: 'role_manager' });
+
+            // 🛡️ 创建健壮的降级系统
+            await this.createFallbackRoleManager();
+        }
+    }
+
+    /**
+     * 🛡️ 创建降级角色管理器 - 当主系统失败时的备用方案
+     */
+    async createFallbackRoleManager() {
+        try {
+            // 尝试读取项目配置
             const projectRole = this.loadProjectRoleConfig();
+
+            // 默认角色配置
+            const fallbackConfig = {
+                professional_assistant: {
+                    name: "专业助手",
+                    description: "标准专业AI助手（降级模式）",
+                    attitude: "professional",
+                    tone: "formal",
+                    language_style: "concise"
+                },
+                maid: {
+                    name: "完美女仆",
+                    description: "忠诚的女仆助手（降级模式）",
+                    attitude: "submissive",
+                    tone: "gentle",
+                    language_style: "polite"
+                }
+            };
+
             const roleId = projectRole || 'professional_assistant';
-            const roleName = roleId === 'maid' ? '完美女仆' : '专业助手';
+            const roleConfig = fallbackConfig[roleId] || fallbackConfig.professional_assistant;
 
             this.roleManager = {
                 currentRole: roleId,
-                selectWelcomeTemplate: (result, context) => {
-                    // 根据角色提供不同的模板
-                    if (roleId === 'maid') {
-                        const templates = {
-                            general: "欢迎回来，主人！女仆随时准备为您服务：\n\n🧹 {content}",
-                            success: "任务完成了，主人！女仆做得还满意吗？\n\n✅ {content}",
-                            error: "非常抱歉，主人！女仆一定会改进的：\n\n😰 {content}",
-                            learning: "主人想学习吗？女仆来为您讲解：\n\n📚 {content}",
-                            code: "主人的代码真棒！女仆来帮您整理：\n\n💻 {content}",
-                            project: "主人要开始新项目了吗？女仆全力协助：\n\n🏠 {content}"
-                        };
+                fallbackMode: true, // 标记为降级模式
 
-                        // 根据上下文选择合适的模板
-                        if (result.success === false) {
-                            return templates.error.replace('{content}', result.message || '{content}');
-                        }
+                selectWelcomeTemplate: (result, context) => this.generateFallbackWelcomeTemplate(result, context, roleConfig),
 
-                        if (context && context.intent) {
-                            switch (context.intent) {
-                                case 'learning':
-                                    return templates.learning;
-                                case 'code':
-                                    return templates.code;
-                                case 'project':
-                                case 'creation':
-                                    return templates.project;
-                                default:
-                                    return templates.success;
-                            }
-                        }
-
-                        return templates.general;
-                    }
-                    // 默认模板
-                    return "处理结果：\n\n{content}";
-                },
                 getCurrentRole: () => ({
                     success: true,
-                    role: { id: roleId, name: roleName }
+                    role: {
+                        id: roleId,
+                        name: roleConfig.name,
+                        fallback: true
+                    },
+                    message: '当前使用降级角色系统'
                 }),
+
                 getAvailableRoles: () => ({
                     success: true,
-                    roles: [{ id: roleId, name: roleName }],
-                    currentRole: roleId
+                    roles: Object.entries(fallbackConfig).map(([id, config]) => ({
+                        id: id,
+                        name: config.name,
+                        description: config.description + '（降级模式）'
+                    })),
+                    currentRole: roleId,
+                    fallback: true
                 }),
-                switchRole: () => ({ success: false, message: '角色系统不可用' })
+
+                switchRole: async (newRoleId) => {
+                    if (fallbackConfig[newRoleId]) {
+                        this.roleManager.currentRole = newRoleId;
+                        return {
+                            success: true,
+                            message: `降级模式下切换到角色: ${fallbackConfig[newRoleId].name}`,
+                            newRole: newRoleId
+                        };
+                    }
+                    return {
+                        success: false,
+                        message: '降级模式不支持此角色切换'
+                    };
+                }
             };
+
+            console.log(`🛡️ 降级角色系统已激活: ${roleConfig.name}`);
+
+        } catch (fallbackError) {
+            console.error('❌ 降级角色系统创建失败:', fallbackError.message);
+
+            // 最后的最后手段 - 创建最基本的备用系统
+            this.roleManager = {
+                currentRole: 'basic_assistant',
+                fallbackMode: true,
+                emergencyMode: true,
+
+                selectWelcomeTemplate: () => "系统运行在紧急模式下，功能受限：\n\n{content}",
+
+                getCurrentRole: () => ({
+                    success: true,
+                    role: { id: 'basic_assistant', name: '基础助手', emergency: true }
+                }),
+
+                getAvailableRoles: () => ({
+                    success: true,
+                    roles: [{ id: 'basic_assistant', name: '基础助手（紧急模式）' }],
+                    currentRole: 'basic_assistant'
+                }),
+
+                switchRole: () => ({ success: false, message: '紧急模式不支持角色切换' })
+            };
+
+            console.log('🚨 紧急降级系统已激活，功能严重受限');
         }
+    }
+
+    /**
+     * 🛡️ 生成降级模式的欢迎模板
+     */
+    generateFallbackWelcomeTemplate(result, context, roleConfig) {
+        const templates = {
+            general: `${roleConfig.name}（降级模式）为您服务：\n\n{content}`,
+            success: `✅ 任务完成！${roleConfig.name}（降级模式）\n\n{content}`,
+            error: `⚠️ 遇到问题，${roleConfig.name}（降级模式）正在处理：\n\n{content}`,
+            learning: `📚 ${roleConfig.name}（降级模式）为您讲解：\n\n{content}`,
+            code: `💻 ${roleConfig.name}（降级模式）为您优化代码：\n\n{content}`,
+            project: `🏗️ ${roleConfig.name}（降级模式）协助项目开发：\n\n{content}`
+        };
+
+        // 根据上下文选择模板
+        if (result.success === false) {
+            return templates.error;
+        }
+
+        if (context && context.intent) {
+            switch (context.intent) {
+                case 'learning':
+                    return templates.learning;
+                case 'code':
+                    return templates.code;
+                case 'project':
+                case 'creation':
+                    return templates.project;
+                default:
+                    return templates.success;
+            }
+        }
+
+        return templates.general;
     }
 
     /**
@@ -2177,6 +2412,12 @@ class MasterCommandHandler {
 
     async execute(input, context = {}) {
         try {
+            // 🚀 异步初始化检查 - 提升响应速度
+            if (!this.initialized) {
+                console.log('🚀 执行前进行异步初始化...');
+                await this.initialize();
+            }
+
             console.log(`🎯 处理IDE /master 命令: ${input}`);
 
             // ⏱️ 记录执行开始时间（用于计算时长）
@@ -2322,15 +2563,8 @@ class MasterCommandHandler {
             // 📊 记录命令执行失败日志
             await this.logCommandExecution(input, 'failed', context);
 
-            // 提供错误恢复建议
-            const recoverySuggestions = this.generateErrorRecoverySuggestions(error, context);
-
-            const errorResult = {
-                success: false,
-                message: error.message,
-                recoverySuggestions: recoverySuggestions,
-                ideContext: this.getIdeContextSummary()
-            };
+            // 🛠️ 使用统一错误处理机制
+            const errorResult = this.handleError(error, 'command_execution', { input, context });
 
             // 🎉 包装欢迎语
             return this.wrapWithWelcome(errorResult, { input, context, intent: 'error' });
@@ -3061,6 +3295,288 @@ Generated by Cursor AI Rules v4.3.0 at ${new Date().toISOString()}`;
             return { success: false, message: `学习系统状态查询失败: ${error.message}` };
         }
     }
+
+    /**
+     * 🛠️ 统一错误处理机制 - 创建全局错误处理器
+     * @param {Error} error - 错误对象
+     * @param {string} context - 错误上下文
+     * @param {Object} additionalData - 额外数据
+     * @returns {Object} 标准化的错误响应
+     */
+    handleError(error, context = 'unknown', additionalData = {}) {
+        const errorId = `error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+        // 标准化错误信息
+        const errorInfo = {
+            id: errorId,
+            timestamp: new Date().toISOString(),
+            context: context,
+            message: error.message || '未知错误',
+            stack: error.stack,
+            code: error.code,
+            errno: error.errno,
+            additionalData: additionalData
+        };
+
+        // 记录错误日志
+        this.logError(errorInfo);
+
+        // 根据错误类型提供友好的用户消息
+        const userMessage = this.generateUserFriendlyMessage(error, context);
+
+        // 提供恢复建议
+        const recoverySuggestions = this.generateRecoverySuggestions(error, context);
+
+        return {
+            success: false,
+            error: {
+                id: errorId,
+                message: userMessage,
+                context: context,
+                recovery: recoverySuggestions,
+                canRetry: this.isRetryableError(error, context)
+            },
+            internal: errorInfo // 仅用于调试
+        };
+    }
+
+    /**
+     * 🛠️ 生成用户友好的错误消息
+     * @param {Error} error - 原始错误
+     * @param {string} context - 错误上下文
+     * @returns {string} 用户友好的消息
+     */
+    generateUserFriendlyMessage(error, context) {
+        const errorMessages = {
+            'file_not_found': '文件不存在，请检查路径是否正确',
+            'permission_denied': '权限不足，无法访问该资源',
+            'network_error': '网络连接出现问题，请检查网络设置',
+            'timeout': '操作超时，请稍后重试',
+            'invalid_input': '输入格式不正确，请检查参数',
+            'system_busy': '系统繁忙，请稍后重试',
+            'unknown': '发生未知错误，请联系技术支持'
+        };
+
+        // 根据错误类型和上下文生成消息
+        let message = errorMessages.unknown;
+
+        if (error.code === 'ENOENT') {
+            message = errorMessages.file_not_found;
+        } else if (error.code === 'EACCES' || error.code === 'EPERM') {
+            message = errorMessages.permission_denied;
+        } else if (error.code === 'ETIMEDOUT' || error.message.includes('timeout')) {
+            message = errorMessages.timeout;
+        } else if (error.message.includes('JSON')) {
+            message = '配置文件格式错误，请检查JSON语法';
+        } else if (context === 'role_initialization') {
+            message = '角色系统初始化失败，但您仍可以使用基本功能';
+        } else if (context === 'script_execution') {
+            message = '脚本执行失败，请检查脚本文件和权限';
+        }
+
+        return message;
+    }
+
+    /**
+     * 🛠️ 生成恢复建议
+     * @param {Error} error - 原始错误
+     * @param {string} context - 错误上下文
+     * @returns {string[]} 恢复建议列表
+     */
+    generateRecoverySuggestions(error, context) {
+        const suggestions = [];
+
+        if (error.code === 'ENOENT') {
+            suggestions.push('检查文件路径是否正确');
+            suggestions.push('确认文件是否存在');
+        } else if (error.code === 'EACCES') {
+            suggestions.push('检查文件权限设置');
+            suggestions.push('尝试以管理员身份运行');
+        } else if (error.code === 'ETIMEDOUT') {
+            suggestions.push('检查网络连接');
+            suggestions.push('稍后重试操作');
+        } else if (context === 'role_initialization') {
+            suggestions.push('尝试重新加载角色配置');
+            suggestions.push('检查角色配置文件格式');
+        } else if (context === 'script_execution') {
+            suggestions.push('检查脚本文件是否存在');
+            suggestions.push('验证脚本执行权限');
+            suggestions.push('查看脚本语法是否正确');
+        }
+
+        // 添加通用建议
+        suggestions.push('查看详细错误日志获取更多信息');
+        suggestions.push('重启应用程序后重试');
+
+        return suggestions;
+    }
+
+    /**
+     * 🛠️ 判断错误是否可以重试
+     * @param {Error} error - 原始错误
+     * @param {string} context - 错误上下文
+     * @returns {boolean} 是否可以重试
+     */
+    isRetryableError(error, context) {
+        // 网络错误、超时错误通常可以重试
+        const retryableCodes = ['ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED', 'ENOTFOUND'];
+        const retryableContexts = ['network', 'api_call', 'file_read'];
+
+        return retryableCodes.includes(error.code) || retryableContexts.includes(context);
+    }
+
+    /**
+     * 🛠️ 记录错误日志
+     * @param {Object} errorInfo - 错误信息
+     */
+    logError(errorInfo) {
+        try {
+            const logDir = path.join(this.projectRoot, '.cursorGrowth', 'monitoring', 'logs');
+            if (!fs.existsSync(logDir)) {
+                fs.mkdirSync(logDir, { recursive: true });
+            }
+
+            const logFile = path.join(logDir, 'error-log.jsonl');
+            fs.appendFileSync(logFile, JSON.stringify(errorInfo) + '\n');
+        } catch (logError) {
+            // 如果日志记录失败，不要抛出新错误
+            console.error('❌ 错误日志记录失败:', logError.message);
+        }
+    }
+
+    /**
+     * 🚀 性能优化 - 带缓存的文件读取
+     * @param {string} filePath - 文件路径
+     * @param {string} encoding - 编码格式
+     * @returns {Promise<string>} 文件内容
+     */
+    async readFileCached(filePath, encoding = 'utf8') {
+        const cacheKey = `file_${filePath}_${encoding}`;
+        const cached = this.cache.fileContents.get(cacheKey);
+
+        // 检查缓存是否有效
+        if (cached && (Date.now() - cached.timestamp) < this.cacheTTL) {
+            return cached.content;
+        }
+
+        // 缓存失效或不存在，重新读取
+        try {
+            const content = fs.readFileSync(filePath, encoding);
+
+            // 存储到缓存（限制缓存大小）
+            if (this.cache.fileContents.size >= this.maxCacheSize) {
+                this.cleanupExpiredCache();
+            }
+
+            this.cache.fileContents.set(cacheKey, {
+                content: content,
+                timestamp: Date.now(),
+                filePath: filePath
+            });
+
+            return content;
+        } catch (error) {
+            throw new Error(`读取文件失败 ${filePath}: ${error.message}`);
+        }
+    }
+
+    /**
+     * 🚀 性能优化 - 带缓存的JSON解析
+     * @param {string} filePath - JSON文件路径
+     * @returns {Promise<Object>} 解析后的JSON对象
+     */
+    async readJsonCached(filePath) {
+        const cacheKey = `json_${filePath}`;
+        const cached = this.cache.fileContents.get(cacheKey);
+
+        // 检查缓存是否有效
+        if (cached && (Date.now() - cached.timestamp) < this.cacheTTL) {
+            return cached.parsedJson;
+        }
+
+        // 缓存失效或不存在，先读取文件内容
+        try {
+            const content = await this.readFileCached(filePath, 'utf8');
+            const parsedJson = JSON.parse(content);
+
+            // 存储到缓存（限制缓存大小）
+            if (this.cache.fileContents.size >= this.maxCacheSize) {
+                this.cleanupExpiredCache();
+            }
+
+            this.cache.fileContents.set(cacheKey, {
+                parsedJson: parsedJson,
+                timestamp: Date.now(),
+                filePath: filePath
+            });
+
+            return parsedJson;
+        } catch (error) {
+            throw new Error(`JSON解析失败 ${filePath}: ${error.message}`);
+        }
+    }
+
+    /**
+     * 🚀 性能优化 - 清理过期缓存
+     */
+    cleanupExpiredCache() {
+        const now = Date.now();
+        const ttl = this.cacheTTL;
+
+        // 清理文件内容缓存
+        for (const [key, value] of this.cache.fileContents.entries()) {
+            if (now - value.timestamp > ttl) {
+                this.cache.fileContents.delete(key);
+            }
+        }
+
+        // 清理角色配置缓存
+        for (const [key, value] of this.cache.roleConfig.entries()) {
+            if (now - value.timestamp > ttl) {
+                this.cache.roleConfig.delete(key);
+            }
+        }
+
+        // 清理能力映射缓存
+        for (const [key, value] of this.cache.capabilityMap.entries()) {
+            if (now - value.timestamp > ttl) {
+                this.cache.capabilityMap.delete(key);
+            }
+        }
+
+        this.cache.lastCleanup = now;
+    }
+
+    /**
+     * 🚀 性能优化 - 强制清理所有缓存
+     */
+    clearAllCache() {
+        this.cache.fileContents.clear();
+        this.cache.roleConfig.clear();
+        this.cache.capabilityMap.clear();
+        this.cache.lastCleanup = Date.now();
+        console.log('🧹 缓存已清理');
+    }
+
+    /**
+     * 🚀 性能优化 - 获取缓存统计信息
+     */
+    getCacheStats() {
+        return {
+            fileContents: {
+                size: this.cache.fileContents.size,
+                maxSize: this.maxCacheSize
+            },
+            roleConfig: {
+                size: this.cache.roleConfig.size
+            },
+            capabilityMap: {
+                size: this.cache.capabilityMap.size
+            },
+            lastCleanup: new Date(this.cache.lastCleanup).toISOString(),
+            ttl: this.cacheTTL
+        };
+    }
 }
 
 // 导出供Cursor IDE使用
@@ -3126,8 +3642,8 @@ if (require.main === module) {
     });
 }
 
-// 导出类供外部使用
-module.exports = { MasterCommandHandler };
+// 导出供Cursor IDE使用
+module.exports = MasterCommandHandler;
 
 // 测试函数
 async function testDirectCalls() {
@@ -3188,3 +3704,4 @@ if (require.main === module) {
         process.exit(1);
     });
 }
+

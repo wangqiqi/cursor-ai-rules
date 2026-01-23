@@ -31,10 +31,119 @@ declare -A PERFORMANCE_METRICS=(
     ["active_agents"]="活跃Agent数"
 )
 
+# 进程限制配置
+MAX_CONCURRENT_COLLECTIONS=3
+COLLECTION_LOCK_FILE="$MONITORING_DIR/collection.lock"
+
+# 缓存配置
+METRICS_CACHE_DIR="$MONITORING_DIR/cache"
+METRICS_CACHE_TTL=300  # 5分钟缓存有效期
+
+# 获取当前运行的性能收集进程数量
+get_running_collection_count() {
+    ps aux | grep "collect_agent_performance_metrics" | grep -v grep | wc -l
+}
+
+# 缓存管理函数
+get_cache_key() {
+    local agent_id="$1"
+    local time_window="$2"
+    echo "${agent_id}_${time_window}"
+}
+
+is_cache_valid() {
+    local cache_key="$1"
+    local cache_file="$METRICS_CACHE_DIR/$cache_key.json"
+
+    if [[ ! -f "$cache_file" ]]; then
+        return 1
+    fi
+
+    local cache_time=$(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null)
+    local current_time=$(date +%s)
+    local age=$((current_time - cache_time))
+
+    [[ $age -lt $METRICS_CACHE_TTL ]]
+}
+
+get_cached_metrics() {
+    local cache_key="$1"
+    local cache_file="$METRICS_CACHE_DIR/$cache_key.json"
+
+    if is_cache_valid "$cache_key"; then
+        cat "$cache_file" 2>/dev/null
+        return 0
+    fi
+
+    return 1
+}
+
+save_cached_metrics() {
+    local cache_key="$1"
+    local metrics="$2"
+
+    mkdir -p "$METRICS_CACHE_DIR" 2>/dev/null || true
+    echo "$metrics" > "$METRICS_CACHE_DIR/$cache_key.json"
+}
+
+# 清理过期缓存
+cleanup_expired_cache() {
+    local current_time=$(date +%s)
+    local max_age=$METRICS_CACHE_TTL
+
+    if [[ -d "$METRICS_CACHE_DIR" ]]; then
+        find "$METRICS_CACHE_DIR" -name "*.json" -type f | while read -r cache_file; do
+            local file_time=$(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null)
+            local age=$((current_time - file_time))
+
+            if [[ $age -gt $max_age ]]; then
+                rm -f "$cache_file"
+            fi
+        done
+    fi
+}
+
+# 等待其他收集进程完成
+wait_for_collection_slot() {
+    local max_wait=30  # 最多等待30秒
+    local waited=0
+
+    while [[ $(get_running_collection_count) -ge $MAX_CONCURRENT_COLLECTIONS ]] && [[ $waited -lt $max_wait ]]; do
+        sleep 1
+        ((waited++))
+    done
+
+    if [[ $(get_running_collection_count) -ge $MAX_CONCURRENT_COLLECTIONS ]]; then
+        smart_echo "⚠️  性能收集进程数量已达上限，跳过本次收集" "warning"
+        return 1
+    fi
+
+    return 0
+}
+
 # 收集Agent性能指标
 collect_agent_performance_metrics() {
     local agent_id="${1:-all}"
     local time_window="${2:-300}"  # 默认5分钟窗口
+
+    # 进程数量限制
+    if ! wait_for_collection_slot; then
+        return 1
+    fi
+
+    # 尝试从缓存获取
+    local cache_key=$(get_cache_key "$agent_id" "$time_window")
+    local cached_metrics=$(get_cached_metrics "$cache_key")
+
+    if [[ -n "$cached_metrics" ]]; then
+        echo "$cached_metrics"
+        return 0
+    fi
+
+    # 定期清理过期缓存
+    if [[ $((RANDOM % 100)) -lt 5 ]]; then  # 5%概率清理缓存
+        cleanup_expired_cache &
+    fi
 
     # smart_echo "📊 收集Agent性能指标: $agent_id" "processing"
 
@@ -60,6 +169,9 @@ EOF
 
     # 保存到性能历史
     save_performance_metrics "$agent_id" "$metrics"
+
+    # 保存到缓存
+    save_cached_metrics "$cache_key" "$metrics"
 
     # smart_echo "✅ 性能指标收集完成" "success"
     echo "$metrics"
@@ -493,6 +605,25 @@ collect_all_agents_metrics() {
 start_realtime_monitoring() {
     local interval="${1:-60}"  # 默认60秒间隔
 
+    # 检查是否已有监控服务在运行
+    if [[ -f "$MONITORING_DIR/monitor.pid" ]]; then
+        local existing_pid=$(cat "$MONITORING_DIR/monitor.pid" 2>/dev/null)
+        if ps -p "$existing_pid" >/dev/null 2>&1; then
+            smart_echo "⚠️  实时监控服务已在运行 (PID: $existing_pid)" "warning"
+            return 0
+        else
+            # 清理无效的PID文件
+            rm -f "$MONITORING_DIR/monitor.pid"
+        fi
+    fi
+
+    # 检查总的性能收集进程数量
+    local current_count=$(get_running_collection_count)
+    if [[ $current_count -ge $MAX_CONCURRENT_COLLECTIONS ]]; then
+        smart_echo "⚠️  性能收集进程数量已达上限 ($current_count/$MAX_CONCURRENT_COLLECTIONS)，暂时无法启动监控服务" "warning"
+        return 1
+    fi
+
     smart_echo "🔄 启动实时监控服务 (间隔: ${interval}s)" "processing"
 
     # 创建监控进程
@@ -518,6 +649,33 @@ start_realtime_monitoring() {
     echo "$monitor_pid" > "$MONITORING_DIR/monitor.pid"
 
     smart_echo "✅ 实时监控服务已启动 (PID: $monitor_pid)" "success"
+
+    # 返回PID供调用者使用
+    echo "$monitor_pid"
+}
+
+# 清理所有性能收集进程
+cleanup_performance_processes() {
+    smart_echo "🧹 清理所有性能收集进程..." "processing"
+
+    # 停止所有collect_agent_performance_metrics进程
+    local pids=$(ps aux | grep "collect_agent_performance_metrics" | grep -v grep | awk '{print $2}')
+    local count=0
+
+    for pid in $pids; do
+        if kill -TERM "$pid" 2>/dev/null; then
+            smart_echo "✅ 停止性能收集进程 (PID: $pid)" "success"
+            ((count++))
+        fi
+    done
+
+    # 清理PID文件
+    if [[ -f "$MONITORING_DIR/monitor.pid" ]]; then
+        rm -f "$MONITORING_DIR/monitor.pid"
+        smart_echo "🗑️  清理监控PID文件" "info"
+    fi
+
+    smart_echo "✅ 清理完成，共停止 $count 个进程" "success"
 }
 
 # 停止实时监控服务
@@ -616,9 +774,13 @@ export -f generate_monitoring_dashboard
 export -f start_realtime_monitoring
 export -f stop_realtime_monitoring
 export -f get_monitoring_data
+export -f cleanup_performance_processes
+export -f get_running_collection_count
+export -f wait_for_collection_slot
 
 # 初始化目录
 mkdir -p "$MONITORING_DIR/performance"
 mkdir -p "$MONITORING_DIR/snapshots"
+mkdir -p "$METRICS_CACHE_DIR"
 
 smart_echo "📊 Agent监控面板系统模块已加载" "success"

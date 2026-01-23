@@ -1,0 +1,25 @@
+{
+  "name": "example-plugin",
+  "version": "1.0.0",
+  "description": "示例插件，演示插件系统的基本功能",
+  "author": "Cursor AI Rules",
+  "priority": 50,
+  "dependencies": [],
+  "components": [
+    {
+      "name": "exampleService",
+      "module": "example-service.js",
+      "description": "示例服务组件",
+      "dependencies": [],
+      "singleton": true
+    }
+  ],
+  "hooks": {
+    "onLoad": "init.js",
+    "onUnload": "cleanup.js"
+  },
+  "permissions": [
+    "file:read",
+    "console:log"
+  ]
+}

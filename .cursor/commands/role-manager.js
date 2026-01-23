@@ -3,6 +3,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const { global: cacheManager } = require('../core/cache-manager');
 
 class RoleManager {
     constructor(cursorDir, projectDir = null) {
@@ -13,6 +14,12 @@ class RoleManager {
         this.roleHistory = [];
         this.maxHistorySize = 10;
         this.projectRoleConfigPath = path.join(this.projectDir, '.cursor-project.json');
+
+        // 🚀 性能优化 - 全局缓存系统
+        this.roleCache = cacheManager.getCache('roles', { maxSize: 50, ttl: 300000 }); // 50个角色，5分钟TTL
+        this.nicknameIndex = new Map();
+        this.cacheTTL = 300000; // 5分钟缓存有效期
+        this.lastCacheUpdate = 0;
     }
 
     /**
@@ -25,6 +32,193 @@ class RoleManager {
         } catch (error) {
             console.error('❌ 角色管理器初始化失败:', error.message);
             throw error;
+        }
+    }
+
+    /**
+     * 构建昵称查找索引 - 性能优化
+     */
+    buildNicknameIndex() {
+        if (!this.personalitySystem || !this.personalitySystem.roles) {
+            return;
+        }
+
+        this.nicknameIndex.clear();
+
+        for (const [roleId, roleConfig] of Object.entries(this.personalitySystem.roles)) {
+            // 收集所有可能的昵称
+            const nicknames = new Set();
+
+            // 检查personality_traits中的nickname字段
+            if (roleConfig.personality_traits?.nickname) {
+                if (Array.isArray(roleConfig.personality_traits.nickname)) {
+                    roleConfig.personality_traits.nickname.forEach(nick => nicknames.add(nick));
+                } else if (typeof roleConfig.personality_traits.nickname === 'string') {
+                    nicknames.add(roleConfig.personality_traits.nickname);
+                }
+            }
+
+            // 检查根级别的nickname字段
+            if (roleConfig.nickname) {
+                if (Array.isArray(roleConfig.nickname)) {
+                    roleConfig.nickname.forEach(nick => nicknames.add(nick));
+                } else if (typeof roleConfig.nickname === 'string') {
+                    nicknames.add(roleConfig.nickname);
+                }
+            }
+
+            // 检查selfname配置中的昵称
+            if (roleConfig.personality_traits?.selfname?.nicknames) {
+                if (Array.isArray(roleConfig.personality_traits.selfname.nicknames)) {
+                    roleConfig.personality_traits.selfname.nicknames.forEach(nick => nicknames.add(nick));
+                }
+            }
+
+            // 构建反向索引
+            nicknames.forEach(nickname => {
+                if (!this.nicknameIndex.has(nickname)) {
+                    this.nicknameIndex.set(nickname, []);
+                }
+                this.nicknameIndex.get(nickname).push({
+                    roleId,
+                    roleConfig,
+                    priority: this.getNicknamePriority(nickname, roleConfig)
+                });
+            });
+        }
+
+        // 按优先级排序
+        for (const [nickname, roles] of this.nicknameIndex.entries()) {
+            roles.sort((a, b) => b.priority - a.priority);
+        }
+
+        console.log(`📇 构建昵称索引完成: ${this.nicknameIndex.size} 个唯一昵称`);
+    }
+
+    /**
+     * 简化角色配置结构 - 性能优化
+     * @param {Object} roleConfig - 原始角色配置
+     * @returns {Object} 简化后的配置
+     */
+    simplifyRoleConfig(roleConfig) {
+        const simplified = { ...roleConfig };
+
+        // 扁平化personality_traits
+        if (roleConfig.personality_traits) {
+            // 提取常用的字段到顶层
+            simplified.inner_voice = roleConfig.personality_traits.inner_voice;
+            simplified.core_values = roleConfig.personality_traits.core_values;
+            simplified.selfname = roleConfig.personality_traits.selfname;
+
+            // 保留原始结构作为fallback
+            simplified._original_personality_traits = roleConfig.personality_traits;
+        }
+
+        // 预计算常用值
+        simplified._computed = {
+            has_nicknames: !!(roleConfig.nickname || (roleConfig.personality_traits?.selfname?.nicknames)),
+            primary_nickname: roleConfig.personality_traits?.selfname?.primary ||
+                             roleConfig.nickname?.[0] ||
+                             roleConfig.name,
+            language_style: roleConfig.language_style || 'standard',
+            response_speed: roleConfig.response_speed || 'normal'
+        };
+
+        // 缓存常用模板
+        if (roleConfig.language_patterns) {
+            simplified._templates = {
+                greeting: roleConfig.language_patterns.greetings?.[0] || `你好，我是${roleConfig.name}`,
+                farewell: roleConfig.language_patterns.farewells?.[0] || '再见！',
+                agreement: roleConfig.language_patterns.agreement?.[0] || '好的',
+                apology: roleConfig.language_patterns.apology?.[0] || '抱歉'
+            };
+        }
+
+        return simplified;
+    }
+
+    /**
+     * 预加载常用角色 - 性能优化
+     */
+    preloadCommonRoles() {
+        const commonRoles = [
+            this.personalitySystem.default_role,
+            'friendly_partner',
+            'expert_mentor',
+            'creative_artist'
+        ].filter(roleId => this.personalitySystem.roles[roleId]);
+
+        for (const roleId of commonRoles) {
+            const roleConfig = this.personalitySystem.roles[roleId];
+            this.roleCache.set(roleId, {
+                config: roleConfig,
+                lastAccess: Date.now(),
+                accessCount: 1
+            });
+        }
+
+        console.log(`💾 预加载 ${commonRoles.length} 个常用角色到缓存`);
+    }
+
+    /**
+     * 从缓存获取角色配置
+     * @param {string} roleId - 角色ID
+     * @returns {Object|null} 缓存的角色配置
+     */
+    getRoleFromCache(roleId) {
+        return this.roleCache.get(roleId);
+    }
+
+    /**
+     * 添加角色到缓存
+     * @param {string} roleId - 角色ID
+     * @param {Object} roleConfig - 角色配置
+     */
+    addRoleToCache(roleId, roleConfig) {
+        this.roleCache.set(roleId, roleConfig);
+    }
+
+    /**
+     * 获取昵称匹配优先级
+     */
+    getNicknamePriority(nickname, roleConfig) {
+        let priority = 1;
+
+        // 主要昵称有更高优先级
+        if (roleConfig.personality_traits?.selfname?.primary_nickname === nickname) {
+            priority += 10;
+        }
+
+        // 常用昵称有中等优先级
+        if (roleConfig.nickname?.includes(nickname)) {
+            priority += 5;
+        }
+
+        return priority;
+    }
+
+    /**
+     * 检查缓存是否过期
+     */
+    isCacheExpired() {
+        return Date.now() - this.lastCacheUpdate > this.cacheTTL;
+    }
+
+    /**
+     * 更新缓存时间戳
+     */
+    updateCacheTimestamp() {
+        this.lastCacheUpdate = Date.now();
+    }
+
+    /**
+     * 清理过期缓存
+     */
+    cleanupCache() {
+        // 全局缓存管理器会自动清理，这里只需要清理昵称索引
+        if (this.isCacheExpired()) {
+            this.nicknameIndex.clear();
+            console.log('🧹 昵称索引已清理');
         }
     }
 
@@ -111,7 +305,8 @@ class RoleManager {
 
                             // 移除元数据，只保留角色配置
                             const { _metadata, ...roleConfig } = roleData;
-                            personalitySystem.roles[roleData.id] = roleConfig;
+                            // 🚀 性能优化 - 简化配置结构
+                            personalitySystem.roles[roleData.id] = this.simplifyRoleConfig(roleConfig);
 
                             console.log(`✅ 加载角色: ${roleData.name} (${roleData.id})`);
                         } else {
@@ -132,6 +327,15 @@ class RoleManager {
             console.warn('⚠️ 加载模块化角色失败，使用默认配置:', error.message);
             return this.getDefaultPersonalitySystem();
         }
+
+        // 🚀 性能优化 - 构建昵称查找索引
+        this.personalitySystem = personalitySystem;
+        this.buildNicknameIndex();
+
+        // 🚀 性能优化 - 预加载常用角色到缓存
+        this.preloadCommonRoles();
+
+        this.updateCacheTimestamp();
 
         return personalitySystem;
     }
@@ -174,12 +378,20 @@ class RoleManager {
      * 切换角色
      */
     async switchRole(roleId, reason = 'manual') {
-        if (!this.personalitySystem.roles[roleId]) {
-            return {
-                success: false,
-                message: `角色 "${roleId}" 不存在`,
-                availableRoles: Object.keys(this.personalitySystem.roles)
-            };
+        // 🚀 性能优化 - 使用LRU缓存
+        let roleConfig = this.getRoleFromCache(roleId);
+
+        if (!roleConfig) {
+            roleConfig = this.personalitySystem.roles[roleId];
+            if (!roleConfig) {
+                return {
+                    success: false,
+                    message: `角色 "${roleId}" 不存在`,
+                    availableRoles: Object.keys(this.personalitySystem.roles)
+                };
+            }
+            // 添加到LRU缓存
+            this.addRoleToCache(roleId, roleConfig);
         }
 
         const oldRole = this.currentRole;
@@ -188,8 +400,6 @@ class RoleManager {
 
         // 保存项目角色配置
         await this.saveProjectRoleConfig(roleId);
-
-        const roleConfig = this.personalitySystem.roles[roleId];
 
         return {
             success: true,
@@ -295,9 +505,39 @@ class RoleManager {
     }
 
     /**
-     * 通过昵称查找角色
+     * 通过昵称查找角色 - 优化版使用索引
      */
     findRoleByNickname(nickname) {
+        // 检查缓存是否过期
+        this.cleanupCache();
+
+        // 检查昵称索引是否存在
+        if (!this.nicknameIndex.has(nickname)) {
+            // 降级到传统查找方法（用于向后兼容）
+            return this.findRoleByNicknameLegacy(nickname);
+        }
+
+        const matches = this.nicknameIndex.get(nickname);
+        if (matches && matches.length > 0) {
+            const bestMatch = matches[0]; // 已按优先级排序
+            return {
+                success: true,
+                roleId: bestMatch.roleId,
+                roleConfig: bestMatch.roleConfig,
+                matchedBy: 'nickname_index',
+                priority: bestMatch.priority,
+                totalMatches: matches.length
+            };
+        }
+
+        // 降级到传统查找方法
+        return this.findRoleByNicknameLegacy(nickname);
+    }
+
+    /**
+     * 传统昵称查找方法 - 向后兼容
+     */
+    findRoleByNicknameLegacy(nickname) {
         // 首先检查已加载的角色系统
         if (this.personalitySystem && this.personalitySystem.roles) {
             for (const [roleId, roleConfig] of Object.entries(this.personalitySystem.roles)) {
@@ -305,15 +545,15 @@ class RoleManager {
                 if (roleConfig.personality_traits &&
                     roleConfig.personality_traits.nickname &&
                     Array.isArray(roleConfig.personality_traits.nickname)) {
-                    if (roleConfig.personality_traits.nickname.includes(nickname)) {
-                        return {
-                            success: true,
-                            roleId: roleId,
-                            roleConfig: roleConfig,
-                            matchedBy: 'personality_traits_nickname'
-                        };
+                        if (roleConfig.personality_traits.nickname.includes(nickname)) {
+                            return {
+                                success: true,
+                                roleId: roleId,
+                                roleConfig: roleConfig,
+                                matchedBy: 'personality_traits_nickname'
+                            };
+                        }
                     }
-                }
                 // 检查根级别的nickname字段
                 if (roleConfig.nickname && Array.isArray(roleConfig.nickname)) {
                     if (roleConfig.nickname.includes(nickname)) {
@@ -329,15 +569,15 @@ class RoleManager {
                 if (roleConfig.personality_traits &&
                     roleConfig.personality_traits.selfname &&
                     roleConfig.personality_traits.selfname.nicknames) {
-                    if (roleConfig.personality_traits.selfname.nicknames.includes(nickname)) {
-                        return {
-                            success: true,
-                            roleId: roleId,
-                            roleConfig: roleConfig,
-                            matchedBy: 'selfname_nicknames'
-                        };
+                        if (roleConfig.personality_traits.selfname.nicknames.includes(nickname)) {
+                            return {
+                                success: true,
+                                roleId: roleId,
+                                roleConfig: roleConfig,
+                                matchedBy: 'selfname_nicknames'
+                            };
+                        }
                     }
-                }
             }
         }
 
