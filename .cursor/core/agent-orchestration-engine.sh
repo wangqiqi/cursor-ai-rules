@@ -18,6 +18,13 @@ source "$SCRIPT_DIR/context-pool-manager.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 
 # =============================================================================
+# 自主规划集成 - 自动触发Loop-While
+# =============================================================================
+
+# 加载自主规划控制器
+source "$SCRIPT_DIR/agent-orchestration-autonomous-planner.sh"
+
+# =============================================================================
 # 导入所有专用模块 (按依赖层次排序)
 # =============================================================================
 
@@ -128,6 +135,24 @@ init_agent_orchestration_engine() {
 
     smart_echo "🩺 启动健康监控服务..." "info"
     start_agent_health_monitor
+
+    # 🚀 自动触发自主规划
+    smart_echo "🧠 启动自主规划分析..." "info"
+    local autonomous_result=$(execute_autonomous_planning "engine_initialization")
+
+    # 根据自主规划结果决定是否启动Loop-While
+    if echo "$autonomous_result" | jq -r '.decision.recommended_actions[]' | grep -q "initiate_loop_while_development"; then
+        smart_echo "🎭 基于项目分析，自动启动Loop-While开发循环..." "processing"
+
+        # 从自主规划结果中提取项目信息
+        local project_id=$(echo "$autonomous_result" | jq -r '.project_id // "auto_project_'$(date +%s)'"')
+        local requirements=$(echo "$autonomous_result" | jq -r '.requirements // "基于项目分析的自主开发需求"')
+
+        # 启动Loop-While循环
+        start_loop_while_development "$project_id" "$requirements" 0.95
+    else
+        smart_echo "📋 项目分析完成，无需立即启动Loop-While循环" "info"
+    fi
 
     smart_echo "🎉 代理编排引擎初始化完成！" "success"
     smart_echo "系统已就绪，可以开始处理任务。" "info"
