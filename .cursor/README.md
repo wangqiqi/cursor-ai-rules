@@ -856,3 +856,9 @@ chmod +x .cursor/features/hooks/*.sh
 
 *最后更新: 2026-01-22 | 作者: wangqiqi (https://github.com/wangqiqi)*
 *基于 Cursor 官方规范，宪法驱动的AI，具备智能感知、决策和进化系统*
+## Testing
+
+```bash
+# Run tests
+npm test
+```

@@ -41,7 +41,7 @@ run_automatic_compilation_check() {
         language=$(detect_project_language "$project_path")
     fi
 
-    smart_echo "检测到项目语言: $language" "info"
+    # smart_echo "检测到项目语言: $language" "info"
 
     # 根据语言执行相应的编译检查
     case "$language" in
@@ -73,7 +73,7 @@ run_automatic_compilation_check() {
 run_javascript_compilation_check() {
     local project_path="$1"
 
-    smart_echo "检查JavaScript/TypeScript文件..." "processing"
+    # smart_echo "检查JavaScript/TypeScript文件..." "processing"
 
     # 查找所有JS/TS文件
     local js_files=$(find "$project_path" -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" | grep -v node_modules | head -50)
@@ -88,7 +88,7 @@ run_javascript_compilation_check() {
             else
                 COMPILATION_RESULTS["failed_files"]=$((COMPILATION_RESULTS["failed_files"] + 1))
                 COMPILATION_RESULTS["syntax_errors"]=$((COMPILATION_RESULTS["syntax_errors"] + 1))
-                smart_echo "❌ 语法错误: $file" "error"
+                # smart_echo "❌ 语法错误: $file" "error"
             fi
 
             # TypeScript类型检查 (如果适用)
@@ -108,7 +108,7 @@ run_javascript_compilation_check() {
 run_python_compilation_check() {
     local project_path="$1"
 
-    smart_echo "检查Python文件..." "processing"
+    # smart_echo "检查Python文件..." "processing"
 
     local py_files=$(find "$project_path" -name "*.py" | grep -v __pycache__ | head -50)
 
@@ -122,7 +122,7 @@ run_python_compilation_check() {
             else
                 COMPILATION_RESULTS["failed_files"]=$((COMPILATION_RESULTS["failed_files"] + 1))
                 COMPILATION_RESULTS["syntax_errors"]=$((COMPILATION_RESULTS["syntax_errors"] + 1))
-                smart_echo "❌ 语法错误: $file" "error"
+                # smart_echo "❌ 语法错误: $file" "error"
             fi
         fi
     done
@@ -132,14 +132,14 @@ run_python_compilation_check() {
 run_generic_compilation_check() {
     local project_path="$1"
 
-    smart_echo "执行通用编译检查..." "processing"
+    # smart_echo "执行通用编译检查..." "processing"
 
     # 检查常见的配置文件
     local config_files=("package.json" "requirements.txt" "Cargo.toml" "go.mod" "pom.xml")
 
     for config in "${config_files[@]}"; do
         if [[ -f "$project_path/$config" ]]; then
-            smart_echo "✅ 发现配置文件: $config" "success"
+            # smart_echo "✅ 发现配置文件: $config" "success"
             COMPILATION_RESULTS["passed_files"]=$((COMPILATION_RESULTS["passed_files"] + 1))
         fi
     done
@@ -181,17 +181,7 @@ generate_compilation_report() {
         success_rate=$((passed * 100 / total))
     fi
 
-    smart_echo "📋 编译检查报告:" "info"
-    smart_echo "  总文件数: $total" "info"
-    smart_echo "  通过文件: $passed" "success"
-    smart_echo "  失败文件: $failed" "error"
-    smart_echo "  成功率: ${success_rate}%" "info"
-
-    if [[ $failed -gt 0 ]]; then
-        smart_echo "  语法错误: ${COMPILATION_RESULTS["syntax_errors"]}" "error"
-        smart_echo "  类型错误: ${COMPILATION_RESULTS["type_errors"]}" "warning"
-        smart_echo "  依赖错误: ${COMPILATION_RESULTS["dependency_errors"]}" "warning"
-    fi
+    # Compilation check report generated silently
 
     # 返回JSON格式的报告
     cat <<EOF
@@ -228,7 +218,7 @@ generate_automatic_tests() {
     local project_path="${1:-.}"
     local language="${2:-auto}"
 
-    smart_echo "🧪 开始自动测试生成..." "processing"
+    # smart_echo "🧪 开始自动测试生成..." "processing"
 
     if [[ "$language" == "auto" ]]; then
         language=$(detect_project_language "$project_path")
@@ -242,7 +232,7 @@ generate_automatic_tests() {
             generate_python_tests "$project_path"
             ;;
         *)
-            smart_echo "⚠️ 暂不支持 $language 的自动测试生成" "warning"
+            # smart_echo "⚠️ 暂不支持 $language 的自动测试生成" "warning"
             ;;
     esac
 
@@ -254,7 +244,7 @@ generate_automatic_tests() {
 generate_javascript_tests() {
     local project_path="$1"
 
-    smart_echo "生成JavaScript测试文件..." "processing"
+    # smart_echo "生成JavaScript测试文件..." "processing"
 
     # 查找源文件
     local src_files=$(find "$project_path" -name "*.js" -o -name "*.ts" | grep -v node_modules | grep -v "\.test\." | head -10)
@@ -267,7 +257,7 @@ generate_javascript_tests() {
         if [[ -n "$test_content" ]]; then
             echo "$test_content" > "$test_file"
             TEST_RESULTS["generated_tests"]=$((TEST_RESULTS["generated_tests"] + 1))
-            smart_echo "✅ 生成测试: $test_file" "success"
+            # smart_echo "✅ 生成测试: $test_file" "success"
         fi
     done
 }
@@ -310,7 +300,7 @@ EOF
 generate_python_tests() {
     local project_path="$1"
 
-    smart_echo "生成Python测试文件..." "processing"
+    # smart_echo "生成Python测试文件..." "processing"
 
     local src_files=$(find "$project_path" -name "*.py" | grep -v __pycache__ | grep -v test_ | head -10)
 
@@ -322,7 +312,7 @@ generate_python_tests() {
         if [[ -n "$test_content" ]]; then
             echo "$test_content" > "$test_file"
             TEST_RESULTS["generated_tests"]=$((TEST_RESULTS["generated_tests"] + 1))
-            smart_echo "✅ 生成测试: $test_file" "success"
+            # smart_echo "✅ 生成测试: $test_file" "success"
         fi
     done
 }
@@ -374,7 +364,7 @@ execute_generated_tests() {
     local project_path="$1"
     local language="$2"
 
-    smart_echo "执行测试..." "processing"
+    # smart_echo "执行测试..." "processing"
 
     case "$language" in
         "javascript"|"typescript"|"nodejs")
@@ -418,7 +408,7 @@ generate_automatic_documentation() {
     local project_path="${1:-.}"
     local doc_type="${2:-all}"  # api, readme, comments, all
 
-    smart_echo "📚 开始自动文档生成..." "processing"
+    # smart_echo "📚 开始自动文档生成..." "processing"
 
     case "$doc_type" in
         "api")
@@ -444,7 +434,7 @@ generate_automatic_documentation() {
 generate_api_documentation() {
     local project_path="$1"
 
-    smart_echo "生成API文档..." "processing"
+    # smart_echo "生成API文档..." "processing"
 
     local language=$(detect_project_language "$project_path")
 
@@ -464,7 +454,7 @@ generate_api_documentation() {
             fi
             ;;
         *)
-            smart_echo "⚠️ 暂不支持 $language 的API文档生成" "warning"
+            # smart_echo "⚠️ 暂不支持 $language 的API文档生成" "warning"
             ;;
     esac
 }
@@ -473,7 +463,7 @@ generate_api_documentation() {
 update_readme_documentation() {
     local project_path="$1"
 
-    smart_echo "更新README文档..." "processing"
+    # smart_echo "更新README文档..." "processing"
 
     local readme_file="$project_path/README.md"
 
@@ -544,7 +534,7 @@ update_existing_readme() {
 add_code_comments() {
     local project_path="$1"
 
-    smart_echo "添加代码注释..." "processing"
+    # smart_echo "添加代码注释..." "processing"
 
     local language=$(detect_project_language "$project_path")
     local files_to_comment=()
@@ -590,7 +580,7 @@ add_basic_comments() {
 EOF
                 cat "$file" >> "$temp_file"
                 mv "$temp_file" "$file"
-                smart_echo "✅ 添加JSDoc注释到: ${file##*/}" "success"
+                # smart_echo "✅ 添加JSDoc注释到: ${file##*/}" "success"
             fi
             ;;
         "python")
@@ -607,7 +597,7 @@ Generated by: Quality Loop System
 EOF
                 cat "$file" >> "$temp_file"
                 mv "$temp_file" "$file"
-                smart_echo "✅ 添加docstring到: ${file##*/}" "success"
+                # smart_echo "✅ 添加docstring到: ${file##*/}" "success"
             fi
             ;;
     esac
@@ -615,10 +605,10 @@ EOF
 
 # 生成文档报告
 generate_documentation_report() {
-    smart_echo "📋 文档生成报告:" "info"
-    smart_echo "  API文档生成: ${DOC_RESULTS["api_docs_generated"]}" "info"
-    smart_echo "  README更新: ${DOC_RESULTS["readme_updated"]}" "info"
-    smart_echo "  代码注释添加: ${DOC_RESULTS["code_comments_added"]}" "info"
+    # smart_echo "📋 文档生成报告:" "info"
+    # smart_echo "  API文档生成: ${DOC_RESULTS["api_docs_generated"]}" "info"
+    # smart_echo "  README更新: ${DOC_RESULTS["readme_updated"]}" "info"
+    # smart_echo "  代码注释添加: ${DOC_RESULTS["code_comments_added"]}" "info"
 
     cat <<EOF
 {
@@ -649,7 +639,7 @@ run_automated_quality_checks() {
     local project_path="${1:-.}"
     local check_type="${2:-all}"  # linting, security, performance, all
 
-    smart_echo "🔍 开始代码质量自动化检查..." "processing"
+    # smart_echo "🔍 开始代码质量自动化检查..." "processing"
 
     case "$check_type" in
         "linting")
@@ -675,7 +665,7 @@ run_automated_quality_checks() {
 run_linting_checks() {
     local project_path="$1"
 
-    smart_echo "运行代码规范检查..." "processing"
+    # smart_echo "运行代码规范检查..." "processing"
 
     local language=$(detect_project_language "$project_path")
 
@@ -703,7 +693,7 @@ run_linting_checks() {
             fi
             ;;
         *)
-            smart_echo "⚠️ 暂不支持 $language 的linting检查" "warning"
+            # smart_echo "⚠️ 暂不支持 $language 的linting检查" "warning"
             ;;
     esac
 }
@@ -712,7 +702,7 @@ run_linting_checks() {
 run_security_checks() {
     local project_path="$1"
 
-    smart_echo "运行安全检查..." "processing"
+    # smart_echo "运行安全检查..." "processing"
 
     local language=$(detect_project_language "$project_path")
     local security_issues=0
@@ -724,7 +714,7 @@ run_security_checks() {
             cd "$project_path"
             if npm audit --audit-level moderate 2>/dev/null | grep -q "vulnerabilities"; then
                 security_issues=$((security_issues + 1))
-                smart_echo "⚠️ 发现安全漏洞" "warning"
+                # smart_echo "⚠️ 发现安全漏洞" "warning"
             fi
         fi
     fi
@@ -734,7 +724,7 @@ run_security_checks() {
     if [[ -n "$sensitive_files" ]]; then
         for file in $sensitive_files; do
             if [[ -f "$file" ]]; then
-                smart_echo "⚠️ 发现敏感文件: ${file##*/}" "warning"
+                # smart_echo "⚠️ 发现敏感文件: ${file##*/}" "warning"
                 security_issues=$((security_issues + 1))
             fi
         done
@@ -747,7 +737,7 @@ run_security_checks() {
 run_performance_checks() {
     local project_path="$1"
 
-    smart_echo "运行性能检查..." "processing"
+    # smart_echo "运行性能检查..." "processing"
 
     local performance_issues=0
 
@@ -755,7 +745,7 @@ run_performance_checks() {
     local large_files=$(find "$project_path" -type f -size +10M 2>/dev/null | head -3)
     if [[ -n "$large_files" ]]; then
         for file in $large_files; do
-            smart_echo "⚠️ 发现大文件: ${file##*/} ($(du -h "$file" | cut -f1))" "warning"
+            # smart_echo "⚠️ 发现大文件: ${file##*/} ($(du -h "$file" | cut -f1))" "warning"
             performance_issues=$((performance_issues + 1))
         done
     fi
@@ -772,11 +762,11 @@ run_performance_checks() {
 
 # 生成质量报告
 generate_quality_report() {
-    smart_echo "📋 代码质量检查报告:" "info"
-    smart_echo "  Linting检查: $([[ ${QUALITY_RESULTS["linting_passed"]} -eq 1 ]] && echo "✅ 通过" || echo "⚠️ 有问题")" "info"
-    smart_echo "  安全问题: ${QUALITY_RESULTS["security_issues"]} 处" "info"
-    smart_echo "  性能问题: ${QUALITY_RESULTS["performance_issues"]} 处" "info"
-    smart_echo "  可维护性评分: ${QUALITY_RESULTS["maintainability_score"]}/100" "info"
+    # smart_echo "📋 代码质量检查报告:" "info"
+    # smart_echo "  Linting检查: $([[ ${QUALITY_RESULTS["linting_passed"]} -eq 1 ]] && echo "✅ 通过" || echo "⚠️ 有问题")" "info"
+    # smart_echo "  安全问题: ${QUALITY_RESULTS["security_issues"]} 处" "info"
+    # smart_echo "  性能问题: ${QUALITY_RESULTS["performance_issues"]} 处" "info"
+    # smart_echo "  可维护性评分: ${QUALITY_RESULTS["maintainability_score"]}/100" "info"
 
     cat <<EOF
 {
@@ -800,7 +790,7 @@ execute_quality_loop() {
     local project_path="${1:-.}"
     local operations="${2:-all}"  # compilation, testing, documentation, quality, all
 
-    smart_echo "🔄 开始质量闭环执行..." "processing"
+    # smart_echo "🔄 开始质量闭环执行..." "processing"
 
     local results="{}"
 
@@ -860,7 +850,7 @@ EOF
             ;;
     esac
 
-    smart_echo "✅ 质量闭环执行完成" "success"
+    # smart_echo "✅ 质量闭环执行完成" "success"
     echo "$results"
 }
 
