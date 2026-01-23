@@ -23,31 +23,32 @@ select_optimal_agent() {
     local task_type="${2:-general}"
     local required_capabilities="${3:-}"
 
-    smart_echo "选择最优Agent (任务类型: $task_type)" "processing"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的select_optimal_agent函数
+    smart_echo "动态负载调度器: 选择最优代理执行任务..." "processing"
 
     # 获取系统负载状态
-    local load_status=$(get_system_load_status)
+    local system_load=$(get_system_load_status)
 
-    # 获取可用Agent列表
+    # 获取可用代理列表
     local available_agents=$(get_available_agents)
 
-    if [[ -z "$available_agents" ]]; then
-        smart_echo "没有可用的Agent" "error"
+    if [[ "$available_agents" == "[]" ]]; then
+        smart_echo "警告: 没有可用的代理" "warning"
         return 1
     fi
 
-    # 应用调度策略选择最优Agent
-    local optimal_agent=$(apply_scheduling_strategy "$available_agents" "$load_status" "$task_description" "$task_type" "$required_capabilities")
+    # 应用智能调度策略
+    local selected_agent=$(apply_scheduling_strategy "$task_description" "$task_type" "$required_capabilities" "$available_agents" "$system_load")
 
-    if [[ -n "$optimal_agent" ]]; then
-        smart_echo "选择最优Agent: $optimal_agent" "success"
-        echo "$optimal_agent"
-        return 0
+    if [[ -n "$selected_agent" ]]; then
+        smart_echo "选中代理: $selected_agent" "success"
+
+        # 更新调度统计
+        update_scheduling_stats "$selected_agent" "selected"
+
+        echo "$selected_agent"
     else
-        smart_echo "未能选择合适的Agent" "error"
-        return 1
+        smart_echo "无法找到合适的代理" "error"
+        echo ""
     fi
 }
 

@@ -22,28 +22,26 @@ assess_task_resource_requirements() {
     local task_type="$2"
     local complexity_analysis="$3"
 
-    smart_echo "评估任务资源需求: $task_type" "processing"
+    local complexity_score=$(echo "$complexity_analysis" | jq -r '.complexity_score // 50')
+    local estimated_effort=$(estimate_task_effort "$task_description" "$task_type")
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的资源评估逻辑
+    # 基于复杂度评分和任务类型计算资源需求
+    local resource_profile=$(calculate_resource_profile "$task_type" "$complexity_score" "$estimated_effort")
 
-    # 计算资源成本
-    local resource_cost=$(calculate_resource_cost "$task_description" "$task_type" "$complexity_analysis")
+    # 基于任务描述分析特殊资源需求
+    local special_requirements=$(analyze_special_resource_requirements "$task_description")
 
-    # 识别所需资源类型
-    local required_resources=$(identify_required_resources "$task_description" "$task_type")
-
-    # 估算执行时间
-    local estimated_duration=$(estimate_execution_duration "$complexity_analysis" "$resource_cost")
-
-    # 确定资源分配策略
-    local allocation_strategy=$(determine_allocation_strategy "$required_resources" "$estimated_duration")
+    # 合并基础资源需求和特殊需求
+    local final_requirements=$(merge_resource_requirements "$resource_profile" "$special_requirements")
 
     cat <<EOF
 {
-  "resource_cost": $resource_cost,
-  "required_resources": $required_resources,
-  "estimated_duration": "$estimated_duration",
-  "allocation_strategy": "$allocation_strategy",
+  "resource_profile": $resource_profile,
+  "special_requirements": $special_requirements,
+  "final_requirements": $final_requirements,
+  "estimated_cost": $(calculate_resource_cost "$final_requirements"),
+  "recommended_agent_types": $(recommend_agent_types "$task_type" "$final_requirements"),
+  "scalability_notes": "$(generate_scalability_notes "$final_requirements")",
   "assessment_timestamp": "$(date -Iseconds)"
 }
 EOF

@@ -36,8 +36,12 @@ create_extended_task_state() {
 
     # 分析依赖关系
     local dependency_analysis=$(analyze_task_dependencies "$task_description" "$task_type")
+    # 确保dependency_analysis不为null
+    if [[ "$dependency_analysis" == "null" ]] || [[ -z "$dependency_analysis" ]]; then
+        dependency_analysis='{"dependencies": []}'
+    fi
 
-    # 构建扩展状态结构
+    # 创建扩展状态结构
     local extended_state=$(cat <<EOF
 {
   "state_id": "$state_id",
@@ -57,7 +61,8 @@ create_extended_task_state() {
     "description": "$task_description",
     "type": "$task_type",
     "priority": "$priority",
-    "estimated_effort": $(estimate_task_effort "$task_description" "$task_type")
+    "estimated_effort": $(estimate_task_effort "$task_description" "$task_type"),
+    "required_capabilities": $(identify_required_capabilities "$task_description" "$task_type")
   },
   "complexity_analysis": $complexity_analysis,
   "resource_assessment": $resource_assessment,
@@ -73,19 +78,19 @@ create_extended_task_state() {
   },
   "quality_metrics": {
     "success_probability": $(calculate_success_probability "$complexity_analysis" "$resource_assessment"),
-    "risk_level": "low",
+    "risk_level": "$(get_risk_level "$complexity_analysis" "$dependency_analysis")",
     "quality_score": 0
   },
   "persistence_flags": {
     "allow_resume": true,
-    "checkpoint_enabled": true,
-    "backup_required": false
+    "checkpoint_enabled": $(should_enable_checkpoint "$complexity_analysis"),
+    "backup_required": $(should_require_backup "$task_type" "$priority")
   },
   "relationships": {
     "parent_task": null,
     "child_tasks": [],
     "related_tasks": [],
-    "predecessor_tasks": [],
+    "predecessor_tasks": $(get_predecessor_tasks "$dependency_analysis" || echo "[]"),
     "successor_tasks": []
   },
   "monitoring_data": {

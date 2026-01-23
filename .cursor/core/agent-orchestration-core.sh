@@ -23,100 +23,131 @@ submit_task() {
     local task_description="$1"
     local task_type="${2:-general}"
     local priority="${3:-normal}"
-    local metadata="${4:-{}}"
+    local deadline="${4:-}"
 
-    smart_echo "提交任务: $task_description (类型: $task_type, 优先级: $priority)" "processing"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的submit_task函数
+    smart_echo "提交任务到编排引擎: $task_description" "info"
 
     # 生成任务ID
-    local task_id=$(generate_task_id)
+    local task_id="task_$(date +%s%N | cut -b1-13)_$(openssl rand -hex 4)"
+
+    # 分析任务复杂度
+    local complexity_analysis=$(analyze_task_complexity "$task_description" "$task_type")
+
+    # 评估资源需求
+    local resource_assessment=$(assess_task_resource_requirements "$task_description" "$task_type" "$complexity_analysis")
 
     # 创建任务对象
-    local task_data=$(create_task_object "$task_id" "$task_description" "$task_type" "$priority" "$metadata")
+    local task_object=$(cat <<EOF
+{
+  "task_id": "$task_id",
+  "description": "$task_description",
+  "type": "$task_type",
+  "priority": "$priority",
+  "status": "pending",
+  "created_at": "$(date -Iseconds)",
+  "deadline": "$deadline",
+  "assigned_agent": null,
+  "progress": 0,
+  "dependencies": $(analyze_task_dependencies "$task_description" "$task_type" | jq '.dependencies'),
+  "complexity_analysis": $complexity_analysis,
+  "resource_assessment": $resource_assessment,
+  "estimated_effort": $(estimate_task_effort "$task_description" "$task_type"),
+  "required_capabilities": $(identify_required_capabilities "$task_description" "$task_type")
+}
+EOF
+)
 
-    # 添加到任务队列
-    if add_task_to_queue "$task_data"; then
-        smart_echo "任务提交成功: $task_id" "success"
+    # 检查是否需要创建Agent树
+    local needs_decomposition=$(echo "$complexity_analysis" | jq -r '.decomposition_needed')
+    local agent_tree="null"
 
-        # 触发任务分配
-        trigger_task_assignment
-
-        echo "$task_id"
-        return 0
-    else
-        smart_echo "任务提交失败" "error"
-        return 1
+    if [[ "$needs_decomposition" == "true" ]]; then
+        smart_echo "任务复杂度较高，创建Agent树进行调度" "info"
+        agent_tree=$(create_agent_tree "$task_id")
+        smart_echo "Agent树创建完成" "success"
     fi
+
+    # 创建扩展任务状态
+    smart_echo "正在创建扩展任务状态..." "info"
+    local extended_state=$(create_extended_task_state "$task_id" "$task_description" "$task_type" "$priority")
+
+    # 添加agent_tree信息到扩展状态
+    if [[ "$agent_tree" != "null" ]] && [[ -n "$agent_tree" ]]; then
+        # 提取tree_id并简化存储
+        local tree_id=$(echo "$agent_tree" | jq -r '.tree_id // empty')
+        if [[ -n "$tree_id" ]]; then
+            extended_state=$(echo "$extended_state" | jq --arg tree_id "$tree_id" '.agent_tree = {"tree_id": $tree_id, "status": "created"}')
+        fi
+    fi
+
+    # 保存扩展状态到持久化存储
+    save_extended_task_state "$task_id" "$extended_state"
+
+    # 同时添加到传统任务队列 (向后兼容)
+    smart_echo "正在添加任务到队列..." "info"
+    add_task_to_queue "$task_object"
+
+    # 如果有Agent树，启动树执行；否则触发普通任务分配
+    if [[ "$agent_tree" != "null" ]] && [[ -n "$agent_tree" ]]; then
+        local tree_id=$(echo "$agent_tree" | jq -r '.tree_id')
+        smart_echo "启动Agent树执行: $tree_id" "info"
+        execute_agent_tree "$tree_id" &
+    else
+        smart_echo "触发普通任务分配" "info"
+        trigger_task_assignment
+    fi
+
+    echo "$task_id"
 }
 
 # 添加任务到队列
 add_task_to_queue() {
-    local task_data="$1"
+    local task_object="$1"
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的add_task_to_queue函数
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
 
-    # 确保任务队列目录存在
-    local queue_dir="$AGENT_CONFIG_DIR/task-queue"
-    mkdir -p "$queue_dir"
+    # 更新队列
+    local temp_queue=$(mktemp)
+    jq --argjson task "$task_object" '.queue += [$task] | .statistics.total_tasks += 1' "$task_queue_file" > "$temp_queue"
+    mv "$temp_queue" "$task_queue_file"
 
-    # 提取任务ID
-    local task_id=$(echo "$task_data" | jq -r '.id' 2>/dev/null)
-
-    if [[ -z "$task_id" ]]; then
-        smart_echo "无效的任务数据" "error"
-        return 1
-    fi
-
-    # 保存任务到队列文件
-    local queue_file="$queue_dir/${task_id}.json"
-    echo "$task_data" > "$queue_file"
-
-    smart_echo "任务已添加到队列: $task_id" "success"
-    return 0
+    smart_echo "任务已添加到队列" "success"
 }
 
 # 触发任务分配
 trigger_task_assignment() {
-    smart_echo "触发任务分配" "processing"
+    smart_echo "触发智能任务分配..." "processing"
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的trigger_task_assignment函数
-
-    # 获取待处理任务
+    # 获取待分配的任务
     local pending_tasks=$(get_pending_tasks)
 
-    if [[ -z "$pending_tasks" ]]; then
+    if [[ "$pending_tasks" == "[]" ]]; then
         smart_echo "没有待分配的任务" "info"
-        return 0
+        return
     fi
 
-    # 为每个任务分配Agent
-    local assigned_count=0
-    local failed_count=0
+    # 为每个任务分配最适合的代理
+    echo "$pending_tasks" | jq -c '.[]' | while read -r task; do
+        local task_id=$(echo "$task" | jq -r '.task_id')
+        local task_description=$(echo "$task" | jq -r '.description')
+        local task_type=$(echo "$task" | jq -r '.type')
+        local required_capabilities=$(echo "$task" | jq -r '.required_capabilities')
 
-    while read -r task_file; do
-        if assign_task_to_agent "$task_file"; then
-            ((assigned_count++))
+        # 智能代理选择
+        local selected_agent=$(select_optimal_agent "$task_description" "$task_type" "$required_capabilities")
+
+        if [[ -n "$selected_agent" ]]; then
+            assign_task_to_agent "$task_id" "$selected_agent"
         else
-            ((failed_count++))
+            smart_echo "警告: 无法为任务 $task_id 找到合适的代理" "warning"
         fi
-    done <<< "$pending_tasks"
-
-    smart_echo "任务分配完成: $assigned_count 成功, $failed_count 失败" "info"
+    done
 }
 
 # 获取待处理任务
 get_pending_tasks() {
-    # TODO: 迁移自原agent-orchestration-engine.sh的get_pending_tasks函数
-
-    local queue_dir="$AGENT_CONFIG_DIR/task-queue"
-    if [[ ! -d "$queue_dir" ]]; then
-        echo ""
-        return
-    fi
-
-    # 查找所有待处理任务文件
-    find "$queue_dir" -name "*.json" -type f 2>/dev/null || echo ""
+    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
+    jq '.queue | map(select(.status == "pending"))' "$task_queue_file"
 }
 
 # 处理任务队列
@@ -165,20 +196,8 @@ cancel_task() {
 get_task_status() {
     local task_id="$1"
 
-    # TODO: 实现任务状态获取逻辑
-    local task_file="$AGENT_CONFIG_DIR/task-queue/${task_id}.json"
-
-    if [[ -f "$task_file" ]]; then
-        echo "queued"
-    else
-        # 检查是否在执行中或已完成
-        local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
-        if [[ -f "$state_file" ]]; then
-            jq -r '.status' "$state_file" 2>/dev/null || echo "unknown"
-        else
-            echo "not_found"
-        fi
-    fi
+    local task_details=$(get_task_details "$task_id")
+    echo "$task_details" | jq -r '.status // "unknown"'
 }
 
 # =============================================================================
@@ -211,70 +230,15 @@ create_task_object() {
 EOF
 }
 
-# 为任务分配Agent
+# 为任务分配Agent (内部使用)
 assign_task_to_agent() {
-    local task_file="$1"
-
-    if [[ ! -f "$task_file" ]]; then
-        return 1
-    fi
-
-    # 读取任务数据
-    local task_data=$(cat "$task_file")
-    local task_id=$(echo "$task_data" | jq -r '.id' 2>/dev/null)
-    local task_description=$(echo "$task_data" | jq -r '.description' 2>/dev/null)
-
-    # 查找最佳匹配Agent
-    local best_agent=$(find_best_matching_agent "$task_description")
-
-    if [[ -z "$best_agent" ]]; then
-        smart_echo "未找到合适的Agent处理任务: $task_id" "warning"
-        return 1
-    fi
-
-    # 发送任务分配消息
-    local assignment_data=$(cat <<EOF
-{
-  "task_id": "$task_id",
-  "task_data": $task_data,
-  "assigned_at": "$(date -Iseconds)"
-}
-EOF
-)
-
-    if send_agent_message "$best_agent" "task_assignment" "$assignment_data"; then
-        # 更新任务状态
-        update_task_status "$task_id" "assigned" "assigned_to_$best_agent"
-
-        # 从队列移除
-        rm -f "$task_file"
-
-        smart_echo "任务分配成功: $task_id -> $best_agent" "success"
-        return 0
-    else
-        smart_echo "任务分配失败: $task_id" "error"
-        return 1
-    fi
-}
-
-# 处理单个任务
-process_single_task() {
-    local task_file="$1"
-
-    # TODO: 实现单个任务处理逻辑
-    local task_id=$(basename "$task_file" .json)
-    smart_echo "处理任务: $task_id" "info"
-}
-
-# 更新任务状态
-update_task_status() {
     local task_id="$1"
-    local new_status="$2"
-    local reason="${3:-status_change}"
+    local selected_agent="$2"
 
-    # TODO: 实现任务状态更新逻辑
-    smart_echo "更新任务状态: $task_id -> $new_status" "info"
+    # TODO: 实现任务分配逻辑
+    smart_echo "分配任务 $task_id 给Agent $selected_agent" "info"
 }
+
 
 # =============================================================================
 # 函数导出

@@ -19,113 +19,107 @@ source "$SCRIPT_DIR/agent-orchestration-core.sh"
 
 # 启动Agent健康监控
 start_agent_health_monitor() {
-    smart_echo "启动Agent健康监控" "processing"
+    smart_echo "启动Agent健康监控服务..." "processing"
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的健康监控逻辑
-
-    # 初始化监控配置
-    init_health_monitor_config
+    # 创建健康监控配置
+    local health_config="$AGENT_CONFIG_DIR/health-monitor.json"
+    if [[ ! -f "$health_config" ]]; then
+        cat > "$health_config" <<EOF
+{
+  "monitor_interval": 30,
+  "max_retry_attempts": 3,
+  "health_check_timeout": 10,
+  "auto_recovery_enabled": true,
+  "alert_threshold": 80,
+  "last_health_check": null,
+  "health_history": []
+}
+EOF
+    fi
 
     # 启动后台监控进程
-    start_background_health_monitor
+    (
+        while true; do
+            perform_health_checks
+            sleep 30  # 30秒检查一次
+        done
+    ) &
 
-    # 设置监控告警
-    setup_health_alerts
+    local monitor_pid=$!
+    echo "$monitor_pid" > "$AGENT_CONFIG_DIR/health-monitor.pid"
 
-    smart_echo "Agent健康监控已启动" "success"
+    smart_echo "Agent健康监控服务已启动 (PID: $monitor_pid)" "success"
 }
 
 # 执行健康检查
 perform_health_checks() {
-    smart_echo "执行Agent健康检查" "processing"
+    local health_config="$AGENT_CONFIG_DIR/health-monitor.json"
+    local unhealthy_agents=()
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的perform_health_checks函数
+    # 检查所有已注册的Agent
+    local registry_file="$AGENT_CONFIG_DIR/agent-registry.json"
+    if [[ -f "$registry_file" ]]; then
+        local agents=$(jq -r '.agents[]?.id' "$registry_file" 2>/dev/null || echo "")
 
-    # 获取所有Agent列表
-    local agents=$(discover_agents 2>/dev/null || echo "")
+        for agent_id in $agents; do
+            if ! check_agent_health_status "$agent_id"; then
+                unhealthy_agents+=("$agent_id")
+            fi
+        done
+    fi
 
-    local healthy_count=0
-    local unhealthy_count=0
-    local total_count=0
+    # 处理不健康的Agent
+    if [[ ${#unhealthy_agents[@]} -gt 0 ]]; then
+        smart_echo "发现 ${#unhealthy_agents[@]} 个不健康Agent: ${unhealthy_agents[*]}" "warning"
+        handle_unhealthy_agents "${unhealthy_agents[@]}"
+    fi
 
-    # 对每个Agent执行健康检查
-    for agent_id in $agents; do
-        ((total_count++))
-        if check_single_agent_health "$agent_id"; then
-            ((healthy_count++))
-        else
-            ((unhealthy_count++))
-            handle_unhealthy_agent "$agent_id"
-        fi
-    done
-
-    smart_echo "健康检查完成: $healthy_count/$total_count 个Agent健康" "info"
-
-    # 返回检查结果
-    cat <<EOF
-{
-  "total_agents": $total_count,
-  "healthy_agents": $healthy_count,
-  "unhealthy_agents": $unhealthy_count,
-  "check_timestamp": "$(date -Iseconds)"
-}
-EOF
+    # 更新健康检查时间戳
+    local temp_file=$(mktemp)
+    jq '.last_health_check = "'$(date -Iseconds)'"' "$health_config" > "$temp_file"
+    mv "$temp_file" "$health_config"
 }
 
-# 检查单个Agent健康状态
+# 检查Agent健康状态
 check_agent_health_status() {
     local agent_id="$1"
 
-    # TODO: 实现单个Agent健康状态检查逻辑
-    # 综合检查多个健康指标
-
-    local health_score=100
-    local issues=()
-
-    # 检查进程状态
-    if ! check_agent_process "$agent_id"; then
-        ((health_score -= 30))
-        issues+=("进程异常")
+    local agent_config="$AGENT_CONFIG_DIR/ai-agent-${agent_id}.json"
+    if [[ ! -f "$agent_config" ]]; then
+        return 1
     fi
 
-    # 检查响应时间
-    local response_time=$(check_agent_response_time "$agent_id")
-    if (( response_time > 5000 )); then
-        ((health_score -= 20))
-        issues+=("响应超时")
+    local status=$(jq -r '.status' "$agent_config" 2>/dev/null || echo "unknown")
+    local last_active=$(jq -r '.last_active // "never"' "$agent_config")
+
+    # 检查状态
+    case "$status" in
+        "error"|"maintenance")
+            return 1
+            ;;
+        "busy")
+            # 检查是否超时 (超过5分钟)
+            if [[ "$last_active" != "never" ]]; then
+                local current_time=$(date +%s)
+                local last_active_time=$(date -d "$last_active" +%s 2>/dev/null || echo "0")
+                local time_diff=$((current_time - last_active_time))
+
+                if (( time_diff > 300 )); then  # 5分钟超时
+                    smart_echo "Agent $agent_id 任务执行超时" "warning"
+                    return 1
+                fi
+            fi
+            ;;
+    esac
+
+    # 检查性能指标
+    local success_rate=$(jq -r '.performance_metrics.success_rate // 100' "$agent_config")
+    if (( $(echo "$success_rate < 50" | bc -l 2>/dev/null || echo "0") )); then
+        smart_echo "Agent $agent_id 成功率过低: $success_rate%" "warning"
+        return 1
     fi
 
-    # 检查内存使用
-    local memory_usage=$(check_agent_memory_usage "$agent_id")
-    if (( memory_usage > 90 )); then
-        ((health_score -= 15))
-        issues+=("内存不足")
-    fi
-
-    # 检查错误率
-    local error_rate=$(check_agent_error_rate "$agent_id")
-    if (( $(echo "$error_rate > 0.1" | bc -l 2>/dev/null || echo "0") )); then
-        ((health_score -= 25))
-        issues+=("错误率过高")
-    fi
-
-    # 确定健康状态
-    local status="healthy"
-    if (( health_score < 50 )); then
-        status="critical"
-    elif (( health_score < 75 )); then
-        status="warning"
-    fi
-
-    cat <<EOF
-{
-  "agent_id": "$agent_id",
-  "status": "$status",
-  "health_score": $health_score,
-  "issues": $(printf '%s\n' "${issues[@]}" | jq -R . | jq -s . 2>/dev/null || echo "[]"),
-  "check_timestamp": "$(date -Iseconds)"
-}
-EOF
+    return 0
 }
 
 # 处理不健康的Agent

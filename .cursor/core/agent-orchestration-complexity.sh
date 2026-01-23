@@ -21,24 +21,15 @@ analyze_task_complexity() {
     local task_description="$1"
     local task_type="$2"
 
-    smart_echo "分析任务复杂度: $task_type" "processing"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的复杂度分析逻辑
-
-    # 计算复杂度得分 (0-100)
     local complexity_score=$(calculate_complexity_score "$task_description" "$task_type")
-
-    # 判断是否需要分解
     local decomposition_needed=$(should_decompose_task "$complexity_score" "$task_description")
 
-    # 生成复杂度分析报告
     cat <<EOF
 {
   "complexity_score": $complexity_score,
   "decomposition_needed": $decomposition_needed,
-  "estimated_effort": $(estimate_task_effort "$task_description" "$task_type"),
-  "risk_factors": $(identify_risk_factors "$task_description" "$task_type"),
-  "recommended_approach": "$(get_recommended_approach "$complexity_score" "$decomposition_needed")",
+  "estimated_subtasks": $(estimate_subtask_count "$complexity_score"),
+  "complexity_level": "$(get_complexity_level "$complexity_score")",
   "analysis_timestamp": "$(date -Iseconds)"
 }
 EOF
@@ -49,28 +40,24 @@ estimate_task_effort() {
     local task_description="$1"
     local task_type="$2"
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的estimate_task_effort函数
+    local analysis=$(analyze_task_complexity "$task_description" "$task_type")
+    local complexity_score=$(echo "$analysis" | jq -r '.complexity_score')
 
-    # 基于描述长度、关键词复杂度估算工作量
-    local description_length=${#task_description}
-    local keyword_complexity=$(count_complex_keywords "$task_description")
+    # 将复杂度评分转换为工作量估算 (1-10分)
+    local effort
+    if (( $(echo "$complexity_score < 20" | bc -l 2>/dev/null) )); then
+        effort=1
+    elif (( $(echo "$complexity_score < 40" | bc -l 2>/dev/null) )); then
+        effort=3
+    elif (( $(echo "$complexity_score < 60" | bc -l 2>/dev/null) )); then
+        effort=5
+    elif (( $(echo "$complexity_score < 80" | bc -l 2>/dev/null) )); then
+        effort=7
+    else
+        effort=10
+    fi
 
-    # 基础估算 (单位: 小时)
-    local base_effort=1
-
-    # 长度影响 (+0.5小时 per 100字符)
-    local length_bonus=$((description_length / 100 / 2))
-
-    # 关键词复杂度影响 (+0.25小时 per 复杂关键词)
-    local complexity_bonus=$((keyword_complexity / 4))
-
-    # 任务类型系数
-    local type_multiplier=$(get_task_type_multiplier "$task_type")
-
-    local total_effort=$((base_effort + length_bonus + complexity_bonus))
-    total_effort=$((total_effort * type_multiplier / 100))
-
-    echo "$total_effort"
+    echo "$effort"
 }
 
 # 分解复杂任务
@@ -98,48 +85,40 @@ identify_required_capabilities() {
     local task_description="$1"
     local task_type="$2"
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的identify_required_capabilities函数
-
     # 基于任务类型和描述识别所需能力
-    local capabilities=()
+    local capabilities="[]"
 
-    # 基础能力
-    capabilities+=("task_execution")
-
-    # 根据任务类型添加特定能力
     case "$task_type" in
-        "code_generation")
-            capabilities+=("code_writing" "syntax_knowledge")
+        "planning")
+            capabilities='["task_planning", "requirement_analysis"]'
             ;;
-        "code_review")
-            capabilities+=("code_analysis" "quality_assessment")
+        "coding")
+            capabilities='["code_generation", "documentation_creation"]'
             ;;
         "testing")
-            capabilities+=("test_design" "debugging")
+            capabilities='["test_creation", "test_execution"]'
             ;;
         "deployment")
-            capabilities+=("infrastructure" "automation")
+            capabilities='["deployment_execution", "monitoring_configuration"]'
             ;;
-        "documentation")
-            capabilities+=("technical_writing" "documentation")
-            ;;
-        "analysis")
-            capabilities+=("data_processing" "problem_solving")
+        "review")
+            capabilities='["code_review", "quality_assessment"]'
             ;;
         *)
-            capabilities+=("general_processing")
+            # 基于描述关键词识别
+            if echo "$task_description" | grep -qi "代码\|编程\|开发"; then
+                capabilities='["code_generation"]'
+            elif echo "$task_description" | grep -qi "测试"; then
+                capabilities='["test_execution"]'
+            elif echo "$task_description" | grep -qi "部署\|发布"; then
+                capabilities='["deployment_execution"]'
+            else
+                capabilities='["general_assistance"]'
+            fi
             ;;
     esac
 
-    # 从描述中提取关键词能力
-    local keyword_capabilities=$(extract_capabilities_from_text "$task_description")
-    capabilities+=($keyword_capabilities)
-
-    # 去重并格式化输出
-    local unique_capabilities=$(printf '%s\n' "${capabilities[@]}" | sort | uniq)
-
-    # 输出JSON格式
-    echo "$unique_capabilities" | jq -R . | jq -s . 2>/dev/null || echo '["general_processing"]'
+    echo "$capabilities"
 }
 
 # 计算任务优先级
@@ -193,23 +172,73 @@ calculate_task_priority() {
 # 内部辅助函数
 # =============================================================================
 
-# 计算复杂度得分
+# 计算复杂度评分 (1-100分)
 calculate_complexity_score() {
     local task_description="$1"
     local task_type="$2"
 
-    # 基于多个维度计算复杂度
-    local length_score=$(calculate_length_complexity "$task_description")
-    local keyword_score=$(calculate_keyword_complexity "$task_description")
-    local type_score=$(calculate_type_complexity "$task_type")
+    local base_score=50
 
-    # 加权平均 (长度40%, 关键词40%, 类型20%)
+    # 1. 基于描述长度 (权重: 20%)
+    # 使用wc -m来正确计算字符数（包括中文字符）
+    local description_length=$(echo -n "$task_description" | wc -m)
+    local length_score
+    if (( description_length < 10 )); then
+        length_score=10
+    elif (( description_length < 20 )); then
+        length_score=20
+    elif (( description_length < 50 )); then
+        length_score=40
+    elif (( description_length < 100 )); then
+        length_score=60
+    elif (( description_length < 200 )); then
+        length_score=80
+    else
+        length_score=100
+    fi
+
+    # 2. 基于关键词复杂度 (权重: 30%)
+    local keyword_score=$(analyze_keywords_complexity "$task_description")
+
+    # 3. 基于任务类型复杂度 (权重: 25%)
+    local type_score
+    case "$task_type" in
+        "planning") type_score=70 ;;
+        "coding") type_score=85 ;;
+        "testing") type_score=75 ;;
+        "deployment") type_score=65 ;;
+        "review") type_score=60 ;;
+        "coordination") type_score=90 ;;
+        "learning") type_score=80 ;;
+        "monitoring") type_score=55 ;;
+        *) type_score=50 ;;
+    esac
+
+    # 4. 基于依赖复杂度 (权重: 15%)
+    local dependency_score=$(analyze_dependency_complexity "$task_description")
+
+    # 5. 基于技术栈复杂度 (权重: 10%)
+    local tech_score=$(analyze_technology_complexity "$task_description")
+
+    # 计算综合复杂度评分
     local total_score=$(
-        echo "scale=2; ($length_score * 0.4) + ($keyword_score * 0.4) + ($type_score * 0.2)" | bc 2>/dev/null || echo "50.00"
+        echo "scale=2;
+        ($length_score * 0.2) +
+        ($keyword_score * 0.3) +
+        ($type_score * 0.25) +
+        ($dependency_score * 0.15) +
+        ($tech_score * 0.1)
+        " | bc 2>/dev/null || echo "50.0"
     )
 
-    # 转换为整数
-    echo "${total_score%.*}"
+    # 确保分数在1-100范围内
+    if (( $(echo "$total_score < 1" | bc -l 2>/dev/null) )); then
+        total_score=1
+    elif (( $(echo "$total_score > 100" | bc -l 2>/dev/null) )); then
+        total_score=100
+    fi
+
+    echo "$total_score"
 }
 
 # 判断是否需要分解任务
@@ -314,6 +343,146 @@ count_complex_keywords() {
     done
 
     echo "$count"
+}
+
+# 分析关键词复杂度 (新实现)
+analyze_keywords_complexity() {
+    local task_description="$1"
+
+    # 定义不同权重的关键词组
+    local high_complexity_keywords=(
+        "架构" "architecture" "design.*system" "infrastructure"
+        "微服务" "microservice" "分布式" "distributed"
+        "高并发" "high.concurrency" "可扩展" "scalability"
+        "容错" "fault.tolerant" "负载均衡" "load.balancing"
+        "云计算" "cloud" "容器化" "containerization"
+    )
+
+    local medium_complexity_keywords=(
+        "优化" "optimization" "性能" "performance" "安全" "security"
+        "集成" "integration" "api" "算法" "algorithm"
+        "机器学习" "ai" "数据分析" "analytics"
+        "并发" "concurrent" "异步" "async" "并行" "parallel"
+        "数据库" "database" "查询优化" "query" "schema"
+        "前端" "frontend" "后端" "backend" "服务端" "server"
+    )
+
+    local low_complexity_keywords=(
+        "创建" "create" "添加" "add" "修改" "update" "删除" "delete"
+        "配置" "config" "设置" "setup" "安装" "install"
+        "测试" "test" "检查" "check" "验证" "validate"
+    )
+
+    # 计算各权重关键词的数量
+    local high_count=0
+    local medium_count=0
+    local low_count=0
+
+    for keyword in "${high_complexity_keywords[@]}"; do
+        if echo "$task_description" | grep -qi "$keyword"; then
+            ((high_count++))
+        fi
+    done
+
+    for keyword in "${medium_complexity_keywords[@]}"; do
+        if echo "$task_description" | grep -qi "$keyword"; then
+            ((medium_count++))
+        fi
+    done
+
+    for keyword in "${low_complexity_keywords[@]}"; do
+        if echo "$task_description" | grep -qi "$keyword"; then
+            ((low_count++))
+        fi
+    done
+
+    # 计算加权复杂度分数
+    local complexity_score=$(( high_count * 20 + medium_count * 10 + low_count * 5 ))
+    echo "$complexity_score"
+}
+
+# 分析依赖复杂度
+analyze_dependency_complexity() {
+    local task_description="$1"
+
+    local dependency_indicators=(
+        "依赖" "depends" "requires" "needs" "after"
+        "必须" "should" "prerequisite" "前提" "先决"
+        "顺序" "sequence" "order" "先后" "串行"
+        "并行" "parallel" "同时" "concurrent"
+    )
+
+    local dependency_count=0
+    for indicator in "${dependency_indicators[@]}"; do
+        if echo "$task_description" | grep -qi "$indicator"; then
+            ((dependency_count++))
+        fi
+    done
+
+    # 根据依赖指示器数量计算复杂度
+    local dependency_score=$(( dependency_count * 25 ))
+    if (( dependency_score > 100 )); then
+        dependency_score=100
+    fi
+
+    echo "$dependency_score"
+}
+
+# 分析技术栈复杂度
+analyze_technology_complexity() {
+    local task_description="$1"
+
+    local tech_stacks=(
+        "kubernetes\|docker\|container" "cloud\|aws\|azure\|gcp"
+        "react\|vue\|angular\|typescript" "python\|java\|golang\|rust"
+        "database\|mysql\|postgres\|mongodb" "microservice\|distributed"
+        "ai\|ml\|machine.learning" "blockchain\|crypto"
+    )
+
+    local tech_count=0
+    for tech in "${tech_stacks[@]}"; do
+        if echo "$task_description" | grep -qi "$tech"; then
+            ((tech_count++))
+        fi
+    done
+
+    # 计算技术栈复杂度
+    local tech_score=$(( tech_count * 20 ))
+    if (( tech_score > 100 )); then
+        tech_score=100
+    fi
+
+    echo "$tech_score"
+}
+
+# 估算子任务数量
+estimate_subtask_count() {
+    local complexity_score="$1"
+
+    if (( $(echo "$complexity_score >= 80" | bc -l 2>/dev/null || echo "0") )); then
+        echo "5"
+    elif (( $(echo "$complexity_score >= 60" | bc -l 2>/dev/null || echo "0") )); then
+        echo "3"
+    elif (( $(echo "$complexity_score >= 40" | bc -l 2>/dev/null || echo "0") )); then
+        echo "2"
+    else
+        echo "1"
+    fi
+}
+
+# 获取复杂度等级
+get_complexity_level() {
+    local complexity_score="$1"
+
+    if (( $(echo "$complexity_score >= 80" | bc -l 2>/dev/null || echo "0") )); then
+        echo "高"
+    elif (( $(echo "$complexity_score >= 60" | bc -l 2>/dev/null || echo "0") )); then
+        echo "中"
+    elif (( $(echo "$complexity_score >= 40" | bc -l 2>/dev/null || echo "0") )); then
+        echo "低"
+    else
+        echo "极低"
+    fi
 }
 
 # 获取任务类型乘数

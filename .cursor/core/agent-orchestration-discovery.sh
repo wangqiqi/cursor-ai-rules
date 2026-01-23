@@ -77,184 +77,91 @@ get_agent_details() {
 
 # 查找最佳匹配Agent
 find_best_matching_agent() {
-    local task_description="$1"
-    local required_capabilities="${2:-}"
+    local capability="$1"
+    local specialization="${2:-}"
+    local min_performance="${3:-50}"
 
-    smart_echo "查找最佳匹配Agent (任务: $task_description)" "processing"
+    local candidates=$(discover_agents_by_capability "$capability")
 
-    # TODO: 迁移自原agent-orchestration-engine.sh的find_best_matching_agent函数
-    local available_agents=$(discover_agents "idle")
-
-    if [[ -z "$available_agents" ]]; then
-        smart_echo "没有可用的Agent" "warning"
-        return 1
+    if [[ -n "$specialization" ]]; then
+        candidates=$(echo "$candidates" | jq --arg spec "$specialization" '
+            map(select(.specializations | index($spec)))
+        ')
     fi
 
-    # 计算匹配度并选择最佳Agent
-    local best_agent=""
-    local best_score=0
+    # 根据性能排序并返回最佳匹配
+    echo "$candidates" | jq --arg min_perf "$min_performance" '
+        map(select(.performance_metrics.success_rate >= ($min_perf | tonumber)))
+        | sort_by(.performance_metrics.success_rate)
+        | reverse
+        | first // empty
+    '
+}
 
-    for agent_id in $available_agents; do
-        local score=$(calculate_agent_match_score "$agent_id" "$task_description" "$required_capabilities")
-        if (( $(echo "$score > $best_score" | bc -l 2>/dev/null || echo "0") )); then
-            best_score=$score
-            best_agent="$agent_id"
+# 获取Agent健康状态报告
+get_agent_health_report() {
+    local registry_file="$AGENT_CONFIG_DIR/agent-registry.json"
+
+    if [[ ! -f "$registry_file" ]]; then
+        echo '{"total_agents": 0, "healthy_agents": 0, "unhealthy_agents": 0, "health_score": 0}'
+        return
+    fi
+
+    local total_agents=$(jq '.agents | length' "$registry_file")
+    local healthy_count=0
+    local unhealthy_count=0
+
+    # 检查每个Agent的健康状态
+    local agents=$(jq -r '.agents[].id' "$registry_file")
+    for agent_id in $agents; do
+        if [[ "$(check_agent_health "$agent_id")" == "healthy" ]]; then
+            ((healthy_count++))
+        else
+            ((unhealthy_count++))
         fi
     done
 
-    if [[ -n "$best_agent" ]]; then
-        smart_echo "找到最佳匹配Agent: $best_agent (匹配度: $best_score)" "success"
-        echo "$best_agent"
-    else
-        smart_echo "未找到合适的Agent" "warning"
-        return 1
-    fi
+    local health_score=$(( total_agents > 0 ? healthy_count * 100 / total_agents : 0 ))
+
+    cat <<EOF
+{
+  "total_agents": $total_agents,
+  "healthy_agents": $healthy_count,
+  "unhealthy_agents": $unhealthy_count,
+  "health_score": $health_score,
+  "timestamp": "$(date -Iseconds)"
+}
+EOF
 }
 
-# 获取Agent健康报告
-get_agent_health_report() {
-    local agent_id="${1:-}"
-
-    smart_echo "生成Agent健康报告" "processing"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的get_agent_health_report函数
-
-    if [[ -n "$agent_id" ]]; then
-        # 单个Agent健康报告
-        generate_single_agent_health_report "$agent_id"
-    else
-        # 所有Agent健康报告
-        generate_all_agents_health_report
-    fi
-}
-
-# 显示Agent发现界面
+# 显示Agent发现结果
 show_agent_discovery() {
-    smart_echo "=== 📊 Agent发现面板 ===" "info"
+    smart_echo "=== 🔍 Agent发现服务 ===" "info"
 
-    local total_agents=$(discover_agents | wc -w)
-    local idle_agents=$(discover_agents_by_status "idle" | wc -w)
-    local busy_agents=$(discover_agents_by_status "busy" | wc -w)
-
-    smart_echo "Agent统计:" "info"
-    smart_echo "  总数: $total_agents" "info"
-    smart_echo "  空闲: $idle_agents" "info"
-    smart_echo "  忙碌: $busy_agents" "info"
-
-    # 显示Agent列表
-    smart_echo "可用Agent:" "info"
     local agents=$(discover_agents)
-    if [[ -n "$agents" ]]; then
-        for agent_id in $agents; do
-            local status=$(get_agent_status "$agent_id")
-            local capabilities=$(get_agent_capabilities_summary "$agent_id")
-            smart_echo "  • $agent_id [$status] - $capabilities" "info"
-        done
+    local agent_count=$(echo "$agents" | jq 'length' 2>/dev/null || echo "0")
+
+    smart_echo "发现 $agent_count 个活跃Agent:" "info"
+
+    if (( agent_count > 0 )); then
+        echo "$agents" | jq -r '.[] | "  👤 \(.id): \(.name) - \(.description)"' 2>/dev/null || smart_echo "  解析Agent信息失败" "error"
     else
-        smart_echo "  无可用Agent" "warning"
+        smart_echo "  无活跃Agent" "warning"
     fi
+
+    # 显示健康状态
+    smart_echo "🏥 Agent健康状态:" "info"
+    local health_report=$(get_agent_health_report)
+    local total_agents=$(echo "$health_report" | jq -r '.total_agents // 0' 2>/dev/null || echo "0")
+    local healthy_agents=$(echo "$health_report" | jq -r '.healthy_agents // 0' 2>/dev/null || echo "0")
+    local health_score=$(echo "$health_report" | jq -r '.health_score // 0' 2>/dev/null || echo "0")
+    smart_echo "  总计: $total_agents 个, 健康: $healthy_agents 个, 健康评分: $health_score%" "info"
 }
 
 # =============================================================================
 # 内部辅助函数
 # =============================================================================
 
-# 检查Agent是否匹配过滤条件
-agent_matches_filter() {
-    local agent_id="$1"
-    local filter_status="$2"
-    local filter_capability="$3"
-
-    # 检查状态过滤
-    if [[ -n "$filter_status" ]]; then
-        local status=$(get_agent_status "$agent_id")
-        if [[ "$status" != "$filter_status" ]]; then
-            return 1
-        fi
-    fi
-
-    # 检查能力过滤
-    if [[ -n "$filter_capability" ]]; then
-        if ! agent_has_capability "$agent_id" "$filter_capability"; then
-            return 1
-        fi
-    fi
-
-    return 0
-}
-
-# 获取Agent状态
-get_agent_status() {
-    local agent_id="$1"
-    # TODO: 实现状态获取逻辑
-    echo "idle"
-}
-
-# 计算Agent匹配度分数
-calculate_agent_match_score() {
-    local agent_id="$1"
-    local task_description="$2"
-    local required_capabilities="$3"
-
-    # TODO: 实现匹配度计算逻辑
-    # 这里应该考虑Agent的能力、当前负载、历史性能等因素
-    echo "0.8"
-}
-
-# 生成单个Agent健康报告
-generate_single_agent_health_report() {
-    local agent_id="$1"
-
-    cat <<EOF
-Agent: $agent_id
-状态: $(get_agent_status "$agent_id")
-健康度: $(check_agent_health "$agent_id")
-最后活动: $(get_agent_last_activity "$agent_id")
-EOF
-}
-
-# 生成所有Agent健康报告
-generate_all_agents_health_report() {
-    local agents=$(discover_agents)
-
-    cat <<EOF
-Agent健康总览报告
-生成时间: $(date -Iseconds)
-总Agent数: $(echo "$agents" | wc -w)
-
-详细报告:
-EOF
-
-    for agent_id in $agents; do
-        echo "---"
-        generate_single_agent_health_report "$agent_id"
-    done
-}
-
-# 检查Agent是否具有特定能力
-agent_has_capability() {
-    local agent_id="$1"
-    local capability="$2"
-
-    # TODO: 实现能力检查逻辑
-    true
-}
-
-# 获取Agent能力摘要
-get_agent_capabilities_summary() {
-    local agent_id="$1"
-
-    # TODO: 实现能力摘要获取逻辑
-    echo "多功能Agent"
-}
-
-# 获取Agent最后活动时间
-get_agent_last_activity() {
-    local agent_id="$1"
-
-    # TODO: 实现最后活动时间获取逻辑
-    echo "$(date -Iseconds)"
-}
 
 # =============================================================================
 # 函数导出

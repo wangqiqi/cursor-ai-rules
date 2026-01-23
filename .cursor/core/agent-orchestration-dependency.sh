@@ -20,25 +20,17 @@ source "$SCRIPT_DIR/agent-orchestration-complexity.sh"
 analyze_task_dependencies() {
     local task_description="$1"
     local task_type="$2"
+    local existing_tasks="${3:-[]}"
 
-    smart_echo "分析任务依赖关系: $task_type" "processing"
-
-    # TODO: 迁移自原agent-orchestration-engine.sh的任务依赖分析逻辑
-
-    # 识别任务依赖关系
-    local dependencies=$(identify_task_dependencies "$task_description" "$task_type")
-
-    # 构建依赖关系图
+    local dependencies=$(identify_dependencies "$task_description" "$task_type" "$existing_tasks")
     local dependency_graph=$(build_dependency_graph "$dependencies")
-
-    # 验证依赖关系链
-    local validation_result=$(validate_dependency_chain "$dependency_graph")
+    local has_cycles=$(detect_circular_dependencies "$dependency_graph")
 
     cat <<EOF
 {
   "dependencies": $dependencies,
   "dependency_graph": $dependency_graph,
-  "validation_result": $validation_result,
+  "has_circular_dependencies": $has_cycles,
   "analysis_timestamp": "$(date -Iseconds)"
 }
 EOF
@@ -193,11 +185,44 @@ show_dependency_analysis() {
     fi
 }
 
-# 获取基于任务类型的依赖关系
-get_task_type_dependencies() {
-    local task_type="$1"
+# 识别任务依赖关系 (新实现)
+identify_dependencies() {
+    local task_description="$1"
+    local task_type="$2"
+    local existing_tasks="$3"
 
-    # TODO: 实现基于任务类型的依赖关系获取逻辑
+    local dependencies="[]"
+
+    # 1. 基于任务类型的隐含依赖
+    local type_dependencies=$(get_type_based_dependencies "$task_type")
+    if [[ "$type_dependencies" != "[]" ]]; then
+        dependencies=$(jq -n --argjson deps1 "$dependencies" --argjson deps2 "$type_dependencies" '$deps1 + $deps2')
+    fi
+
+    # 2. 基于描述的显式依赖
+    local explicit_dependencies=$(parse_explicit_dependencies "$task_description")
+    if [[ "$explicit_dependencies" != "[]" ]]; then
+        dependencies=$(jq -n --argjson deps1 "$dependencies" --argjson deps2 "$explicit_dependencies" '$deps1 + $deps2')
+    fi
+
+    # 3. 基于现有任务的上下文依赖
+    local context_dependencies=$(identify_context_dependencies "$task_description" "$existing_tasks")
+    if [[ "$context_dependencies" != "[]" ]]; then
+        dependencies=$(jq -n --argjson deps1 "$dependencies" --argjson deps2 "$context_dependencies" '$deps1 + $deps2')
+    fi
+
+    # 4. 基于资源依赖
+    local resource_dependencies=$(identify_resource_dependencies "$task_description")
+    if [[ "$resource_dependencies" != "[]" ]]; then
+        dependencies=$(jq -n --argjson deps1 "$dependencies" --argjson deps2 "$resource_dependencies" '$deps1 + $deps2')
+    fi
+
+    echo "$dependencies"
+}
+
+# 获取基于任务类型的依赖关系
+get_type_based_dependencies() {
+    local task_type="$1"
 
     case "$task_type" in
         "frontend")
