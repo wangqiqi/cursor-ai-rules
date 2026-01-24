@@ -207,26 +207,6 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 - **Supported Platforms**: Linux, macOS, Windows, various CPU architectures
 - **Tool Integration**: Automatic toolchain detection, compiler and build tool support, development environment adaptation
 
-## ⚡ Core Features
-
-| Feature                                     | Description                                                                       | Effect                                |
-| ------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------- |
-| 🧠 **Unified Intelligent Command Entry**     | `@master` awakens all capabilities with natural language, AI-driven collaboration | **Zero Memory Burden**                |
-| 🎯 **Single-Step Multi-Task Perception**     | Complete all project analysis, 4-layer architecture intelligent orchestration     | **60% Token Savings**                 |
-| ⚙️ **Hierarchical Configuration Management** | 5-layer configuration system with dynamic validation                              | **95%↑ Configuration Flexibility**    |
-| 🔧 **Unified Quality Assurance System**      | Layered quality checks (Lint/Format/Audit/Report)                                 | **80%↑ Code Quality**                 |
-| 🏗️ **4-Layer Architecture Refactor**         | Core/Config/Quality/Features with clear responsibilities                          | **75%↑ Maintainability**              |
-| 💾 **Intelligent Caching System**            | Cache mechanism based on file changes                                             | **5x Response Speed Improvement**     |
-| 🛡️ **Graceful Degradation**                  | Environment detection and error handling                                          | **99.9% Stability**                   |
-| 🔓 **Out-of-the-Box**                        | No configuration needed, copy and use                                             | Support for any project, any language |
-| 🪝 **Automated Hooks System**                | 17 lifecycle hooks for intelligent automation                                     | **100% Process Automation**           |
-| 🔌 **MCP Priority System**                   | Smart MCP tool detection and execution priority                                   | **Intelligent Tool Selection**        |
-| 🐛 **Advanced Debug Suite**                  | Isolation debugging, pattern analysis, batch error fixing tools                   | **Debug Efficiency 300%↑**            |
-| 🎯 **413 Capability Mappings**               | Comprehensive intent-to-action mapping system with validation and fallbacks       | **Intelligent Orchestration**         |
-| 🌱 **Project Growth System**                 | AI learning and personalized adaptation                                           | **Continuous Evolution**              |
-| 📊 **Performance Monitoring**                | Real-time system metrics and optimization                                         | **System Health Tracking**            |
-| 🎭 **Personality Role System**               | 21 diverse AI personalities with nickname calling, unique interaction styles       | **Personalized Experience**           |
-
 ## 🎭 Personality Role System
 
 ### 21 Diverse AI Personalities - Personalized Interaction Experience
