@@ -304,6 +304,25 @@ class MasterCommandExecutor {
     }
 
     /**
+     * 🚀 优化：延迟检查项目角色配置 - 提升角色呼叫性能
+     */
+    scheduleProjectRoleCheck() {
+        if (this.projectRoleCheckScheduled) return;
+
+        this.projectRoleCheckScheduled = true;
+        // 延迟500ms检查，避免阻塞角色呼叫响应
+        setTimeout(async () => {
+            try {
+                await this.ensureProjectRoleConfig();
+            } catch (error) {
+                console.warn('⚠️ 延迟项目角色检查失败:', error.message);
+            } finally {
+                this.projectRoleCheckScheduled = false;
+            }
+        }, 500);
+    }
+
+    /**
      * 确保项目角色配置正确
      */
     async ensureProjectRoleConfig() {
@@ -357,8 +376,17 @@ class MasterCommandExecutor {
         }
 
         try {
-            // 🎭 确保项目角色配置正确
-            await this.ensureProjectRoleConfig();
+            // 🚀 优化：只在角色相关命令时检查项目角色配置
+            if (parseResult.type === 'role_switch' || parseResult.type === 'direct_call') {
+                const { callType } = parseResult;
+                if (parseResult.type === 'direct_call' && (callType === 'call' || callType === 'nickname')) {
+                    // 角色呼叫命令 - 延迟检查以提升性能
+                    this.scheduleProjectRoleCheck();
+                } else {
+                    // 其他角色相关命令 - 正常检查
+                    await this.ensureProjectRoleConfig();
+                }
+            }
 
             if (!parseResult || !parseResult.success) {
                 return this.createErrorResult('无效的解析结果');
@@ -1235,12 +1263,13 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 执行角色呼叫（通过昵称）- 🚀 超高速优化版
+     * 执行角色呼叫（通过昵称）- ⚡ 闪电级超高速优化版
      * @param {string} nickname - 角色昵称
      * @returns {Promise<Object>} 执行结果
      */
     async executeRoleCall(nickname) {
-        console.log(`🎭 执行角色呼叫: ${nickname}`);
+        const startTime = process.hrtime.bigint();
+        console.log(`🎭 闪电角色呼叫: ${nickname}`);
 
         try {
             // 确保角色管理器已初始化
@@ -1248,41 +1277,51 @@ class MasterCommandExecutor {
                 return this.createErrorResult('角色管理系统不可用');
             }
 
-            // 🚀 超高速昵称查找
+            // ⚡ 超高速昵称查找 (内存级)
+            const lookupStart = process.hrtime.bigint();
             const roleResult = this.roleManager.findRoleByNickname(nickname);
+            const lookupTime = Number(process.hrtime.bigint() - lookupStart) / 1000000; // ms
 
             if (!roleResult.success) {
                 return this.createErrorResult(roleResult.message);
             }
 
-            // 🚀 快速角色切换
+            // ⚡ 快速角色切换 (异步优化)
+            const switchStart = process.hrtime.bigint();
             const switchResult = await this.roleManager.switchRole(roleResult.roleId, 'nickname_call');
+            const switchTime = Number(process.hrtime.bigint() - switchStart) / 1000000; // ms
 
             if (!switchResult.success) {
                 return this.createErrorResult(`角色切换失败: ${switchResult.message}`);
             }
 
-            // 🚀 优化响应生成 - 减少字符串操作
-            const roleConfig = roleResult.roleConfig;
-            const welcomeParts = [
-                `🎭 已切换到角色: **${roleConfig.name}**`,
-                roleConfig.description ? `💫 ${roleConfig.description}` : '',
-                (roleConfig.personality_traits && roleConfig.personality_traits.inner_voice) ?
-                    `💭 *${roleConfig.personality_traits.inner_voice}*` : '',
-                this.formatSensoryReactions(roleConfig.sensory_reactions),
-                `✨ 现在可以用这个角色的风格与你交流了！有什么需要帮助的吗？`
-            ].filter(part => part.length > 0);
+            // ⚡ 极致优化响应生成 - 预编译模板
+            const generateStart = process.hrtime.bigint();
+            const welcomeMessage = this.generateFastWelcomeMessage(roleResult.roleConfig, nickname);
+            const generateTime = Number(process.hrtime.bigint() - generateStart) / 1000000; // ms
 
-            const welcomeMessage = welcomeParts.join('\n\n');
+            const totalTime = Number(process.hrtime.bigint() - startTime) / 1000000; // ms
 
-            return this.createSuccessResult(welcomeMessage, {
+            // 添加性能统计到响应
+            const perfStats = `\n\n📊 性能统计: 查找${lookupTime.toFixed(1)}ms | 切换${switchTime.toFixed(1)}ms | 生成${generateTime.toFixed(1)}ms | 总计${totalTime.toFixed(1)}ms`;
+            const finalMessage = welcomeMessage + perfStats;
+
+            return this.createSuccessResult(finalMessage, {
                 role: roleResult.roleId,
                 nickname: nickname,
-                roleConfig: roleConfig,
-                matchedBy: roleResult.matchedBy
+                matchedBy: roleResult.matchedBy,
+                fastMode: true,
+                performance: {
+                    lookupTime,
+                    switchTime,
+                    generateTime,
+                    totalTime
+                }
             });
 
         } catch (error) {
+            const totalTime = Number(process.hrtime.bigint() - startTime) / 1000000;
+            console.error(`❌ 角色呼叫失败 (${totalTime.toFixed(1)}ms):`, error);
             return this.createErrorResult(`角色呼叫失败: ${error.message}`);
         }
     }
@@ -1302,6 +1341,36 @@ class MasterCommandExecutor {
         if (senses.intuition) reactions.push(`🔮 ${senses.intuition}`);
 
         return reactions.length > 0 ? reactions.join('\n') : '';
+    }
+
+    /**
+     * ⚡ 极致优化欢迎消息生成 - 预编译模板
+     */
+    generateFastWelcomeMessage(roleConfig, nickname) {
+        // 预编译的核心信息
+        const roleName = roleConfig.name;
+        const description = roleConfig.description;
+        const innerVoice = roleConfig.personality_traits?.inner_voice;
+        const sensoryReactions = this.formatSensoryReactions(roleConfig.sensory_reactions);
+
+        // 使用模板字符串优化，避免多次字符串拼接
+        let message = `🎭 已切换到角色: **${roleName}**`;
+
+        if (description) {
+            message += `\n\n💫 ${description}`;
+        }
+
+        if (innerVoice) {
+            message += `\n\n💭 *${innerVoice}*`;
+        }
+
+        if (sensoryReactions) {
+            message += `\n\n${sensoryReactions}`;
+        }
+
+        message += `\n\n✨ 现在可以用这个角色的风格与你交流了！有什么需要帮助的吗？`;
+
+        return message;
     }
 
     /**
