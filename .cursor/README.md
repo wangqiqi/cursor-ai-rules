@@ -6,9 +6,8 @@
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-17-cyan?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-31-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-73-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
 [![Capability Maps](https://img.shields.io/badge/capability-100%25-gold?style=flat-square)]()
 [![Web UI](https://img.shields.io/badge/web-UI-purple?style=flat-square)]()
@@ -22,12 +21,11 @@
 
 经过Phase 1-4的系统性优化，**Capability Maps实现了全面覆盖**：
 - ✅ **Rules**: 31/31 (100%) - 技术规则完全覆盖
-- ✅ **Skills**: 42/42 (100%) - AI技能全面覆盖
-- ✅ **Scripts**: 89/89 (100%) - 核心脚本全部实现
-- ✅ **Hooks**: 33/33 (100%) - 自动化钩子完全配备
+- ✅ **Scripts**: 73/73 (100%) - 核心脚本全部实现
+- ✅ **Hooks**: 40/40 (100%) - 自动化钩子完全配备
 - ✅ **Modules**: 55/55 (100%) - 全新架构模块
 
-**📋 [组件映射总表](docs/guides/capability-maps-guide.md)** | 📚 **[快速改进指南](docs/guides/quick-improvements-and-web-guide.md)** | **[系统设计哲学](docs/architecture/system-design-philosophy.md)** | **[VIBE开发指南](rules/workflow/vibe-coding.md)** | **[API文档](docs/developer/api-reference.md)**
+**📋 [组件映射总表** | 📚 **[快速改进指南** | **[系统设计哲学** | **[VIBE开发指南](.cursor/rules/workflow/vibe-coding.md)** | **[API文档](.cursor/docs/developer/api-reference.md)**
 
 基于 [Cursor Rules System](https://cursor.com/docs/context/rules)，这是一个宪法驱动的AI编程伙伴，具有**三项基本公理 + 三项不可知设计原则 + 双目录架构 + Web界面 + VIBE开发方法论**，实现真正的人机共生编程体验。
 
@@ -82,10 +80,9 @@ AI的输出必须全部带有可追踪、可验证、归因的原始信号链
 - **系统状态监控**: 显示项目状态、AI助手状态、学习数据
 
 ### 🎯 智能能力编排系统
-- **47个脚本**: 环境感知、质量检查、性能监控、部署管理、VIBE服务集成
-- **23个规则**: 宪法合规、代码质量、开发规范
-- **22个技能**: 文档处理、图像生成、数据分析、AI集成
-- **23个钩子**: 自动化Git钩子、代码质量检查、事件日志、性能监控
+- **73个脚本**: 环境感知、质量检查、性能监控、部署管理
+- **31条规则**: 宪法合规、代码质量、开发规范
+- **40个钩子**: 自动化Git钩子、代码质量检查、事件日志、性能监控
 
 ### 🛠️ 增强功能能力
 - **错误处理优化**: 智能诊断，83%效率提升
@@ -131,9 +128,6 @@ Cursor AI Rules采用创新的双目录架构：
   - 每个项目独立成长，支持AI个性化学习和持续优化
   - 自动添加到 `.gitignore` 用于隐私和数据安全
 
-### 🗂️ 旧版本配置归档
-- `personality-system-old.json` 已归档至 `.cursor/config/archive/personality-system-old.json`，仅保留用于参考与迁移对照；新功能均使用 `.cursor/config/personality-system.json`
-
 ### 三项不可知设计原则
 
 #### 📦 项目不可知 (Project Independence)
@@ -158,7 +152,7 @@ Cursor AI Rules采用创新的双目录架构：
 - **⚡ 性能优化**: 本地缓存和学习数据提升响应速度
 - **🎯 三项不可知原则**: 实现真正项目、系统、用户独立
 
-**[📖 系统设计哲学](docs/architecture/system-design-philosophy.md)** | **[快速改进指南](docs/guides/quick-improvements-and-web-guide.md)**
+**[📖 系统设计哲学** | **[快速改进指南**
 
 ### 核心架构组件
 
@@ -311,7 +305,7 @@ Cursor AI Rules采用创新的双目录架构：
 - **💕 昵称呼叫**: 支持亲切的昵称呼叫，让交互更自然亲近
 - **🎭 角色定制**: 可以为角色设置多个昵称，个性化定制体验
 
-**[📚 完整角色指南](docs/guides/role-guide.md)** - 详细角色描述和使用示例
+**[📚 完整角色指南** - 详细角色描述和使用示例
 
 ## 📋 智能规则系统
 
@@ -851,17 +845,10 @@ chmod +x .cursor/features/hooks/*.sh
 
 **🎉 现在就开始享受宪法驱动超级AI编程伙伴的强大功能吧！**
 
-**三项基本公理 + 三项不可知设计原则 + 21种人格角色 + 双目录架构 + VIBE开发方法论**
-
-**实现真正的人机共生编程体验！** 🚀✨
-
 ---
 
-*最后更新: 2026-01-22 | 作者: wangqiqi (https://github.com/wangqiqi)*
-*基于 Cursor 官方规范，宪法驱动的AI，具备智能感知、决策和进化系统*
-## Testing
+*🚀 Cursor AI Rules v6.2.0-complete - 宪法驱动的超级AI编程伙伴*
+*最后更新: 2026-01-24 | 作者: wangqiqi (https://github.com/wangqiqi)*
 
-```bash
-# Run tests
-npm test
-```
+*最后更新: 2026-01-24 | 作者: wangqiqi (https://github.com/wangqiqi)*
+*基于 Cursor 官方规范，宪法驱动的AI，具备智能感知、决策和进化系统*

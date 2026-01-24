@@ -6,9 +6,8 @@
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-23-blue?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-24-orange?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-17-cyan?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-31-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-73-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
 [![Capability Maps](https://img.shields.io/badge/capability-100%25-gold?style=flat-square)]()
 [![Web UI](https://img.shields.io/badge/web-UI-purple?style=flat-square)]()
@@ -22,12 +21,11 @@
 
 After Phase 1-4 systematic optimization, **Capability Maps has achieved full coverage**:
 - ✅ **Rules**: 31/31 (100%) - Complete technical rule coverage
-- ✅ **Skills**: 42/42 (100%) - Comprehensive AI skill coverage
-- ✅ **Scripts**: 89/89 (100%) - Complete core script implementation
-- ✅ **Hooks**: 33/33 (100%) - Fully equipped automation hooks
+- ✅ **Scripts**: 73/73 (100%) - Complete core script implementation
+- ✅ **Hooks**: 40/40 (100%) - Fully equipped automation hooks
 - ✅ **Modules**: 55/55 (100%) - Brand new architecture modules
 
-**📋 [Component Mapping Table](docs/guides/capability-maps-guide.md)** | 📚 **[Quick Improvements Guide](docs/guides/quick-improvements-and-web-guide.md)** | **[System Design Philosophy](docs/architecture/system-design-philosophy.md)** | **[VIBE Development Guide](rules/workflow/vibe-coding.md)** | **[API Documentation](docs/developer/api-reference.md)**
+**📋 [Component Mapping Table** | 📚 **[Quick Improvements Guide** | **[System Design Philosophy** | **[VIBE Development Guide](.cursor/rules/workflow/vibe-coding.md)** | **[API Documentation](.cursor/docs/developer/api-reference.md)**
 
 Built on the [Cursor Rules System](https://cursor.com/docs/context/rules), a constitution-driven AI programming partner with **three fundamental axioms + three agnostic design principles + dual directory architecture + Web UI + VIBE development methodology**, achieving true **human-AI symbiosis** programming experience.
 
@@ -82,11 +80,9 @@ Based on three fundamental axioms, this creates a **human-AI symbiosis** collabo
 - **System Status Monitoring**: Display project status, AI assistant status, learning data
 
 ### 🎯 Intelligent Capability Orchestration System
-- **89 Scripts**: Environment perception, quality checks, performance monitoring, deployment management, VIBE services integration
+- **73 Scripts**: Environment perception, quality checks, performance monitoring, deployment management
 - **31 Rules**: Constitutional compliance, code quality, development specifications
-- **42 Skills**: Document processing, image generation, data analysis, AI integration
-- **33 Hooks**: Automated Git hooks, code quality checks, event logging, performance monitoring
-- **6 VIBE Services**: Documentation-driven, test-first, frontend-backend alignment
+- **40 Hooks**: Automated Git hooks, code quality checks, event logging, performance monitoring
 
 ### 🛠️ Enhanced Feature Capabilities
 - **Error Handling Optimization**: Smart diagnostics with 83% efficiency improvement
@@ -157,7 +153,7 @@ Cursor AI Rules adopts an innovative dual-directory architecture:
 - **⚡ Performance Optimization**: Local cache and learning data improve response speed
 - **🎯 Three Agnostic Principles**: Achieve true project, system, user independence
 
-**📖 [System Design Philosophy](docs/architecture/system-design-philosophy.md)** | **[Quick Improvements Guide](docs/guides/quick-improvements-and-web-guide.md)**
+**📖 [System Design Philosophy** | **[Quick Improvements Guide**
 
 ### Core Architecture Components
 
@@ -312,7 +308,7 @@ The Personality Role System provides **21 unique AI personalities**, each with d
 - **💕 Nickname Calling**: Support affectionate nickname calling for more natural interactions
 - **🎭 Role Customization**: Set multiple nicknames for roles to customize your experience
 
-**[📚 Complete Role Guide](docs/guides/role-guide.md)** - Detailed role descriptions and usage examples
+**[📚 Complete Role Guide** - Detailed role descriptions and usage examples
 
 ## 📋 Intelligent Rules System
 
@@ -349,19 +345,9 @@ The Personality Role System provides **21 unique AI personalities**, each with d
 | **Error Handling Optimization**      | Smart Diagnostics and Repair Suggestions System   | Diagnosis Efficiency 83%↑, User-friendly Error Messages                            | ✅ Production Ready |
 | **Intelligent Cache System**         | Three-Level Cache Architecture System             | Memory→File→Network, 60% Speed Improvement                                         | ✅ Production Ready |
 | **Dual Directory Architecture**      | .cursor Core + .cursorGrowth Growth Data          | Privacy Protection, Continuous Evolution, Multi-environment Isolation              | ✅ Production Ready |
-| **Master Intelligent Orchestration** | Single Entry Multi-component Orchestration System | 47 Scripts + 23 Rules + 22 Skills Intelligent Combination                          | ✅ Production Ready |
+| **Master Intelligent Orchestration** | Single Entry Multi-component Orchestration System | 73 Scripts + 31 Rules Intelligent Combination                          | ✅ Production Ready |
 | **Personality Role System**          | 21 Diverse AI Personalities System                | Professional/Humble/Friendly/Expert/Creative/Strict/Funny/Minimalist + Anime Styles + Nickname Calling | ✅ Production Ready |
 
-### 🎯 Skills Extension System (22 Professional Skills) + VIBE Services Ecosystem (6 VIBE Services)
-
-| Skill Category               | Count | Skills                                                                                                 | Status             |
-| ---------------------------- | ----- | ------------------------------------------------------------------------------------------------------ | ------------------ |
-| **Document Processing**      | 4     | docx, pdf, pptx, xlsx - Office document processing                                                     | ✅ Fully Integrated |
-| **Creative Design**          | 5     | algorithmic-art, canvas-design, frontend-design, theme-factory, slack-gif-creator                      | ✅ Fully Integrated |
-| **AI Integration**           | 5     | mcp-builder, skill-creator, node_mcp_server, python_mcp_server, mcp_specification                      | ✅ Fully Integrated |
-| **Enterprise Collaboration** | 3     | brand-guidelines, internal-comms, doc-coauthoring                                                      | ✅ Fully Integrated |
-| **Testing & Development**    | 3     | webapp-testing, web-artifacts-builder, evaluation                                                      | ✅ Fully Integrated |
-| **VIBE Development**         | 6     | context-manager, code-generator, dependency-tracker, test-validator, doc-generator, deployment-manager | ✅ Fully Integrated |
 
 ## 🚀 Quick Start
 
@@ -860,11 +846,8 @@ The system **automatically manages** the `.gitignore` file in the project root d
 
 ---
 
-*🚀 Cursor AI Rules v6.0.0--constitution - Constitution-Driven Super AI Programming Partner*
+*🚀 Cursor AI Rules v6.2.0-complete - Constitution-Driven Super AI Programming Partner*
+*Last updated: 2026-01-24 | Author: wangqiqi (https://github.com/wangqiqi)*
 
-*🏛️ Core Innovation*: Three Fundamental Axioms + Three Agnostic Design Principles + Dual Directory Architecture + Web UI Integration + 39 Scripts + 23 Rules + 24 Skills + 21 AI Personalities, magnificent transformation from tools to partners, achieving true **human-AI symbiosis** programming experience!
-
-*⚖️ Three Axioms*: Intent Sovereignty · Signal Trustworthiness · Cognitive Auditability | 🎯 Three Agnostic Principles: Project Agnostic · System Agnostic · User Agnostic | 🌐 Web UI: Modern Graphical Experience | 🧠 Master Intelligent Orchestration: Single Entry Full Capability Coverage | 🎭 21 AI Personalities: Support Nickname Calling & Personalized Experience
-
-*Last updated: 2026-01-22 | Author: wangqiqi (https://github.com/wangqiqi)*
+*Last updated: 2026-01-24 | Author: wangqiqi (https://github.com/wangqiqi)*
 *Based on Cursor official specifications, constitution-driven AI with intelligent perception, decision-making and evolution systems*

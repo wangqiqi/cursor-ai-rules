@@ -274,11 +274,6 @@ interface IntentDeclaration {
 
 ---
 
-## 📚 相关规范
-
-- [API规范](api-spec.md) - 接口定义和技术标准
-- [安全规范](security-spec.md) - 安全要求和实现标准
-- [性能规范](performance-spec.md) - 性能指标和测试标准
 
 ---
 

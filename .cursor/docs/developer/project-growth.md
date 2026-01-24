@@ -317,7 +317,6 @@ class DataSyncManager {
 
 - [系统架构](architecture.md) - 整体技术架构设计
 - [配置管理](../admin/configuration.md) - 配置系统使用指南
-- [隐私政策](../reference/specifications/privacy.md) - 数据隐私保护政策
 
 ---
 
