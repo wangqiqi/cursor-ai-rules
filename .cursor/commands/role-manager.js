@@ -20,6 +20,11 @@ class RoleManager {
         this.nicknameIndex = new Map();
         this.cacheTTL = 300000; // 5分钟缓存有效期
         this.lastCacheUpdate = 0;
+
+        // 🎯 新增性能优化：预构建昵称映射表
+        this.nicknameMap = new Map(); // 快速查找表: nickname -> roleId
+        this.roleConfigs = new Map(); // 角色配置缓存: roleId -> config
+        this.indexBuilt = false; // 标记索引是否已构建
     }
 
     /**
@@ -28,6 +33,10 @@ class RoleManager {
     async initialize() {
         try {
             await this.loadPersonalitySystem();
+
+            // 🚀 性能优化：在初始化时预构建昵称索引
+            await this.buildOptimizedNicknameIndex();
+
             console.log('🎭 角色管理器初始化成功');
         } catch (error) {
             console.error('❌ 角色管理器初始化失败:', error.message);
@@ -93,6 +102,66 @@ class RoleManager {
         }
 
         console.log(`📇 构建昵称索引完成: ${this.nicknameIndex.size} 个唯一昵称`);
+    }
+
+    /**
+     * 🚀 优化版昵称索引构建 - 预构建快速映射表
+     */
+    async buildOptimizedNicknameIndex() {
+        if (!this.personalitySystem || !this.personalitySystem.roles) {
+            return;
+        }
+
+        console.log('⚡ 开始构建优化的昵称索引...');
+
+        // 清空现有映射
+        this.nicknameMap.clear();
+        this.roleConfigs.clear();
+
+        // 预构建快速查找表
+        for (const [roleId, roleConfig] of Object.entries(this.personalitySystem.roles)) {
+            // 缓存角色配置
+            this.roleConfigs.set(roleId, roleConfig);
+
+            // 收集所有可能的昵称并建立映射
+            const nicknames = new Set();
+
+            // 检查personality_traits中的nickname字段
+            if (roleConfig.personality_traits?.nickname) {
+                if (Array.isArray(roleConfig.personality_traits.nickname)) {
+                    roleConfig.personality_traits.nickname.forEach(nick => nicknames.add(nick));
+                } else if (typeof roleConfig.personality_traits.nickname === 'string') {
+                    nicknames.add(roleConfig.personality_traits.nickname);
+                }
+            }
+
+            // 检查根级别的nickname字段
+            if (roleConfig.nickname) {
+                if (Array.isArray(roleConfig.nickname)) {
+                    roleConfig.nickname.forEach(nick => nicknames.add(nick));
+                } else if (typeof roleConfig.nickname === 'string') {
+                    nicknames.add(roleConfig.nickname);
+                }
+            }
+
+            // 检查selfname配置中的昵称
+            if (roleConfig.personality_traits?.selfname?.nicknames) {
+                if (Array.isArray(roleConfig.personality_traits.selfname.nicknames)) {
+                    roleConfig.personality_traits.selfname.nicknames.forEach(nick => nicknames.add(nick));
+                }
+            }
+
+            // 为每个昵称建立直接映射
+            nicknames.forEach(nickname => {
+                this.nicknameMap.set(nickname, {
+                    roleId,
+                    priority: this.getNicknamePriority(nickname, roleConfig)
+                });
+            });
+        }
+
+        this.indexBuilt = true;
+        console.log(`⚡ 优化昵称索引构建完成: ${this.nicknameMap.size} 个昵称映射`);
     }
 
     /**
@@ -378,28 +447,35 @@ class RoleManager {
      * 切换角色
      */
     async switchRole(roleId, reason = 'manual') {
-        // 🚀 性能优化 - 使用LRU缓存
-        let roleConfig = this.getRoleFromCache(roleId);
+        // 🚀 性能优化 - 优先使用内存缓存
+        let roleConfig = this.roleConfigs.get(roleId);
 
         if (!roleConfig) {
-            roleConfig = this.personalitySystem.roles[roleId];
+            // 降级到LRU缓存
+            roleConfig = this.getRoleFromCache(roleId);
+
             if (!roleConfig) {
-                return {
-                    success: false,
-                    message: `角色 "${roleId}" 不存在`,
-                    availableRoles: Object.keys(this.personalitySystem.roles)
-                };
+                // 最终降级到原始配置
+                roleConfig = this.personalitySystem.roles[roleId];
+                if (!roleConfig) {
+                    return {
+                        success: false,
+                        message: `角色 "${roleId}" 不存在`,
+                        availableRoles: Object.keys(this.personalitySystem.roles)
+                    };
+                }
+                // 添加到缓存
+                this.roleConfigs.set(roleId, roleConfig);
+                this.addRoleToCache(roleId, roleConfig);
             }
-            // 添加到LRU缓存
-            this.addRoleToCache(roleId, roleConfig);
         }
 
         const oldRole = this.currentRole;
         this.currentRole = roleId;
         this.addToHistory(roleId, reason);
 
-        // 🚀 性能优化 - 对于快速呼召，延迟保存配置
-        if (reason === 'fast_call_command') {
+        // 🚀 性能优化 - 对于快速呼叫，进一步优化
+        if (reason === 'fast_call_command' || reason === 'nickname_call') {
             // 异步延迟保存，不阻塞响应
             setTimeout(async () => {
                 try {
@@ -408,7 +484,7 @@ class RoleManager {
                 } catch (error) {
                     console.warn(`⚠️ 异步保存角色配置失败: ${error.message}`);
                 }
-            }, 100); // 100ms延迟，足够快但不阻塞
+            }, 50); // 减少延迟到50ms
 
             return {
                 success: true,
@@ -527,10 +603,27 @@ class RoleManager {
     }
 
     /**
-     * 通过昵称查找角色 - 优化版使用索引
+     * 通过昵称查找角色 - 🚀 超高速优化版
      */
     findRoleByNickname(nickname) {
-        // 检查缓存是否过期
+        // 🚀 优先使用预构建的快速映射表
+        if (this.indexBuilt && this.nicknameMap.has(nickname)) {
+            const mapping = this.nicknameMap.get(nickname);
+            const roleConfig = this.roleConfigs.get(mapping.roleId);
+
+            if (roleConfig) {
+                return {
+                    success: true,
+                    roleId: mapping.roleId,
+                    roleConfig: roleConfig,
+                    matchedBy: 'optimized_mapping',
+                    priority: mapping.priority,
+                    totalMatches: 1
+                };
+            }
+        }
+
+        // 检查缓存是否过期（降级方案）
         this.cleanupCache();
 
         // 检查昵称索引是否存在
@@ -552,7 +645,7 @@ class RoleManager {
             };
         }
 
-        // 降级到传统查找方法
+        // 最终降级到传统查找方法
         return this.findRoleByNicknameLegacy(nickname);
     }
 

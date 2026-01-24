@@ -1235,7 +1235,7 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 执行角色呼叫（通过昵称）
+     * 执行角色呼叫（通过昵称）- 🚀 超高速优化版
      * @param {string} nickname - 角色昵称
      * @returns {Promise<Object>} 执行结果
      */
@@ -1248,45 +1248,32 @@ class MasterCommandExecutor {
                 return this.createErrorResult('角色管理系统不可用');
             }
 
-            // 通过昵称查找角色
+            // 🚀 超高速昵称查找
             const roleResult = this.roleManager.findRoleByNickname(nickname);
 
             if (!roleResult.success) {
                 return this.createErrorResult(roleResult.message);
             }
 
-            // 切换到找到的角色
+            // 🚀 快速角色切换
             const switchResult = await this.roleManager.switchRole(roleResult.roleId, 'nickname_call');
 
             if (!switchResult.success) {
                 return this.createErrorResult(`角色切换失败: ${switchResult.message}`);
             }
 
-            // 生成亲切的欢迎消息
+            // 🚀 优化响应生成 - 减少字符串操作
             const roleConfig = roleResult.roleConfig;
-            let welcomeMessage = `🎭 已切换到角色: **${roleConfig.name}**\n\n`;
+            const welcomeParts = [
+                `🎭 已切换到角色: **${roleConfig.name}**`,
+                roleConfig.description ? `💫 ${roleConfig.description}` : '',
+                (roleConfig.personality_traits && roleConfig.personality_traits.inner_voice) ?
+                    `💭 *${roleConfig.personality_traits.inner_voice}*` : '',
+                this.formatSensoryReactions(roleConfig.sensory_reactions),
+                `✨ 现在可以用这个角色的风格与你交流了！有什么需要帮助的吗？`
+            ].filter(part => part.length > 0);
 
-            // 添加角色的个性描述
-            if (roleConfig.description) {
-                welcomeMessage += `💫 ${roleConfig.description}\n\n`;
-            }
-
-            // 添加角色特色
-            if (roleConfig.personality_traits && roleConfig.personality_traits.inner_voice) {
-                welcomeMessage += `💭 *${roleConfig.personality_traits.inner_voice}*\n\n`;
-            }
-
-            // 添加感官反应
-            if (roleConfig.sensory_reactions) {
-                const senses = roleConfig.sensory_reactions;
-                if (senses.vision) welcomeMessage += `👁️ ${senses.vision}\n`;
-                if (senses.hearing) welcomeMessage += `👂 ${senses.hearing}\n`;
-                if (senses.touch) welcomeMessage += `✋ ${senses.touch}\n`;
-                if (senses.intuition) welcomeMessage += `🔮 ${senses.intuition}\n`;
-                welcomeMessage += '\n';
-            }
-
-            welcomeMessage += `✨ 现在可以用这个角色的风格与你交流了！有什么需要帮助的吗？`;
+            const welcomeMessage = welcomeParts.join('\n\n');
 
             return this.createSuccessResult(welcomeMessage, {
                 role: roleResult.roleId,
@@ -1298,6 +1285,23 @@ class MasterCommandExecutor {
         } catch (error) {
             return this.createErrorResult(`角色呼叫失败: ${error.message}`);
         }
+    }
+
+    /**
+     * 🚀 优化感官反应格式化 - 减少字符串操作
+     */
+    formatSensoryReactions(sensoryReactions) {
+        if (!sensoryReactions) return '';
+
+        const reactions = [];
+        const senses = sensoryReactions;
+
+        if (senses.vision) reactions.push(`👁️ ${senses.vision}`);
+        if (senses.hearing) reactions.push(`👂 ${senses.hearing}`);
+        if (senses.touch) reactions.push(`✋ ${senses.touch}`);
+        if (senses.intuition) reactions.push(`🔮 ${senses.intuition}`);
+
+        return reactions.length > 0 ? reactions.join('\n') : '';
     }
 
     /**
