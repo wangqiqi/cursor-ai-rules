@@ -9,7 +9,23 @@
         "command": "features/hooks/role-activation.sh",
         "timeout": 8000,
         "async": true,
-        "enabled": true
+        "enabled": true,
+        "priority": 95,
+        "run_if_context": {
+          "event": "onSessionStart"
+        }
+      },
+      {
+        "name": "master-init",
+        "description": "Master命令初始化",
+        "command": "features/hooks/master-init.sh",
+        "timeout": 7000,
+        "async": true,
+        "enabled": true,
+        "priority": 90,
+        "run_if_context": {
+          "event": "onSessionStart"
+        }
       },
       {
         "name": "env-perception",
@@ -23,7 +39,7 @@
         "name": "session-optimizer",
         "description": "会话开始系统优化",
         "command": "features/hooks/session-optimizer.sh",
-        "timeout": 10000,
+        "timeout": 6000,
         "async": true,
         "enabled": true
       },
@@ -34,6 +50,19 @@
         "timeout": 5000,
         "async": true,
         "enabled": true
+      },
+      {
+        "name": "session-state-guard",
+        "description": "本地状态守护",
+        "command": "features/hooks/session-state-guard.sh",
+        "args": ["onSessionStart"],
+        "timeout": 2000,
+        "async": false,
+        "enabled": true,
+        "priority": 80,
+        "run_if_context": {
+          "event": "onSessionStart"
+        }
       }
     ],
     "afterFileSave": [
@@ -99,18 +128,22 @@
       {
         "name": "command-log",
         "description": "命令执行日志记录",
-        "command": "features/hooks/command-log.sh",
+        "command": "features/hooks/logging-common.sh",
+        "args": ["command"],
         "timeout": 3000,
         "async": true,
-        "enabled": true
+        "enabled": true,
+        "priority": 50
       },
       {
         "name": "event-logger",
         "description": "通用事件日志记录",
-        "command": "features/hooks/event-logger.sh",
+        "command": "features/hooks/logging-common.sh",
+        "args": ["event"],
         "timeout": 2000,
         "async": true,
-        "enabled": true
+        "enabled": true,
+        "priority": 40
       }
     ],
     "afterAgentResponse": [
@@ -134,9 +167,13 @@
         "name": "agent-orchestration",
         "description": "8个智能代理协作编排",
         "command": "core/agent-orchestration-engine.sh",
-        "timeout": 30000,
+        "timeout": 15000,
         "async": true,
-        "enabled": true
+        "enabled": true,
+        "priority": 70,
+        "run_if_context": {
+          "load": "moderate"
+        }
       },
       {
         "name": "context-pool-manager",
@@ -149,6 +186,19 @@
     ],
     "beforeSubmitPrompt": [
       {
+        "name": "session-state-guard",
+        "description": "会话状态守护",
+        "command": "features/hooks/session-state-guard.sh",
+        "args": ["beforeSubmitPrompt"],
+        "timeout": 4000,
+        "async": false,
+        "enabled": true,
+        "priority": 100,
+        "run_if_context": {
+          "event": "beforeSubmitPrompt"
+        }
+      },
+      {
         "name": "role-sync",
         "description": "强制角色同步 - 确保每个对话框都有正确的角色状态",
         "command": "features/hooks/role-sync.sh",
@@ -157,26 +207,10 @@
         "enabled": true
       },
       {
-        "name": "role-activation",
-        "description": "自动角色激活 - 在.cursor规则执行前激活当前项目角色",
-        "command": "features/hooks/role-activation.sh",
-        "timeout": 8000,
-        "async": false,
-        "enabled": true
-      },
-      {
         "name": "context-management",
         "description": "智能上下文管理",
         "command": "core/context-manager.sh",
         "timeout": 5000,
-        "async": false,
-        "enabled": true
-      },
-      {
-        "name": "master-init",
-        "description": "Master命令自动初始化",
-        "command": "features/hooks/master-init.sh",
-        "timeout": 10000,
         "async": false,
         "enabled": true
       },
@@ -222,7 +256,7 @@
         "name": "adaptive-optimization",
         "description": "自适应优化和A/B测试",
         "command": "core/adaptive-optimization-engine.sh",
-        "timeout": 15000,
+        "timeout": 12000,
         "async": true,
         "enabled": true
       },
@@ -230,7 +264,7 @@
         "name": "experiment-framework",
         "description": "实验框架自动化",
         "command": "core/experiment-framework.sh",
-        "timeout": 20000,
+        "timeout": 15000,
         "async": true,
         "enabled": true
       }
@@ -255,12 +289,17 @@
         "enabled": true
       },
       {
-        "name": "conversation-role-activation",
-        "description": "新对话框开始时自动激活项目角色",
-        "command": "features/hooks/role-activation.sh",
-        "timeout": 5000,
+        "name": "session-state-guard",
+        "description": "确保多对话状态保持",
+        "command": "features/hooks/session-state-guard.sh",
+        "args": ["onConversationStart"],
+        "timeout": 2500,
         "async": true,
-        "enabled": true
+        "enabled": true,
+        "priority": 60,
+        "run_if_context": {
+          "event": "onConversationStart"
+        }
       },
       {
         "name": "master-sync-init",
@@ -364,9 +403,13 @@
         "name": "conversational-system",
         "description": "高级会话命令处理",
         "command": "core/conversational-command-system.sh",
-        "timeout": 25000,
+        "timeout": 13000,
         "async": true,
-        "enabled": true
+        "enabled": true,
+        "priority": 55,
+        "run_if_context": {
+          "conversation_type": "complex"
+        }
       }
     ]
   },

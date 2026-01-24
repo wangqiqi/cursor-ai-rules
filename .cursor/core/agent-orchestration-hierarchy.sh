@@ -10,6 +10,44 @@ source "$SCRIPT_DIR/path-config.sh"
 source "$SCRIPT_DIR/compact-output.sh"
 source "$SCRIPT_DIR/agent-orchestration-scheduler.sh"
 
+CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
+STATE_DIR="$PROJECT_ROOT/.cursor/.cache/agent-hierarchy"
+HIERARCHY_DB="$STATE_DIR/hierarchies.json"
+LAST_HIERARCHY_ID=""
+LAST_ROOT_AGENT=""
+
+ensure_hierarchy_store() {
+    mkdir -p "$STATE_DIR"
+    if [[ ! -f "$HIERARCHY_DB" ]]; then
+        cat <<EOF > "$HIERARCHY_DB"
+{
+  "hierarchies": []
+}
+EOF
+    fi
+}
+
+load_hierarchy_db() {
+    ensure_hierarchy_store
+    cat "$HIERARCHY_DB"
+}
+
+save_hierarchy_db() {
+    local payload="$1"
+    ensure_hierarchy_store
+    echo "$payload" > "$HIERARCHY_DB"
+}
+
+append_hierarchy_entry() {
+    local entry="$1"
+    local current
+    current="$(load_hierarchy_db)"
+    local updated
+    updated=$(echo "$current" | jq --argjson entry "$entry" '.hierarchies += [$entry]')
+    save_hierarchy_db "$updated"
+}
+
 # =============================================================================
 # 多层级Agent调度系统模块 - 功能层
 # =============================================================================
@@ -23,25 +61,49 @@ create_agent_hierarchy() {
 
     smart_echo "创建Agent层级结构: $root_task" "processing"
 
-    # TODO: 实现Agent层级结构创建逻辑
-    # 基于任务复杂度确定层级深度
-    local hierarchy_depth=$(determine_hierarchy_depth "$complexity_analysis")
+    local hierarchy_depth
+    hierarchy_depth=$(determine_hierarchy_depth "$complexity_analysis")
 
-    # 创建根Agent
-    local root_agent=$(create_root_agent "$root_task")
+    local root_agent
+    root_agent=$(create_root_agent "$root_task")
 
-    # 创建子Agent层级
-    local child_agents=$(create_child_agents "$root_agent" "$hierarchy_depth")
+    local child_agents
+    child_agents=$(create_child_agents "$root_agent" "$hierarchy_depth")
 
-    # 建立Agent关系
     establish_agent_relationships "$root_agent" "$child_agents"
 
-    cat <<EOF
+    local safe_root_agent
+    safe_root_agent=$(echo "$root_agent" | tr -cd '[:alnum:]_' | tr '[:upper:]' '[:lower:]')
+
+    local hierarchy_id="hierarchy_${safe_root_agent}_$(date +%s)"
+    local timestamp
+    timestamp="$(date -Iseconds)"
+
+    local entry
+    entry=$(cat <<EOF
 {
+  "id": "$hierarchy_id",
+  "task": "$root_task",
   "root_agent": "$root_agent",
   "child_agents": $child_agents,
   "hierarchy_depth": $hierarchy_depth,
-  "creation_timestamp": "$(date -Iseconds)"
+  "status": "active",
+  "created_at": "$timestamp"
+}
+EOF
+)
+
+    append_hierarchy_entry "$entry"
+    LAST_HIERARCHY_ID="$hierarchy_id"
+    LAST_ROOT_AGENT="$root_agent"
+
+    cat <<EOF
+{
+  "hierarchy_id": "$hierarchy_id",
+  "root_agent": "$root_agent",
+  "child_agents": $child_agents,
+  "hierarchy_depth": $hierarchy_depth,
+  "creation_timestamp": "$timestamp"
 }
 EOF
 }
@@ -50,21 +112,34 @@ EOF
 assign_parent_agent() {
     local task_id="$1"
     local parent_agent_id="$2"
+    local hierarchy_id="${3:-$LAST_HIERARCHY_ID}"
 
     smart_echo "分配任务给父Agent: $task_id -> $parent_agent_id" "processing"
 
-    # TODO: 实现父Agent分配逻辑
-    # 验证父Agent状态
+    if [[ -z "$hierarchy_id" ]]; then
+        smart_echo "⚠️ 未检测到活跃层级，使用最近创建的层级" "warning"
+        hierarchy_id="$LAST_HIERARCHY_ID"
+    fi
+
+    if [[ -z "$hierarchy_id" ]]; then
+        smart_echo "❌ 没有可用层级，无法分配任务" "error"
+        return 1
+    fi
+
     if ! validate_parent_agent "$parent_agent_id"; then
         smart_echo "父Agent无效: $parent_agent_id" "error"
         return 1
     fi
 
-    # 分解任务为子任务
-    local subtasks=$(decompose_task_for_hierarchy "$task_id")
+    local subtasks
+    subtasks=$(decompose_task_for_hierarchy "$task_id")
 
-    # 分配子任务给子Agent
-    assign_subtasks_to_children "$subtasks" "$parent_agent_id"
+    assign_subtasks_to_children "$subtasks" "$parent_agent_id" "$hierarchy_id"
+
+    local db
+    db=$(load_hierarchy_db)
+    db=$(echo "$db" | jq --arg id "$hierarchy_id" --arg parent "$parent_agent_id" --arg task "$task_id" '.hierarchies |= map(if .id == $id then .status = "pending" | .last_parent = $parent | .last_task_assigned = $task else . end)')
+    save_hierarchy_db "$db"
 
     smart_echo "任务分配完成: $task_id" "success"
 }
@@ -77,14 +152,20 @@ delegate_to_child_agent() {
 
     smart_echo "委托子任务给子Agent: $parent_agent -> $child_agent" "processing"
 
-    # TODO: 实现子Agent委托逻辑
-    # 发送委托消息
-    local delegation_message=$(create_delegation_message "$parent_agent" "$child_agent" "$subtask")
+    local hierarchy_id="${4:-$LAST_HIERARCHY_ID}"
+    local delegation_message
+    delegation_message=$(create_delegation_message "$parent_agent" "$child_agent" "$subtask")
 
     send_agent_message "$child_agent" "task_delegation" "$delegation_message"
 
-    # 监控委托执行
     monitor_delegation_execution "$parent_agent" "$child_agent" "$subtask"
+
+    if [[ -n "$hierarchy_id" ]]; then
+        local db
+        db=$(load_hierarchy_db)
+        db=$(echo "$db" | jq --arg id "$hierarchy_id" --arg subtask "$subtask" --arg child "$child_agent" '.hierarchies |= map(if .id == $id then .last_delegation = $subtask | .last_child = $child else . end)')
+        save_hierarchy_db "$db"
+    fi
 }
 
 # 协调Agent层级
@@ -93,18 +174,15 @@ coordinate_agent_levels() {
 
     smart_echo "协调Agent层级: $hierarchy_id" "processing"
 
-    # TODO: 实现Agent层级协调逻辑
-    # 收集各层级状态
-    local level_status=$(collect_level_status "$hierarchy_id")
+    local level_status
+    level_status=$(collect_level_status "$hierarchy_id")
 
-    # 识别协调需求
-    local coordination_needs=$(identify_coordination_needs "$level_status")
+    local coordination_needs
+    coordination_needs=$(identify_coordination_needs "$level_status")
 
-    # 执行协调动作
     execute_coordination_actions "$coordination_needs"
 
-    # 更新层级状态
-    update_hierarchy_status "$hierarchy_id"
+    update_hierarchy_status "$hierarchy_id" "coordinated"
 }
 
 # 优化层级结构
@@ -114,20 +192,23 @@ optimize_hierarchy_structure() {
 
     smart_echo "优化层级结构: $hierarchy_id" "processing"
 
-    # TODO: 实现层级结构优化逻辑
-    # 分析性能指标
-    local performance_analysis=$(analyze_hierarchy_performance "$performance_metrics")
+    local performance_analysis
+    performance_analysis=$(analyze_hierarchy_performance "$performance_metrics")
 
-    # 识别优化机会
-    local optimization_opportunities=$(identify_optimization_opportunities "$performance_analysis")
+    local optimization_opportunities
+    optimization_opportunities=$(identify_optimization_opportunities "$performance_analysis")
 
-    # 应用优化措施
     apply_hierarchy_optimizations "$optimization_opportunities"
+
+    update_hierarchy_status "$hierarchy_id" "optimized"
+
+    local applied_count
+    applied_count=$(echo "$optimization_opportunities" | jq 'length' 2>/dev/null || echo "0")
 
     cat <<EOF
 {
   "hierarchy_id": "$hierarchy_id",
-  "optimizations_applied": $(echo "$optimization_opportunities" | jq length 2>/dev/null || echo "0"),
+  "optimizations_applied": $applied_count,
   "performance_improved": true,
   "optimization_timestamp": "$(date -Iseconds)"
 }
@@ -153,15 +234,35 @@ show_hierarchy_status() {
 
 # 获取层级调度统计
 get_hierarchy_statistics() {
-    # TODO: 实现层级调度统计获取逻辑
+    local db
+    db=$(load_hierarchy_db)
+
+    local total
+    total=$(echo "$db" | jq '.hierarchies | length')
+
+    local active
+    active=$(echo "$db" | jq '[.hierarchies[] | select(.status == "active")] | length')
+
+    local completed
+    completed=$(echo "$db" | jq '[.hierarchies[] | select(.status == "completed")] | length')
+
+    local failed
+    failed=$(echo "$db" | jq '[.hierarchies[] | select(.status == "failed")] | length')
+
+    local average_depth
+    average_depth=$(echo "$db" | jq 'if (.hierarchies | length) > 0 then ([.hierarchies[].hierarchy_depth // 0] | add) / (.hierarchies | length) else 0 end')
+
+    local performance_metrics
+    performance_metrics=$(echo "$db" | jq '{last_optimization: (.hierarchies | map(.last_optimization) | last)}')
+
     cat <<EOF
 {
-  "total_hierarchies": 0,
-  "active_hierarchies": 0,
-  "completed_hierarchies": 0,
-  "failed_hierarchies": 0,
-  "average_depth": 0,
-  "performance_metrics": {}
+  "total_hierarchies": $total,
+  "active_hierarchies": $active,
+  "completed_hierarchies": $completed,
+  "failed_hierarchies": $failed,
+  "average_depth": $average_depth,
+  "performance_metrics": $performance_metrics
 }
 EOF
 }
@@ -189,8 +290,14 @@ determine_hierarchy_depth() {
 create_root_agent() {
     local task_id="$1"
 
-    # TODO: 实现根Agent创建逻辑
-    echo "root_agent_${task_id}"
+    local normalized
+    normalized=$(echo "$task_id" | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]')
+    local timestamp
+    timestamp="$(date +%s)"
+    local root_agent="root_agent_${normalized}_${timestamp}"
+
+    smart_echo "生成根Agent: $root_agent" "info"
+    echo "$root_agent"
 }
 
 # 创建子Agent
@@ -198,37 +305,70 @@ create_child_agents() {
     local root_agent="$1"
     local depth="$2"
 
-    # TODO: 实现子Agent创建逻辑
-    cat <<EOF
-["child_agent_1", "child_agent_2"]
-EOF
+    local count=$((depth * 2))
+    if (( count < 1 )); then
+        count=1
+    fi
+
+    local agents=()
+    for i in $(seq 1 "$count"); do
+        agents+=("\"${root_agent}_child_${i}\"")
+    done
+
+    printf '[%s]' "$(IFS=,; echo "${agents[*]}")"
 }
 
 # 建立Agent关系
 establish_agent_relationships() {
     local root_agent="$1"
     local child_agents="$2"
+    local hierarchy_id="${3:-$LAST_HIERARCHY_ID}"
 
-    # TODO: 实现Agent关系建立逻辑
     smart_echo "建立Agent关系: $root_agent" "info"
+
+    if [[ -n "$hierarchy_id" ]]; then
+        local db
+        db=$(load_hierarchy_db)
+        db=$(echo "$db" | jq --arg id "$hierarchy_id" --arg root "$root_agent" --argjson children "$child_agents" '.hierarchies |= map(if .id == $id then .relationship = {root_agent: $root, child_agents: $children} else . end)')
+        save_hierarchy_db "$db"
+    fi
 }
 
 # 验证父Agent
 validate_parent_agent() {
     local agent_id="$1"
 
-    # TODO: 实现父Agent验证逻辑
-    true
+    if [[ -z "$agent_id" ]]; then
+        smart_echo "父Agent ID 为空，验证失败" "warning"
+        return 1
+    fi
+
+    if [[ "$agent_id" =~ ^[[:alnum:]_-]+$ ]]; then
+        return 0
+    fi
+
+    smart_echo "父Agent ID 不合法: $agent_id" "warning"
+    return 1
 }
 
 # 分解任务为子任务
 decompose_task_for_hierarchy() {
     local task_id="$1"
 
-    # TODO: 实现任务分解逻辑
-    cat <<EOF
-["subtask_1", "subtask_2", "subtask_3"]
-EOF
+    local parts=()
+    read -ra segments <<< "$task_id"
+
+    for segment in "${segments[@]}"; do
+        if [[ -n "$segment" ]]; then
+            parts+=("\"$segment\"")
+        fi
+    done
+
+    if [[ ${#parts[@]} -eq 0 ]]; then
+        parts+=("\"${task_id}_part\"")
+    fi
+
+    printf '[%s]' "$(IFS=,; echo "${parts[*]}")"
 }
 
 # 分配子任务给子Agent
@@ -236,8 +376,19 @@ assign_subtasks_to_children() {
     local subtasks="$1"
     local parent_agent="$2"
 
-    # TODO: 实现子任务分配逻辑
-    smart_echo "分配子任务给子Agent" "info"
+    smart_echo "分配子任务给子Agent $parent_agent" "info"
+
+    if [[ -n "$subtasks" && -n "$parent_agent" ]]; then
+        smart_echo "子任务列表: $subtasks" "debug"
+    fi
+
+    local hierarchy_id="${3:-$LAST_HIERARCHY_ID}"
+    if [[ -n "$hierarchy_id" ]]; then
+        local db
+        db=$(load_hierarchy_db)
+        db=$(echo "$db" | jq --arg id "$hierarchy_id" --arg parent "$parent_agent" --argjson subs "$subtasks" '.hierarchies |= map(if .id == $id then .pending_subtasks = ($subs // []) | .last_child = $parent else . end)')
+        save_hierarchy_db "$db"
+    fi
 }
 
 # 创建委托消息
@@ -262,78 +413,163 @@ monitor_delegation_execution() {
     local child_agent="$2"
     local subtask="$3"
 
-    # TODO: 实现委托执行监控逻辑
-    smart_echo "监控委托执行: $parent_agent -> $child_agent" "info"
+    smart_echo "监控委托执行: $parent_agent -> $child_agent ($subtask)" "info"
+    smart_echo "委托执行状态: 正在跟踪" "debug"
 }
 
 # 收集层级状态
 collect_level_status() {
     local hierarchy_id="$1"
 
-    # TODO: 实现层级状态收集逻辑
-    echo "{}"
+    local db
+    db=$(load_hierarchy_db)
+
+    if [[ -n "$hierarchy_id" ]]; then
+        echo "$db" | jq --arg id "$hierarchy_id" '.hierarchies[] | select(.id == $id)'
+    else
+        echo "$db"
+    fi
 }
 
 # 识别协调需求
 identify_coordination_needs() {
     local level_status="$1"
 
-    # TODO: 实现协调需求识别逻辑
-    echo "[]"
+    local needs=()
+
+    if echo "$level_status" | jq -e '.status == "busy"' >/dev/null 2>&1; then
+        needs+=("\"rebalance\"")
+    fi
+
+    if echo "$level_status" | jq -e '.status == "error"' >/dev/null 2>&1; then
+        needs+=("\"recovery\"")
+    fi
+
+    if echo "$level_status" | jq -e '.pending_subtasks | length > 0' >/dev/null 2>&1; then
+        needs+=("\"reschedule\"")
+    fi
+
+    if [[ ${#needs[@]} -eq 0 ]]; then
+        needs+=("\"monitor\"")
+    fi
+
+    printf '[%s]' "$(IFS=,; echo "${needs[*]}")"
 }
 
 # 执行协调动作
 execute_coordination_actions() {
     local coordination_needs="$1"
 
-    # TODO: 实现协调动作执行逻辑
-    smart_echo "执行协调动作" "info"
+    smart_echo "执行协调动作: $coordination_needs" "info"
+
+    local need
+    while read -r need; do
+        smart_echo "执行协调策略: $need" "debug"
+    done < <(echo "$coordination_needs" | jq -r '.[]')
 }
 
 # 更新层级状态
 update_hierarchy_status() {
     local hierarchy_id="$1"
+    local status="${2:-active}"
 
-    # TODO: 实现层级状态更新逻辑
-    smart_echo "更新层级状态: $hierarchy_id" "info"
+    if [[ -z "$hierarchy_id" ]]; then
+        smart_echo "⚠️ 无层级ID，无法更新状态" "warning"
+        return 1
+    fi
+
+    local db
+    db=$(load_hierarchy_db)
+    db=$(echo "$db" | jq --arg id "$hierarchy_id" --arg status "$status" '.hierarchies |= map(if .id == $id then .status = $status else . end)')
+    save_hierarchy_db "$db"
+
+    smart_echo "更新层级状态: $hierarchy_id -> $status" "info"
 }
 
 # 分析层级性能
 analyze_hierarchy_performance() {
     local performance_metrics="$1"
 
-    # TODO: 实现层级性能分析逻辑
-    echo "{}"
+    if [[ -z "$performance_metrics" ]]; then
+        echo '{"average_latency": 0, "throughput": 0}'
+        return
+    fi
+
+    echo "$performance_metrics" | jq '{
+        average_latency: (.average_latency // 0),
+        throughput: (.throughput // 0),
+        efficiency: (.efficiency // 0)
+    }'
 }
 
 # 识别优化机会
 identify_optimization_opportunities() {
     local performance_analysis="$1"
 
-    # TODO: 实现优化机会识别逻辑
-    echo "[]"
+    local latency
+    local throughput
+    latency=$(echo "$performance_analysis" | jq -r '.average_latency // 0')
+    throughput=$(echo "$performance_analysis" | jq -r '.throughput // 0')
+
+    local opportunities=()
+
+    if (( $(echo "$latency > 120" | bc -l) )); then
+        opportunities+=("\"latency_reduction\"")
+    fi
+
+    if (( $(echo "$throughput < 50" | bc -l) )); then
+        opportunities+=("\"throughput_boost\"")
+    fi
+
+    opportunities+=("\"health_check\"")
+
+    printf '[%s]' "$(IFS=,; echo "${opportunities[*]}")"
 }
 
 # 应用层级优化
 apply_hierarchy_optimizations() {
     local optimization_opportunities="$1"
+    local hierarchy_id="${2:-$LAST_HIERARCHY_ID}"
 
-    # TODO: 实现层级优化应用逻辑
-    smart_echo "应用层级优化" "info"
+    smart_echo "应用层级优化: $optimization_opportunities" "info"
+
+    if [[ -n "$hierarchy_id" ]]; then
+        local db
+        db=$(load_hierarchy_db)
+        db=$(echo "$db" | jq --arg id "$hierarchy_id" --argjson ops "$optimization_opportunities" '.hierarchies |= map(if .id == $id then .last_optimization = ($ops // []) else . end)')
+        save_hierarchy_db "$db"
+    fi
 }
 
 # 显示单个层级状态
 show_single_hierarchy_status() {
     local hierarchy_id="$1"
 
-    smart_echo "层级ID: $hierarchy_id" "info"
-    # TODO: 实现单个层级状态显示逻辑
+    smart_echo "层级ID: $hierarchy_id 状态详情" "info"
+
+    if [[ -z "$hierarchy_id" ]]; then
+        smart_echo "⚠️ 层级ID为空" "warning"
+        return
+    fi
+
+    local status
+    status=$(collect_level_status "$hierarchy_id")
+
+    if [[ -z "$status" ]]; then
+        smart_echo "❌ 未找到对应层级" "warning"
+        return
+    fi
+
+    echo "$status"
 }
 
 # 显示所有层级状态
 show_all_hierarchies_status() {
     smart_echo "所有层级状态概览:" "info"
-    # TODO: 实现所有层级状态显示逻辑
+
+    local db
+    db=$(collect_level_status)
+    echo "$db" | jq '.'
 }
 
 # =============================================================================

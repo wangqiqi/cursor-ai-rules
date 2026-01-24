@@ -131,6 +131,9 @@ Cursor AI Rules采用创新的双目录架构：
   - 每个项目独立成长，支持AI个性化学习和持续优化
   - 自动添加到 `.gitignore` 用于隐私和数据安全
 
+### 🗂️ 旧版本配置归档
+- `personality-system-old.json` 已归档至 `.cursor/config/archive/personality-system-old.json`，仅保留用于参考与迁移对照；新功能均使用 `.cursor/config/personality-system.json`
+
 ### 三项不可知设计原则
 
 #### 📦 项目不可知 (Project Independence)

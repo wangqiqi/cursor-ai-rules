@@ -1,197 +1,185 @@
 #!/bin/bash
 # 🎯 Master系统同步脚本
-# 同步CLI版本和JavaScript版本的Master命令系统
-#
-# 解决的问题：
-# 1. cursor-master.sh 引用不存在的 capability-map.json
-# 2. master-handler.js 和 master-router.js 也引用旧配置
-# 3. 统一使用新的模块化能力映射系统
+# 统一维护 CLI/JavaScript Master 命令系统的能力映射配置
+# 支持简化和平衡模式、向后兼容层与执行报告
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 CURSOR_DIR="$PROJECT_ROOT/.cursor"
+REPORT_FILE="$PROJECT_ROOT/master-sync-report.md"
+CAPABILITY_MAP_FILE="$CURSOR_DIR/commands/capability-map.json"
+MODULAR_INDEX="$CURSOR_DIR/commands/capability-maps/_index.json"
+OPERATIONS=()
+MODE="advanced"
 
-echo "🎯 开始同步Master命令系统..."
-echo "📁 项目根目录: $PROJECT_ROOT"
-echo "📁 Cursor目录: $CURSOR_DIR"
-
-# 1. 更新 cursor-master.sh 中的能力映射引用
-echo "🔄 步骤1: 更新cursor-master.sh的能力映射引用"
-
-if [ -f "$CURSOR_DIR/cursor-master.sh" ]; then
-    # 备份原文件
-    cp "$CURSOR_DIR/cursor-master.sh" "$CURSOR_DIR/cursor-master.sh.backup.$(date +%Y%m%d_%H%M%S)"
-
-    # 更新map_capabilities_from_json函数
-    sed -i 's|local capability_map_file="$CURSOR_DIR/commands/capability-map.json"|local capability_map_file="$CURSOR_DIR/commands/capability-maps/_index.json"|' "$CURSOR_DIR/cursor-master.sh"
-
-    # 更新映射查找逻辑 - 简化版本
-    echo "✅ 映射查找逻辑更新已跳过（需要手动处理）"
-
-    echo "✅ cursor-master.sh 已更新"
-else
-    echo "⚠️ 未找到cursor-master.sh文件"
-fi
-
-# 2. 更新 master-router.js 中的能力映射引用
-echo "🔄 步骤2: 更新master-router.js的能力映射引用"
-
-if [ -f "$CURSOR_DIR/commands/master-router.js" ]; then
-    # 备份原文件
-    cp "$CURSOR_DIR/commands/master-router.js" "$CURSOR_DIR/commands/master-router.js.backup.$(date +%Y%m%d_%H%M%S)"
-
-    # 更新getCapabilityConfig方法
-    cat > /tmp/master-router-patch.js << 'EOF'
-    async getCapabilityConfig(capability) {
-        try {
-            // 使用新的模块化能力映射系统
-            const indexPath = path.join(this.cursorDir, 'commands', 'capability-maps', '_index.json');
-
-            if (!fs.existsSync(indexPath)) {
-                console.warn('⚠️ 能力映射索引文件不存在');
-                return null;
-            }
-
-            const indexContent = fs.readFileSync(indexPath, 'utf8');
-            const indexConfig = JSON.parse(indexContent);
-
-            // 查找包含mappings的文件
-            const mappingFiles = indexConfig.includes.filter(file => file.includes('mappings/'));
-
-            for (const mappingFile of mappingFiles) {
-                const mappingPath = path.join(this.cursorDir, 'commands', 'capability-maps', mappingFile);
-
-                if (fs.existsSync(mappingPath)) {
-                    const mappingContent = fs.readFileSync(mappingPath, 'utf8');
-                    const mappingConfig = JSON.parse(mappingContent);
-
-                    if (mappingConfig[capability]) {
-                        return mappingConfig[capability];
-                    }
-                }
-            }
-
-            return null;
-
-        } catch (error) {
-            console.error('❌ 加载能力配置失败:', error);
-            return null;
-        }
-    }
+print_usage() {
+    cat <<EOF
+Usage: $0 [--mode simple|advanced]
+--mode   切换同步策略: simple 模式只更新兼容层，advanced 模式同时校验引用并运行自测
 EOF
+    exit 1
+}
 
-    # 应用补丁 (这里需要更复杂的sed替换，暂时保持原样)
-    echo "✅ master-router.js 能力映射更新完成"
-else
-    echo "⚠️ 未找到master-router.js文件"
-fi
+add_operation() {
+    OPERATIONS+=("$1")
+}
 
-# 3. 更新 master-handler.js 中的能力映射引用
-echo "🔄 步骤3: 更新master-handler.js的能力映射引用"
+ensure_compatibility_layer() {
+    if [[ -f "$CAPABILITY_MAP_FILE" ]] && grep -q '"compatibility_layer"' "$CAPABILITY_MAP_FILE"; then
+        add_operation "兼容性层已存在（保留旧文件）"
+        return
+    fi
 
-if [ -f "$CURSOR_DIR/commands/master-handler.js" ]; then
-    # 备份原文件
-    cp "$CURSOR_DIR/commands/master-handler.js" "$CURSOR_DIR/commands/master-handler.js.backup.$(date +%Y%m%d_%H%M%S)"
+    if [[ -f "$CAPABILITY_MAP_FILE" ]]; then
+        cp "$CAPABILITY_MAP_FILE" "$CAPABILITY_MAP_FILE.backup.$(date +%Y%m%d_%H%M%S)"
+        add_operation "备份现有 capability-map.json"
+    fi
 
-    # getCapabilityConfig方法已经更新（通过上面的补丁）
-    echo "✅ master-handler.js 能力映射引用已更新"
-else
-    echo "⚠️ 未找到master-handler.js文件"
-fi
+    mkdir -p "$(dirname "$CAPABILITY_MAP_FILE")"
 
-# 4. 创建兼容性层
-echo "🔄 步骤4: 创建向后兼容性层"
-
-cat > "$CURSOR_DIR/commands/capability-map.json" << 'EOF'
+    cat > "$CAPABILITY_MAP_FILE" <<'EOF'
 {
   "version": "1.0.0",
-  "description": "向后兼容层 - 重定向到新的模块化能力映射系统",
-  "redirect": {
+  "description": "向后兼容层 - 自动路由至模块化能力映射系统",
+  "compatibility_layer": {
     "enabled": true,
     "new_system": "capability-maps/",
     "index_file": "_index.json",
     "compatibility_mode": true
   },
-  "mappings": {},
+  "mappings": {
+    "analyze_project": {
+      "description": "分析项目现状",
+      "intents": ["analyze", "assess", "review", "status"],
+      "confidence_threshold": 0.75,
+      "capabilities": {
+        "rules": ["intelligent_evolution"],
+        "scripts": ["core/env-perception.sh"],
+        "workflows": ["code-analysis", "dependency-analysis"]
+      }
+    },
+    "check_system_info": {
+      "description": "检查系统信息",
+      "intents": ["system", "info", "status", "health"],
+      "confidence_threshold": 0.8,
+      "capabilities": {
+        "scripts": ["core/env-perception.sh"],
+        "rules": ["constitution"]
+      }
+    }
+  },
   "deprecated": true,
-  "migration_guide": "请使用新的模块化能力映射系统 capability-maps/"
+  "migration_guide": "请迁移至 capability-maps/ 模块化能力映射系统"
 }
 EOF
 
-echo "✅ 兼容性层已创建"
+    add_operation "创建新的兼容性层 capability-map.json"
+}
 
-# 5. 测试同步结果
-echo "🔄 步骤5: 测试同步结果"
+verify_modular_references() {
+    local files=(
+        "$CURSOR_DIR/commands/master-router.js"
+        "$CURSOR_DIR/commands/master-handler.js"
+    )
 
-echo "🧪 测试cursor-master.sh..."
-if bash "$CURSOR_DIR/cursor-master.sh" --help >/dev/null 2>&1; then
-    echo "✅ cursor-master.sh 运行正常"
-else
-    echo "⚠️ cursor-master.sh 测试失败"
-fi
+    for target in "${files[@]}"; do
+        if [[ ! -f "$target" ]]; then
+            add_operation "跳过缺失文件：$(basename "$target")"
+            continue
+        fi
 
-echo "🧪 测试master-router.js..."
-if node "$CURSOR_DIR/commands/master-router.js" --help >/dev/null 2>&1; then
-    echo "✅ master-router.js 运行正常"
-else
-    echo "⚠️ master-router.js 测试失败"
-fi
+        if grep -q "capability-map\.json" "$target"; then
+            add_operation "⚠️ $(basename "$target") 仍引用 capability-map.json，请手动审查"
+        else
+            add_operation "🎉 $(basename "$target") 已指向 capability-maps/_index.json"
+        fi
+    done
+}
 
-# 6. 生成同步报告
-echo "🔄 步骤6: 生成同步报告"
+run_tests() {
+    if [[ -f "$CURSOR_DIR/cursor-master.sh" ]]; then
+        if bash "$CURSOR_DIR/cursor-master.sh" --help >/dev/null 2>&1; then
+            add_operation "✅ cursor-master.sh --help 运行正常"
+        else
+            add_operation "⚠️ cursor-master.sh --help 自测异常"
+        fi
+    else
+        add_operation "⚠️ 缺失 cursor-master.sh，无法自测"
+    fi
 
-cat > "$PROJECT_ROOT/master-sync-report.md" << 'EOF'
+    if [[ -f "$CURSOR_DIR/commands/master-router.js" ]]; then
+        if node "$CURSOR_DIR/commands/master-router.js" --help >/dev/null 2>&1; then
+            add_operation "✅ master-router.js --help 运行正常"
+        else
+            add_operation "⚠️ master-router.js --help 自测异常"
+        fi
+    else
+        add_operation "⚠️ 缺失 master-router.js，无法自测"
+    fi
+}
+
+generate_report() {
+    local timestamp
+    timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+
+    cat > "$REPORT_FILE" <<EOF
 # 🎯 Master系统同步报告
 
-## 📋 同步概况
-本次同步解决了CLI版本和JavaScript版本Master命令系统之间的配置不一致问题。
+## 📋 模式
+- 同步模式：$MODE
+- 报告生成时间：$timestamp
 
-## 🔧 同步内容
+## 🔧 操作纪要
+$(for op in "${OPERATIONS[@]}"; do printf '- %s
+' "$op"; done)
 
-### 1. 能力映射系统统一
-- **问题**: 两个系统都引用不存在的 `capability-map.json`
-- **解决**: 统一使用新的模块化能力映射系统 `capability-maps/`
-- **影响**: 保持功能一致性，提升系统稳定性
+## 📝 建议
+- 每次改动能力映射前先运行 advanced 模式
+- 保持 capability-maps 及其 includes 的同步更新
+- 若报告出现带 ⚠️ 的条目，请根据提示手动修复
 
-### 2. 配置引用更新
-- **cursor-master.sh**: 更新 `map_capabilities_from_json` 函数
-- **master-router.js**: 更新 `getCapabilityConfig` 方法
-- **master-handler.js**: 同步能力配置加载逻辑
-
-### 3. 向后兼容性
-- 创建了兼容性层 `capability-map.json`
-- 提供重定向到新系统的信息
-- 确保现有代码不会立即失效
-
-## ✅ 同步结果
-- ✅ cursor-master.sh 能力映射引用已更新
-- ✅ master-router.js 能力映射引用已更新
-- ✅ master-handler.js 能力映射引用已同步
-- ✅ 兼容性层已创建
-- ✅ 基本功能测试通过
-
-## 🎯 同步状态
-**同步完成度**: 100%
-**系统一致性**: 高
-**向后兼容性**: 保持
-**功能完整性**: 完整
-
-## 📝 后续建议
-1. 定期检查两个系统的同步状态
-2. 在新功能开发时确保两个系统同时更新
-3. 考虑创建自动化同步检查脚本
-4. 监控系统运行日志，确保无异常
-
----
-*同步时间*: $(date)
-*同步脚本*: sync-master-systems.sh
 EOF
 
-echo "✅ 同步报告已生成: $PROJECT_ROOT/master-sync-report.md"
+    echo "📝 同步报告已更新：$REPORT_FILE"
+}
 
-echo ""
-echo "🎉 Master系统同步完成！"
-echo "📊 同步报告: $PROJECT_ROOT/master-sync-report.md"
-echo "🔄 备份文件已保存在各文件同目录下"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --mode|-m)
+            shift
+            if [[ $# -eq 0 ]]; then
+                echo "❌ 需要指定模式"
+                print_usage
+            fi
+            MODE="$1"
+            shift
+            ;;
+        --help|-h)
+            print_usage
+            ;;
+        *)
+            echo "❌ 未知参数：$1"
+            print_usage
+            ;;
+    esac
+done
+
+if [[ "$MODE" != "advanced" && "$MODE" != "simple" ]]; then
+    echo "❌ 不支持的模式：$MODE"
+    print_usage
+fi
+
+echo "🎯 Master 同步脚本运行在 [$MODE] 模式"
+
+ensure_compatibility_layer
+
+if [[ "$MODE" == "advanced" ]]; then
+    verify_modular_references
+    run_tests
+else
+    run_tests
+fi
+
+generate_report
