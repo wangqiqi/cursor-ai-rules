@@ -126,7 +126,7 @@ class RoleManager {
             // 收集所有可能的昵称并建立映射
             const nicknames = new Set();
 
-            // 检查personality_traits中的nickname字段
+            // 检查personality_traits中的nickname字段 (原始结构)
             if (roleConfig.personality_traits?.nickname) {
                 if (Array.isArray(roleConfig.personality_traits.nickname)) {
                     roleConfig.personality_traits.nickname.forEach(nick => nicknames.add(nick));
@@ -135,7 +135,7 @@ class RoleManager {
                 }
             }
 
-            // 检查根级别的nickname字段
+            // 检查根级别的nickname字段 (可能是简化后的结构)
             if (roleConfig.nickname) {
                 if (Array.isArray(roleConfig.nickname)) {
                     roleConfig.nickname.forEach(nick => nicknames.add(nick));
@@ -144,7 +144,14 @@ class RoleManager {
                 }
             }
 
-            // 检查selfname配置中的昵称
+            // 检查selfname配置中的昵称 (简化后的结构)
+            if (roleConfig.selfname?.nicknames) {
+                if (Array.isArray(roleConfig.selfname.nicknames)) {
+                    roleConfig.selfname.nicknames.forEach(nick => nicknames.add(nick));
+                }
+            }
+
+            // 检查原始personality_traits中的selfname昵称 (向后兼容)
             if (roleConfig.personality_traits?.selfname?.nicknames) {
                 if (Array.isArray(roleConfig.personality_traits.selfname.nicknames)) {
                     roleConfig.personality_traits.selfname.nicknames.forEach(nick => nicknames.add(nick));
@@ -375,7 +382,16 @@ class RoleManager {
                             // 移除元数据，只保留角色配置
                             const { _metadata, ...roleConfig } = roleData;
                             // 🚀 性能优化 - 简化配置结构
-                            personalitySystem.roles[roleData.id] = this.simplifyRoleConfig(roleConfig);
+                            const simplifiedConfig = this.simplifyRoleConfig(roleConfig);
+                            personalitySystem.roles[roleData.id] = simplifiedConfig;
+
+                            // 调试输出：检查nickname配置
+                            if (roleData.id === 'loli') {
+                                console.log(`🐛 loli角色nickname调试:`);
+                                console.log(`  - 原始personality_traits.nickname:`, roleConfig.personality_traits?.nickname);
+                                console.log(`  - 原始根级别nickname:`, roleConfig.nickname);
+                                console.log(`  - 简化后根级别nickname:`, simplifiedConfig.nickname);
+                            }
 
                             console.log(`✅ 加载角色: ${roleData.name} (${roleData.id})`);
                         } else {
@@ -603,15 +619,20 @@ class RoleManager {
     }
 
     /**
-     * 通过昵称查找角色 - 🚀 超高速优化版
+     * 通过昵称查找角色 - 🚀 超高速优化版 + 调试增强
      */
     findRoleByNickname(nickname) {
+        console.log(`🔍 查找昵称: "${nickname}"`);
+        console.log(`📊 系统状态: indexBuilt=${this.indexBuilt}, nicknameMap.size=${this.nicknameMap?.size || 0}, roleConfigs.size=${this.roleConfigs?.size || 0}`);
+
         // 🚀 优先使用预构建的快速映射表
         if (this.indexBuilt && this.nicknameMap.has(nickname)) {
+            console.log(`✅ 快速映射表命中: "${nickname}"`);
             const mapping = this.nicknameMap.get(nickname);
             const roleConfig = this.roleConfigs.get(mapping.roleId);
 
             if (roleConfig) {
+                console.log(`🎯 找到角色: ${mapping.roleId} (${roleConfig.name})`);
                 return {
                     success: true,
                     roleId: mapping.roleId,
@@ -620,6 +641,13 @@ class RoleManager {
                     priority: mapping.priority,
                     totalMatches: 1
                 };
+            } else {
+                console.log(`❌ 角色配置不存在: ${mapping.roleId}`);
+            }
+        } else {
+            console.log(`❌ 快速映射表未命中或未构建`);
+            if (this.nicknameMap) {
+                console.log(`📋 可用昵称: [${Array.from(this.nicknameMap.keys()).join(', ')}]`);
             }
         }
 
@@ -628,6 +656,7 @@ class RoleManager {
 
         // 检查昵称索引是否存在
         if (!this.nicknameIndex.has(nickname)) {
+            console.log(`❌ 传统索引也未找到: "${nickname}"`);
             // 降级到传统查找方法（用于向后兼容）
             return this.findRoleByNicknameLegacy(nickname);
         }
@@ -635,6 +664,7 @@ class RoleManager {
         const matches = this.nicknameIndex.get(nickname);
         if (matches && matches.length > 0) {
             const bestMatch = matches[0]; // 已按优先级排序
+            console.log(`✅ 传统索引找到: ${bestMatch.roleId}`);
             return {
                 success: true,
                 roleId: bestMatch.roleId,
@@ -646,6 +676,7 @@ class RoleManager {
         }
 
         // 最终降级到传统查找方法
+        console.log(`🔄 降级到传统查找方法`);
         return this.findRoleByNicknameLegacy(nickname);
     }
 
@@ -669,7 +700,7 @@ class RoleManager {
                         };
                     }
                 }
-                // 检查根级别的nickname字段
+                // 检查根级别的nickname字段 (支持简化后的结构)
                 if (roleConfig.nickname && Array.isArray(roleConfig.nickname)) {
                     if (roleConfig.nickname.includes(nickname)) {
                         return {
