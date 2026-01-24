@@ -13,7 +13,11 @@
       "Vue",
       "Python",
       "Java",
-      "Node.js"
+      "Node.js",
+      "PDF",
+      "Word",
+      "Excel",
+      "XLSX"
     ],
     "confidence_boosters": [
       "项目",

@@ -2,12 +2,11 @@
   "hooks_execution": {
     "description": "执行特定钩子",
     "intents": [
-      "execute",
-      "run",
-      "trigger",
-      "执行",
-      "运行",
-      "触发"
+      "trigger hook",
+      "run hook",
+      "触发钩子",
+      "执行钩子",
+      "钩子"
     ],
     "confidence_threshold": 0.8,
     "user_examples": [

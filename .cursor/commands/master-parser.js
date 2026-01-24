@@ -8,6 +8,11 @@ class MasterCommandParser {
     constructor(projectRoot) {
         this.projectRoot = projectRoot;
         this.cursorDir = path.join(projectRoot, '.cursor');
+        this.mappingsDir = path.join(this.cursorDir, 'commands', 'capability-maps');
+
+        // 🎯 动态意图映射
+        this.intentMappings = {};
+        this.initialized = false;
 
         // 定义命令模式
         this.commandPatterns = {
@@ -35,86 +40,95 @@ class MasterCommandParser {
                 handler: this.parseNaturalLanguage.bind(this)
             }
         };
+    }
 
-        // 意图分类映射
-        this.intentMappings = {
-            // 项目创建意图
-            creation: {
-                keywords: ['创建', '开发', '构建', '搭建', '实现', '新建', '做一个', '生成'],
-                confidence: 0.9,
-                category: 'creation',
-                constitution: 'intent_sovereignty'
-            },
+    /**
+     * 初始化解析器，加载动态映射
+     */
+    async initialize() {
+        if (this.initialized) return;
 
-            // 代码优化意图
-            optimization: {
-                keywords: ['优化', '改进', '提升', '重构', '修复', '清理', '整理', '增强'],
-                confidence: 0.85,
-                category: 'optimization'
-            },
-
-            // 分析意图
-            analysis: {
-                keywords: ['分析', '检查', '评估', '诊断', '审计', '审查', '监控', '查看'],
-                confidence: 0.8,
-                category: 'analysis'
-            },
-
-            // 部署运维意图
-            deployment: {
-                keywords: ['部署', '发布', '上线', '运行', '启动', '停止', '重启', '维护'],
-                confidence: 0.75,
-                category: 'deployment'
-            },
-
-            // 学习意图
-            learning: {
-                keywords: ['学习', '了解', '掌握', '教程', '指南', '文档', '帮助', '教学'],
-                confidence: 0.7,
-                category: 'learning'
-            },
-
-            // 测试意图
-            testing: {
-                keywords: ['测试', '验证', '检查', '运行测试', '单元测试', '集成测试'],
-                confidence: 0.8,
-                category: 'testing'
-            },
-
-            // 提交意图
-            commit: {
-                keywords: ['提交', '推送', '保存', '上传', '同步'],
-                confidence: 0.85,
-                category: 'commit'
-            },
-
-            // 角色呼叫意图
-            role_call: {
-                keywords: ['呼叫', '叫', '召唤', '切换到', '使用角色', '角色'],
-                confidence: 0.95,
-                category: 'role_management'
-            },
-
-            // 学习系统状态意图
-            learning_status: {
-                keywords: ['学习系统', 'learning system', '学习状态', 'learning status', '自适应', 'adaptive', '用户画像', 'user profile'],
-                confidence: 0.9,
-                category: 'system_status'
+        try {
+            console.log('🔍 正在加载动态能力映射...');
+            const indexPath = path.join(this.mappingsDir, '_index.json');
+            if (fs.existsSync(indexPath)) {
+                const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+                if (index.includes) {
+                    for (const include of index.includes) {
+                        const filePath = path.join(this.mappingsDir, include);
+                        if (fs.existsSync(filePath)) {
+                            const mappingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                            // 合并映射数据
+                            for (const [key, value] of Object.entries(mappingData)) {
+                                if (value.intents && (value.user_examples || value.capabilities)) {
+                                    this.intentMappings[key] = {
+                                        keywords: value.intents,
+                                        confidence: value.confidence_threshold || 0.8,
+                                        category: key.split('_')[0], // 启发式分类
+                                        ...value
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        };
+
+            // 🚀 加载高级意图模式
+            const patternsPath = path.join(this.mappingsDir, 'advanced', 'intent-patterns.json');
+            if (fs.existsSync(patternsPath)) {
+                this.intentPatterns = JSON.parse(fs.readFileSync(patternsPath, 'utf8'));
+            }
+
+            console.log(`✅ 成功加载 ${Object.keys(this.intentMappings).length} 个动态意图映射`);
+        } catch (error) {
+            console.warn('⚠️ 加载动态映射失败，回退到基础映射:', error.message);
+            // 基础映射回退
+            this.intentMappings = {
+                creation: { keywords: ['创建', '开发', '构建', '搭建', '实现', '新建', '做一个', '生成'], confidence: 0.9, category: 'creation' },
+                optimization: { keywords: ['优化', '改进', '提升', '重构', '修复', '清理', '整理', '增强'], confidence: 0.85, category: 'optimization' },
+                analysis: { keywords: ['分析', '检查', '评估', '诊断', '审计', '审查', '监控', '查看'], confidence: 0.8, category: 'analysis' },
+                learning: { keywords: ['学习', '了解', '掌握', '教程', '指南', '文档', '帮助', '教学'], confidence: 0.7, category: 'learning' },
+                commit: { keywords: ['提交', '推送', '保存', '上传', '同步'], confidence: 0.85, category: 'commit' }
+            };
+        }
+
+        this.initialized = true;
     }
 
     /**
      * 主解析方法
      * @param {string} input - 用户输入
-     * @returns {Object} 解析结果
+     * @returns {Promise<Object>} 解析结果
      */
-    parse(input) {
+    async parse(input) {
+        if (!this.initialized) {
+            await this.initialize();
+        }
+
         if (!input || typeof input !== 'string') {
             return this.createErrorResult('输入无效');
         }
 
         const trimmedInput = input.trim();
+
+        // 🚀 新增：检测复合指令（包含多个操作的指令）- 优先级最高
+        const compoundResult = this.parseCompoundCommands(trimmedInput);
+        if (compoundResult) {
+            return compoundResult;
+        }
+
+        // 尝试角色呼叫模式 - 在直接调用之前检测，避免"呼叫"被误认为直接调用
+        const roleCallResult = this.commandPatterns.role_call.handler(trimmedInput);
+        if (roleCallResult) {
+            return roleCallResult;
+        }
+
+        // 尝试角色切换模式
+        const roleSwitchResult = this.commandPatterns.role_switch.handler(trimmedInput);
+        if (roleSwitchResult) {
+            return roleSwitchResult;
+        }
 
         // 尝试直接调用模式
         for (const [type, config] of Object.entries(this.commandPatterns)) {
@@ -126,17 +140,108 @@ class MasterCommandParser {
             }
         }
 
+        // 尝试自然语言模式
+        return this.commandPatterns.natural.handler(trimmedInput);
+    }
+
+    /**
+     * 解析复合指令（多个操作的指令）
+     * @param {string} input - 输入字符串
+     * @returns {Object|null} 解析结果或null
+     */
+    parseCompoundCommands(input) {
+        console.log(`🔍 检查复合指令: "${input}"`);
+
+        let subCommands = [];
+        let isCompound = false;
+
+        // 方法1: 使用标点符号分割
+        if (input.includes('！') || input.includes('；') || input.includes('。')) {
+            // 按中文标点分割
+            const parts = input.split(/[！；。]/).filter(part => part.trim().length > 1);
+            if (parts.length >= 2) {
+                console.log(`📝 按标点分割得到 ${parts.length} 个部分:`, parts);
+                subCommands = parts;
+                isCompound = true;
+            }
+        }
+
+        // 方法2: 使用连接词分割（如果标点分割失败）
+        if (!isCompound) {
+            const connectorPattern = /(.+?)(?:然后|接着|再|以及|并且)\s*(.+)/;
+            const match = input.match(connectorPattern);
+            if (match) {
+                subCommands = [match[1].trim(), match[2].trim()];
+                console.log(`📝 按连接词分割得到 ${subCommands.length} 个部分:`, subCommands);
+                isCompound = true;
+            }
+        }
+
+        console.log(`🔍 复合指令检测结果: isCompound=${isCompound}, subCommands=${subCommands.length}`);
+
+        // 如果检测到复合指令，逐个解析子指令
+        if (isCompound && subCommands.length >= 2) {
+            console.log(`🔀 检测到复合指令，包含 ${subCommands.length} 个子指令`);
+
+            const parsedSubCommands = [];
+            for (const subCmd of subCommands) {
+                try {
+                    console.log(`🔍 解析子指令: "${subCmd}"`);
+                    // 递归解析每个子指令
+                    const subResult = this.parseSingleCommand(subCmd);
+                    console.log(`✅ 子指令解析结果: ${subResult?.type || 'null'}`);
+                    if (subResult) {
+                        parsedSubCommands.push({
+                            input: subCmd,
+                            parsed: subResult
+                        });
+                    }
+                } catch (error) {
+                    console.warn(`⚠️ 子指令解析失败: ${subCmd}`, error.message);
+                }
+            }
+
+            console.log(`📊 解析完成 ${parsedSubCommands.length} 个子指令`);
+
+            if (parsedSubCommands.length >= 2) {
+                return {
+                    success: true,
+                    type: 'compound_commands',
+                    subCommands: parsedSubCommands,
+                    originalInput: input,
+                    confidence: 0.9,
+                    timestamp: new Date().toISOString()
+                };
+            }
+        }
+
+        console.log(`❌ 未检测到复合指令`);
+        return null;
+    }
+
+    /**
+     * 解析单个指令（用于复合指令的子指令解析）
+     * @param {string} input - 输入字符串
+     * @returns {Object|null} 解析结果或null
+     */
+    parseSingleCommand(input) {
+        const trimmedInput = input.trim();
+
+        // 尝试直接调用模式
+        for (const [type, config] of Object.entries(this.commandPatterns)) {
+            if (type === 'direct') {
+                const directResult = config.handler(trimmedInput);
+                if (directResult) return directResult;
+            }
+        }
+
         // 尝试角色切换模式
         const roleSwitchResult = this.commandPatterns.role_switch.handler(trimmedInput);
-        if (roleSwitchResult) {
-            return roleSwitchResult;
-        }
+        if (roleSwitchResult) return roleSwitchResult;
 
         // 尝试角色呼叫模式
         const roleCallResult = this.commandPatterns.role_call.handler(trimmedInput);
-        if (roleCallResult) {
-            return roleCallResult;
-        }
+        if (roleCallResult) return roleCallResult;
 
         // 尝试自然语言模式
         return this.commandPatterns.natural.handler(trimmedInput);
@@ -293,12 +398,42 @@ class MasterCommandParser {
 
             // 标准化得分 (基于匹配度和基础置信度)
             // 如果匹配到关键词，给基础分；匹配越多得分越高
-            const normalizedScore = score > 0 ?
+            let normalizedScore = score > 0 ?
                 Math.min(score * 0.2 + 0.3, 1.0) * intentConfig.confidence : 0;
+
+            // 🚀 使用高级模式进行得分修正
+            if (this.intentPatterns && normalizedScore > 0) {
+                const category = intentConfig.category;
+                const pattern = Object.values(this.intentPatterns).find(p =>
+                    p.keywords && p.keywords.some(k => intentConfig.keywords.includes(k))
+                );
+
+                if (pattern) {
+                    // 技术指标增强
+                    if (pattern.tech_indicators) {
+                        for (const indicator of pattern.tech_indicators) {
+                            if (lowerInput.includes(indicator.toLowerCase())) {
+                                normalizedScore += 0.1;
+                                matchedKeywords.push(indicator);
+                            }
+                        }
+                    }
+                    // 信心增强词
+                    if (pattern.confidence_boosters) {
+                        for (const booster of pattern.confidence_boosters) {
+                            if (lowerInput.includes(booster.toLowerCase())) {
+                                normalizedScore += 0.05;
+                                matchedKeywords.push(booster);
+                            }
+                        }
+                    }
+                }
+            }
 
             if (normalizedScore > maxScore && normalizedScore > 0.2) { // 降低最低阈值
                 maxScore = normalizedScore;
                 bestMatch = {
+                    ...intentConfig,
                     intent: intentKey,
                     category: intentConfig.category,
                     confidence: normalizedScore,
@@ -365,6 +500,17 @@ class MasterCommandParser {
                 const roleNameMatch = input.match(/(?:切换到|使用角色)\s*([^\s]+)/);
                 if (roleNameMatch) {
                     parameters.roleName = roleNameMatch[1].trim();
+                }
+                break;
+
+            case 'skills_execution':
+                // 🚀 尝试提取技能名称
+                const skillKeywords = ['pdf', 'word', 'docx', 'xlsx', 'excel', 'theme', 'design', 'test'];
+                for (const sk of skillKeywords) {
+                    if (input.toLowerCase().includes(sk)) {
+                        parameters.skill_name = sk;
+                        break;
+                    }
                 }
                 break;
         }

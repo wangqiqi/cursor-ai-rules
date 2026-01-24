@@ -6,7 +6,11 @@
       "quality",
       "code",
       "lint",
-      "audit"
+      "audit",
+      "检查",
+      "质量",
+      "优化",
+      "审计"
     ],
     "confidence_threshold": 0.7,
     "user_examples": [
@@ -56,7 +60,11 @@
       "commit",
       "git",
       "save",
-      "push"
+      "push",
+      "提交",
+      "提交代码",
+      "推送",
+      "保存代码"
     ],
     "confidence_threshold": 0.8,
     "user_examples": [
@@ -146,7 +154,14 @@
     ],
     "parameters": {
       "formatter": "prettier",
-      "file_extensions": [".js", ".ts", ".jsx", ".tsx", ".json", ".md"],
+      "file_extensions": [
+        ".js",
+        ".ts",
+        ".jsx",
+        ".tsx",
+        ".json",
+        ".md"
+      ],
       "write_changes": true,
       "check_only": false
     },

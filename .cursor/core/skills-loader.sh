@@ -100,9 +100,15 @@ check_skill_dependencies() {
         for dep in $dependencies; do
             case "$dep" in
                 javascript|node)
-                    if [ ! -f "package.json" ]; then
-                        log_warning "技能需要 $dep 但未检测到 package.json"
-                        return 1
+                    # 检查是否有 JavaScript 项目文件或代码文件
+                    if [ ! -f "package.json" ] && [ ! -f "package-lock.json" ] && [ ! -f "yarn.lock" ]; then
+                        # 检查是否有 .js/.ts 文件（排除 node_modules）
+                        local js_files=$(find . -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" | grep -v node_modules | wc -l)
+                        if [ "$js_files" -eq "0" ]; then
+                            log_warning "技能需要 $dep 但未检测到 JavaScript 项目文件或代码"
+                            return 1
+                        fi
+                        log_info "检测到 $js_files 个 JavaScript 代码文件，继续加载技能"
                     fi
                     ;;
                 python)

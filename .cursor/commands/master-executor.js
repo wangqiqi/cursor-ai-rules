@@ -5,6 +5,242 @@ const { execSync, spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
+/**
+ * 资源发现中心 - 统一管理所有资源类型的查找
+ */
+class ResourceDiscoveryCenter {
+    constructor(projectRoot, cursorDir) {
+        this.projectRoot = projectRoot;
+        this.cursorDir = cursorDir;
+        this.cache = new Map();
+        this.cacheTTL = 300000; // 5分钟缓存
+    }
+
+    /**
+     * 查找规则文件
+     * @param {string} ruleName - 规则名称
+     * @returns {string|null} 规则文件路径
+     */
+    findRule(ruleName) {
+        const cacheKey = `rule_${ruleName}`;
+        const cached = this.getCached(cacheKey);
+        if (cached) return cached;
+
+        if (path.isAbsolute(ruleName) && fs.existsSync(ruleName)) {
+            this.setCached(cacheKey, ruleName);
+            return ruleName;
+        }
+
+        const name = ruleName.endsWith('.md') ? ruleName.slice(0, -3) : ruleName;
+        const ruleBaseDir = path.join(this.cursorDir, 'rules');
+
+        // 1. 检查根目录
+        const rootPath = path.join(ruleBaseDir, `${name}.md`);
+        if (fs.existsSync(rootPath)) {
+            this.setCached(cacheKey, rootPath);
+            return rootPath;
+        }
+
+        // 2. 递归查找所有子目录
+        const result = this.recursiveFind(ruleBaseDir, name, ['.md']);
+        this.setCached(cacheKey, result);
+        return result;
+    }
+
+    /**
+     * 查找脚本文件
+     * @param {string} scriptName - 脚本名称
+     * @returns {string|null} 脚本文件路径
+     */
+    findScript(scriptName) {
+        const cacheKey = `script_${scriptName}`;
+        const cached = this.getCached(cacheKey);
+        if (cached) return cached;
+
+        let scriptPath = scriptName;
+
+        // 如果不是绝对路径，尝试查找
+        if (!path.isAbsolute(scriptName)) {
+            // 1. 尝试直接拼接 .cursor 目录
+            const directPath = path.join(this.cursorDir, scriptName);
+            if (fs.existsSync(directPath)) {
+                scriptPath = directPath;
+            } else {
+                // 2. 递归查找
+                scriptPath = this.recursiveFind(this.cursorDir, scriptName, ['.sh', '.js']) || scriptName;
+            }
+        }
+
+        this.setCached(cacheKey, scriptPath);
+        return scriptPath;
+    }
+
+    /**
+     * 查找钩子文件
+     * @param {string} hookName - 钩子名称
+     * @returns {string|null} 钩子文件路径
+     */
+    findHook(hookName) {
+        const cacheKey = `hook_${hookName}`;
+        const cached = this.getCached(cacheKey);
+        if (cached) return cached;
+
+        const result = this.recursiveFind(path.join(this.cursorDir, 'features', 'hooks'), hookName, ['.sh', '.js']);
+        this.setCached(cacheKey, result);
+        return result;
+    }
+
+    /**
+     * 查找技能文件
+     * @param {string} skillName - 技能名称
+     * @returns {string|null} 技能文件路径
+     */
+    findSkill(skillName) {
+        const cacheKey = `skill_${skillName}`;
+        const cached = this.getCached(cacheKey);
+        if (cached) return cached;
+
+        const result = this.recursiveFind(path.join(this.cursorDir, 'features', 'skills'), skillName, ['.md', '.sh']);
+        this.setCached(cacheKey, result);
+        return result;
+    }
+
+    /**
+     * 查找工作流文件
+     * @param {string} workflowName - 工作流名称
+     * @returns {string|null} 工作流文件路径
+     */
+    findWorkflow(workflowName) {
+        const cacheKey = `workflow_${workflowName}`;
+        const cached = this.getCached(cacheKey);
+        if (cached) return cached;
+
+        // 工作流可能在多个位置
+        const locations = [
+            path.join(this.cursorDir, 'rules', 'workflow'),
+            path.join(this.cursorDir, 'features', 'automation'),
+            path.join(this.cursorDir, 'features', 'automation', 'scripts')
+        ];
+
+        for (const location of locations) {
+            const result = this.recursiveFind(location, workflowName, ['.md', '.sh', '.js']);
+            if (result) {
+                this.setCached(cacheKey, result);
+                return result;
+            }
+        }
+
+        this.setCached(cacheKey, null);
+        return null;
+    }
+
+    /**
+     * 通用递归查找方法
+     * @param {string} baseDir - 基础目录
+     * @param {string} resourceName - 资源名称
+     * @param {string[]} extensions - 允许的后缀
+     * @returns {string|null} 找到的绝对路径
+     */
+    recursiveFind(baseDir, resourceName, extensions = []) {
+        if (!fs.existsSync(baseDir)) return null;
+
+        // 规范化输入：移除可能的相对路径前缀，提取纯净名称
+        const cleanName = resourceName.replace(/^\.\//, "").replace(/^\.cursor\//, "");
+        const fileName = path.basename(cleanName);
+        const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+
+        // 1. 尝试直接路径匹配
+        const directPaths = [
+            path.join(baseDir, cleanName),
+            path.join(this.projectRoot, cleanName),
+            path.join(this.cursorDir, cleanName)
+        ];
+
+        for (const p of directPaths) {
+            if (fs.existsSync(p) && fs.statSync(p).isFile()) return p;
+            for (const ext of extensions) {
+                const pWithExt = p.endsWith(ext) ? p : `${p}${ext}`;
+                if (fs.existsSync(pWithExt) && fs.statSync(pWithExt).isFile()) return pWithExt;
+            }
+        }
+
+        // 2. 深度优先搜索
+        const search = (currentDir) => {
+            const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+
+            // 优先查找文件
+            for (const entry of entries) {
+                if (entry.isFile()) {
+                    if (entry.name === fileName) return path.join(currentDir, entry.name);
+                    for (const ext of extensions) {
+                        if (entry.name === `${nameWithoutExt}${ext}`) return path.join(currentDir, entry.name);
+                    }
+                }
+            }
+
+            // 再递归目录
+            for (const entry of entries) {
+                if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+                    const found = search(path.join(currentDir, entry.name));
+                    if (found) return found;
+                }
+            }
+            return null;
+        };
+
+        return search(baseDir);
+    }
+
+    /**
+     * 获取缓存
+     * @param {string} key - 缓存键
+     * @returns {any} 缓存值
+     */
+    getCached(key) {
+        const cached = this.cache.get(key);
+        if (cached && (Date.now() - cached.timestamp) < this.cacheTTL) {
+            return cached.value;
+        }
+        return null;
+    }
+
+    /**
+     * 设置缓存
+     * @param {string} key - 缓存键
+     * @param {any} value - 缓存值
+     */
+    setCached(key, value) {
+        this.cache.set(key, {
+            value: value,
+            timestamp: Date.now()
+        });
+    }
+
+    /**
+     * 清理过期缓存
+     */
+    cleanupCache() {
+        const now = Date.now();
+        for (const [key, value] of this.cache.entries()) {
+            if (now - value.timestamp > this.cacheTTL) {
+                this.cache.delete(key);
+            }
+        }
+    }
+
+    /**
+     * 获取统计信息
+     * @returns {Object} 统计信息
+     */
+    getStats() {
+        return {
+            cacheSize: this.cache.size,
+            cacheTTL: this.cacheTTL,
+            timestamp: new Date().toISOString()
+        };
+    }
+}
+
 class MasterCommandExecutor {
     constructor(projectRoot) {
         this.projectRoot = projectRoot;
@@ -12,9 +248,41 @@ class MasterCommandExecutor {
         this.executionTimeout = 30000; // 30秒默认超时
         this.maxConcurrency = 3; // 最大并发数
 
-        // 初始化角色管理器
+        // 初始化标志
+        this.initialized = false;
         this.roleManager = null;
-        this.initializeRoleManager();
+
+        // 🚀 初始化资源发现中心
+        this.resourceDiscovery = new ResourceDiscoveryCenter(projectRoot, this.cursorDir);
+    }
+
+    /**
+     * 初始化执行器
+     */
+    async initialize() {
+        if (this.initialized) return;
+        await this.initializeRoleManager();
+
+        // 🚀 加载钩子配置
+        this.hooksConfig = this.loadHooksConfig();
+
+        this.initialized = true;
+        console.log('✅ Master执行器初始化完成');
+    }
+
+    /**
+     * 加载钩子配置文件
+     */
+    loadHooksConfig() {
+        try {
+            const configPath = path.join(this.cursorDir, 'features', 'hooks', 'hooks.json');
+            if (fs.existsSync(configPath)) {
+                return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+            }
+        } catch (error) {
+            console.warn('⚠️ 无法加载 hooks.json:', error.message);
+        }
+        return { hooks: {} };
     }
 
     /**
@@ -84,6 +352,10 @@ class MasterCommandExecutor {
      * @returns {Promise<Object>} 执行结果
      */
     async execute(parseResult) {
+        if (!this.initialized) {
+            await this.initialize();
+        }
+
         try {
             // 🎭 确保项目角色配置正确
             await this.ensureProjectRoleConfig();
@@ -100,6 +372,9 @@ class MasterCommandExecutor {
 
                 case 'role_switch':
                     return await this.executeRoleSwitch(parseResult);
+
+                case 'compound_commands':
+                    return await this.executeCompoundCommands(parseResult);
 
                 case 'natural_language':
                     return await this.executeNaturalLanguage(parseResult);
@@ -214,7 +489,7 @@ class MasterCommandExecutor {
      * @returns {Promise<Object>} 执行结果
      */
     async executeNaturalLanguage(parseResult) {
-        const { intent, parameters, constitution } = parseResult;
+        const { intent, parameters, constitution, analysis } = parseResult;
 
         console.log(`🧠 执行自然语言命令 - 意图: ${intent}`);
 
@@ -223,7 +498,12 @@ class MasterCommandExecutor {
             return await this.handleConstitutionViolation(parseResult);
         }
 
-        // 根据意图执行相应操作
+        // 🚀 动态执行：如果分析结果中有能力定义，则按定义执行
+        if (analysis && analysis.capabilities) {
+            return await this.executeByCapabilityMapping(analysis, parameters);
+        }
+
+        // 回退到硬编码的意图处理 (保持兼容性)
         switch (intent) {
             case 'creation':
                 return await this.handleCreationIntent(parameters);
@@ -251,6 +531,88 @@ class MasterCommandExecutor {
 
             default:
                 return await this.handleGenericIntent(intent, parameters);
+        }
+    }
+
+    /**
+     * 执行复合指令（顺序执行多个子指令）
+     * @param {Object} parseResult - 解析结果
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeCompoundCommands(parseResult) {
+        const { subCommands } = parseResult;
+        const results = [];
+        let overallSuccess = true;
+
+        console.log(`🔀 开始执行复合指令，共 ${subCommands.length} 个子指令`);
+
+        for (let i = 0; i < subCommands.length; i++) {
+            const subCmd = subCommands[i];
+            console.log(`\n📋 执行子指令 ${i + 1}/${subCommands.length}: "${subCmd.input}"`);
+
+            try {
+                // 根据子指令的解析结果执行相应操作
+                const subResult = await this.executeParsedCommand(subCmd.parsed);
+
+                results.push({
+                    index: i + 1,
+                    input: subCmd.input,
+                    parsed: subCmd.parsed,
+                    result: subResult
+                });
+
+                if (!subResult.success) {
+                    console.warn(`⚠️ 子指令 ${i + 1} 执行失败: ${subResult.error || subResult.message}`);
+                    overallSuccess = false;
+                    // 可以选择是否继续执行后续指令
+                    // break; // 如果需要严格顺序，可以取消注释
+                } else {
+                    console.log(`✅ 子指令 ${i + 1} 执行成功`);
+                }
+
+            } catch (error) {
+                console.error(`❌ 子指令 ${i + 1} 执行异常:`, error);
+                results.push({
+                    index: i + 1,
+                    input: subCmd.input,
+                    parsed: subCmd.parsed,
+                    result: { success: false, error: error.message }
+                });
+                overallSuccess = false;
+            }
+        }
+
+        return {
+            success: overallSuccess,
+            message: `复合指令执行完成: ${results.filter(r => r.result?.success).length}/${results.length} 个子指令成功`,
+            type: 'compound_commands',
+            details: results,
+            originalInput: parseResult.originalInput,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    /**
+     * 执行已解析的单个命令（用于复合指令的子指令执行）
+     * @param {Object} parsedCommand - 已解析的命令
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeParsedCommand(parsedCommand) {
+        switch (parsedCommand.type) {
+            case 'direct_call':
+                return await this.executeDirectCall(parsedCommand);
+
+            case 'role_switch':
+                return await this.executeRoleSwitch(parsedCommand);
+
+            case 'natural_language':
+                return await this.executeNaturalLanguage(parsedCommand);
+
+            case 'error':
+                return parsedCommand;
+
+            default:
+                return this.createErrorResult(`未知的子命令类型: ${parsedCommand.type}`);
         }
     }
 
@@ -283,33 +645,42 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 生成宪法合规性响应
+     * 生成宪法合规性响应 (增强版 - 与规则模板对齐)
      * @param {Object} parseResult - 解析结果
      * @returns {string} 响应消息
      */
     generateConstitutionResponse(parseResult) {
-        const { intent, parameters } = parseResult;
+        const { intent, parameters, analysis } = parseResult;
 
-        let response = `## 🤖 宪法保护机制激活\n\n`;
-        response += `🚨 **检测到项目创建意图！**\n\n`;
+        let response = `## 🤖 检测到项目创建意图\n\n`;
+        response += `检测到你想要**创建新项目**！\n\n`;
+
         response += `### 📋 需求分析\n`;
         response += `- **项目类型**: ${parameters.projectType || '待分析'}\n`;
-        response += `- **复杂度**: 中等\n\n`;
+        response += `- **技术领域**: ${analysis?.category || '通用软件开发'}\n`;
+        response += `- **复杂度评估**: 中等 (基于意图初步评估)\n\n`;
 
-        response += `### 🛠️ 技术方案建议\n`;
-        response += `- 前端: React + TypeScript\n`;
-        response += `- 后端: Node.js + Express\n`;
-        response += `- 数据库: PostgreSQL\n\n`;
+        response += `### 🛠️ 推荐技术方案\n`;
+        if (parameters.projectType === 'react') {
+            response += `- **前端**: React + TypeScript + Vite\n`;
+            response += `- **状态管理**: Zustand 或 TanStack Query\n`;
+            response += `- **样式**: Tailwind CSS\n\n`;
+        } else if (parameters.projectType === 'node' || parameters.projectType === 'nodejs') {
+            response += `- **后端**: Node.js + Express/NestJS\n`;
+            response += `- **数据库**: PostgreSQL (Prisma ORM)\n`;
+            response += `- **API规范**: RESTful 或 GraphQL\n\n`;
+        } else {
+            response += `根据您的描述，我将为您量身定制最合适的技术方案。建议从主流稳定的技术栈开始。\n\n`;
+        }
 
-        response += `### ❓ 需要确认的问题\n`;
-        response += `1. 项目预算和时间限制？\n`;
-        response += `2. 团队技术栈偏好？\n`;
-        response += `3. 是否需要移动端支持？\n\n`;
+        response += `### ❓ 需要澄清的问题\n`;
+        response += `1. 这个项目的核心功能和目标用户是谁？\n`;
+        response += `2. 您是否有偏好的技术栈或特殊的性能要求？\n`;
+        response += `3. 项目的预计交付周期和当前所处的阶段？\n\n`;
 
         response += `**⚖️ 宪法要求：必须先与您讨论需求和方案，获得明确确认后才能开始开发！**\n\n`;
         response += `**请先与我讨论需求和方案，确认后再开始开发！** 🎯`;
 
-        // 添加客气的包装
         return this.wrapResponseWithPoliteness(response);
     }
 
@@ -321,6 +692,81 @@ class MasterCommandExecutor {
     wrapResponseWithPoliteness(content) {
         const politePrefix = `老板，收到，你有什么吩咐？基于你的问题， 我有如下建议！\n\n`;
         return politePrefix + content;
+    }
+
+    /**
+     * 根据能力映射动态执行任务
+     * @param {Object} mapping - 能力映射配置
+     * @param {Object} parameters - 执行参数
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeByCapabilityMapping(mapping, parameters) {
+        const { capabilities, execution_order = ['rules', 'scripts', 'skills'] } = mapping;
+        const results = [];
+        let overallSuccess = true;
+
+        console.log(`🚀 开始动态执行能力映射: ${mapping.description || mapping.intent}`);
+
+        for (const type of execution_order) {
+            const targets = capabilities[type];
+            if (!targets || !Array.isArray(targets) || targets.length === 0) continue;
+
+            console.log(`📦 执行阶段: ${type}`);
+            for (const target of targets) {
+                // 🚀 智能过滤：如果参数中指定了特定的资源名，且当前资源不是它，则跳过
+                // 专门针对 skills_execution 意图进行优化
+                if (mapping.intent === 'skills_execution' && type === 'skills') {
+                    if (parameters.skill_name && parameters.skill_name !== 'auto') {
+                        const normalizedTarget = target.toLowerCase();
+                        const normalizedParam = parameters.skill_name.toLowerCase();
+                        if (!normalizedTarget.includes(normalizedParam) && !normalizedParam.includes(normalizedTarget)) {
+                            console.log(`⏭️ 跳过不匹配的技能: ${target}`);
+                            continue;
+                        }
+                    }
+                }
+
+                let result;
+                try {
+                    switch (type) {
+                        case 'rules':
+                            result = await this.executeRule(target);
+                            break;
+                        case 'scripts':
+                            result = await this.executeScript(target, parameters);
+                            break;
+                        case 'skills':
+                            result = await this.executeSkill(target, parameters);
+                            break;
+                        case 'hooks':
+                            result = await this.executeHook(target, parameters);
+                            break;
+                        case 'workflows':
+                            result = await this.executeWorkflow(target, parameters);
+                            break;
+                        default:
+                            console.warn(`⚠️ 未知的资源类型: ${type}`);
+                            continue;
+                    }
+                    results.push({ type, target, result });
+                    if (!result.success) {
+                        console.warn(`⚠️ 资源执行失败: ${type} ${target} - ${result.error || result.message}`);
+                        // 某些失败可能不影响整体，这里简单处理
+                    }
+                } catch (error) {
+                    console.error(`❌ 执行异常: ${type} ${target}`, error);
+                    results.push({ type, target, error: error.message, success: false });
+                    overallSuccess = false;
+                }
+            }
+        }
+
+        return {
+            success: overallSuccess,
+            message: `能力映射执行完成: ${mapping.description || mapping.intent}`,
+            details: results,
+            timestamp: new Date().toISOString()
+        };
     }
 
     /**
@@ -609,7 +1055,7 @@ class MasterCommandExecutor {
             }
 
             // 查找规则文件
-            let rulePath = this.findRuleFile(ruleName);
+            let rulePath = this.resourceDiscovery.findRule(ruleName);
             if (!rulePath) {
                 return this.createErrorResult(`规则文件不存在: ${ruleName}.md`);
             }
@@ -634,28 +1080,13 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 查找规则文件
+     * 查找规则文件 (增强版)
      * @param {string} ruleName - 规则名称
      * @returns {string|null} 规则文件路径
      */
     findRuleFile(ruleName) {
-        const ruleDirs = ['core', 'evolution', 'system', 'team', 'tech', 'workflow'];
-
-        // 检查规则根目录
-        let rulePath = path.join(this.cursorDir, 'rules', `${ruleName}.md`);
-        if (fs.existsSync(rulePath)) {
-            return rulePath;
-        }
-
-        // 检查子目录
-        for (const dir of ruleDirs) {
-            rulePath = path.join(this.cursorDir, 'rules', dir, `${ruleName}.md`);
-            if (fs.existsSync(rulePath)) {
-                return rulePath;
-            }
-        }
-
-        return null;
+        if (path.isAbsolute(ruleName) && fs.existsSync(ruleName)) return ruleName;
+        return this.resourceDiscovery.findRule(ruleName);
     }
 
     /**
@@ -710,7 +1141,7 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 执行脚本
+     * 执行脚本 (增强版)
      * @param {string} scriptName - 脚本名称
      * @param {Object} params - 参数
      * @returns {Promise<Object>} 执行结果
@@ -720,44 +1151,35 @@ class MasterCommandExecutor {
 
         try {
             // 🎭 在执行脚本前激活角色
-            console.log(`🎭 检查角色激活状态...`);
             if (this.roleManager) {
-                const currentRoleInfo = this.roleManager.getCurrentRole();
-                if (currentRoleInfo.success) {
-                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
-                } else {
-                    console.log(`⚠️ 角色系统状态未知`);
-                }
+                this.roleManager.getCurrentRole(); // 简单触发一下
             }
 
-            let scriptPath = path.join(this.cursorDir, scriptName);
+            let scriptPath = scriptName;
 
-            // 如果不存在，尝试在子目录中查找
-            if (!fs.existsSync(scriptPath)) {
-                const scriptDirs = ['core', 'config', 'features/automation/scripts'];
-                for (const dir of scriptDirs) {
-                    const subPath = path.join(this.cursorDir, dir, scriptName);
-                    if (fs.existsSync(subPath)) {
-                        scriptPath = subPath;
-                        break;
-                    }
-                }
+            // 如果不是绝对路径，尝试递归查找
+            if (!path.isAbsolute(scriptName)) {
+                scriptPath = this.resourceDiscovery.findScript(scriptName);
             }
 
-            if (!fs.existsSync(scriptPath)) {
+            if (!scriptPath || !fs.existsSync(scriptPath)) {
                 return this.createErrorResult(`脚本不存在: ${scriptName}`);
             }
 
             // 执行脚本
-            const result = execSync(`bash "${scriptPath}"`, {
+            const ext = path.extname(scriptPath);
+            let command = ext === '.js' ? `node "${scriptPath}"` : `bash "${scriptPath}"`;
+
+            const result = execSync(command, {
                 cwd: this.projectRoot,
                 encoding: 'utf8',
                 timeout: this.executionTimeout,
                 env: { ...process.env, ...params }
             });
 
-            return this.createSuccessResult(`脚本执行成功`, {
+            return this.createSuccessResult(`脚本执行成功: ${path.basename(scriptPath)}`, {
                 script: scriptName,
+                path: scriptPath,
                 output: result.trim()
             });
 
@@ -775,33 +1197,36 @@ class MasterCommandExecutor {
         console.log(`🎯 执行技能: ${skillName}`);
 
         try {
-            // 🎭 在执行技能前激活角色
-            console.log(`🎭 检查角色激活状态...`);
-            if (this.roleManager) {
-                const currentRoleInfo = this.roleManager.getCurrentRole();
-                if (currentRoleInfo.success) {
-                    console.log(`🎭 当前角色: ${currentRoleInfo.role.name} (${currentRoleInfo.role.id})`);
-                } else {
-                    console.log(`⚠️ 角色系统状态未知`);
-                }
-            }
+            // 查找技能文件 (可能在 features/skills/)
+            const skillPath = this.resourceDiscovery.findSkill(skillName);
 
             const loaderScript = path.join(this.cursorDir, 'core', 'skills-loader.sh');
-
             if (!fs.existsSync(loaderScript)) {
                 return this.createErrorResult(`技能加载器不存在`);
             }
 
-            // 执行技能
+            // 先尝试加载技能
+            console.log(`📦 加载技能: ${skillName}`);
+            const loadResult = execSync(`bash "${loaderScript}" load "${skillName}"`, {
+                cwd: this.projectRoot,
+                encoding: 'utf8',
+                timeout: this.executionTimeout
+            });
+            console.log(`✅ 技能加载完成: ${skillName}`);
+
+            // 然后执行技能
+            console.log(`🚀 执行技能: ${skillName}`);
             const result = execSync(`bash "${loaderScript}" execute "${skillName}"`, {
                 cwd: this.projectRoot,
                 encoding: 'utf8',
-                timeout: this.executionTimeout * 2 // 技能可能需要更多时间
+                timeout: this.executionTimeout * 2
             });
 
-            return this.createSuccessResult(`技能执行成功`, {
+            return this.createSuccessResult(`技能执行成功: ${skillName}`, {
                 skill: skillName,
-                output: result.trim()
+                path: skillPath,
+                loadOutput: loadResult.trim(),
+                executeOutput: result.trim()
             });
 
         } catch (error) {
@@ -876,7 +1301,7 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 执行钩子
+     * 执行钩子 (增强版 - 支持钩子配置和链式调用)
      * @param {string} hookName - 钩子名称
      * @returns {Promise<Object>} 执行结果
      */
@@ -884,21 +1309,32 @@ class MasterCommandExecutor {
         console.log(`🎣 执行钩子: ${hookName}`);
 
         try {
-            const hookPath = path.join(this.cursorDir, 'features', 'hooks', hookName);
+            // 1. 尝试从 hooks.json 配置中查找
+            const hookConfig = this.findHookInConfig(hookName);
+            if (hookConfig) {
+                return await this.executeHookByConfig(hookConfig, params);
+            }
 
-            if (!fs.existsSync(hookPath)) {
+            // 2. 回退到文件查找模式
+            const hookPath = this.resourceDiscovery.findHook(hookName);
+
+            if (!hookPath || !fs.existsSync(hookPath)) {
                 return this.createErrorResult(`钩子不存在: ${hookName}`);
             }
 
-            const result = execSync(`bash "${hookPath}"`, {
+            const ext = path.extname(hookPath);
+            const command = ext === '.js' ? `node "${hookPath}"` : `bash "${hookPath}"`;
+
+            const result = execSync(command, {
                 cwd: this.projectRoot,
                 encoding: 'utf8',
                 timeout: this.executionTimeout,
                 env: { ...process.env, ...params }
             });
 
-            return this.createSuccessResult(`钩子执行成功`, {
+            return this.createSuccessResult(`钩子执行成功: ${path.basename(hookPath)}`, {
                 hook: hookName,
+                path: hookPath,
                 output: result.trim()
             });
 
@@ -908,18 +1344,400 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 执行工作流
+     * 在钩子配置中查找钩子
+     * @param {string} hookName - 钩子名称
+     * @returns {Object|null} 钩子配置
+     */
+    findHookInConfig(hookName) {
+        if (!this.hooksConfig?.hooks) return null;
+
+        // 遍历所有钩子事件类型
+        for (const [eventType, hooks] of Object.entries(this.hooksConfig.hooks)) {
+            if (Array.isArray(hooks)) {
+                const found = hooks.find(hook => hook.name === hookName);
+                if (found) {
+                    return { ...found, eventType };
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据配置执行钩子
+     * @param {Object} hookConfig - 钩子配置
+     * @param {Object} params - 参数
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeHookByConfig(hookConfig, params = {}) {
+        try {
+            const { name, command, args = [], timeout, async = true, enabled = true } = hookConfig;
+
+            if (!enabled) {
+                return this.createSuccessResult(`钩子已禁用: ${name}`, {
+                    hook: name,
+                    status: 'disabled'
+                });
+            }
+
+            // 解析命令路径
+            const hookPath = this.resolveHookCommandPath(command);
+            if (!hookPath) {
+                return this.createErrorResult(`钩子命令不存在: ${command}`);
+            }
+
+            // 构建完整命令
+            const fullCommand = this.buildHookCommand(hookPath, args, params);
+
+            // 执行命令
+            const execOptions = {
+                cwd: this.projectRoot,
+                encoding: 'utf8',
+                timeout: timeout || this.executionTimeout,
+                env: { ...process.env, ...params }
+            };
+
+            const result = execSync(fullCommand, execOptions);
+
+            return this.createSuccessResult(`钩子执行成功: ${name}`, {
+                hook: name,
+                path: hookPath,
+                command: fullCommand,
+                output: result.trim(),
+                eventType: hookConfig.eventType
+            });
+
+        } catch (error) {
+            return this.createErrorResult(`钩子配置执行失败: ${error.message}`, {
+                hook: hookConfig.name,
+                command: hookConfig.command
+            });
+        }
+    }
+
+    /**
+     * 解析钩子命令路径
+     * @param {string} command - 命令路径
+     * @returns {string|null} 绝对路径
+     */
+    resolveHookCommandPath(command) {
+        // 如果已经是绝对路径
+        if (path.isAbsolute(command)) {
+            return fs.existsSync(command) ? command : null;
+        }
+
+        // 尝试多种路径解析
+        const possiblePaths = [
+            path.join(this.cursorDir, command),
+            path.join(this.cursorDir, 'features', 'hooks', command),
+            path.join(this.cursorDir, 'core', command),
+            path.join(this.projectRoot, command)
+        ];
+
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) return p;
+        }
+
+        // 使用递归查找作为最后手段
+        return this.resourceDiscovery.recursiveFind(this.cursorDir, command, ['.sh', '.js']);
+    }
+
+    /**
+     * 构建钩子命令
+     * @param {string} hookPath - 钩子路径
+     * @param {string[]} args - 参数数组
+     * @param {Object} params - 额外参数
+     * @returns {string} 完整命令
+     */
+    buildHookCommand(hookPath, args = [], params = {}) {
+        const ext = path.extname(hookPath);
+
+        let command;
+        if (ext === '.js') {
+            command = `node "${hookPath}"`;
+        } else {
+            command = `bash "${hookPath}"`;
+        }
+
+        // 添加参数
+        if (args && args.length > 0) {
+            command += ` ${args.join(' ')}`;
+        }
+
+        // 添加动态参数
+        if (params.args && Array.isArray(params.args)) {
+            command += ` ${params.args.join(' ')}`;
+        }
+
+        return command;
+    }
+
+    /**
+     * 执行钩子链 (支持批量执行)
+     * @param {string[]} hookNames - 钩子名称数组
+     * @param {Object} params - 参数
+     * @returns {Promise<Object>} 执行结果
+     */
+    async executeHookChain(hookNames, params = {}) {
+        console.log(`🔗 执行钩子链: ${hookNames.join(' → ')}`);
+
+        const results = [];
+        let overallSuccess = true;
+
+        for (const hookName of hookNames) {
+            const result = await this.executeHook(hookName, params);
+            results.push(result);
+
+            if (!result.success) {
+                console.warn(`⚠️ 钩子链中断于: ${hookName}`);
+                overallSuccess = false;
+                // 可以选择是否继续执行后续钩子
+                // break; // 如果需要严格顺序，可以取消注释
+            }
+        }
+
+        return {
+            success: overallSuccess,
+            message: `钩子链执行完成 (${results.filter(r => r.success).length}/${results.length})`,
+            details: results,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    /**
+     * 执行工作流 (复合型资源执行)
      * @param {string} workflowName - 工作流名称
+     * @param {Object} params - 参数
      * @returns {Promise<Object>} 执行结果
      */
     async executeWorkflow(workflowName, params = {}) {
         console.log(`🔄 执行工作流: ${workflowName}`);
 
-        // 这里可以实现工作流执行逻辑
-        return this.createSuccessResult(`工作流 ${workflowName} 已安排执行`, {
-            workflow: workflowName,
-            status: 'scheduled'
-        });
+        try {
+            const results = [];
+            let overallSuccess = true;
+
+            // 1. 解析工作流配置
+            const workflowConfig = await this.parseWorkflowConfig(workflowName);
+            if (!workflowConfig) {
+                return this.createErrorResult(`工作流配置不存在: ${workflowName}`);
+            }
+
+            // 2. 按顺序执行工作流步骤
+            const steps = workflowConfig.steps || workflowConfig.execution_order || ['rules', 'scripts', 'skills', 'hooks'];
+
+            for (const step of steps) {
+                const stepResults = await this.executeWorkflowStep(step, workflowConfig, params);
+                results.push(...stepResults);
+
+                // 检查是否有失败的步骤
+                const failedSteps = stepResults.filter(r => !r.result?.success);
+                if (failedSteps.length > 0) {
+                    console.warn(`⚠️ 工作流步骤失败: ${step} (${failedSteps.length} 个失败)`);
+                    overallSuccess = false;
+                }
+            }
+
+            return {
+                success: overallSuccess,
+                message: `工作流执行完成: ${workflowName} (${results.filter(r => r.result?.success).length}/${results.length} 成功)`,
+                details: results,
+                workflow: workflowName,
+                config: workflowConfig,
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            return this.createErrorResult(`工作流执行异常: ${error.message}`);
+        }
+    }
+
+    /**
+     * 解析工作流配置
+     * @param {string} workflowName - 工作流名称
+     * @returns {Promise<Object|null>} 工作流配置
+     */
+    async parseWorkflowConfig(workflowName) {
+        // 1. 尝试从映射配置中查找
+        const mappingsDir = path.join(this.cursorDir, 'commands', 'capability-maps');
+        const workflowMappings = ['code.json', 'project.json', 'system.json', 'testing.json', 'deployment.json', 'learning.json'];
+
+        for (const mappingFile of workflowMappings) {
+            const mappingPath = path.join(mappingsDir, 'mappings', mappingFile);
+            if (fs.existsSync(mappingPath)) {
+                const mappingConfig = JSON.parse(fs.readFileSync(mappingPath, 'utf8'));
+                if (mappingConfig[workflowName]) {
+                    return mappingConfig[workflowName];
+                }
+            }
+        }
+
+        // 2. 尝试从规则目录查找
+        const workflowRulePath = this.resourceDiscovery.findWorkflow(workflowName);
+        if (workflowRulePath) {
+            return {
+                name: workflowName,
+                type: 'rule_based',
+                steps: ['rules'],
+                targetRule: path.basename(workflowRulePath, '.md')
+            };
+        }
+
+        // 3. 尝试从脚本目录查找
+        const workflowScriptPath = this.resourceDiscovery.findWorkflow(workflowName);
+        if (workflowScriptPath) {
+            return {
+                name: workflowName,
+                type: 'script_based',
+                steps: ['scripts'],
+                targetScript: workflowScriptPath
+            };
+        }
+
+        // 4. 如果都没有找到，创建默认的复合工作流配置
+        return this.createDefaultWorkflowConfig(workflowName);
+    }
+
+    /**
+     * 创建默认工作流配置
+     * @param {string} workflowName - 工作流名称
+     * @returns {Object} 默认配置
+     */
+    createDefaultWorkflowConfig(workflowName) {
+        // 基于工作流名称推断步骤
+        const workflowSteps = {
+            'lint': ['rules', 'scripts', 'hooks'],
+            'audit': ['rules', 'scripts', 'workflows'],
+            'report': ['scripts', 'workflows'],
+            'code-analysis': ['scripts', 'rules'],
+            'dependency-analysis': ['scripts', 'rules'],
+            'performance-analysis': ['scripts', 'rules'],
+            'project-init': ['scripts', 'rules'],
+            'dependency-install': ['scripts'],
+            'config-setup': ['scripts', 'rules']
+        };
+
+        return {
+            name: workflowName,
+            type: 'composite',
+            steps: workflowSteps[workflowName] || ['scripts', 'rules'],
+            description: `复合工作流: ${workflowName}`,
+            auto_generated: true
+        };
+    }
+
+    /**
+     * 执行工作流步骤
+     * @param {string} step - 步骤名称
+     * @param {Object} workflowConfig - 工作流配置
+     * @param {Object} params - 参数
+     * @returns {Promise<Array>} 步骤执行结果
+     */
+    async executeWorkflowStep(step, workflowConfig, params) {
+        const results = [];
+
+        try {
+            switch (step) {
+                case 'rules':
+                    if (workflowConfig.targetRule) {
+                        const result = await this.executeRule(workflowConfig.targetRule);
+                        results.push({ step, type: 'rule', target: workflowConfig.targetRule, result });
+                    } else {
+                        // 执行默认规则
+                        const result = await this.executeRule('conversation_intent_analyzer');
+                        results.push({ step, type: 'rule', target: 'conversation_intent_analyzer', result });
+                    }
+                    break;
+
+                case 'scripts':
+                    if (workflowConfig.targetScript) {
+                        const result = await this.executeScript(workflowConfig.targetScript, params);
+                        results.push({ step, type: 'script', target: workflowConfig.targetScript, result });
+                    } else if (workflowConfig.capabilities?.scripts) {
+                        for (const script of workflowConfig.capabilities.scripts) {
+                            const result = await this.executeScript(script, params);
+                            results.push({ step, type: 'script', target: script, result });
+                        }
+                    } else {
+                        // 执行默认脚本
+                        const result = await this.executeScript('core/env-perception.sh', params);
+                        results.push({ step, type: 'script', target: 'core/env-perception.sh', result });
+                    }
+                    break;
+
+                case 'skills':
+                    if (workflowConfig.capabilities?.skills) {
+                        for (const skill of workflowConfig.capabilities.skills) {
+                            const result = await this.executeSkill(skill, params);
+                            results.push({ step, type: 'skill', target: skill, result });
+                        }
+                    }
+                    break;
+
+                case 'hooks':
+                    if (workflowConfig.capabilities?.hooks) {
+                        for (const hook of workflowConfig.capabilities.hooks) {
+                            const result = await this.executeHook(hook, params);
+                            results.push({ step, type: 'hook', target: hook, result });
+                        }
+                    } else {
+                        // 执行相关钩子
+                        const hookNames = this.inferWorkflowHooks(step);
+                        for (const hookName of hookNames) {
+                            const result = await this.executeHook(hookName, params);
+                            results.push({ step, type: 'hook', target: hookName, result });
+                        }
+                    }
+                    break;
+
+                case 'workflows':
+                    // 递归执行子工作流
+                    if (workflowConfig.capabilities?.workflows) {
+                        for (const subWorkflow of workflowConfig.capabilities.workflows) {
+                            if (subWorkflow !== workflowConfig.name) { // 避免无限递归
+                                const result = await this.executeWorkflow(subWorkflow, params);
+                                results.push({ step, type: 'workflow', target: subWorkflow, result });
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    console.log(`ℹ️ 跳过未知工作流步骤: ${step}`);
+            }
+
+        } catch (error) {
+            console.error(`❌ 工作流步骤执行异常: ${step}`, error);
+            results.push({
+                step,
+                type: 'error',
+                target: step,
+                result: { success: false, error: error.message }
+            });
+        }
+
+        return results;
+    }
+
+    /**
+     * 推断工作流相关的钩子
+     * @param {string} workflowStep - 工作流步骤
+     * @returns {string[]} 钩子名称数组
+     */
+    inferWorkflowHooks(workflowStep) {
+        const hookMappings = {
+            'lint': ['code-quality.sh', 'consistency-check.sh'],
+            'audit': ['security-audit.sh', 'dependency-check.sh'],
+            'report': ['performance-monitor.sh'],
+            'code-analysis': ['architecture-check.sh'],
+            'dependency-analysis': ['dependency-check.sh'],
+            'performance-analysis': ['performance-monitor.sh'],
+            'project-init': ['env-perception.sh', 'role-activation.sh'],
+            'dependency-install': ['dependency-check.sh'],
+            'config-setup': ['config-validator.sh']
+        };
+
+        return hookMappings[workflowStep] || [];
     }
 
     /**

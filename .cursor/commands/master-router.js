@@ -35,6 +35,9 @@ class MasterCommandRouter {
         try {
             const MasterParser = require('./master-parser');
             this.parser = new MasterParser(this.projectRoot);
+            if (typeof this.parser.initialize === 'function') {
+                await this.parser.initialize(options);
+            }
         } catch (error) {
             throw new Error(`无法加载解析器: ${error.message}`);
         }
@@ -43,6 +46,9 @@ class MasterCommandRouter {
         try {
             const MasterExecutor = require('./master-executor');
             this.executor = new MasterExecutor(this.projectRoot);
+            if (typeof this.executor.initialize === 'function') {
+                await this.executor.initialize(options);
+            }
         } catch (error) {
             throw new Error(`无法加载执行器: ${error.message}`);
         }

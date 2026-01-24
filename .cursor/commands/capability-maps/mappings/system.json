@@ -5,7 +5,11 @@
       "analyze",
       "assess",
       "review",
-      "status"
+      "status",
+      "分析",
+      "评估",
+      "现状",
+      "自检"
     ],
     "confidence_threshold": 0.7,
     "user_examples": [

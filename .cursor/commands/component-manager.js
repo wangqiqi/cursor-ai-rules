@@ -446,8 +446,15 @@ class ComponentManager {
                 }
             }
 
-            // 创建实例
-            const instance = new Constructor(this.projectRoot, options);
+            // 创建实例 - 根据组件类型传递正确的参数
+            let instance;
+            if (name === 'roleManager') {
+                // 角色管理器需要 cursorDir 和 projectDir 参数
+                instance = new Constructor(this.cursorDir, this.projectRoot);
+            } else {
+                // 其他组件使用默认参数传递方式
+                instance = new Constructor(this.projectRoot, options);
+            }
 
             // 如果组件有initialize方法，调用它
             if (typeof instance.initialize === 'function') {

@@ -19,14 +19,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "switch",
       "role_name": "auto",
       "switch_mode": "immediate"
     }
@@ -51,14 +52,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "call",
       "nickname": "auto",
       "call_mode": "friendly"
     }
@@ -83,15 +85,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
-      "action": "auto",
+      "action": "nickname",
       "role_name": "auto",
       "nickname": "auto"
     }
@@ -116,14 +118,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "list",
       "list_mode": "detailed",
       "include_nicknames": true
     }
@@ -147,14 +150,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "current",
       "show_details": true,
       "include_personality": true
     }
@@ -179,14 +183,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "preference",
       "preference_type": "auto",
       "apply_to_current": true,
       "persist_settings": true
@@ -212,14 +217,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "history",
       "history_type": "switch",
       "time_range": "all",
       "include_statistics": true
@@ -245,14 +251,15 @@
       "rules": [
         "conversation_intent_analyzer"
       ],
-      "scripts": [
-        "core/role-manager.sh"
+      "hooks": [
+        "role-manager.sh"
       ]
     },
     "execution_order": [
-      "scripts"
+      "hooks"
     ],
     "parameters": {
+      "action": "reset",
       "reset_type": "all",
       "confirm_action": true,
       "backup_before_reset": true

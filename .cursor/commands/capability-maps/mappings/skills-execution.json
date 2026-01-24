@@ -7,7 +7,9 @@
       "use",
       "执行",
       "运行",
-      "使用"
+      "使用",
+      "处理",
+      "技能"
     ],
     "confidence_threshold": 0.8,
     "user_examples": [
