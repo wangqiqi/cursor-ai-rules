@@ -164,6 +164,14 @@ class ResponseInterceptor {
             return this.cachedRole;
         }
 
+        // 检查roleManager是否存在且有getCurrentRole方法
+        if (!this.roleManager || typeof this.roleManager.getCurrentRole !== 'function') {
+            return {
+                success: false,
+                message: "角色管理器不可用"
+            };
+        }
+
         const currentRole = this.roleManager.getCurrentRole();
         if (currentRole.success) {
             this.cachedRole = currentRole;

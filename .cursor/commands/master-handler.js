@@ -258,19 +258,50 @@ class MasterCommandHandler {
         console.log('🔗 初始化服务发现...');
 
         try {
-            // 初始化服务映射表
-            this.services = {
-                parser: await this.componentManager.getService('intent-parser'),
-                router: await this.componentManager.getService('command-router'),
-                executor: await this.componentManager.getService('command-executor'),
-                roleManager: await this.componentManager.getService('role-management'),
-                responseInterceptor: await this.componentManager.getService('response-filter')
-            };
+            // 逐个获取服务，允许部分失败
+            const services = {};
 
+            // 尝试获取各个服务，如果失败则使用降级值
+            try {
+                services.parser = await this.componentManager.getService('intent-parser');
+            } catch (e) {
+                console.warn('⚠️ intent-parser 服务不可用，使用降级模式');
+                services.parser = this.intelligentSystem || null;
+            }
+
+            try {
+                services.router = await this.componentManager.getService('command-router');
+            } catch (e) {
+                console.warn('⚠️ command-router 服务不可用，使用降级模式');
+                services.router = this.intelligentSystem || null;
+            }
+
+            try {
+                services.executor = await this.componentManager.getService('command-executor');
+            } catch (e) {
+                console.warn('⚠️ command-executor 服务不可用，使用降级模式');
+                services.executor = null;
+            }
+
+            try {
+                services.roleManager = await this.componentManager.getService('role-management');
+            } catch (e) {
+                console.warn('⚠️ role-management 服务不可用，使用直接访问');
+                services.roleManager = this.roleManager;
+            }
+
+            try {
+                services.responseInterceptor = await this.componentManager.getService('response-filter');
+            } catch (e) {
+                console.warn('⚠️ response-filter 服务不可用，使用直接访问');
+                services.responseInterceptor = this.responseInterceptor;
+            }
+
+            this.services = services;
             console.log('✅ 服务发现初始化成功');
         } catch (error) {
-            console.warn('⚠️ 服务发现初始化失败，使用降级模式:', error.message);
-            // 降级到直接组件访问
+            console.error('❌ 服务发现初始化完全失败:', error.message);
+            // 完全降级到直接组件访问
             this.services = {
                 parser: this.intelligentSystem,
                 router: this.intelligentSystem,
@@ -2367,15 +2398,38 @@ class MasterCommandHandler {
                 return { success: false, message: `钩子不存在: ${hookPath}` };
             }
 
-            const result = execSync(`bash "${fullPath}"`, {
+            // 构建命令参数 - 对于角色管理钩子，传递角色呼叫参数
+            let commandArgs = '';
+            if (hookPath === 'role-manager.sh') {
+                const paramValue = parameters.param || parameters.nickname || '小妮';
+                commandArgs = `"call" "${paramValue}"`;
+            }
+
+            // 使用绝对路径执行，并设置正确的环境
+            const command = `bash "${fullPath}" ${commandArgs}`;
+            console.log(`🎯 执行命令: ${command}`);
+
+            const result = execSync(command, {
                 cwd: this.projectRoot,
                 encoding: 'utf8',
                 timeout: 15000,
-                env: { ...process.env, ...parameters }
+                env: {
+                    ...process.env,
+                    ...parameters,
+                    PATH: process.env.PATH,
+                    HOME: process.env.HOME
+                },
+                stdio: 'pipe' // 确保输出被捕获
             });
 
             return { success: true, output: result, hook: hookPath };
         } catch (error) {
+            console.error(`❌ 钩子执行失败详情:`, {
+                message: error.message,
+                code: error.code,
+                signal: error.signal,
+                status: error.status
+            });
             return { success: false, message: `钩子执行失败: ${error.message}`, hook: hookPath };
         }
     }
@@ -3198,36 +3252,63 @@ class MasterCommandHandler {
                 keywords: ['优化', '性能', 'optimize', 'performance', 'speed'],
                 capability: 'performance_optimization',
                 confidence: 0.8
+            },
+            {
+                keywords: ['token', '节省', '压缩', '验证', '测试', '检查', '令牌', '优化'],
+                capability: 'token_optimization_verification',
+                confidence: 0.9
             }
         ];
 
-        // 匹配意图
+        // 匹配意图 - 改进版：考虑关键词组合和优先级
+        let bestMatch = null;
+        let bestScore = 0;
+
         for (const mapping of intentMappings) {
+            let matchScore = 0;
+            let matchedKeywords = [];
+
             for (const keyword of mapping.keywords) {
                 if (normalizedInput.includes(keyword)) {
-                    const result = {
-                        matched: true,
-                        capability: mapping.capability,
-                        config: {},
-                        match_details: {
-                            matched: true,
-                            intent: keyword,
-                            confidence: mapping.confidence,
-                            match_type: 'keyword'
-                        }
-                    };
+                    matchScore += mapping.confidence;
+                    matchedKeywords.push(keyword);
 
-                    // 添加到缓存
-                    if (this.intentCache.size >= this.intentCacheSize) {
-                        // 简单的LRU：删除最旧的条目
-                        const firstKey = this.intentCache.keys().next().value;
-                        this.intentCache.delete(firstKey);
+                    // 特殊处理：如果匹配到token相关关键词，给予更高优先级
+                    if (['token', '节省', '压缩', '令牌'].includes(keyword)) {
+                        matchScore += 0.5; // 额外加分
                     }
-                    this.intentCache.set(cacheKey, { result, timestamp: Date.now() });
-
-                    return result;
                 }
             }
+
+            // 如果有匹配且得分更高，则更新最佳匹配
+            if (matchScore > bestScore) {
+                bestScore = matchScore;
+                bestMatch = {
+                    matched: true,
+                    capability: mapping.capability,
+                    config: {},
+                    match_details: {
+                        matched: true,
+                        intent: matchedKeywords.join(', '),
+                        confidence: Math.min(matchScore, 1.0), // 最大1.0
+                        match_type: 'keyword_combination',
+                        matched_keywords: matchedKeywords
+                    }
+                };
+            }
+        }
+
+        // 如果找到匹配，返回结果
+        if (bestMatch) {
+            // 添加到缓存
+            if (this.intentCache.size >= this.intentCacheSize) {
+                // 简单的LRU：删除最旧的条目
+                const firstKey = this.intentCache.keys().next().value;
+                this.intentCache.delete(firstKey);
+            }
+            this.intentCache.set(cacheKey, { result: bestMatch, timestamp: Date.now() });
+
+            return bestMatch;
         }
 
         // 未匹配
@@ -3316,7 +3397,15 @@ class MasterCommandHandler {
             if (capabilityConfig.capabilities?.hooks?.length > 0) {
                 console.log('🎣 触发钩子:', capabilityConfig.capabilities.hooks.join(', '));
                 for (const hook of capabilityConfig.capabilities.hooks) {
-                    const result = await this.executeHook(hook, capabilityConfig.parameters || {});
+                    // 为钩子传递意图相关的参数
+                    const hookParams = {
+                        ...capabilityConfig.parameters,
+                        action: 'call',
+                        param: input.replace(/^(呼叫|召唤|叫)\s*/, '').trim() || '小妮',
+                        input: input,
+                        capability: capability
+                    };
+                    const result = await this.executeHook(hook, hookParams);
                     results.push(result);
                 }
             }

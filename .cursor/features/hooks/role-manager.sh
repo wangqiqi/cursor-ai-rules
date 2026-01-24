@@ -28,9 +28,23 @@ main() {
 
     # 检查是否有JSON参数（从能力映射传入）
     if [ -n "$1" ] && echo "$1" | grep -q "^{"; then
-        # JSON格式参数
-        action=$(echo "$1" | jq -r '.action // empty' 2>/dev/null || echo "")
-        param=$(echo "$1" | jq -r '.param // .nickname // .role_name // empty' 2>/dev/null || echo "")
+        # JSON格式参数 - 使用Node.js解析，避免依赖jq
+        action=$(node -e "
+            try {
+                const data = JSON.parse(process.argv[1]);
+                console.log(data.action || '');
+            } catch(e) {
+                console.log('');
+            }
+        " "$1" 2>/dev/null || echo "")
+        param=$(node -e "
+            try {
+                const data = JSON.parse(process.argv[1]);
+                console.log(data.param || data.nickname || data.role_name || '');
+            } catch(e) {
+                console.log('');
+            }
+        " "$1" 2>/dev/null || echo "")
     else
         # 传统命令行参数
         action="$1"
@@ -49,7 +63,7 @@ main() {
             action="current"
         else
             action="call"  # 默认认为是呼叫操作
-            param="$1"
+            param="$*"
         fi
     fi
 
@@ -123,6 +137,7 @@ call_role_by_nickname() {
             console.log('✅ 角色呼叫成功！');
             console.log('🎭 已切换到角色:', roleConfig.name);
             console.log('💫', roleConfig.description);
+            process.exit(0); // 成功时也退出
         } else {
             throw new Error(switchResult.message);
         }

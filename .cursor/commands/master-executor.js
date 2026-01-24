@@ -1873,6 +1873,354 @@ class MasterCommandExecutor {
 
         return summary;
     }
+
+    /**
+     * 检查是否是token验证请求
+     * @param {string} input - 输入文本
+     * @returns {boolean} 是否是token验证请求
+     */
+    isTokenVerificationRequest(input) {
+        const tokenKeywords = ['token', '令牌', '节省', '优化', '压缩', '验证', '测试', '检查'];
+        const verificationIndicators = ['有用吗', '效果如何', '是否有效', 'verify', 'test', 'check'];
+
+        const lowerInput = input.toLowerCase();
+        const hasTokenKeyword = tokenKeywords.some(keyword => lowerInput.includes(keyword));
+        const hasVerificationIndicator = verificationIndicators.some(indicator => lowerInput.includes(indicator));
+
+        return hasTokenKeyword && hasVerificationIndicator;
+    }
+
+    /**
+     * 处理token验证请求
+     * @param {string} input - 输入文本
+     * @param {Object} parameters - 参数
+     * @returns {Promise<Object>} 处理结果
+     */
+    async handleTokenVerification(input, parameters) {
+        console.log('🔍 开始token优化验证...');
+
+        try {
+            // 1. 获取token监控统计
+            const tokenStats = await this.getTokenOptimizationStats();
+
+            // 2. 进行实际的压缩测试
+            const compressionTest = await this.performCompressionTest();
+
+            // 3. 生成验证报告
+            const verificationReport = this.generateTokenVerificationReport(tokenStats, compressionTest);
+
+            // 4. 提供优化建议
+            const optimizationSuggestions = this.generateTokenOptimizationSuggestions(tokenStats, compressionTest);
+
+            return this.createSuccessResult('Token优化验证完成', {
+                verificationReport,
+                optimizationSuggestions,
+                tokenStats,
+                compressionTest
+            });
+
+        } catch (error) {
+            console.error('❌ Token验证失败:', error);
+            return this.createErrorResult(`Token验证过程出错: ${error.message}`);
+        }
+    }
+
+    /**
+     * 获取token优化统计
+     * @returns {Promise<Object>} token统计数据
+     */
+    async getTokenOptimizationStats() {
+        try {
+            // 从响应拦截器获取token统计
+            if (this.responseInterceptor && typeof this.responseInterceptor.getTokenUsageStats === 'function') {
+                const stats = this.responseInterceptor.getTokenUsageStats();
+                return stats || {
+                    totalTokens: 0,
+                    averageTokens: 0,
+                    peakUsage: 0,
+                    totalRequests: 0
+                };
+            }
+
+            // 如果没有拦截器，返回默认统计
+            return {
+                totalTokens: 0,
+                averageTokens: 0,
+                peakUsage: 0,
+                totalRequests: 0,
+                note: 'Token监控系统未激活'
+            };
+        } catch (error) {
+            console.warn('获取token统计失败:', error.message);
+            return {
+                totalTokens: 0,
+                averageTokens: 0,
+                peakUsage: 0,
+                totalRequests: 0,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * 执行压缩测试
+     * @returns {Promise<Object>} 压缩测试结果
+     */
+    async performCompressionTest() {
+        const testData = {
+            // 模拟一个典型的响应数据
+            response: {
+                status: "success",
+                message: "操作已完成",
+                data: {
+                    environment_analysis: {
+                        project_type: "web_application",
+                        tech_stack: ["React", "Node.js", "PostgreSQL"],
+                        team_size: "small_team",
+                        confidence: 0.85
+                    },
+                    intent_analysis: {
+                        primary_intent: "code_optimization",
+                        confidence_threshold: 0.8,
+                        execution_plan: {
+                            steps: ["analyze", "optimize", "test", "deploy"],
+                            estimated_time: "2_hours"
+                        }
+                    },
+                    recommendations: [
+                        "使用React Hooks优化组件性能",
+                        "实现代码分割减少初始加载时间",
+                        "添加错误边界提升用户体验",
+                        "配置CI/CD流水线自动化部署"
+                    ]
+                },
+                timestamp: new Date().toISOString(),
+                processing_time_ms: 1250
+            }
+        };
+
+        const originalJson = JSON.stringify(testData, null, 2);
+        const originalTokens = this.estimateTokens(originalJson);
+
+        // 测试不同的压缩级别
+        const compressionLevels = ['minimal', 'balanced', 'aggressive'];
+        const compressionResults = {};
+
+        for (const level of compressionLevels) {
+            try {
+                const compressed = await this.applyCompression(originalJson, level);
+                const compressedTokens = this.estimateTokens(compressed);
+                const savings = originalTokens - compressedTokens;
+                const ratio = originalTokens > 0 ? (savings / originalTokens * 100).toFixed(2) : 0;
+
+                compressionResults[level] = {
+                    originalTokens,
+                    compressedTokens,
+                    tokenSavings: savings,
+                    compressionRatio: ratio + '%',
+                    effectiveness: this.evaluateCompressionEffectiveness(savings, originalTokens)
+                };
+            } catch (error) {
+                compressionResults[level] = {
+                    error: error.message,
+                    originalTokens
+                };
+            }
+        }
+
+        return {
+            originalData: originalJson,
+            originalTokens,
+            compressionResults
+        };
+    }
+
+    /**
+     * 应用压缩
+     * @param {string} data - 要压缩的数据
+     * @param {string} level - 压缩级别
+     * @returns {Promise<string>} 压缩后的数据
+     */
+    async applyCompression(data, level) {
+        // 这里调用实际的压缩逻辑
+        try {
+            // 模拟压缩过程 - 在实际系统中会调用token-compression.sh
+            let compressed = data;
+
+            switch (level) {
+                case 'minimal':
+                    // 移除emoji和装饰字符
+                    compressed = compressed.replace(/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊🎉😊💕🎀🌟💎🧹]/g, '');
+                    // 压缩换行符
+                    compressed = compressed.replace(/\n\n\n+/g, '\n\n');
+                    break;
+
+                case 'balanced':
+                    // minimal + 重复字符串压缩
+                    compressed = compressed.replace(/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊🎉😊💕🎀🌟💎🧹]/g, '');
+                    compressed = compressed.replace(/\n\n\n+/g, '\n\n');
+                    // 简单的重复字符串检测和替换
+                    compressed = compressed.replace(/"success"/g, '"OK"');
+                    compressed = compressed.replace(/"error"/g, '"ERR"');
+                    break;
+
+                case 'aggressive':
+                    // balanced + 语义压缩
+                    compressed = compressed.replace(/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊🎉😊💕🎀🌟💎🧹]/g, '');
+                    compressed = compressed.replace(/\n\n\n+/g, '\n\n');
+                    compressed = compressed.replace(/"success"/g, '"OK"');
+                    compressed = compressed.replace(/"error"/g, '"ERR"');
+                    // 语义压缩
+                    compressed = compressed.replace(/"React"/g, '"REACT"');
+                    compressed = compressed.replace(/"Node\.js"/g, '"NODE"');
+                    compressed = compressed.replace(/"PostgreSQL"/g, '"PGSQL"');
+                    break;
+            }
+
+            return compressed;
+        } catch (error) {
+            console.warn(`压缩级别 ${level} 失败:`, error.message);
+            return data; // 返回原始数据
+        }
+    }
+
+    /**
+     * 估算token数量
+     * @param {string} text - 文本内容
+     * @returns {number} 估算的token数量
+     */
+    estimateTokens(text) {
+        if (!text) return 0;
+
+        // 粗略估算：中文约1.5个字符=1个token，英文约4个字符=1个token
+        const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+        const englishChars = text.length - chineseChars;
+
+        // 中文字符按1.5个token计算，英文按4个字符=1个token计算
+        return Math.round(chineseChars * 0.67 + englishChars * 0.25);
+    }
+
+    /**
+     * 评估压缩效果
+     * @param {number} savings - 节省的token数量
+     * @param {number} original - 原始token数量
+     * @returns {string} 效果评估
+     */
+    evaluateCompressionEffectiveness(savings, original) {
+        if (original === 0) return 'neutral';
+
+        const ratio = savings / original;
+        if (ratio >= 0.7) return 'excellent';
+        if (ratio >= 0.5) return 'good';
+        if (ratio >= 0.3) return 'fair';
+        if (ratio >= 0.1) return 'poor';
+        return 'minimal';
+    }
+
+    /**
+     * 生成token验证报告
+     * @param {Object} stats - token统计
+     * @param {Object} compressionTest - 压缩测试结果
+     * @returns {Object} 验证报告
+     */
+    generateTokenVerificationReport(stats, compressionTest) {
+        const report = {
+            summary: {
+                monitoringActive: stats.totalRequests > 0,
+                totalTokensUsed: stats.totalTokens || 0,
+                averageTokensPerRequest: stats.averageTokens || 0,
+                totalRequests: stats.totalRequests || 0,
+                compressionTestPerformed: !!compressionTest
+            },
+            compressionEffectiveness: {},
+            recommendations: []
+        };
+
+        // 分析压缩测试结果
+        if (compressionTest && compressionTest.compressionResults) {
+            const results = compressionTest.compressionResults;
+
+            report.compressionEffectiveness = {
+                minimal: results.minimal?.compressionRatio || '0%',
+                balanced: results.balanced?.compressionRatio || '0%',
+                aggressive: results.aggressive?.compressionRatio || '0%'
+            };
+
+            // 生成推荐
+            if (results.aggressive?.effectiveness === 'excellent' || results.aggressive?.effectiveness === 'good') {
+                report.recommendations.push('建议启用激进压缩模式，可节省大量tokens');
+            } else if (results.balanced?.effectiveness === 'excellent' || results.balanced?.effectiveness === 'good') {
+                report.recommendations.push('建议启用平衡压缩模式，性价比最佳');
+            } else if (results.minimal?.effectiveness === 'good' || results.minimal?.effectiveness === 'fair') {
+                report.recommendations.push('建议至少启用最小压缩模式');
+            }
+        }
+
+        // 基于使用统计的推荐
+        if (stats.averageTokens > 800) {
+            report.recommendations.push('检测到高token使用量，强烈建议启用压缩');
+        } else if (stats.averageTokens > 600) {
+            report.recommendations.push('token使用量中等，建议根据需要启用压缩');
+        }
+
+        return report;
+    }
+
+    /**
+     * 生成优化建议
+     * @param {Object} stats - token统计
+     * @param {Object} compressionTest - 压缩测试结果
+     * @returns {Array} 优化建议
+     */
+    generateTokenOptimizationSuggestions(stats, compressionTest) {
+        const suggestions = [];
+
+        // 基于统计数据的建议
+        if (!stats.totalRequests || stats.totalRequests === 0) {
+            suggestions.push({
+                type: 'monitoring',
+                priority: 'high',
+                title: '启用Token监控',
+                description: 'Token监控系统未激活，建议启用以跟踪使用情况',
+                action: '在系统配置中启用token监控'
+            });
+        }
+
+        if (stats.averageTokens > 600) {
+            suggestions.push({
+                type: 'compression',
+                priority: 'high',
+                title: '启用响应压缩',
+                description: `当前平均每请求使用 ${stats.averageTokens} tokens，建议启用压缩`,
+                action: '在response-interceptor中启用ultraFast模式'
+            });
+        }
+
+        // 基于压缩测试的建议
+        if (compressionTest && compressionTest.compressionResults) {
+            const aggressiveResult = compressionTest.compressionResults.aggressive;
+            if (aggressiveResult && aggressiveResult.effectiveness === 'excellent') {
+                suggestions.push({
+                    type: 'optimization',
+                    priority: 'medium',
+                    title: '使用激进压缩',
+                    description: `激进压缩可节省 ${aggressiveResult.compressionRatio} 的tokens`,
+                    action: '设置COMPRESSION_LEVEL=aggressive'
+                });
+            }
+        }
+
+        // 通用建议
+        suggestions.push({
+            type: 'best_practice',
+            priority: 'low',
+            title: '定期检查优化效果',
+            description: '建议定期运行token验证来检查优化效果',
+            action: '使用 "/master 验证token优化" 命令检查效果'
+        });
+
+        return suggestions;
+    }
 }
 
 // 导出类

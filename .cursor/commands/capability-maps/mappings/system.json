@@ -322,5 +322,56 @@
       "require_test_execution": true,
       "validate_deployment": true
     }
+  },
+  "token_optimization_verification": {
+    "description": "验证token优化效果",
+    "intents": [
+      "token",
+      "optimization",
+      "verify",
+      "test",
+      "check",
+      "validate",
+      "verification",
+      "节省",
+      "优化",
+      "压缩",
+      "验证",
+      "测试",
+      "检查"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "验证token优化效果",
+      "测试token压缩是否有效",
+      "检查token节省情况",
+      "验证优化功能"
+    ],
+    "capabilities": {
+      "rules": [
+        "system_info"
+      ],
+      "skills": [],
+      "scripts": [],
+      "workflows": [
+        "token-verification"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "verification_type": "comprehensive",
+      "include_statistics": true,
+      "generate_report": true,
+      "run_compression_test": true
+    },
+    "validation_rules": {
+      "require_token_monitoring": false,
+      "allow_partial_results": true
+    }
   }
 }
