@@ -9,6 +9,16 @@ priority: 9
 
 本文档是从 `react.md` 分割出来的高级主题部分，涵盖性能优化、安全实践和最佳实践。
 
+## ⚠️ 执行原则
+
+**MUST** 遵循以下React高级开发准则：
+- **MUST** 优化组件渲染性能
+- **NEVER** 在render中创建新函数
+- **ALWAYS** 使用适当的模式管理状态
+- **DO NOT** 忽略可访问性(a11y)
+- **MUST** 实施安全最佳实践
+- **ALWAYS** 测试组件行为
+
 ## 🚀 性能优化
 
 ### React.memo 和 useMemo 优化

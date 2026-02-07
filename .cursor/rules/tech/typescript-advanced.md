@@ -9,7 +9,17 @@ priority: 9
 
 本文档是从 `typescript.md` 分割出来的高级主题部分，涵盖测试策略、性能优化、安全实践和最佳实践。
 
-    NODE_ENV: 'development' | 'production' | 'test'
+## ⚠️ 执行原则
+
+**MUST** 遵循以下TypeScript高级开发准则：
+- **MUST** 充分利用TypeScript类型系统
+- **NEVER** 使用any类型逃避类型检查
+- **ALWAYS** 编写可重用的类型定义
+- **DO NOT** 忽略编译器错误
+- **MUST** 保持类型定义的更新
+- **ALWAYS** 使用严格的类型检查
+
+### 环境变量类型定义
     API_URL: string
     DATABASE_URL: string
   }

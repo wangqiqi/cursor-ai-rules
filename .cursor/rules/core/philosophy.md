@@ -138,6 +138,58 @@ always_apply: true
 - **错误检测**：主动识别并修正潜在的问题
 - **改进建议**：基于使用数据提出优化建议
 
+#### 💻 自适应协作模式示例
+
+```typescript
+// 自适应协作系统
+class AdaptiveCollaborationSystem {
+  private userPreferences: Map<string, any> = new Map();
+  private interactionHistory: Interaction[] = [];
+
+  // 根据用户反馈调整协作模式
+  adaptFromFeedback(feedback: UserFeedback): void {
+    // 记录用户反馈
+    this.interactionHistory.push({
+      timestamp: Date.now(),
+      mode: this.currentMode,
+      feedback: feedback
+    });
+
+    // 分析反馈并调整
+    if (feedback.satisfaction < 0.5) {
+      // 用户不满意，切换到更详细的模式
+      this.switchToMoreDetailedMode();
+    } else if (feedback.efficiencyRating < 0.5) {
+      // 效率低，切换到更自主的模式
+      this.switchToMoreAutonomousMode();
+    }
+  }
+
+  // 智能模式推荐
+  recommendMode(task: Task): CollaborationMode {
+    // 基于任务特征推荐模式
+    if (task.riskLevel === 'high') {
+      return 'detailed'; // 高风险任务用详细确认模式
+    } else if (task.type === 'exploration') {
+      return 'innovation'; // 探索性任务用创新探索模式
+    } else if (task.clarity < 0.7) {
+      return 'planning'; // 需求不明确时用项目规划模式
+    }
+    return 'autonomous'; // 默认自主执行
+  }
+
+  // 个性化定制
+  personalize(): void {
+    // 学习用户偏好
+    const preferredMode = this.analyzeMostUsedMode();
+    const typicalTaskType = this.analyzeTypicalTaskType();
+
+    this.userPreferences.set('defaultMode', preferredMode);
+    this.userPreferences.set('typicalTask', typicalTaskType);
+  }
+}
+```
+
 ---
 
 *此哲学为AI共生协作的通用准则，确保高效、透明、安全的人机协作体验。*

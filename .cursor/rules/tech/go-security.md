@@ -7,7 +7,17 @@ priority: 9
 
 # 🔒 Go 安全实践和最佳实践
 
-            IssuedAt:  jwt.NewNumericDate(time.Now()),
+## ⚠️ 执行原则
+
+**MUST** 遵循以下Go安全开发准则：
+- **MUST** 验证所有输入数据
+- **NEVER** 在代码中硬编码密钥和凭据
+- **ALWAYS** 使用HTTPS和安全通信
+- **DO NOT** 忽略依赖的安全漏洞
+- **MUST** 实施适当的认证和授权
+- **ALWAYS** 记录安全相关事件
+
+### JWT 认证实现
             NotBefore: jwt.NewNumericDate(time.Now()),
             Issuer:    "your-app",
         },

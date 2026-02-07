@@ -9,6 +9,18 @@ apply_when:
 priority: 9
 ---
 
+# 📦 React 依赖管理和测试
+
+## ⚠️ 执行原则
+
+**MUST** 遵循以下React依赖管理准则：
+- **MUST** 定期更新依赖以获取安全修复
+- **NEVER** 使用未经审查的第三方包
+- **ALWAYS** 锁定依赖版本
+- **DO NOT** 忽略已知的安全漏洞
+- **MUST** 编写全面的测试
+- **ALWAYS** 监控包大小和性能
+
 ## 🛠️ 依赖管理
 
 ### package.json 配置

@@ -7,8 +7,17 @@ priority: 9
 
 # ⚡ Rust 性能优化和最佳实践
 
+## ⚠️ 执行原则
 
-        // 消费者线程
+**MUST** 遵循以下Rust性能优化准则：
+- **MUST** 利用零成本抽象
+- **NEVER** 不必要地使用unsafe代码
+- **ALWAYS** 进行性能基准测试
+- **DO NOT** 过早优化牺牲可读性
+- **MUST** 正确使用并发和并行
+- **ALWAYS** 考虑内存布局和缓存效率
+
+### 并发性能优化
         let handles: Vec<_> = (0..4).map(|_| {
             s.spawn(|_| {
                 let mut results = Vec::new();

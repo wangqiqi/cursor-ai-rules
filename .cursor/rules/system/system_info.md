@@ -11,6 +11,15 @@ priority: 20
 
 *版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
+## ⚠️ 使用原则
+
+**MUST** 遵循以下系统信息获取准则：
+- **MUST** 使用 `{{GENERATION_TIME}}` 作为时间戳占位符
+- **NEVER** 硬编码作者信息或时间戳
+- **ALWAYS** 通过 `platform_adapter` 获取系统信息
+- **DO NOT** 直接依赖操作系统特定命令
+- **MUST** 确保路径格式的跨平台兼容性
+
 ## 核心功能概述 (Core Functions)
 
 系统信息获取器为.cursor规则系统提供统一的时间戳、路径信息和作者信息管理，确保文档的可追溯性和规范化。

@@ -10,6 +10,16 @@ priority: 8
 
 *版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 
+## ⚠️ 执行原则
+
+**MUST** 遵循以下手动演进准则：
+- **MUST** 在修改规则前进行充分讨论
+- **NEVER** 跳过测试和验证步骤
+- **ALWAYS** 记录演进原因和变更内容
+- **DO NOT** 在未经批准的情况下修改核心规则
+- **MUST** 保持规则间的一致性
+- **ALWAYS** 备份当前规则版本
+
 ## 🎯 演进触发机制 (Evolution Triggers)
 
 ### 🔄 定期演进 (Regular Evolution)

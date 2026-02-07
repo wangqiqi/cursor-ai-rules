@@ -9,8 +9,17 @@ priority: 9
 
 本文档是从 `go.md` 分割出来的高级主题部分，涵盖测试策略、性能优化、安全实践和最佳实践。
 
+## ⚠️ 执行原则
 
-    "github.com/yourname/project/internal/models"
+**MUST** 遵循以下Go高级开发准则：
+- **MUST** 编写全面的单元测试和集成测试
+- **NEVER** 忽略错误处理和边界情况
+- **ALWAYS** 进行性能基准测试
+- **DO NOT** 在生产环境使用调试代码
+- **MUST** 遵循Go语言的安全最佳实践
+- **ALWAYS** 优化goroutine和channel的使用
+
+### 测试策略
     "github.com/yourname/project/internal/repository"
 )
 
