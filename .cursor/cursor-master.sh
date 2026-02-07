@@ -2218,6 +2218,16 @@ show_intelligent_help() {
 
 # 主函数
 main() {
+    # 🌱 强制初始化生长目录（在任何操作之前）
+    # 确保调用任何指令时都会创建 .cursorGrowth
+    if [ ! -d "$CURSOR_GROWTH" ]; then
+        mkdir -p "$CURSOR_GROWTH"
+        echo "{}" > "$CURSOR_GROWTH/.gitkeep" 2>/dev/null || true
+        if [[ "${DEBUG:-0}" == "1" ]]; then
+            echo -e "${CYAN}📁 自动创建.cursorGrowth目录${NC}" >&2
+        fi
+    fi
+
     # 🎯 VIBE命令检测和处理 (直接调用)
     if echo "$*" | grep -q "^@vibe" || echo "$*" | grep -q "^vibe"; then
         process_vibe_command "$*"

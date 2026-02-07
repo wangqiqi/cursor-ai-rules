@@ -447,15 +447,36 @@ validate_project_root_cache() {
 }
 
 # 初始化和验证目录结构（自动执行）
-if [ ! -d "$CURSOR_GROWTH" ]; then
-    mkdir -p "$CURSOR_GROWTH"
-    if [[ "${DEBUG:-0}" == "1" ]]; then
-        echo "📁 创建项目.cursorGrowth目录: $CURSOR_GROWTH"
-    fi
-fi
+# ============================================================================
+# 🌱 强制初始化生长目录 (无条件创建)
+# ============================================================================
+# 确保任何调用此脚本的指令都能保证 .cursorGrowth 目录存在
 
-init_growth_directories || true  # 允许失败，不影响脚本执行
-validate_project_root_cache  # 确保缓存文件正确
+force_init_growth_directory() {
+    # 无条件创建目录，如果已存在则忽略
+    if [ ! -d "$CURSOR_GROWTH" ]; then
+        mkdir -p "$CURSOR_GROWTH"
+        
+        # 创建.gitkeep确保目录被Git跟踪
+        echo "{}" > "$CURSOR_GROWTH/.gitkeep" 2>/dev/null || true
+        
+        # 如果开启了DEBUG模式，输出创建信息
+        if [[ "${DEBUG:-0}" == "1" ]]; then
+            echo "📁 强制创建.cursorGrowth目录: $CURSOR_GROWTH" >&2
+        fi
+    fi
+    
+    # 确保标准子目录结构存在
+    init_growth_directories 2>/dev/null || true
+}
+
+# 立即执行强制初始化（无条件执行）
+force_init_growth_directory
+
+if [ -d "$CURSOR_GROWTH" ]; then
+    # 导出确保函数，供其他脚本使用
+    export -f force_init_growth_directory 2>/dev/null || true
+fi
 
 if [[ "${VERIFY_DIRS:-0}" == "1" ]]; then
     if ! verify_growth_structure; then
