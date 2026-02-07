@@ -1,7 +1,8 @@
 ---
-command: collaboration
 description: "团队协作规则 - 多开发者环境的最佳实践"
-alwaysApply: false
+apply_when:
+  - keywords: ["团队", "协作", "team", "collaboration", "协作开发"]
+priority: 8
 ---
 
 # 👥 团队协作规则

@@ -1,8 +1,8 @@
 ---
-command: vibe-coding
 description: "VIBE Coding 开发原则 - 文档驱动、测试先行、前后端对齐的开发模式"
-globs: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.py", "*.java", "*.go", "*.vue", "*.svelte"]
-alwaysApply: false
+apply_when:
+  - keywords: ["开发", "coding", "implementation", "vibe", "测试", "功能"]
+priority: 12
 ---
 
 # 🚀 VIBE Coding 开发原则

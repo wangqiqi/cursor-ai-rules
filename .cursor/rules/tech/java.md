@@ -1,7 +1,9 @@
 ---
-command: java
 description: "Java开发规则 - 企业级Java开发最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.java"
+  - keywords: ["java", "spring", "maven", "gradle"]
+priority: 10
 ---
 
 # 📜 Java 开发规则

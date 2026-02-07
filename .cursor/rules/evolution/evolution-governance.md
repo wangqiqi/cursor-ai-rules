@@ -1,7 +1,8 @@
 ---
-command: evolution-governance
 description: "演进治理机制 - 规则演进的安全保障和质量控制体系"
-alwaysApply: false
+apply_when:
+  - keywords: ["治理", "governance", "安全", "质量控制", "审计"]
+priority: 8
 ---
 
 # 🛡️ 演进治理机制 (Evolution Governance)
@@ -13,6 +14,15 @@ alwaysApply: false
 演进治理基于 `@evolution-philosophy` 的核心原则，专注于规则演进过程的安全保障和质量控制。
 
 **核心定位**：作为演进过程的守门人和质量把关者，确保所有演进活动符合哲学原则并满足安全要求。
+
+### ⚠️ 治理执行原则
+
+**MUST** 遵循以下治理原则：
+- **NEVER** 在没有回滚计划的情况下进行变更
+- **MUST** 在变更前完成风险评估
+- **ALWAYS** 先在测试环境验证
+- **MUST** 监控变更后的系统状态
+- **DO NOT** 跳过灰度发布阶段
 
 ## 🛡️ 安全保障机制 (Safety Safeguards)
 

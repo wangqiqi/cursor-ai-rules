@@ -1,7 +1,8 @@
 ---
-command: learning-workflow
 description: "学习工作流 - 智能学习新技术栈和编程概念"
-alwaysApply: false
+apply_when:
+  - keywords: ["学习", "learn", "新技术", "new technology", "教程"]
+priority: 8
 ---
 
 # 🧠 学习工作流 (Learning Workflow)
@@ -11,6 +12,15 @@ alwaysApply: false
 ## 🎯 核心功能
 
 智能学习新技术栈，为开发者提供个性化的学习路径和实践指导。
+
+### ⚠️ 学习原则
+
+**MUST** 遵循以下学习原则：
+- **MUST** 从实际项目需求出发学习
+- **NEVER** 只看理论不实践
+- **ALWAYS** 编写可运行的代码示例
+- **MUST** 完成完整的练习项目
+- **DO NOT** 跳过基础直接学习高级特性
 
 ### 📚 学习内容类型
 

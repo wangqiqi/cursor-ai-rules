@@ -1,7 +1,11 @@
 ---
-command: javascript
 description: "JavaScript开发规则 - 现代JavaScript最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.js"
+  - file_pattern: "**/*.mjs"
+  - file_pattern: "**/*.cjs"
+  - keywords: ["javascript", "node", "npm"]
+priority: 10
 ---
 
 # 📜 JavaScript 开发规则

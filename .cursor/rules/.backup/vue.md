@@ -1,7 +1,9 @@
 ---
-command: vue
 description: "Vue.js开发规则 - 渐进式前端框架最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.vue"
+  - keywords: ["vue", "nuxt"]
+priority: 10
 ---
 
 # 💚 Vue.js 开发规则

@@ -1,7 +1,9 @@
 ---
-command: python
 description: "Python开发规则 - Python最佳实践和项目结构"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.py"
+  - keywords: ["python", "pip", "django", "flask", "fastapi"]
+priority: 10
 ---
 
 # 🐍 Python 开发规则

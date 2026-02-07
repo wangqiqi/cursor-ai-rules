@@ -1,7 +1,13 @@
 ---
-command: cpp
 description: "C++开发规则 - 现代C++最佳实践和高性能开发"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.cpp"
+  - file_pattern: "**/*.cc"
+  - file_pattern: "**/*.cxx"
+  - file_pattern: "**/*.hpp"
+  - file_pattern: "**/*.h"
+  - keywords: ["c++", "cpp"]
+priority: 10
 ---
 
 # 🚀 C++ 开发规则

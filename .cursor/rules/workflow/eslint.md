@@ -1,8 +1,11 @@
 ---
-command: eslint
 description: "ESLint代码质量检查集成 - 自动检测和修复JavaScript代码问题"
-globs: ["*.js", "*.ts", "*.jsx", "*.tsx"]
-alwaysApply: true
+apply_when:
+  - file_pattern: "**/*.js"
+  - file_pattern: "**/*.ts"
+  - file_pattern: "**/*.jsx"
+  - file_pattern: "**/*.tsx"
+priority: 12
 ---
 
 # 🔍 ESLint 代码质量检查集成

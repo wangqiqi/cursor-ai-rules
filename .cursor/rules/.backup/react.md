@@ -1,7 +1,10 @@
 ---
-command: react
 description: "React开发规则 - 组件化前端框架最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.jsx"
+  - file_pattern: "**/*.tsx"
+  - keywords: ["react", "jsx"]
+priority: 10
 ---
 
 # ⚛️ React 开发规则

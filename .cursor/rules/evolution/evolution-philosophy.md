@@ -1,7 +1,8 @@
 ---
-command: evolution-philosophy
 description: "演进哲学 - 项目规则持续演进的核心理念和原则指导"
-alwaysApply: false
+apply_when:
+  - keywords: ["演进", "evolution", "优化", "改进", "迭代"]
+priority: 8
 ---
 
 # 🧠 演进哲学 (Evolution Philosophy)
@@ -16,10 +17,19 @@ alwaysApply: false
 
 ## 🎯 演进原则 (Evolution Principles)
 
+### ⚠️ 执行原则
+
+**MUST** 遵循以下演进原则：
+- **NEVER** 进行大规模激进式重构
+- **MUST** 每个改动都经过验证
+- **ALWAYS** 确保改动可以安全回退
+- **MUST** 使用量化指标评估效果
+- **DO NOT** 忽视用户反馈
+
 ### 渐进式改进 (Incremental Improvement)
-- **小步快跑**: 避免大规模重构，从小改动开始
-- **持续验证**: 每个改动都要经过验证和反馈
-- **可逆操作**: 确保所有改动都可以安全回退
+- **MUST** 从小改动开始，避免大规模重构
+- **ALWAYS** 持续验证每个改动
+- **MUST** 确保所有改动都可以安全回退
 
 ### 数据驱动决策 (Data-Driven Decisions)
 - **量化评估**: 使用可衡量的指标评估规则效果
@@ -35,6 +45,43 @@ alwaysApply: false
 - **最小阻力**: 演进过程本身不应带来额外负担
 - **自动化优先**: 尽可能通过自动化减少手动维护成本
 - **标准化流程**: 建立可重复的演进流程和规范
+
+### 📋 演进配置示例
+
+#### 基本演进配置
+```yaml
+# .cursor/evolution-config.yaml
+evolution:
+  enabled: true
+  mode: "incremental"  # incremental | aggressive | conservative
+  
+  safety:
+    auto_rollback: true
+    backup_before_changes: true
+    validation_required: true
+    
+  monitoring:
+    track_metrics: true
+    collect_feedback: true
+    analyze_patterns: true
+```
+
+#### 自动化演进规则
+```yaml
+# 定义何时触发自动演进
+triggers:
+  - condition: "error_rate > 5%"
+    action: "revert_changes"
+    priority: "critical"
+    
+  - condition: "user_feedback_negative > 20%"
+    action: "schedule_review"
+    priority: "high"
+    
+  - condition: "new_pattern_detected"
+    action: "analyze_and_propose"
+    priority: "medium"
+```
 
 ## 📈 演进目标体系 (Evolution Goals Framework)
 

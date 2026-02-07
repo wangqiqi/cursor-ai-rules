@@ -1,7 +1,9 @@
 ---
-command: go
 description: "Go开发规则 - 云原生微服务和系统编程最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.go"
+  - keywords: ["golang", "go"]
+priority: 10
 ---
 
 # 🚀 Go 开发规则

@@ -552,3 +552,33 @@ const health = monitor.healthCheck()
 输出：针对性分析报告和解决方案建议
 ```
 
+## 🎯 使用指南 (Usage Guide)
+
+### 快速开始 (Quick Start)
+1. 激活智能感知：`@intelligent_evolution`
+2. 配置感知范围：指定需要监控的项目路径
+3. 设置报告频率：选择实时、定时或事件驱动模式
+4. 集成到工作流：与其他规则结合使用感知数据
+
+### 数据集成 (Data Integration)
+```markdown
+# 与演进系统集成
+@intelligent_evolution @evolution-automation
+
+# 与协作系统集成
+@intelligent_evolution @philosophy
+
+# 与治理系统集成
+@intelligent_evolution @evolution-governance
+```
+
+### 最佳实践 (Best Practices)
+- 定期检查感知数据的准确性和及时性
+- 根据项目特点调整感知频率和范围
+- 将感知结果作为决策的重要参考依据
+- 结合人工判断，避免过度依赖自动化感知
+
+---
+
+*智能演进系统专注于项目的智能化感知和分析，为演进决策和规则优化提供数据支持和洞察。*
+

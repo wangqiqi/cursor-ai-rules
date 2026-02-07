@@ -1,7 +1,8 @@
 ---
-command: documentation-workflow
 description: "文档生成工作流 - 自动化生成项目文档和API文档"
-alwaysApply: false
+apply_when:
+  - keywords: ["文档", "documentation", "readme", "api doc", "docs"]
+priority: 8
 ---
 
 # 📚 文档生成工作流 (Documentation Workflow)
@@ -11,6 +12,15 @@ alwaysApply: false
 ## 🎯 核心功能
 
 自动生成和维护项目文档，包括README、API文档、使用指南等。
+
+### ⚠️ 执行原则
+
+**MUST** 遵循以下文档生成原则：
+- **MUST** 在代码变更时同步更新文档
+- **NEVER** 让文档与代码实现不一致
+- **ALWAYS** 包含实际可运行的代码示例
+- **MUST** 确保所有链接和引用有效
+- **DO NOT** 生成无注释或说明的代码片段
 
 ### 📝 文档类型支持
 

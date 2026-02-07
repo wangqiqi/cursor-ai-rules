@@ -1,8 +1,9 @@
 ---
-command: evolution-manual
 description: "手动演进流程 - 规则演进的手动触发和管理流程"
-globs: ["*.md"]
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.md"
+  - keywords: ["手动演进", "manual evolution", "规则更新"]
+priority: 8
 ---
 
 # 📋 手动演进流程 (Manual Evolution Process)

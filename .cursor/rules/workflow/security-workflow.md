@@ -1,7 +1,8 @@
 ---
-command: security-workflow
 description: "安全工作流 - 自动化安全审计和漏洞检测"
-alwaysApply: false
+apply_when:
+  - keywords: ["安全", "security", "漏洞", "audit", "检测"]
+priority: 8
 ---
 
 # 🔒 安全工作流 (Security Workflow)
@@ -11,6 +12,15 @@ alwaysApply: false
 ## 🎯 核心功能
 
 自动化安全审计和漏洞检测，确保代码和配置的安全性。
+
+### ⚠️ 安全原则
+
+**MUST** 遵循以下安全原则：
+- **NEVER** 提交包含已知漏洞的代码
+- **MUST** 在代码合并前完成安全审计
+- **ALWAYS** 使用最新版本的安全工具
+- **MUST** 立即修复高危漏洞
+- **DO NOT** 在生产环境使用默认凭据
 
 ### 🔍 安全审计类型
 

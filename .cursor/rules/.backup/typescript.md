@@ -1,7 +1,10 @@
 ---
-command: typescript
 description: "TypeScript开发规则 - 类型安全和高级类型系统最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.ts"
+  - file_pattern: "**/*.tsx"
+  - keywords: ["typescript", "ts"]
+priority: 10
 ---
 
 # 🔷 TypeScript 开发规则

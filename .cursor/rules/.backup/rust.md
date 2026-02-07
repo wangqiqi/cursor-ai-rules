@@ -1,7 +1,9 @@
 ---
-command: rust
 description: "Rust开发规则 - 内存安全系统编程和高性能应用最佳实践"
-alwaysApply: false
+apply_when:
+  - file_pattern: "**/*.rs"
+  - keywords: ["rust", "cargo"]
+priority: 10
 ---
 
 # 🦀 Rust 开发规则

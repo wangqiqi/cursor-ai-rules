@@ -1,7 +1,9 @@
 ---
-command: constitution
 description: "AI共生宪法 - 定义人机协作的核心原则和最高准则"
-alwaysApply: true
+apply_when:
+  - always: true
+priority: 15
+always_apply: true
 ---
 
 # 🏛️ AI共生宪法 (Constitution of AI Symbiosis)

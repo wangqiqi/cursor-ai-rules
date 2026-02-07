@@ -1,7 +1,8 @@
 ---
-command: conversation_intent_analyzer
 description: "对话意图分析器 - 基于用户对话内容理解需求并提供项目规划建议"
-alwaysApply: true
+apply_when:
+  - always: true
+priority: 18
 ---
 
 # 💬 对话意图分析器 (Conversation Intent Analyzer)
