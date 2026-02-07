@@ -11,9 +11,13 @@ docs/
 ├── user-guide.md          # 📖 完整使用指南
 ├── developer/             # 🛠️ 开发者文档
 │   ├── api-reference.md   # API接口文档
-│   ├── architecture.md    # 系统架构详解
+│   ├── architecture.md    # 系统架构详解 (开发者视角)
+│   ├── SYSTEM_ARCHITECTURE.md  # 系统架构总览 (完整)
+│   ├── CALL_CHAIN.md      # 系统调用链详解
 │   ├── extension-guide.md # 扩展开发指南
 │   └── project-growth.md  # 项目生长架构
+├── guides/                # 📚 使用指南
+│   └── SKILL_GUIDE.md     # 技能系统完整指南
 ├── admin/                 # 👔 运维管理文档
 │   └── configuration.md   # 配置管理指南
 ├── advanced/              # 🎯 高级特性文档
@@ -22,6 +26,7 @@ docs/
 │   └── performance-tuning.md  # 高级性能调优
 └── reference/             # 📚 参考资料
     ├── faq.md            # 常见问题解答
+    ├── CURSOR_SELF_CONSISTENCY_REPORT.md  # 系统自洽性评估报告
     └── specifications/   # 技术规范
         └── constitution.md # 宪法规范
 ```
@@ -45,6 +50,22 @@ docs/
 - **内容范围**: API接口、系统架构、扩展开发、项目生长
 - **目录**: `developer/`
 - **适用场景**: 需要自定义功能或深入理解系统
+
+**核心文档**:
+- **[系统架构总览](developer/SYSTEM_ARCHITECTURE.md)** ⭐ - 完整的组件、职责和调用关系
+- **[调用链详解](developer/CALL_CHAIN.md)** ⭐ - 详细的系统调用流程和数据流向
+- **[架构设计](developer/architecture.md)** - 开发者视角的架构设计
+- **[API参考](developer/api-reference.md)** - 接口使用指南
+- **[扩展开发](developer/extension-guide.md)** - 自定义功能开发
+
+### 📚 使用指南 (Guides)
+- **目标读者**: 需要特定功能深入指导的用户
+- **内容范围**: 技能系统、最佳实践、工作流程
+- **目录**: `guides/`
+- **适用场景**: 掌握特定功能的高级用法
+
+**核心文档**:
+- **[技能系统指南](guides/SKILL_GUIDE.md)** ⭐ - 37个技能的完整使用指南
 
 ### 👔 运维管理文档 (Admin Docs)
 - **目标读者**: 项目管理员和运维人员
@@ -74,9 +95,11 @@ docs/
 3. **[常见问题](reference/faq.md)** - 快速解决使用疑问
 
 #### 开发者用户 (需要扩展)
-1. **[系统架构](developer/architecture.md)** - 理解核心设计
-2. **[API参考](developer/api-reference.md)** - 接口使用指南
-3. **[扩展开发](developer/extension-guide.md)** - 自定义功能开发
+1. **[系统架构总览](developer/SYSTEM_ARCHITECTURE.md)** ⭐ - 理解完整系统设计
+2. **[调用链详解](developer/CALL_CHAIN.md)** ⭐ - 了解系统调用流程
+3. **[架构设计](developer/architecture.md)** - 开发者视角的架构
+4. **[API参考](developer/api-reference.md)** - 接口使用指南
+5. **[扩展开发](developer/extension-guide.md)** - 自定义功能开发
 
 #### 管理员用户 (负责运维)
 1. **[配置管理](admin/configuration.md)** - 系统配置详解
@@ -93,8 +116,11 @@ docs/
 - **常见问题**: [FAQ](reference/faq.md)
 
 #### 🛠️ 开发扩展
-- **系统架构**: [架构详解](developer/architecture.md)
+- **系统架构**: [系统架构总览](developer/SYSTEM_ARCHITECTURE.md) ⭐
+- **调用流程**: [调用链详解](developer/CALL_CHAIN.md) ⭐
+- **架构设计**: [架构详解](developer/architecture.md)
 - **API接口**: [API参考](developer/api-reference.md)
+- **技能系统**: [技能指南](guides/SKILL_GUIDE.md) ⭐
 - **自定义开发**: [扩展指南](developer/extension-guide.md)
 
 #### ⚙️ 系统管理
@@ -148,15 +174,38 @@ docs/
 - 遵循翻译质量标准
 - 保持术语的一致性
 
+## ⭐ 核心文档速览
+
+以下是最重要的核心文档，建议优先阅读：
+
+### 🏗️ 系统理解 (必读)
+- **[系统架构总览](developer/SYSTEM_ARCHITECTURE.md)** - 完整的组件、职责和关系
+- **[调用链详解](developer/CALL_CHAIN.md)** - 系统间调用流程和数据流向
+
+### 🎯 功能使用
+- **[技能系统指南](guides/SKILL_GUIDE.md)** - 37个技能的完整使用指南
+- **[完整使用指南](user-guide.md)** - 核心功能详解
+
+### 📊 系统评估
+- **[自洽性评估报告](reference/CURSOR_SELF_CONSISTENCY_REPORT.md)** - 系统分析和改进
+
 ## 📊 文档统计
 
-- **核心文档数**: 12 个核心文档 (-60% 优化)
+- **核心文档数**: 16 个核心文档
 - **辅助文档数**: 8 个参考文档（api/debug等索引）
-- **总文档数**: 20 个文档
-- **目录结构**: 6个主要目录 (从13个精简)
+- **总文档数**: 24 个文档
+- **目录结构**: 7个主要目录
 - **覆盖功能**: 100% 系统功能，结构化组织
 - **支持语言**: 中文（主要）、英文（部分）
 - **更新频率**: 随系统版本更新，持续优化
+
+### 📁 新增核心文档
+
+最近新增的重要文档：
+- ✅ **SYSTEM_ARCHITECTURE.md** - 系统架构完整说明 (548行)
+- ✅ **CALL_CHAIN.md** - 调用链详细文档 (747行)
+- ✅ **SKILL_GUIDE.md** - 技能系统使用指南 (617行)
+- ✅ **CURSOR_SELF_CONSISTENCY_REPORT.md** - 系统评估报告 (358行)
 
 ---
 
