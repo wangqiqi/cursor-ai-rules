@@ -1,3 +1,0 @@
-#!/bin/bash
-# 停止Web服务便捷入口
-cd "$(dirname "$0")" && ./core/stop-web.sh "$@"

@@ -2359,6 +2359,16 @@ main() {
                     ;;
             esac
             ;;
+        "syscheck")
+            # 系统统一检查
+            echo -e "${GREEN}🔍 执行系统统一检查...${NC}" >&2
+            exec "$CURSOR_DIR/core/unified-check.sh" "$@"
+            ;;
+        "stopweb")
+            # 停止Web服务
+            echo -e "${GREEN}🛑 停止Web服务...${NC}" >&2
+            exec "$CURSOR_DIR/core/stop-web.sh" "$@"
+            ;;
         "fast"|"quick")
             # 快速模式：启用所有优化
             export OPTIMIZATION_LEVEL=maximum

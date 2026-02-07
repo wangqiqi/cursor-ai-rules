@@ -1,3 +1,0 @@
-#!/bin/bash
-# 系统检查便捷入口
-cd "$(dirname "$0")" && ./core/check.sh "$@"
