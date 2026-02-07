@@ -4,15 +4,15 @@
 # .cursor 统一验证脚本
 #
 # 功能整合：
-# - 系统完整性验证 (来自 verify-system.sh)
-# - 规则最佳实践检查 (来自 check-best-practices.sh)
-# - 系统健康检查 (来自 system-health-check.sh)
+# - 系统完整性验证
+# - 规则最佳实践检查
+# - 系统健康检查
 #
 # 使用方法：
-#   .cursor/scripts/unified-check.sh              # 完整验证
-#   .cursor/scripts/unified-check.sh --quick      # 快速验证
-#   .cursor/scripts/unified-check.sh --rules      # 仅检查规则
-#   .cursor/scripts/unified-check.sh --system     # 仅检查系统
+#   .cursor/check.sh              # 完整验证
+#   .cursor/check.sh --quick      # 快速验证
+#   .cursor/check.sh --rules      # 仅检查规则
+#   .cursor/check.sh --system     # 仅检查系统
 ###############################################################################
 
 set -e
@@ -40,7 +40,7 @@ for arg in "$@"; do
         --rules) CHECK_SYSTEM=false ;;
         --system) CHECK_RULES=false ;;
         --help)
-            echo "用法: $0 [选项]"
+            echo "用法: .cursor/check.sh [选项]"
             echo "选项:"
             echo "  --quick    快速验证"
             echo "  --rules    仅检查规则最佳实践"
@@ -73,10 +73,6 @@ print_error() {
     echo -e "${RED}✗ $1${NC}"
 }
 
-print_warning() {
-    echo -e "${YELLOW}⚠ $1${NC}"
-}
-
 ###############################################################################
 # 系统完整性验证
 ###############################################################################
@@ -86,7 +82,7 @@ verify_system() {
     
     local errors=0
     
-    # 1. 目录结构验证
+    # 目录结构验证
     print_section "目录结构检查"
     
     DIRS=("agents" "commands" "config" "rules" "core" "features" "skills" "docs")
@@ -99,28 +95,7 @@ verify_system() {
         fi
     done
     
-    # 2. 关键文件验证
-    print_section "关键文件检查"
-    
-    KEY_FILES=(
-        "agents/command-center.md:Command Center Agent"
-        "commands/master.md:Master命令"
-        "commands/master-handler.js:Master处理器"
-        "skills/skill-dispatcher/SKILL.md:技能调度器"
-        "features/skills/registry.json:技能注册表"
-    )
-    
-    for file_info in "${KEY_FILES[@]}"; do
-        IFS=':' read -r file_path description <<< "$file_info"
-        if [[ -f "$CURSOR_DIR/$file_path" ]]; then
-            print_success "$description: $file_path"
-        else
-            print_error "$description: $file_path (缺失)"
-            errors=$((errors + 1))
-        fi
-    done
-    
-    # 3. 系统统计
+    # 系统统计
     print_section "系统统计"
     
     local agent_count=$(find "$CURSOR_DIR/agents" -name "*.md" 2>/dev/null | wc -l)
@@ -156,7 +131,6 @@ verify_rules() {
         if [[ -f "$file" ]]; then
             total=$((total + 1))
             
-            # 检查 frontmatter
             local has_apply_when=false
             local has_priority=false
             
@@ -174,29 +148,13 @@ verify_rules() {
                 fi
             done < "$file"
             
-            if [[ "$has_apply_when" == true ]]; then
-                with_apply_when=$((with_apply_when + 1))
-            fi
+            [[ "$has_apply_when" == true ]] && with_apply_when=$((with_apply_when + 1))
+            [[ "$has_priority" == true ]] && with_priority=$((with_priority + 1))
+            grep -q '```' "$file" && with_examples=$((with_examples + 1))
+            grep -qiE 'MUST|NEVER|ALWAYS|DO NOT|REQUIRED|禁止|必须' "$file" && command_style=$((command_style + 1))
             
-            if [[ "$has_priority" == true ]]; then
-                with_priority=$((with_priority + 1))
-            fi
-            
-            # 检查代码示例
-            if grep -q '```' "$file"; then
-                with_examples=$((with_examples + 1))
-            fi
-            
-            # 检查命令式语言
-            if grep -qiE 'MUST|NEVER|ALWAYS|DO NOT|REQUIRED|禁止|必须' "$file"; then
-                command_style=$((command_style + 1))
-            fi
-            
-            # 检查文件长度
             local lines=$(wc -l < "$file")
-            if [[ $lines -gt 500 ]]; then
-                too_long=$((too_long + 1))
-            fi
+            [[ $lines -gt 500 ]] && too_long=$((too_long + 1))
         fi
     done < <(find "$RULES_DIR" -type f -name "*.md" -print0)
     
@@ -215,18 +173,14 @@ verify_rules() {
     echo -e "${GREEN}使用命令式语言: $command_style (${percent_command}%)${NC}"
     echo -e "${YELLOW}文件过长(>500行): $too_long${NC}"
     
-    # 计算合规性分数
     local compliance_score=$(( (with_apply_when + with_priority) * 100 / (total * 2) ))
     echo -e "\n总体合规性: ${compliance_score}%"
     
     if [[ $compliance_score -eq 100 ]]; then
         print_success "所有规则都符合最佳实践！"
         return 0
-    elif [[ $compliance_score -ge 80 ]]; then
-        print_warning "大部分规则符合最佳实践，但仍有改进空间"
-        return 0
     else
-        print_error "许多规则不符合最佳实践，需要改进"
+        print_error "存在不符合最佳实践的规则"
         return 1
     fi
 }
@@ -241,23 +195,15 @@ main() {
     echo -e "${BLUE}"
     echo "  ╔═══════════════════════════════════════════════════════════╗"
     echo "  ║        .cursor 系统统一验证                              ║"
-    echo "  ║        Cursor AI Rules System Unified Check              ║"
     echo "  ╚═══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     
     echo "项目路径: $PROJECT_ROOT"
     echo "验证时间: $(date '+%Y-%m-%d %H:%M:%S')"
     
-    # 执行检查
-    if [[ "$CHECK_SYSTEM" == true ]]; then
-        verify_system || exit_code=$?
-    fi
+    [[ "$CHECK_SYSTEM" == true ]] && verify_system || exit_code=$?
+    [[ "$CHECK_RULES" == true ]] && verify_rules || exit_code=$?
     
-    if [[ "$CHECK_RULES" == true ]]; then
-        verify_rules || exit_code=$?
-    fi
-    
-    # 总结
     print_header "验证完成"
     
     if [[ $exit_code -eq 0 ]]; then
