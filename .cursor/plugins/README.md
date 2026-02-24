@@ -134,9 +134,16 @@ const component = await componentManager.getComponent('your-plugin-name.yourComp
 const result = await component.doSomething(params);
 ```
 
+## 内置插件
+
+| 插件 | 说明 |
+|------|------|
+| `example-plugin/` | 示例插件，演示基本结构 |
+| `quality-check/` | 质量检查插件，封装 quality-manager 能力 |
+
 ## 开发示例
 
-参考 `example-plugin/` 目录中的示例实现。
+参考 `example-plugin/` 和 `quality-check/` 目录中的实现。
 
 ## 最佳实践
 

@@ -1,0 +1,22 @@
+{
+  "name": "quality-check",
+  "version": "1.0.0",
+  "description": "代码质量检查插件，封装 quality-manager 和 quality-check 钩子能力",
+  "author": "Cursor AI Rules",
+  "priority": 60,
+  "dependencies": [],
+  "components": [
+    {
+      "name": "qualityService",
+      "module": "quality-service.js",
+      "description": "质量检查服务，执行 lint、格式、依赖等检查",
+      "dependencies": [],
+      "singleton": true
+    }
+  ],
+  "hooks": {
+    "onLoad": "init.js",
+    "onUnload": "cleanup.js"
+  },
+  "permissions": ["file:read", "file:write", "system:exec", "console:log"]
+}

@@ -14,6 +14,7 @@ docs/
 │   ├── architecture.md    # 系统架构详解 (开发者视角)
 │   ├── SYSTEM_ARCHITECTURE.md  # 系统架构总览 (完整)
 │   ├── CALL_CHAIN.md      # 系统调用链详解
+│   ├── SKILL_MATCHING_FLOW.md # 技能匹配规范流程
 │   ├── extension-guide.md # 扩展开发指南
 │   └── project-growth.md  # 项目生长架构
 ├── guides/                # 📚 使用指南

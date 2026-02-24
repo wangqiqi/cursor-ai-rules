@@ -18,7 +18,7 @@
 | vibe-coding.md | 540 | 拆分为「流程」+「接口」+「示例」 |
 | vue-advanced.md | 529 | 拆分为「测试」+「性能」+「安全」 |
 | rust-basics.md | 517 | 拆分为「所有权」+「类型」+「实践」 |
-| platform_adapter.md | 501 | 拆分为「路径」+「命令」+「环境」 |
+| platform_adapter.md | ~~501~~ 424 | ✅ 已拆分路径至 platform_adapter_paths.md |
 
 ## 拆分原则
 
