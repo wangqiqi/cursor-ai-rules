@@ -15,6 +15,11 @@ if [[ -z "$PROJECT_ROOT" || "$PROJECT_ROOT" == "null" ]]; then
     PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 fi
 
+# 🛡️ 强制：.cursorGrowth 必须在 .cursor 同级，不能放在 .cursor 内部
+if [[ "$PROJECT_ROOT" == *"/.cursor" || "$(basename "$PROJECT_ROOT")" == ".cursor" ]]; then
+    PROJECT_ROOT="$(cd "$PROJECT_ROOT/.." && pwd)"
+fi
+
 GROWTH_DIR="$PROJECT_ROOT/.cursorGrowth"
 CURSOR_DIR="$PROJECT_ROOT/.cursor"
 

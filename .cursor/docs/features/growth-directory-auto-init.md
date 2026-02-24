@@ -4,6 +4,19 @@
 
 `.cursorGrowth` 目录是 Cursor AI Rules 系统的核心数据存储位置，用于存储项目运行时数据、学习记录、监控指标等。本系统确保在任何情况下调用任何 `.cursor` 内部指令时，该目录都会被自动创建。
 
+### ⚠️ 正确位置（必须遵守）
+
+`.cursorGrowth` **必须**位于项目根目录，与 `.cursor` **同级**：
+
+```
+项目根目录/
+├── .cursor/          # Cursor 配置与脚本
+├── .cursorGrowth/    # 生长数据（与 .cursor 同级，不能放在 .cursor 内部）
+└── ...
+```
+
+**错误示例**：`.cursor/.cursorGrowth`（在 .cursor 内部）— 系统会自动清理并拒绝使用。
+
 ## 🎯 设计原则
 
 ### 1. 无条件创建

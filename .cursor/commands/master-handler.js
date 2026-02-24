@@ -7,7 +7,12 @@ const fs = require('fs');
 
 class MasterCommandHandler {
     constructor(projectRoot, context = {}) {
-        this.projectRoot = projectRoot || this.findProjectRoot();
+        let root = projectRoot || this.findProjectRoot();
+        // 🛡️ 强制：projectRoot 必须是 .cursor 的父目录，不能是 .cursor 本身
+        if (root && (root.endsWith('.cursor') || path.basename(root) === '.cursor')) {
+            root = path.dirname(root);
+        }
+        this.projectRoot = root;
         this.cursorDir = path.join(this.projectRoot, '.cursor');
 
         // 🎯 IDE上下文信息 - 这是/master相较于cursor-master.sh的最大优势
@@ -2368,6 +2373,10 @@ class MasterCommandHandler {
 
         while (depth < maxDepth) {
             if (fs.existsSync(path.join(currentDir, '.cursor'))) {
+                // 🛡️ 返回含 .cursor 的目录，不能返回 .cursor 本身
+                if (path.basename(currentDir) === '.cursor') {
+                    currentDir = path.dirname(currentDir);
+                }
                 return currentDir;
             }
             const parentDir = path.dirname(currentDir);
@@ -2376,8 +2385,12 @@ class MasterCommandHandler {
             depth++;
         }
 
-        // Fallback to current directory
-        return process.cwd();
+        // Fallback: 若 cwd 是 .cursor，则用其父目录
+        const cwd = process.cwd();
+        if (path.basename(cwd) === '.cursor') {
+            return path.dirname(cwd);
+        }
+        return cwd;
     }
 
     async getCapabilityConfig(capability) {

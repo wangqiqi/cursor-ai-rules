@@ -99,7 +99,13 @@ find_project_paths() {
     PROJECT_ROOT="$(cd "$PROJECT_ROOT" && pwd)"
     CURSOR_DIR="$(cd "$CURSOR_DIR" && pwd)"
 
-    # 🧹 清理可能存在的错误位置目录
+    # 🛡️ 强制：PROJECT_ROOT 必须是 .cursor 的父目录，不能是 .cursor 本身
+    if [[ "$PROJECT_ROOT" == *"/.cursor" || "$(basename "$PROJECT_ROOT")" == ".cursor" ]]; then
+        PROJECT_ROOT="$(cd "$PROJECT_ROOT/.." && pwd)"
+        CURSOR_DIR="$PROJECT_ROOT/.cursor"
+    fi
+
+    # 🧹 清理可能存在的错误位置目录（含 .cursor/.cursorGrowth）
     cleanup_misplaced_growth_dirs
 
     # 🎯 现在检查缓存文件是否与动态查找的结果一致
