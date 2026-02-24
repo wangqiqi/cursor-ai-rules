@@ -6,8 +6,8 @@
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-31-blue?style=flat-square)]()
-[![Scripts](https://img.shields.io/badge/scripts-100+-cyan?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-46-blue?style=flat-square)]()
+[![Scripts](https://img.shields.io/badge/scripts-75+-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-37-purple?style=flat-square)]()
 
@@ -25,9 +25,9 @@
 - **Compliance Mechanism**: Automatic STOP mechanism ensures AI behavior compliance
 
 ### 🎯 100% Capability Coverage
-- ✅ **Rules System**: 31 technical rules fully covered
-- ✅ **Core Scripts**: 100+ scripts fully implemented
-- ✅ **Automation Hooks**: 30+ Git hooks
+- ✅ **Rules System**: 46 technical rules fully covered
+- ✅ **Core Scripts**: 75+ scripts fully implemented
+- ✅ **Automation Hooks**: 36 Git/system hooks
 - ✅ **Skills System**: 37 professional skills
 
 ### 🎭 21 AI Personality Roles
@@ -87,15 +87,15 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 ## 🚀 Core Features
 
 ### 🧠 Intelligent Master Command System
-- **Single Entry**: `/master` command auto-orchestrates 100+ scripts + 31 rules + 37 skills
+- **Single Entry**: `/master` command auto-orchestrates 75+ scripts + 46 rules + 37 skills
 - **Intent Understanding**: Natural language processing for complex user requirements
 - **Self-Learning**: A/B testing framework, user feedback loop, continuous optimization
 - **Performance Monitoring**: Comprehensive monitoring with response time <500ms
 
 ### 🎯 Intelligent Capability Orchestration System
-- **100+ Scripts**: Environment perception, quality checks, performance monitoring, deployment
-- **31 Rules**: Constitution compliance, code quality, development standards
-- **30+ Hooks**: Automated Git hooks, code quality checks, event logging
+- **75+ Scripts**: Environment perception, quality checks, performance monitoring, deployment
+- **46 Rules**: Constitution compliance, code quality, development standards
+- **36 Hooks**: Automated Git hooks, code quality checks, event logging
 
 ### 🛠️ Enhanced Feature Capabilities
 - **Error Handling Optimization**: Smart diagnostics with 83% efficiency improvement
@@ -274,7 +274,7 @@ Use security-analysis skill to check code
 │   ├── vibe.md           # VIBE development mode
 │   └── master-handler.js # Handler
 ├── config/               # ⚙️ Configuration files
-├── core/                 # 🔧 Core scripts (100+)
+├── core/                 # 🔧 Core scripts (75+)
 │   ├── init.sh           # Initialization
 │   ├── env-perception.sh # Environment perception
 │   └── quality-manager.sh # Quality management
@@ -288,8 +288,8 @@ Use security-analysis skill to check code
 ├── features/             # 🎯 Feature system
 │   ├── skills/           # Skills library (37)
 │   │   └── registry.json
-│   └── hooks/            # Git hooks (30+)
-├── rules/                # 📋 Rules system (31)
+│   └── hooks/            # System hooks (36)
+├── rules/                # 📋 Rules system (46)
 │   ├── system/           # System rules
 │   ├── tech/             # Tech stack rules
 │   └── workflow/         # Workflow rules

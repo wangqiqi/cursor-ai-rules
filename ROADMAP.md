@@ -346,6 +346,18 @@ Cursor AI Rules的核心架构和功能已全部完成，达到生产就绪标�
 
 ---
 
+## 📋 近期 .cursor 完善计划 (2026-02)
+
+基于 2026-02-24 对 `.cursor` 目录的全面分析，已制定 **[CURSOR_IMPROVEMENT_PLAN.md](CURSOR_IMPROVEMENT_PLAN.md)**，涵盖：
+
+- **高优先级**: 缺失 verify-system.sh、command-center 文档路径错误、自洽性报告路径硬编码
+- **中优先级**: Skills 双目录说明、automation 与 hooks 一致性、插件系统扩展
+- **低优先级**: AGENTS.md 根入口、统计数据统一、跨平台清单
+
+建议先执行完善计划中的高优先级任务，再与本文 ROADMAP 各阶段合并推进。
+
+---
+
 *🎯 Cursor AI Rules - 从优秀到卓越的持续进化之旅！*
 
 *🚀 每一个创新都是为了让AI更好地赋能人类的创造力！*

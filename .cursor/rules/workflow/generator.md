@@ -1,11 +1,14 @@
 ---
-description: "项目规则生成器 - 自动化生成个性化项目规则配置"
+description: "项目规则生成器 - 自动化生成个性化项目规则配置。仅在用户已确认项目方案后使用（宪法要求：检测到创建意图时须先讨论再执行）"
 apply_when:
   - keywords: ["生成规则", "规则配置", "project rules", "generator"]
 priority: 8
+alwaysApply: false
 ---
 
 # 🎯 项目规则生成器 (Project Rules Generator)
+
+> **⚠️ 与宪法协作**: 若用户表达「创建项目」意图，须先执行 constitution 的讨论流程，待用户确认方案后再激活本生成器。
 
 *版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
 

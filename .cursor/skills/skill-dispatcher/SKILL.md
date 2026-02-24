@@ -7,6 +7,8 @@ description: Discover, match, and invoke skills from .cursor/features/skills/ di
 
 智能技能调度器，用于发现、匹配和调用 `.cursor/features/skills/` 目录中的技能。
 
+> **目录关系**: 本技能位于 `.cursor/skills/`（项目技能，符合 Cursor 标准）；调度的技能库在 `.cursor/features/skills/`（自定义格式：registry.json + flat .md 文件）。
+
 ## 核心功能
 
 ### 1. 技能发现 (Skill Discovery)

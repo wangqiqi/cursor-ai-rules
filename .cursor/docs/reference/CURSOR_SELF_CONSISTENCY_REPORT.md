@@ -1,7 +1,7 @@
 # .cursor 系统自洽性分析报告
 
 生成时间: 2026-02-07
-分析范围: /home/jwzhou/workspace/cursor-ai-rules/.cursor/
+分析范围: {{PROJECT_ROOT}}/.cursor/ （运行时替换为当前项目路径）
 
 ---
 

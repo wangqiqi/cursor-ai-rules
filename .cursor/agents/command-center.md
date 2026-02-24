@@ -128,7 +128,7 @@ command-center 整合结果
 - **技能库**: `.cursor/features/skills/` - 37个可重用的专业技能
 - **注册表**: `.cursor/features/skills/registry.json` - 技能元数据
 
-详见: `.cursor/SKILL_GUIDE.md` 和 `.cursor/CALL_CHAIN.md`
+详见: `.cursor/docs/guides/SKILL_GUIDE.md` 和 `.cursor/docs/developer/CALL_CHAIN.md`
 
 ### 4. 质量保障
 

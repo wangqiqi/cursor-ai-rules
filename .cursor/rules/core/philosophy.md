@@ -3,7 +3,7 @@ description: "交流哲学与协作模式 - 定义人机协作的沟通准则和
 apply_when:
   - always: true
 priority: 12
-always_apply: true
+alwaysApply: true
 ---
 
 # 🧠 交流哲学与协作模式 (Communication Philosophy & Collaboration Modes)

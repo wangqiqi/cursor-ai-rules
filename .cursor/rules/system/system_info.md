@@ -64,8 +64,8 @@ const projectRoot = await adapter.normalizePath(
 | `{{GENERATION_TIME}}` | 当前系统时间 | `2025-12-23 09:38:58 CST` |
 | `{{AUTHOR_NAME}}`     | Git用户名    | `your.name`               |
 | `{{AUTHOR_EMAIL}}`    | Git用户邮箱  | `user@example.com`        |
-| `{{PROJECT_ROOT}}`    | 项目根目录   | `/home/user/project`      |
-| `{{WORK_DIR}}`        | 当前工作目录 | `/home/user/project/src`  |
+| `{{PROJECT_ROOT}}`    | 项目根目录   | 运行时替换为实际路径      |
+| `{{WORK_DIR}}`        | 当前工作目录 | 运行时替换为实际路径      |
 
 ### 模板使用示例 (Template Usage Examples)
 

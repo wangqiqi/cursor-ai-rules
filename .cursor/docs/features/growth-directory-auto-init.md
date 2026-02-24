@@ -250,7 +250,7 @@ DEBUG=1
 
 ```bash
 $ DEBUG=1 /master help
-📁 强制创建.cursorGrowth目录: /workspace/.cursorGrowth
+📁 强制创建.cursorGrowth目录: {{PROJECT_ROOT}}/.cursorGrowth
 🔍 Path Config Debug:
   项目标识符: proj_abc123
   项目显示名: my-project

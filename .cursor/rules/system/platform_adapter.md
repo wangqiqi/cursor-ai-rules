@@ -215,11 +215,11 @@ class PathNormalizer {
       case 'linux':
       case 'macos':
       case 'wsl':
-        return process.env.HOME || '/home/user';
+        return process.env.HOME || process.env.USERPROFILE || '.';
       case 'windows':
-        return process.env.USERPROFILE || 'C:\\Users\\User';
+        return process.env.USERPROFILE || process.env.HOME || '.';
       default:
-        return '/home/user';
+        return process.env.HOME || process.env.USERPROFILE || '.';
     }
   }
 }

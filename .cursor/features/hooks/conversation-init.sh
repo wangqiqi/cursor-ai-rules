@@ -4,7 +4,8 @@
 # 在每个新对话框开始时自动激活角色
 # 这是一个独立的初始化脚本，确保角色激活的可靠性
 
-CONVERSATION_INIT_MARKER="/tmp/cursor-ai-rules-conversation-init-$USER"
+TMP_BASE="${TMPDIR:-/tmp}"
+CONVERSATION_INIT_MARKER="$TMP_BASE/cursor-conversation-init-${USER:-default}"
 
 # 检查是否已经在这个对话框中初始化过
 if [[ -f "$CONVERSATION_INIT_MARKER" ]]; then

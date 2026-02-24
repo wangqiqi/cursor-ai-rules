@@ -36,7 +36,7 @@ get_project_role() {
 # 创建角色上下文
 create_role_context() {
     local role="$1"
-    local context_file="/tmp/cursor-role-context-$USER.md"
+    local context_file="${TMPDIR:-/tmp}/cursor-role-context-${USER:-default}.md"
 
     case "$role" in
         "maid")

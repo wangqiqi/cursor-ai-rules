@@ -150,9 +150,10 @@ cleanup_misplaced_growth_dirs() {
     fi
 
     # 检查其他可能的错误位置
+    local tmp_base="${TMPDIR:-/tmp}"
     local possible_misplaced=(
         "$current_dir/.cursorGrowth"
-        "/tmp/.cursorGrowth"
+        "$tmp_base/.cursorGrowth"
         "$HOME/.cursorGrowth"
     )
 

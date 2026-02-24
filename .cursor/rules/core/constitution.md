@@ -3,7 +3,7 @@ description: "AI共生宪法 - 定义人机协作的核心原则和最高准则"
 apply_when:
   - always: true
 priority: 15
-always_apply: true
+alwaysApply: true
 ---
 
 # 🏛️ AI共生宪法 (Constitution of AI Symbiosis)

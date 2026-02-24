@@ -40,7 +40,9 @@
 
 **定位**: 项目特定的技能定义
 
-**作用域**: 仅在当前项目 (`cursor-ai-rules`) 中使用
+**作用域**: 当前项目（可复制到任意项目后独立演化）
+
+**格式**: 符合 [Cursor Agent Skills](https://cursor.com/cn/docs/context/skills) 标准（每技能一个文件夹，含 SKILL.md）
 
 **特点**:
 - 为本项目定制
@@ -71,6 +73,8 @@
 ### `.cursor/features/skills/` - 技能库
 
 **定位**: 可跨项目共享的通用技能库
+
+**格式**: 自定义扩展（flat .md 文件 + registry.json），由 skill-dispatcher 统一调度。非 Cursor 官方「每技能一文件夹」格式。
 
 **作用域**: 可以在任何项目中使用
 

@@ -54,8 +54,8 @@ sensitive_paths=(
     "/home"
     "/usr/bin"
     "/usr/sbin"
-    "/var/log/auth.log"
-    "/var/log/secure"
+    "/var/log/auth.log"   # Linux (Debian/Ubuntu)
+    "/var/log/secure"     # Linux (RHEL/CentOS)
 )
 
 # 检查是否包含危险命令

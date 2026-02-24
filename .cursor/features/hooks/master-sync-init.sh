@@ -15,12 +15,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
 
-# 创建对话框标识符文件
-CONVERSATION_ID_FILE="/tmp/cursor-master-sync-conversation-$USER.id"
+# 创建对话框标识符文件（使用 TMPDIR 保持跨平台兼容）
+TMP_BASE="${TMPDIR:-/tmp}"
+CONVERSATION_ID_FILE="$TMP_BASE/cursor-master-sync-conversation-${USER:-default}.id"
 echo "$CONVERSATION_ID" > "$CONVERSATION_ID_FILE"
 
 # 创建对话框同步标记文件
-SYNC_MARKER_FILE="/tmp/cursor-master-sync-$CONVERSATION_ID.marker"
+SYNC_MARKER_FILE="$TMP_BASE/cursor-master-sync-$CONVERSATION_ID.marker"
 echo "ready" > "$SYNC_MARKER_FILE"
 
 echo "✅ 对话框 $CONVERSATION_ID Master同步状态已初始化" >&2

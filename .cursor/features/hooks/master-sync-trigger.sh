@@ -10,8 +10,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
 
-# 检查对话框标识符是否存在
-CONVERSATION_ID_FILE="/tmp/cursor-master-sync-conversation-$USER.id"
+# 检查对话框标识符是否存在（使用 TMPDIR 保持跨平台兼容）
+TMP_BASE="${TMPDIR:-/tmp}"
+CONVERSATION_ID_FILE="$TMP_BASE/cursor-master-sync-conversation-${USER:-default}.id"
 if [[ ! -f "$CONVERSATION_ID_FILE" ]]; then
     # 没有对话框标识符，直接返回（可能是旧对话框或初始化失败）
     echo "$input"
@@ -19,7 +20,7 @@ if [[ ! -f "$CONVERSATION_ID_FILE" ]]; then
 fi
 
 CONVERSATION_ID=$(cat "$CONVERSATION_ID_FILE")
-SYNC_MARKER_FILE="/tmp/cursor-master-sync-$CONVERSATION_ID.marker"
+SYNC_MARKER_FILE="$TMP_BASE/cursor-master-sync-$CONVERSATION_ID.marker"
 
 # 检查同步标记是否存在且为ready状态
 if [[ ! -f "$SYNC_MARKER_FILE" ]] || [[ "$(cat "$SYNC_MARKER_FILE")" != "ready" ]]; then

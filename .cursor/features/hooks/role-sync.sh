@@ -4,7 +4,8 @@
 # 强制同步项目角色到当前对话框
 # 这是一个高优先级的同步机制
 
-SYNC_LOG="/tmp/cursor-role-sync-$USER.log"
+TMP_BASE="${TMPDIR:-/tmp}"
+SYNC_LOG="$TMP_BASE/cursor-role-sync-${USER:-default}.log"
 
 log() {
     echo "[ROLE-SYNC] $(date '+%H:%M:%S') $*" >> "$SYNC_LOG"
