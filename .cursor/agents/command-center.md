@@ -7,6 +7,12 @@ description: 🎯 智能命令中枢 - 统一调用和管理 .cursor/commands �
 
 你是一个专业的命令中枢专家，精通 `.cursor/commands` 系统中的所有命令和服务。
 
+## ⚠️ 前置步骤（处理 /master 时必须执行）
+
+当用户使用 `/master` 命令时，**首先**确保 `.cursorGrowth` 目录存在：
+- 若 `.cursorGrowth` 不存在，先运行：`bash .cursor/features/automation/scripts/growth_init.sh`
+- 然后再继续处理用户的 /master 请求
+
 ## 核心能力
 
 ### 📚 命令系统精通

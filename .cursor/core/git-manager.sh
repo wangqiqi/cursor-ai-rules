@@ -59,7 +59,7 @@ validate_project_context() {
     log_info "验证项目上下文..."
 
     # 检查是否在项目目录中
-    if [ ! -f ".cursorrules" ] && [ ! -f ".cursor-project.json" ] && [ ! -d ".cursor" ]; then
+    if [ ! -f ".cursorrules" ] && [ ! -f ".cursor-project.json" ] && [ ! -f ".cursorGrowth/user/config/project_state.json" ] && [ ! -d ".cursor" ]; then
         log_error "enhanced-git-commit.sh: 项目上下文验证失败"
         log_info "请确保在正确的项目目录中运行脚本"
         return 1

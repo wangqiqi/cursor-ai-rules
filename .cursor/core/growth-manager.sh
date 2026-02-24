@@ -36,15 +36,15 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# 标准目录结构定义
+# 标准目录结构定义 (与 path-config 一致)
 declare -a STANDARD_DIRS=(
     "perception"
-    "user_data"
-    "project_data"
+    "user"
     "ai"
     "analytics"
-    "monitoring"
+    "logs"
     "integrations"
+    "conversations"
 )
 
 # 初始化生长目录
@@ -87,7 +87,7 @@ show_directory_info() {
     echo "### 📊 分析与统计"
     echo "- **growth/** - 生长指标"
     echo "  - \`metrics.json\` - 生长统计数据"
-    echo "- **monitoring/** - 系统监控"
+    echo "- **logs/** - 统一日志"
     echo "  - \`metrics.json\` - 性能指标"
     echo "  - \`performance.log\` - 性能日志"
     echo "  - \`token_usage.log\` - Token使用统计"
@@ -146,7 +146,7 @@ create_readme_file() {
 ### 📊 分析与统计
 - **growth/** - 生长指标
   - `metrics.json` - 生长统计数据
-- **monitoring/** - 系统监控
+- **logs/** - 统一日志
   - `metrics.json` - 性能指标
   - `performance.log` - 性能日志
   - `token_usage.log` - Token使用统计
@@ -178,8 +178,8 @@ EOF
 # 创建初始配置文件
 create_initial_configs() {
     # 创建初始学习档案（如果不存在）
-    if [ ! -f "$GROWTH_DIR/ai-profile.json" ]; then
-        cat > "$GROWTH_DIR/ai-profile.json" << EOF
+    if [ ! -f "$AI_METRICS_DIR/ai-profile.json" ]; then
+        mkdir -p "$AI_METRICS_DIR" && cat > "$AI_METRICS_DIR/ai-profile.json" << EOF
 {
   "profile": {
     "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",

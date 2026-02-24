@@ -162,6 +162,11 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 - **👥 Collaboration-Friendly**: Teams share configuration, each person's data remains independent
 - **⚡ Performance Optimization**: Local cache and learning data improve response speed
 
+### 📦 Self-Contained & Migration Design
+- **Fully Self-Contained**: All essential content (rules, scripts, skills, docs, Agent instructions) is inside `.cursor/`
+- **One-Click Migration**: Copy the entire `.cursor/` directory to any project for complete AI capabilities
+- **Root Shortcuts**: Root-level `AGENTS.md`, `README.md` etc. are shortcuts for GitHub display or Cursor entry points, not core content
+
 ---
 
 ## 🎭 21 AI Personality Roles System
@@ -267,6 +272,7 @@ Use security-analysis skill to check code
 ```
 .cursor/
 ├── README.md              # 📚 System navigation
+├── AGENTS.md              # 🤖 Agent instructions (full version; root AGENTS.md is shortcut)
 ├── agents/               # 🤖 AI agents (1)
 │   └── command-center.md # Intelligent command center
 ├── commands/             # ⚡ Command system (30+)

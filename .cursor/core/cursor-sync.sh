@@ -266,7 +266,7 @@ sync_full_cursor_data() {
     if [ -d "$cursor_project_dir/agent-transcripts" ]; then
         echo -e "${BLUE}📝 同步对话记录...${NC}"
         local transcripts_synced
-        transcripts_synced=$(sync_directory "$cursor_project_dir/agent-transcripts" "ai-conversations" "ai-conversation-cursor-" "transcript")
+        transcripts_synced=$(sync_directory "$cursor_project_dir/agent-transcripts" "conversations" "cursor_" "transcript")
         echo -e "${GREEN}  ✅ 对话记录: $transcripts_synced 个文件${NC}"
         ((total_synced += transcripts_synced))
     fi

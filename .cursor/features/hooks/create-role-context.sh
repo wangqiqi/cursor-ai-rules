@@ -16,7 +16,9 @@ get_project_role() {
     while [[ "$project_root" != "/" && ! -d "$project_root/.cursor" ]]; do
         project_root="$(dirname "$project_root")"
     done
-    local project_config="$project_root/.cursor-project.json"
+    local project_config="$project_root/.cursorGrowth/user/config/project_state.json"
+    local legacy_config="$project_root/.cursor-project.json"
+    [[ -f "$project_config" ]] || project_config="$legacy_config"
 
     if [[ ! -f "$project_config" ]]; then
         echo "professional_assistant"

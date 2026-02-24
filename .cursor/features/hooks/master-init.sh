@@ -44,7 +44,7 @@ GROWTH_DIR="$CURSOR_GROWTH"
         ensure_directory_structure
 
         # 创建学习配置文件
-        cat > "$GROWTH_DIR/ai-profile.json" << EOF
+        mkdir -p "$AI_METRICS_DIR" && cat > "$AI_METRICS_DIR/ai-profile.json" << EOF
 {
   "version": "1.0.0",
   "created_at": "$(date '+%Y-%m-%d %H:%M:%S')",
@@ -62,7 +62,7 @@ GROWTH_DIR="$CURSOR_GROWTH"
 EOF
 
         # 创建监控配置文件
-        cat > "$GROWTH_DIR/analytics-monitoring-metrics.json" << EOF
+        mkdir -p "$ANALYTICS_DIR" && cat > "$ANALYTICS_DIR/analytics-monitoring-metrics.json" << EOF
 {
   "monitoring_start": "'"$(date '+%Y-%m-%d %H:%M:%S')"'",
   "total_interactions": 0,

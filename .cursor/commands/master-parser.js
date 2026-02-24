@@ -352,8 +352,10 @@ class MasterCommandParser {
         // 分析意图
         const intentAnalysis = this.analyzeIntent(input);
 
-        if (!intentAnalysis.intent) {
-            return this.createErrorResult('无法识别命令意图，请尝试更具体的描述');
+        // 意图无法精确匹配时，引入澄清 Question 模块（任务 22）
+        const needsClarification = !intentAnalysis.intent || (intentAnalysis.confidence < 0.5);
+        if (needsClarification) {
+            return this.createClarificationResult(input, intentAnalysis);
         }
 
         // 提取参数
@@ -373,6 +375,88 @@ class MasterCommandParser {
             timestamp: new Date().toISOString(),
             analysis: intentAnalysis
         };
+    }
+
+    /**
+     * 意图无法精确匹配时，生成澄清问题（选择题/开放输入）
+     * @param {string} input - 用户输入
+     * @param {Object} intentAnalysis - 意图分析结果
+     * @returns {Object} 澄清结果
+     */
+    createClarificationResult(input, intentAnalysis) {
+        const suggestedQuestions = this.generateClarificationQuestions(input);
+        return {
+            success: true,
+            type: 'needs_clarification',
+            message: '无法精确识别您的意图，请选择或补充说明：',
+            originalInput: input,
+            confidence: intentAnalysis.confidence || 0,
+            suggestedQuestions: suggestedQuestions,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    /**
+     * 根据用户输入生成澄清问题（选择题 + 开放输入）
+     * @param {string} input - 用户输入
+     * @returns {Array} 建议问题列表
+     */
+    generateClarificationQuestions(input) {
+        const lower = (input || '').toLowerCase();
+        const questions = [];
+
+        // 通用选择题
+        questions.push({
+            id: 'intent_category',
+            type: 'single_choice',
+            question: '您更接近想要做什么？',
+            options: [
+                { id: 'create', label: '创建/开发新项目或功能' },
+                { id: 'optimize', label: '优化/改进/重构现有代码' },
+                { id: 'analyze', label: '分析/检查/诊断项目' },
+                { id: 'learn', label: '学习/了解/获取帮助' },
+                { id: 'other', label: '其他（请在下方补充说明）', allow_custom: true }
+            ]
+        });
+
+        // 若输入含技术关键词，追加技术栈选择题
+        if (/\b(react|vue|angular|前端|frontend)\b/i.test(lower)) {
+            questions.push({
+                id: 'tech_stack',
+                type: 'single_choice',
+                question: '您希望使用的前端技术栈？',
+                options: [
+                    { id: 'react', label: 'React' },
+                    { id: 'vue', label: 'Vue' },
+                    { id: 'angular', label: 'Angular' },
+                    { id: 'other', label: '其他' }
+                ]
+            });
+        }
+        if (/\b(node|python|java|go|后端|backend)\b/i.test(lower)) {
+            questions.push({
+                id: 'backend_stack',
+                type: 'single_choice',
+                question: '您希望使用的后端技术栈？',
+                options: [
+                    { id: 'nodejs', label: 'Node.js' },
+                    { id: 'python', label: 'Python' },
+                    { id: 'java', label: 'Java' },
+                    { id: 'go', label: 'Go' },
+                    { id: 'other', label: '其他' }
+                ]
+            });
+        }
+
+        // 开放输入
+        questions.push({
+            id: 'free_input',
+            type: 'open_input',
+            question: '请补充描述您的具体需求（可选）',
+            placeholder: '例如：我想做一个待办事项应用，支持多端同步...'
+        });
+
+        return questions;
     }
 
     /**

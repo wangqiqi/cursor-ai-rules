@@ -113,8 +113,8 @@ else
 fi
 
 # 监控统计文件
-if [ ! -f "$MONITORING_DIR/usage_metrics.json" ]; then
-    cat > "$MONITORING_DIR/usage_metrics.json" << EOF
+if [ ! -f "$LOGS_DIR/usage_metrics.json" ]; then
+    mkdir -p "$LOGS_DIR" && cat > "$LOGS_DIR/usage_metrics.json" << EOF
 {
   "version": "1.0.0",
   "tracking_started": "$(date '+%Y-%m-%d %H:%M:%S %Z')",
@@ -155,8 +155,7 @@ echo "   ├── user_data/              # 用户相关数据"
 echo "   ├── project_data/           # 项目相关数据"
 echo "   ├── ai/                     # AI相关数据"
 echo "   ├── analytics/              # 分析数据"
-echo "   ├── monitoring/             # 系统监控"
-echo "   │   └── logs/               # 系统日志 (整合到监控目录)"
+echo "   ├── logs/                   # 统一日志"
 echo "   └── integrations/           # 第三方集成"
 echo ""
 echo "💡 提示:"

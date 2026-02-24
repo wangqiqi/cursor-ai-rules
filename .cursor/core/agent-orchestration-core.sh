@@ -104,7 +104,7 @@ EOF
 add_task_to_queue() {
     local task_object="$1"
 
-    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
+    task_queue_file="$AI_DIR/ai-agent-tasks-queue.json"
 
     # 更新队列
     local temp_queue=$(mktemp)
@@ -146,7 +146,7 @@ trigger_task_assignment() {
 
 # 获取待处理任务
 get_pending_tasks() {
-    task_queue_file="$AGENT_CONFIG_DIR/ai-agent-tasks-queue.json"
+    task_queue_file="$AI_DIR/ai-agent-tasks-queue.json"
     jq '.queue | map(select(.status == "pending"))' "$task_queue_file"
 }
 
@@ -175,7 +175,7 @@ cancel_task() {
     smart_echo "取消任务: $task_id (原因: $reason)" "processing"
 
     # TODO: 实现任务取消逻辑
-    local task_file="$AGENT_CONFIG_DIR/task-queue/${task_id}.json"
+    local task_file="$AI_TASKS_DIR/${task_id}.json"
 
     if [[ -f "$task_file" ]]; then
         # 更新任务状态

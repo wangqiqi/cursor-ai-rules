@@ -22,26 +22,31 @@ echo "[对话框初始化] $(date '+%H:%M:%S')" >&2
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
+PROJECT_STATE="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
+LEGACY_STATE="$PROJECT_ROOT/.cursor-project.json"
 
-# 再次向上查找项目根目录
-if [[ ! -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
-    PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
+# 迁移旧配置
+if [[ -f "$LEGACY_STATE" && ! -f "$PROJECT_STATE" ]]; then
+    mkdir -p "$(dirname "$PROJECT_STATE")"
+    cp "$LEGACY_STATE" "$PROJECT_STATE" 2>/dev/null && rm -f "$LEGACY_STATE" 2>/dev/null || true
 fi
+STATE_FILE="${PROJECT_STATE}"
+[[ -f "$STATE_FILE" ]] || STATE_FILE="$LEGACY_STATE"
 
 # 确保项目角色配置存在
-if [[ ! -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
-    # 创建默认的项目配置文件
-    local default_config="{
+if [[ ! -f "$STATE_FILE" ]]; then
+    mkdir -p "$(dirname "$PROJECT_STATE")"
+    default_config="{
   \"currentRole\": \"professional_assistant\",
   \"lastUpdated\": \"$(date -Iseconds)\",
   \"projectPath\": \"$PROJECT_ROOT\"
 }"
-    echo "$default_config" > "$PROJECT_ROOT/.cursor-project.json"
+    echo "$default_config" > "$PROJECT_STATE"
     echo "[创建默认配置] professional_assistant $(date '+%H:%M:%S')" >&2
 fi
 
 # 读取项目角色配置
-ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$PROJECT_ROOT/.cursor-project.json" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
+ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$STATE_FILE" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
 
 if [[ -n "$ROLE" ]]; then
     echo "[角色激活] $ROLE $(date '+%H:%M:%S')" >&2

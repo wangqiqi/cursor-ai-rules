@@ -35,15 +35,28 @@ generate_project_identifier() {
     PROJECT_IDENTIFIER="proj_${project_hash}"
     export PROJECT_IDENTIFIER
 
-    # 统一管理：写入项目配置到 .cursor-project.json
-    local project_config_file="$project_path/.cursor-project.json"
+    # 统一管理：写入项目配置到 .cursorGrowth/user/config/project_state.json（持久化目录）
+    local growth_dir="$project_path/.cursorGrowth"
+    local config_dir="$growth_dir/user/config"
+    local project_config_file="$config_dir/project_state.json"
+    local legacy_file="$project_path/.cursor-project.json"
+
+    # 迁移：若旧文件存在且新文件不存在，则迁移
+    if [[ -f "$legacy_file" && ! -f "$project_config_file" ]]; then
+        mkdir -p "$config_dir"
+        cp "$legacy_file" "$project_config_file" 2>/dev/null || true
+        rm -f "$legacy_file" 2>/dev/null || true
+    fi
+    mkdir -p "$config_dir"
     local current_time
     current_time=$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S%z)
 
-    # 读取现有配置或创建默认配置
+    # 读取现有配置（优先新路径，其次迁移自旧路径）
     local project_config="{}"
     if [[ -f "$project_config_file" ]]; then
         project_config=$(cat "$project_config_file" 2>/dev/null || echo "{}")
+    elif [[ -f "$legacy_file" ]]; then
+        project_config=$(cat "$legacy_file" 2>/dev/null || echo "{}")
     fi
 
     # 使用jq更新项目ID，如果没有jq则手动更新JSON
@@ -126,8 +139,14 @@ validate_project_context() {
 
     local current_project_id="$PROJECT_IDENTIFIER"
 
-    # 从统一的项目配置文件中读取项目ID
-    local project_config_file="$PROJECT_ROOT/.cursor-project.json"
+    # 从统一的项目配置文件中读取项目ID（优先 .cursorGrowth，兼容旧路径）
+    local project_config_file="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
+    local legacy_file="$PROJECT_ROOT/.cursor-project.json"
+    if [[ -f "$project_config_file" ]]; then
+        :
+    elif [[ -f "$legacy_file" ]]; then
+        project_config_file="$legacy_file"
+    fi
     if [[ -f "$project_config_file" ]]; then
         # 从.cursor-project.json中读取项目ID
         if command -v jq >/dev/null 2>&1; then
@@ -273,47 +292,33 @@ ${key}=\"${value}\""
 # 自动创建项目目录结构
 # ------------------------------------------------------------------------------
 
-# 统一目录创建函数 (按照path-config.sh的完整目录结构)
+# 统一目录创建函数 (扁平化结构 - 6顶级+必要子目录)
 ensure_directory_structure() {
-    # 按照path-config.sh中定义的完整目录结构创建
     local all_dirs=(
-        # 核心顶级目录
-        "$PERCEPTION_DIR"          # 环境感知数据
-        "$USER_DATA_DIR"           # 用户相关数据
-        "$PROJECT_DATA_DIR"        # 项目相关数据
-        "$AI_DIR"                  # AI相关数据
-        "$ANALYTICS_DIR"           # 分析数据
-        "$MONITORING_DIR"          # 系统监控
-        "$INTEGRATIONS_DIR"        # 第三方集成
-        "$CONVERSATIONS_DIR"       # 对话记录
-
-        # AI相关子目录
-        "$AI_MODELS_DIR"           # AI_DIR/models
-        "$AI_TRAINING_DATA_DIR"    # AI_DIR/training_data
-        "$AI_METRICS_DIR"          # AI_DIR/metrics
-        "$AI_RESULTS_DIR"          # AI_DIR/results
-        "$AI_DIR/skills"           # 已加载的AI技能 (兼容旧代码)
-        "$AI_DIR/cache"            # AI缓存数据 (兼容旧代码)
-
-        # Analytics相关子目录
-        "$ANALYTICS_DATA_DIR"      # ANALYTICS_DIR/data
-        "$ANALYTICS_CACHE_DIR"     # ANALYTICS_DIR/cache
-
-        # Monitoring相关子目录
-        "$SYSTEM_LOGS_DIR"         # MONITORING_DIR/logs (系统日志)
-        "$MONITORING_DIR/pids"     # 进程ID文件 (兼容旧代码)
-
-        # Integrations相关子目录
-        "$INTEGRATIONS_SYNC_DIR"       # INTEGRATIONS_DIR/sync (同步状态)
-        "$INTEGRATIONS_MCP_CONFIGS_DIR" # INTEGRATIONS_DIR/mcp-configs (MCP配置)
+        "$PERCEPTION_DIR"
+        "$USER_DATA_DIR"
+        "$CONFIG_DATA_DIR"
+        "$AI_DIR"
+        "$AI_AGENTS_DIR"
+        "$AI_TASKS_DIR"
+        "$AI_COMMANDS_DIR"
+        "$AI_TRAINING_DIR"
+        "$AI_METRICS_DIR"
+        "$AI_CACHE_DIR"
+        "$AI_SKILLS_DIR"
+        "$ANALYTICS_DIR"
+        "$ANALYTICS_CACHE_DIR"
+        "$LOGS_DIR"
+        "$INTEGRATIONS_DIR"
+        "$INTEGRATIONS_SYNC_DIR"
+        "$CONVERSATIONS_DIR"
     )
 
-    # 创建所有定义的目录
     for dir in "${all_dirs[@]}"; do
-        safe_file_operation "mkdir" "$dir"
+        [[ -n "$dir" ]] && safe_file_operation "mkdir" "$dir"
     done
 
-    log_message "INFO" "项目目录结构创建完成 (完整path-config.sh目录结构)"
+    log_message "INFO" "项目目录结构创建完成 (扁平化path-config)"
 }
 
 # ------------------------------------------------------------------------------

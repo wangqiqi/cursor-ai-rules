@@ -220,7 +220,7 @@ class ConstitutionEnforcer {
         try {
             // 📁 日志应该存储在 .cursorGrowth 目录中
             const cursorGrowthDir = path.join(this.projectRoot, '.cursorGrowth');
-            const logDir = path.join(cursorGrowthDir, 'monitoring', 'logs');
+            const logDir = path.join(cursorGrowthDir, 'logs');
 
             // 确保目录存在
             if (!fs.existsSync(logDir)) {

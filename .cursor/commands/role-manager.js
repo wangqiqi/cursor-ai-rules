@@ -13,7 +13,8 @@ class RoleManager {
         this.currentRole = null;
         this.roleHistory = [];
         this.maxHistorySize = 10;
-        this.projectRoleConfigPath = path.join(this.projectDir, '.cursor-project.json');
+        // 项目持久化状态（原 .cursor-project.json，已迁移至 .cursorGrowth/user/config/project_state.json）
+        this.projectRoleConfigPath = this._getProjectStatePath();
 
         // 🚀 性能优化 - 全局缓存系统
         this.roleCache = cacheManager.getCache('roles', { maxSize: 50, ttl: 300000 }); // 50个角色，5分钟TTL
@@ -25,6 +26,27 @@ class RoleManager {
         this.nicknameMap = new Map(); // 快速查找表: nickname -> roleId
         this.roleConfigs = new Map(); // 角色配置缓存: roleId -> config
         this.indexBuilt = false; // 标记索引是否已构建
+    }
+
+    /** 获取项目状态路径（.cursorGrowth/user/config/project_state.json），支持从旧路径迁移 */
+    _getProjectStatePath() {
+        const growthPath = path.join(this.projectDir, '.cursorGrowth', 'user', 'config', 'project_state.json');
+        const legacyPath = path.join(this.projectDir, '.cursor-project.json');
+        if (!fs.existsSync(growthPath) && fs.existsSync(legacyPath)) {
+            try {
+                const dir = path.dirname(growthPath);
+                if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+                fs.copyFileSync(legacyPath, growthPath);
+                fs.unlinkSync(legacyPath);
+            } catch (e) { /* 迁移失败 */ }
+        }
+        return fs.existsSync(growthPath) ? growthPath : legacyPath;
+    }
+
+    _getProjectStateWritePath() {
+        const dir = path.join(this.projectDir, '.cursorGrowth', 'user', 'config');
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        return path.join(dir, 'project_state.json');
     }
 
     /**
@@ -1136,6 +1158,7 @@ class RoleManager {
      */
     loadProjectRoleConfig() {
         try {
+            this.projectRoleConfigPath = this._getProjectStatePath(); // 刷新路径（含迁移）
             if (fs.existsSync(this.projectRoleConfigPath)) {
                 const content = fs.readFileSync(this.projectRoleConfigPath, 'utf8');
                 const config = JSON.parse(content);
@@ -1160,6 +1183,7 @@ class RoleManager {
      */
     async saveProjectRoleConfig(roleId) {
         try {
+            this.projectRoleConfigPath = this._getProjectStatePath(); // 刷新路径（含迁移）
             // 读取现有的项目配置，获取或生成项目ID
             let existingConfig = {};
             let projectId;
@@ -1194,7 +1218,9 @@ class RoleManager {
                 projectId: projectId // 确保项目ID存在
             };
 
-            fs.writeFileSync(this.projectRoleConfigPath, JSON.stringify(config, null, 2), 'utf8');
+            const writePath = this._getProjectStateWritePath();
+            fs.writeFileSync(writePath, JSON.stringify(config, null, 2), 'utf8');
+            this.projectRoleConfigPath = writePath; // 更新缓存路径
             console.log(`✅ 项目角色配置已保存: ${roleId} (项目ID: ${projectId})`);
             return { success: true, message: "项目角色配置保存成功" };
         } catch (error) {
@@ -1208,13 +1234,22 @@ class RoleManager {
      */
     async clearProjectRoleConfig() {
         try {
-            if (fs.existsSync(this.projectRoleConfigPath)) {
-                fs.unlinkSync(this.projectRoleConfigPath);
+            const growthPath = this._getProjectStateWritePath();
+            const legacyPath = path.join(this.projectDir, '.cursor-project.json');
+            let removed = false;
+            if (fs.existsSync(growthPath)) {
+                fs.unlinkSync(growthPath);
+                removed = true;
+            }
+            if (fs.existsSync(legacyPath)) {
+                fs.unlinkSync(legacyPath);
+                removed = true;
+            }
+            if (removed) {
                 console.log('✅ 项目角色配置已清除');
                 return { success: true, message: "项目角色配置已清除" };
-            } else {
-                return { success: true, message: "项目角色配置不存在" };
             }
+            return { success: true, message: "项目角色配置不存在" };
         } catch (error) {
             console.error('❌ 清除项目角色配置失败:', error.message);
             return { success: false, message: `清除失败: ${error.message}` };

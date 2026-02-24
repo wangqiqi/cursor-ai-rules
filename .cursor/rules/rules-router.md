@@ -379,4 +379,18 @@ class DependencyResolver {
 }
 ```
 
+### 📋 使用示例
+
+```bash
+# 用户打开 React 文件时，自动激活的规则组合
+# 1. constitution (alwaysApply)
+# 2. philosophy (alwaysApply)
+# 3. react-basics (globs: **/*.jsx, **/*.tsx)
+# 4. react-basics-components, react-basics-hooks (子规则)
+
+# 用户说「创建项目」时，激活规则
+# conversation_intent_analyzer → generator → templates
+# 冲突时由 rules-conflict-resolver 按 priority 排序
+```
+
 ## 🎯 规则优先级矩阵

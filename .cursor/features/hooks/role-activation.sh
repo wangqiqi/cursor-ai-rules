@@ -11,11 +11,12 @@ HOOK_DATA="$2"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
+# 确保到达项目根（含 .cursor 的目录）
+[[ -d "$PROJECT_ROOT/.cursor" ]] || PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
 
-# 再次向上查找项目根目录
-if [[ ! -f "$PROJECT_ROOT/.cursor-project.json" ]]; then
-    PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
-fi
+# 项目状态路径（.cursorGrowth/user/config/project_state.json）
+PROJECT_STATE="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
+LEGACY_STATE="$PROJECT_ROOT/.cursor-project.json"
 
 # 日志函数
 log() {
@@ -37,19 +38,20 @@ check_nodejs() {
     return 0
 }
 
-# 获取项目角色配置
+# 获取项目角色配置（.cursorGrowth/user/config/project_state.json）
 get_project_role() {
-    local project_config="$PROJECT_ROOT/.cursor-project.json"
+    local project_config="$PROJECT_STATE"
+    [[ -f "$project_config" ]] || project_config="$LEGACY_STATE"
     log "🔍 查找配置文件: $project_config"
 
     if [[ ! -f "$project_config" ]]; then
-        # 创建默认的项目配置文件
+        mkdir -p "$(dirname "$PROJECT_STATE")"
         local default_config="{
   \"currentRole\": \"professional_assistant\",
   \"lastUpdated\": \"$(date -Iseconds)\",
   \"projectPath\": \"$PROJECT_ROOT\"
 }"
-        echo "$default_config" > "$project_config"
+        echo "$default_config" > "$PROJECT_STATE"
         log "✅ 创建默认项目角色配置: professional_assistant"
         echo "professional_assistant"
         return 0

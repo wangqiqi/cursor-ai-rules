@@ -56,6 +56,57 @@ class MasterCommandHandler {
     }
 
     /**
+     * 获取项目持久化状态文件路径（原 .cursor-project.json，已迁移至 .cursorGrowth/user/config/project_state.json）
+     * 支持从旧路径迁移，写入时始终使用新路径
+     */
+    getProjectStatePath() {
+        const growthPath = path.join(this.projectRoot, '.cursorGrowth', 'user', 'config', 'project_state.json');
+        const legacyPath = path.join(this.projectRoot, '.cursor-project.json');
+        if (!fs.existsSync(growthPath) && fs.existsSync(legacyPath)) {
+            try {
+                const dir = path.dirname(growthPath);
+                if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+                fs.copyFileSync(legacyPath, growthPath);
+                fs.unlinkSync(legacyPath);
+            } catch (e) { /* 迁移失败则回退到旧路径读取 */ }
+        }
+        return fs.existsSync(growthPath) ? growthPath : legacyPath;
+    }
+
+    /** 项目状态写入路径（始终为 .cursorGrowth） */
+    getProjectStateWritePath() {
+        this.ensureGrowthDirectory();
+        return path.join(this.projectRoot, '.cursorGrowth', 'user', 'config', 'project_state.json');
+    }
+
+    /**
+     * 🌱 确保 .cursorGrowth 目录结构存在（/master 调用时自动生成）
+     * 与 path-config.sh 的 ensure_directory_structure 保持一致
+     */
+    ensureGrowthDirectory() {
+        const base = path.join(this.projectRoot, '.cursorGrowth');
+        const dirs = [
+            'perception', 'user', 'user/config', 'ai', 'ai/agents', 'ai/tasks', 'ai/commands',
+            'ai/training', 'ai/cache', 'ai/metrics', 'ai/skills', 'analytics', 'analytics/cache',
+            'logs', 'integrations', 'integrations/sync', 'conversations'
+        ];
+        try {
+            if (!fs.existsSync(base)) {
+                fs.mkdirSync(base, { recursive: true });
+                fs.writeFileSync(path.join(base, '.gitkeep'), '{}');
+            }
+            for (const d of dirs) {
+                const fullPath = path.join(base, d);
+                if (!fs.existsSync(fullPath)) {
+                    fs.mkdirSync(fullPath, { recursive: true });
+                }
+            }
+        } catch (err) {
+            console.warn('⚠️ .cursorGrowth 目录创建失败:', err.message);
+        }
+    }
+
+    /**
      * 🚀 异步初始化所有组件 - 提升响应速度
      */
     async initialize() {
@@ -552,7 +603,7 @@ class MasterCommandHandler {
      */
     loadProjectRoleConfig() {
         try {
-            const configPath = path.join(this.projectRoot, '.cursor-project.json');
+            const configPath = this.getProjectStatePath();
             if (fs.existsSync(configPath)) {
                 const content = fs.readFileSync(configPath, 'utf8');
                 const config = JSON.parse(content);
@@ -618,18 +669,19 @@ class MasterCommandHandler {
      */
     async ensureProjectRoleConfig() {
         try {
-            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            const projectConfigPath = this.getProjectStatePath();
+            const writePath = this.getProjectStateWritePath();
 
             // 检查项目配置文件是否存在
             if (!fs.existsSync(projectConfigPath)) {
-                // 创建默认的项目配置文件
+                // 创建默认的项目配置文件（写入 .cursorGrowth）
                 const defaultConfig = {
                     currentRole: 'professional_assistant',
                     lastUpdated: new Date().toISOString(),
                     projectPath: this.projectRoot
                 };
 
-                fs.writeFileSync(projectConfigPath, JSON.stringify(defaultConfig, null, 2), 'utf8');
+                fs.writeFileSync(writePath, JSON.stringify(defaultConfig, null, 2), 'utf8');
                 console.log('✅ 创建默认项目角色配置: professional_assistant');
             }
 
@@ -821,7 +873,7 @@ class MasterCommandHandler {
             if (!this.roleManager) return null;
 
             // 读取项目配置
-            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            const projectConfigPath = this.getProjectStatePath();
             let projectRole = 'professional_assistant'; // 默认值
             if (fs.existsSync(projectConfigPath)) {
                 const configContent = fs.readFileSync(projectConfigPath, 'utf8');
@@ -917,8 +969,8 @@ class MasterCommandHandler {
         try {
             console.log('🎭 强制激活项目角色配置...');
 
-            // 1. 读取项目配置
-            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            // 1. 读取项目配置（.cursorGrowth/user/config/project_state.json）
+            const projectConfigPath = this.getProjectStatePath();
             let targetRole = 'professional_assistant'; // 默认角色
 
             if (fs.existsSync(projectConfigPath)) {
@@ -933,7 +985,7 @@ class MasterCommandHandler {
                     lastUpdated: new Date().toISOString(),
                     projectPath: this.projectRoot
                 };
-                fs.writeFileSync(projectConfigPath, JSON.stringify(defaultConfig, null, 2), 'utf8');
+                fs.writeFileSync(this.getProjectStateWritePath(), JSON.stringify(defaultConfig, null, 2), 'utf8');
             }
 
             // 2. 确保角色管理器已初始化
@@ -999,8 +1051,8 @@ class MasterCommandHandler {
         try {
             console.log('🎭 同步激活项目角色...');
 
-            // 读取项目配置
-            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            // 读取项目配置（.cursorGrowth/user/config/project_state.json）
+            const projectConfigPath = this.getProjectStatePath();
             let targetRole = 'professional_assistant';
 
             if (fs.existsSync(projectConfigPath)) {
@@ -1130,7 +1182,7 @@ class MasterCommandHandler {
         // 写入到项目成长目录
         const fs = require('fs');
         const path = require('path');
-        const growthDir = path.join(this.projectRoot, '.cursorGrowth', 'ai', 'command_logs');
+        const growthDir = path.join(this.projectRoot, '.cursorGrowth', 'ai', 'commands');
 
         if (!fs.existsSync(growthDir)) {
             fs.mkdirSync(growthDir, { recursive: true });
@@ -1153,7 +1205,7 @@ class MasterCommandHandler {
             await this.updateGrowthMeta(result.success || false, input, intent);
 
             // 记录到命令日志（如果需要）
-            const commandLogPath = path.join(this.projectRoot, '.cursorGrowth', 'ai', 'command_logs', `command_${Date.now()}.json`);
+            const commandLogPath = path.join(this.projectRoot, '.cursorGrowth', 'ai', 'commands', `command_${Date.now()}.json`);
             const commandLogDir = path.dirname(commandLogPath);
 
             if (!fs.existsSync(commandLogDir)) {
@@ -2271,18 +2323,19 @@ class MasterCommandHandler {
      */
     ensureProjectRoleConfigSync() {
         try {
-            const projectConfigPath = path.join(this.projectRoot, '.cursor-project.json');
+            const projectConfigPath = this.getProjectStatePath();
+            const writePath = this.getProjectStateWritePath();
 
             // 检查项目配置文件是否存在
             if (!fs.existsSync(projectConfigPath)) {
-                // 创建默认的项目配置文件
+                // 创建默认的项目配置文件（写入 .cursorGrowth）
                 const defaultConfig = {
                     currentRole: 'professional_assistant',
                     lastUpdated: new Date().toISOString(),
                     projectPath: this.projectRoot
                 };
 
-                fs.writeFileSync(projectConfigPath, JSON.stringify(defaultConfig, null, 2), 'utf8');
+                fs.writeFileSync(writePath, JSON.stringify(defaultConfig, null, 2), 'utf8');
                 console.log('✅ 创建默认项目角色配置: professional_assistant');
             }
 
@@ -2636,6 +2689,9 @@ class MasterCommandHandler {
 
     async execute(input, context = {}) {
         try {
+            // 🌱 确保 .cursorGrowth 目录存在（/master 调用时自动生成）
+            this.ensureGrowthDirectory();
+
             // 🚀 快速路径检测 - 角色呼召命令
             const roleCallMatch = input.match(/^(呼叫|召唤|call)\s+(.+)$/i);
             if (roleCallMatch) {
@@ -3845,7 +3901,7 @@ Generated by Cursor AI Rules v4.3.0 at ${new Date().toISOString()}`;
      */
     logError(errorInfo) {
         try {
-            const logDir = path.join(this.projectRoot, '.cursorGrowth', 'monitoring', 'logs');
+            const logDir = path.join(this.projectRoot, '.cursorGrowth', 'logs');
             if (!fs.existsSync(logDir)) {
                 fs.mkdirSync(logDir, { recursive: true });
             }

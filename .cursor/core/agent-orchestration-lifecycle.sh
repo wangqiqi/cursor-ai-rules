@@ -59,44 +59,36 @@ initialize_agent_specific() {
 
     case "$agent_id" in
         "planner")
-            # 规划师初始化：加载规划模板和策略
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/planner"
-            echo '{"templates": [], "strategies": []}' > "$AGENT_CONFIG_DIR/agent-data/planner/config.json"
+            mkdir -p "$AI_AGENTS_DIR/planner"
+            echo '{"templates": [], "strategies": []}' > "$AI_AGENTS_DIR/planner/config.json"
             ;;
         "generator")
-            # 生成器初始化：设置代码模板和生成器
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/generator"
-            echo '{"templates": {}, "generators": []}' > "$AGENT_CONFIG_DIR/agent-data/generator/config.json"
+            mkdir -p "$AI_AGENTS_DIR/generator"
+            echo '{"templates": {}, "generators": []}' > "$AI_AGENTS_DIR/generator/config.json"
             ;;
         "tester")
-            # 测试师初始化：配置测试框架和工具
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/tester"
-            echo '{"frameworks": [], "tools": []}' > "$AGENT_CONFIG_DIR/agent-data/tester/config.json"
+            mkdir -p "$AI_AGENTS_DIR/tester"
+            echo '{"frameworks": [], "tools": []}' > "$AI_AGENTS_DIR/tester/config.json"
             ;;
         "deployer")
-            # 部署师初始化：设置部署环境和工具
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/deployer"
-            echo '{"environments": [], "tools": []}' > "$AGENT_CONFIG_DIR/agent-data/deployer/config.json"
+            mkdir -p "$AI_AGENTS_DIR/deployer"
+            echo '{"environments": [], "tools": []}' > "$AI_AGENTS_DIR/deployer/config.json"
             ;;
         "reviewer")
-            # 审查者初始化：加载审查规则和检查清单
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/reviewer"
-            echo '{"rules": [], "checklists": []}' > "$AGENT_CONFIG_DIR/agent-data/reviewer/config.json"
+            mkdir -p "$AI_AGENTS_DIR/reviewer"
+            echo '{"rules": [], "checklists": []}' > "$AI_AGENTS_DIR/reviewer/config.json"
             ;;
         "coordinator")
-            # 协调者初始化：设置协调策略和通信协议
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/coordinator"
-            echo '{"strategies": [], "protocols": []}' > "$AGENT_CONFIG_DIR/agent-data/coordinator/config.json"
+            mkdir -p "$AI_AGENTS_DIR/coordinator"
+            echo '{"strategies": [], "protocols": []}' > "$AI_AGENTS_DIR/coordinator/config.json"
             ;;
         "learner")
-            # 学习者初始化：设置学习模型和数据存储
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/learner"
-            echo '{"models": [], "datasets": []}' > "$AGENT_CONFIG_DIR/agent-data/learner/config.json"
+            mkdir -p "$AI_AGENTS_DIR/learner"
+            echo '{"models": [], "datasets": []}' > "$AI_AGENTS_DIR/learner/config.json"
             ;;
         "monitor")
-            # 监控者初始化：配置监控指标和告警规则
-            mkdir -p "$AGENT_CONFIG_DIR/agent-data/monitor"
-            echo '{"metrics": [], "alerts": []}' > "$AGENT_CONFIG_DIR/agent-data/monitor/config.json"
+            mkdir -p "$AI_AGENTS_DIR/monitor"
+            echo '{"metrics": [], "alerts": []}' > "$AI_AGENTS_DIR/monitor/config.json"
             ;;
         *)
             smart_echo "未知的Agent类型: $agent_id" "warning"
@@ -135,7 +127,7 @@ terminate_agent_specific() {
     case "$agent_id" in
         "planner"|"generator"|"tester"|"deployer"|"reviewer"|"coordinator"|"learner"|"monitor")
             # 清理Agent数据目录
-            local agent_data_dir="$AGENT_CONFIG_DIR/agent-data/$agent_id"
+            local agent_data_dir="$AI_AGENTS_DIR/$agent_id"
             if [[ -d "$agent_data_dir" ]]; then
                 rm -rf "$agent_data_dir"
             fi

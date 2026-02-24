@@ -11,17 +11,17 @@
 ```
 .cursor/
 ├── agents/           # AI代理 (1个)
-├── commands/         # 命令定义 (30个文件)
-├── config/           # 配置文件 (34个文件)
-├── core/            # 核心脚本 (100+个脚本)
-├── docs/            # 文档系统
-├── features/        # 特性系统
-│   ├── skills/      # 技能库 (30+个技能)
-│   ├── hooks/       # Git钩子
-│   └── automation/  # 自动化脚本
-├── plugins/         # 插件系统
-├── rules/           # 规则系统 (31个规则)
-└── skills/          # 项目技能 (1个: skill-dispatcher)
+├── commands/         # 命令定义 (3 MD + 多 JS)
+├── config/           # 配置文件
+├── core/             # 核心脚本 (75+)
+├── docs/             # 文档系统
+├── features/         # 特性系统
+│   ├── skills/       # 技能库 (37个)
+│   ├── hooks/        # Git钩子 (36个)
+│   └── automation/   # 自动化脚本
+├── plugins/          # 插件系统 (2个)
+├── rules/            # 规则系统 (74个)
+└── skills/           # 项目技能 (1个: skill-dispatcher)
 ```
 
 ---
@@ -67,7 +67,7 @@
 
 **目录**: `features/skills/`
 
-**内容**: 30+ 个专业技能
+**内容**: 37 个专业技能
 
 **分类**:
 - Development (开发): api-design, backend-development, fullstack-development
@@ -94,7 +94,7 @@
 
 **目录**: `commands/`
 
-**内容**: 30个命令文件 (JSON + JS + MD)
+**内容**: 3 个命令 MD (master, vibe, command-router) + 多 JS 处理器
 
 **已知命令**:
 - `/master` - Master智能命令中心
@@ -112,7 +112,7 @@
 
 **目录**: `core/`
 
-**内容**: 100+ 个Shell脚本
+**内容**: 75+ 个脚本 (.sh + .js)
 
 **主要脚本**:
 - `init.sh` - 初始化

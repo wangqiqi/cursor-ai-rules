@@ -73,7 +73,7 @@ collect_error_logs() {
         "junit.xml"
         "coverage/lcov-report/*.html"
         "node_modules/.cache/*"
-        ".cursorGrowth/monitoring/logs/*.log"
+        ".cursorGrowth/logs/*.log"
     )
 
     # 遍历日志源

@@ -37,8 +37,8 @@ log_error() {
 
 # 全局变量
 HOOKS_CONFIG="$PROJECT_ROOT/.cursor/features/hooks/hooks.json"
-LOG_DIR="$PROJECT_ROOT/.cursorGrowth/monitoring/logs"
-PID_DIR="$PROJECT_ROOT/.cursorGrowth/monitoring/pids"
+LOG_DIR="$PROJECT_ROOT/.cursorGrowth/logs"
+PID_DIR="$PROJECT_ROOT/.cursorGrowth/logs"
 MAX_CONCURRENT_HOOKS=5
 HOOK_EXECUTION_TIMEOUT=30000
 

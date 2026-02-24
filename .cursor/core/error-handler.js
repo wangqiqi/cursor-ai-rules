@@ -160,7 +160,7 @@ class ErrorHandler {
             const path = require('path');
 
             // 确定日志文件路径
-            const logDir = path.join(process.cwd(), '.cursorGrowth', 'monitoring', 'logs');
+            const logDir = path.join(process.cwd(), '.cursorGrowth', 'logs');
             await fs.mkdir(logDir, { recursive: true });
 
             const logFile = path.join(logDir, 'error.log');

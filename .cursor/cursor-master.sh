@@ -61,39 +61,35 @@ estimate_tokens() {
     esac
 }
 
-# 🌱 初始化项目生长目录
+# 🌱 初始化项目生长目录（每次调用都确保结构完整）
 GROWTH_DIR="$CURSOR_GROWTH"
 init_growth_directory() {
-    # 首次使用检测
+    # 首次使用：完整初始化
     if [ ! -d "$GROWTH_DIR" ]; then
-        echo -e "${CYAN}🌱 初始化项目生长目录...${NC}" >&2
+        echo -e "${CYAN}🌱 首次使用，初始化项目生长目录...${NC}" >&2
 
-        # 调用统一的生长目录初始化脚本
         if [ -f "$CURSOR_DIR/features/automation/scripts/growth_init.sh" ]; then
             bash "$CURSOR_DIR/features/automation/scripts/growth_init.sh" >/dev/null 2>&1
             if [ $? -eq 0 ]; then
-                # 确保.gitignore保护
                 ensure_gitignore_protection
                 echo -e "${GREEN}✅ 项目生长目录初始化完成${NC}" >&2
                 echo -e "${YELLOW}📁 生长目录位置: $GROWTH_DIR${NC}" >&2
             else
                 echo -e "${YELLOW}⚠️ 生长目录初始化失败，使用备用方案${NC}" >&2
-                # 备用方案：创建标准目录结构
                 ensure_directory_structure
                 echo "{}" > "$CURSOR_GROWTH/.gitkeep"
-                # 确保.gitignore保护
                 ensure_gitignore_protection
                 echo -e "${GREEN}✅ 基本生长目录创建完成${NC}" >&2
             fi
         else
-            echo -e "${YELLOW}⚠️ 未找到生长初始化脚本，使用备用方案${NC}" >&2
-            # 备用方案：创建标准目录结构
             ensure_directory_structure
             echo "{}" > "$CURSOR_GROWTH/.gitkeep"
-            # 确保.gitignore保护
             ensure_gitignore_protection
             echo -e "${GREEN}✅ 基本生长目录创建完成${NC}" >&2
         fi
+    else
+        # 已存在：确保子目录结构完整（幂等）
+        ensure_directory_structure
     fi
 }
 
@@ -2086,7 +2082,7 @@ process_learning_data() {
     # 目前只是简单地记录数据供学习引擎使用
 
     # 保存到学习数据目录
-    local learning_dir="$AI_DIR/training_data"
+    local learning_dir="$AI_TRAINING_DIR"
     safe_file_operation "mkdir" "$learning_dir"
 
     local data_file="$learning_dir/interaction_$(date +%Y%m%d_%H%M%S_%N).json"
@@ -2219,14 +2215,8 @@ show_intelligent_help() {
 # 主函数
 main() {
     # 🌱 强制初始化生长目录（在任何操作之前）
-    # 确保调用任何指令时都会创建 .cursorGrowth
-    if [ ! -d "$CURSOR_GROWTH" ]; then
-        mkdir -p "$CURSOR_GROWTH"
-        echo "{}" > "$CURSOR_GROWTH/.gitkeep" 2>/dev/null || true
-        if [[ "${DEBUG:-0}" == "1" ]]; then
-            echo -e "${CYAN}📁 自动创建.cursorGrowth目录${NC}" >&2
-        fi
-    fi
+    # 确保 cursor-master.sh 或 @master 调用时 .cursorGrowth 自动生成
+    init_growth_directory
 
     # 🎯 VIBE命令检测和处理 (直接调用)
     if echo "$*" | grep -q "^@vibe" || echo "$*" | grep -q "^vibe"; then

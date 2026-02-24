@@ -235,6 +235,8 @@ export PROJECT_DISPLAY_NAME
 export PROJECT_ROOT
 export CURSOR_DIR="$PROJECT_ROOT/.cursor"
 export CURSOR_GROWTH="$PROJECT_ROOT/.cursorGrowth"
+# 项目持久化状态（原 .cursor-project.json，迁移至 .cursorGrowth）
+export PROJECT_STATE_PATH="$CURSOR_GROWTH/user/config/project_state.json"
 export CONFIG_DIR="$CURSOR_DIR/config"
 export CORE_DIR="$CURSOR_DIR/core"
 export DOCS_DIR="$CURSOR_DIR/docs"
@@ -247,56 +249,62 @@ export STRICT_MODE="${STRICT_MODE:-0}"
 # 🎯 .cursorGrowth 目录结构管理 (项目隔离)
 # ============================================================================
 
-# 标准目录结构定义 (优化版 - 消除概念重叠，逻辑清晰)
+# 标准目录结构定义 (扁平化 - 6顶级目录，同类归并)
 declare -a STANDARD_DIRS=(
-    # ============================================================================
-    # 🎯 严格按照迁移指南的核心顶级目录
-    # ============================================================================
-    "perception"           # 环境感知数据
-    "user_data"            # 用户相关数据
-    "project_data"         # 项目相关数据
-    "ai"                   # AI相关数据
-    "analytics"            # 分析数据
-    "monitoring"           # 系统监控
+    "perception"           # 环境感知
+    "user"                 # 用户数据
+    "ai"                   # AI核心 (agents/tasks/commands/training/cache/metrics)
+    "analytics"            # 分析 (含cache)
+    "logs"                 # 统一日志
     "integrations"         # 第三方集成
-    "conversations"        # 对话记录 (Cursor同步)
+    "conversations"        # 对话记录
 )
 
 # ============================================================================
-# 🎯 新6层级目录结构路径变量定义
+# 🎯 扁平化路径变量 (层次≤2，同类规整)
 # ============================================================================
 
-# 已迁移到新的7个核心目录结构
-
-# 顶级目录变量 (按迁移指南重新组织)
+# 顶级目录
 export PERCEPTION_DIR="$CURSOR_GROWTH/perception"
-export USER_DATA_DIR="$CURSOR_GROWTH/user_data"
-export PROJECT_DATA_DIR="$CURSOR_GROWTH/project_data"
+export USER_DATA_DIR="$CURSOR_GROWTH/user"
 export CONVERSATIONS_DIR="$CURSOR_GROWTH/conversations"
 
-# AI相关目录 (顶级ai目录下的子目录)
+# AI (扁平子目录: agents/tasks/commands/training/cache/metrics/skills)
 export AI_DIR="$CURSOR_GROWTH/ai"
-export AI_MODELS_DIR="$AI_DIR/models"
-export AI_TRAINING_DATA_DIR="$AI_DIR/training_data"
+export AI_AGENTS_DIR="$AI_DIR/agents"
+export AI_TASKS_DIR="$AI_DIR/tasks"
+export AI_COMMANDS_DIR="$AI_DIR/commands"
+export AI_TRAINING_DIR="$AI_DIR/training"
 export AI_METRICS_DIR="$AI_DIR/metrics"
-export AI_RESULTS_DIR="$AI_DIR/results"
+export AI_CACHE_DIR="$AI_DIR/cache"
+export AI_SKILLS_DIR="$AI_DIR/skills"
+# 兼容旧变量
+export AI_TRAINING_DATA_DIR="$AI_TRAINING_DIR"
+export AI_MODELS_DIR="$AI_DIR"
+export AI_RESULTS_DIR="$AI_DIR"
 
-# 配置数据目录 (用户配置相关)
+# 用户配置
 export CONFIG_DATA_DIR="$USER_DATA_DIR/config"
 
-# Analytics相关目录 (顶级analytics目录下的子目录)
+# Analytics (扁平)
 export ANALYTICS_DIR="$CURSOR_GROWTH/analytics"
-export ANALYTICS_DATA_DIR="$ANALYTICS_DIR/data"
 export ANALYTICS_CACHE_DIR="$ANALYTICS_DIR/cache"
+export ANALYTICS_DATA_DIR="$ANALYTICS_DIR"
+export ANALYTICS_MONITORING_DIR="$ANALYTICS_DIR"
 
-# Monitoring目录 (独立顶级目录)
-export MONITORING_DIR="$CURSOR_GROWTH/monitoring"
+# 统一日志 (原 monitoring/logs 提升为顶级)
+export LOGS_DIR="$CURSOR_GROWTH/logs"
+export MONITORING_DIR="$LOGS_DIR"
+export SYSTEM_LOGS_DIR="$LOGS_DIR"
+export GROWTH_METRICS_DIR="$LOGS_DIR"
 
-# 日志整合到监控目录中
-export SYSTEM_LOGS_DIR="$MONITORING_DIR/logs"
+# Integrations
 export INTEGRATIONS_DIR="$CURSOR_GROWTH/integrations"
 export INTEGRATIONS_SYNC_DIR="$INTEGRATIONS_DIR/sync"
 export INTEGRATIONS_MCP_CONFIGS_DIR="$INTEGRATIONS_DIR/mcp-configs"
+
+# 兼容: project_data 合并到 user
+export PROJECT_DATA_DIR="$USER_DATA_DIR"
 
 # 注意: 这是完整重构，移除所有向后兼容性变量
 # .cursorGrowth 随时可删除重建，不需要兼容性
@@ -360,22 +368,18 @@ verify_growth_structure() {
 
 # 清理非常规目录
 cleanup_non_standard_dirs() {
-    # 定义需要保留的标准目录（基于STANDARD_DIRS）
+    # 定义需要保留的标准目录（基于STANDARD_DIRS + 兼容）
     local keep_dirs=(
+        "perception"
+        "user"
         "ai"
         "analytics"
-        "backups"
-        "cache"
-        "config"
-        "conversations"
-        "data"
-        "debug"
-        "growth"
-        "learning"
         "logs"
-        "mcps"
+        "integrations"
+        "conversations"
+        "user_data"
         "monitoring"
-        "personal"
+        "ai-conversations"
     )
 
     local removed_count=0

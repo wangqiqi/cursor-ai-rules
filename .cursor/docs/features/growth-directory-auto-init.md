@@ -92,11 +92,31 @@ main() {
 - ✅ 静默执行，不影响用户体验
 - ✅ 支持DEBUG模式查看详情
 
-### Layer 3: Git Hooks 自动初始化
+### Layer 3: Cursor 原生 Hooks (beforeSubmitPrompt)
+
+**文件位置**: `.cursor/hooks.json` + `.cursor/hooks/ensure-growth-on-prompt.sh`
+
+**触发时机**: 当用户在 Cursor 对话框提交任何内容（包括 `/master`）时，在发送给 AI 之前执行
+
+**启用要求**:
+- Cursor 1.7+ 且需在 **Settings → Features** 中启用 Hooks（若为 Beta 功能）
+- 查看 **Output → Hooks** 面板确认钩子是否执行
+
+**若 Hooks 未生效**：Layer 4（AI 规则）会兜底创建
+
+### Layer 4: AI 规则兜底（master.md + growth-ensure-on-master.md）
+
+**文件位置**: `.cursor/commands/master.md`、`.cursor/agents/command-center.md`、`.cursor/rules/growth-ensure-on-master.md`
+
+**触发时机**: 当 AI 处理包含 `/master` 的用户输入时
+
+**实现**: AI 被显式指示先运行 `bash .cursor/features/automation/scripts/growth_init.sh` 再继续处理
+
+### Layer 5: 旧版 Git/自定义 Hooks 自动初始化
 
 **文件位置**: `.cursor/features/hooks/master-init.sh`
 
-**触发时机**: 当用户首次使用 `/master` 命令时
+**触发时机**: 当用户首次使用 `/master` 命令时（通过自定义钩子系统）
 
 **实现逻辑**:
 ```bash
@@ -153,8 +173,9 @@ fi
 ### 初始化文件
 
 1. **`.gitkeep`**: 确保空目录被Git跟踪
-2. **`ai-profile.json`**: AI配置和用户偏好
-3. **`analytics-monitoring-metrics.json`**: 监控指标初始化
+2. **`user/config/project_state.json`**: 项目持久化状态（原 `.cursor-project.json`，含 currentRole、projectId、lastUpdated）
+3. **`ai-profile.json`**: AI配置和用户偏好
+4. **`analytics-monitoring-metrics.json`**: 监控指标初始化
 
 ## 🔧 使用场景
 
@@ -369,6 +390,32 @@ echo $CURSOR_GROWTH
 - ✅ 基础目录创建逻辑
 - ✅ Git hooks初始化
 - ✅ 部分脚本手动创建
+
+## 🔧 对话框 /master 未创建 .cursorGrowth 的排查
+
+当在 Cursor 聊天框输入 `/master` 后 `.cursorGrowth` 仍未创建时：
+
+### 1. 检查 Cursor Hooks 是否启用
+
+- 打开 **Cursor Settings → Features**，确认 **Hooks** 或 **Third-party skills** 已开启
+- 打开 **Output** 面板，选择 **Hooks** 通道，查看是否有钩子执行日志或报错
+
+### 2. 手动创建（临时方案）
+
+```bash
+bash .cursor/features/automation/scripts/growth_init.sh
+```
+
+### 3. 依赖 AI 规则兜底
+
+若 Hooks 未生效，AI 会在处理 `/master` 时根据 `master.md` 和 `growth-ensure-on-master.md` 的指示自动运行上述脚本。**再次发送包含 `/master` 的消息**，AI 会先创建目录再继续处理。
+
+### 4. 验证钩子脚本
+
+```bash
+echo '{"workspace_roots":["'"$(pwd)"'"]}' | bash .cursor/hooks/ensure-growth-on-prompt.sh
+ls -la .cursorGrowth/
+```
 
 ## 📚 相关文档
 

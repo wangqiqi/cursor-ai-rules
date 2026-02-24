@@ -113,7 +113,7 @@ save_extended_task_state() {
 
     # TODO: 迁移自原agent-orchestration-engine.sh的save_extended_task_state函数
 
-    local state_dir="$AGENT_CONFIG_DIR/task-states"
+    local state_dir="$AI_TASKS_DIR"
     local state_file="$state_dir/${task_id}.json"
 
     mkdir -p "$state_dir"
@@ -128,7 +128,7 @@ load_extended_task_state() {
 
     # TODO: 迁移自原agent-orchestration-engine.sh的load_extended_task_state函数
 
-    local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
+    local state_file="$AI_TASKS_DIR/${task_id}.json"
 
     if [[ -f "$state_file" ]]; then
         cat "$state_file"
@@ -144,8 +144,8 @@ create_task_checkpoint() {
 
     # TODO: 迁移自原agent-orchestration-engine.sh的create_task_checkpoint函数
 
-    local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
-    local checkpoint_dir="$AGENT_CONFIG_DIR/task-checkpoints/${task_id}"
+    local state_file="$AI_TASKS_DIR/${task_id}.json"
+    local checkpoint_dir="$AI_TASKS_DIR/checkpoints/${task_id}"
     local checkpoint_file="$checkpoint_dir/${checkpoint_name}_$(date +%s).json"
 
     mkdir -p "$checkpoint_dir"
@@ -172,7 +172,7 @@ restore_task_from_checkpoint() {
         return 1
     fi
 
-    local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
+    local state_file="$AI_TASKS_DIR/${task_id}.json"
     cp "$checkpoint_file" "$state_file"
 
     # 更新恢复记录
@@ -199,7 +199,7 @@ get_task_state_history() {
 
     # TODO: 迁移自原agent-orchestration-engine.sh的get_task_state_history函数
 
-    local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
+    local state_file="$AI_TASKS_DIR/${task_id}.json"
 
     if [[ -f "$state_file" ]]; then
         jq '.status_history[]?' "$state_file" 2>/dev/null || echo "[]"
@@ -214,7 +214,7 @@ validate_task_state() {
 
     # TODO: 迁移自原agent-orchestration-engine.sh的validate_task_state函数
 
-    local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
+    local state_file="$AI_TASKS_DIR/${task_id}.json"
 
     if [[ ! -f "$state_file" ]]; then
         echo "missing"
@@ -300,7 +300,7 @@ show_task_state_dashboard() {
 show_single_task_state() {
     local task_id="$1"
 
-    local state_file="$AGENT_CONFIG_DIR/task-states/${task_id}.json"
+    local state_file="$AI_TASKS_DIR/${task_id}.json"
 
     if [[ ! -f "$state_file" ]]; then
         smart_echo "任务状态文件不存在: $task_id" "error"
@@ -329,7 +329,7 @@ show_single_task_state() {
 
 # 显示所有任务状态概览
 show_all_tasks_state_overview() {
-    local state_dir="$AGENT_CONFIG_DIR/task-states"
+    local state_dir="$AI_TASKS_DIR"
     local total_tasks=0
     local status_counts='{"created": 0, "pending": 0, "assigned": 0, "executing": 0, "completed": 0, "failed": 0}'
 

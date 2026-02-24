@@ -32,12 +32,19 @@ log_error() {
     echo -e "${RED}[MIGRATE]${NC} ❌ $1"
 }
 
-# 迁移目录映射
+# 迁移目录映射 (扁平化结构)
 declare -A MIGRATION_MAP=(
     [".cursorGrowth/cache/skills"]="ai/cache"
     [".cursorGrowth/skills/loaded"]="ai/skills"
-    [".cursorGrowth/logs"]="monitoring/logs"
-    [".cursorGrowth/pids"]="monitoring/pids"
+    [".cursorGrowth/pids"]="logs"
+    [".cursorGrowth/monitoring/logs"]="logs"
+    [".cursorGrowth/monitoring/pids"]="logs"
+    [".cursorGrowth/user_data"]="user"
+    [".cursorGrowth/ai/agent-data"]="ai/agents"
+    [".cursorGrowth/ai/task-states"]="ai/tasks"
+    [".cursorGrowth/ai/command_logs"]="ai/commands"
+    [".cursorGrowth/ai/training_data"]="ai/training"
+    [".cursorGrowth/ai-conversations"]="conversations"
 )
 
 # 检查目录是否存在并迁移内容
@@ -113,14 +120,21 @@ main() {
     echo
     log_success "目录迁移完成！"
     echo
-    echo "🎯 新的目录结构:"
+    echo "🎯 新的扁平化目录结构:"
     echo "  .cursorGrowth/"
-    echo "  ├── ai/"
-    echo "  │   ├── skills/     # 已加载的AI技能 (原 skills/loaded/)"
-    echo "  │   └── cache/      # AI缓存数据 (原 cache/skills/)"
-    echo "  └── monitoring/"
-    echo "      ├── logs/       # 系统日志 (原 logs/)"
-    echo "      └── pids/       # 进程ID (原 pids/)"
+    echo "  ├── perception/    # 环境感知"
+    echo "  ├── user/          # 用户数据"
+    echo "  ├── ai/            # AI核心"
+    echo "  │   ├── agents/    # Agent配置"
+    echo "  │   ├── tasks/     # 任务状态"
+    echo "  │   ├── commands/  # 命令日志"
+    echo "  │   ├── training/  # 学习数据"
+    echo "  │   ├── cache/     # 缓存"
+    echo "  │   └── metrics/   # 指标"
+    echo "  ├── analytics/    # 分析"
+    echo "  ├── logs/          # 统一日志"
+    echo "  ├── integrations/ # 集成"
+    echo "  └── conversations/ # 对话"
     echo
     echo "📚 相关文档已更新以反映新的目录结构。"
 }

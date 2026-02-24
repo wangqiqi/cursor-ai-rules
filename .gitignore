@@ -11,6 +11,7 @@
 .cursor/**/*.pid
 
 # 项目角色配置（每个用户独立）
+# 已迁移至 .cursorGrowth/user/config/project_state.json
 .cursor-project.json
 
 # 旧版 Web 文件路径 (向后兼容)

@@ -112,7 +112,7 @@ init_agent_orchestration_engine() {
 
     # 创建代理目录结构
     mkdir -p "$AGENT_CONFIG_DIR"
-    mkdir -p "$AGENT_CONFIG_DIR/agent-data"
+    mkdir -p "$AI_AGENTS_DIR"
 
     # 初始化各个子系统
     smart_echo "📋 初始化Agent注册表..." "info"

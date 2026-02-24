@@ -40,7 +40,7 @@ SKILLS_REGISTRY="$PROJECT_ROOT/.cursor/features/skills/registry.json"
 SKILLS_DIR="$PROJECT_ROOT/.cursor/features/skills"
 LOADED_SKILLS_DIR="$PROJECT_ROOT/.cursorGrowth/ai/skills"
 CACHE_DIR="$PROJECT_ROOT/.cursorGrowth/ai/cache"
-LOG_DIR="$PROJECT_ROOT/.cursorGrowth/monitoring/logs"
+LOG_DIR="$PROJECT_ROOT/.cursorGrowth/logs"
 
 # 初始化目录
 init_directories() {

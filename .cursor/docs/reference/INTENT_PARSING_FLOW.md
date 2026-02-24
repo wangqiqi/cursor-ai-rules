@@ -47,6 +47,7 @@ conversation_intent_analyzer.md
 1. **策略层**: conversation_intent_analyzer 定义项目创建检测与 STOP 行为
 2. **执行层**: master-parser 从 JSON 配置解析意图，不硬编码策略
 3. **能力层**: smart-intent-matcher 独立负责 capability 匹配，与 intent 解耦
+4. **澄清层**（任务 22）: 意图置信度 <0.5 或无法匹配时，master-parser 返回 `needs_clarification`，master-executor 格式化选择题/开放输入，引导用户结构化补充
 
 ## 相关文件
 

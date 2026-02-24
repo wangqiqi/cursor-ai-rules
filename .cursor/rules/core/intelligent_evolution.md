@@ -27,6 +27,19 @@ priority: 12
 - 个性化学习引擎、模块同步感知
 - 性能监控系统
 
+## 📋 使用示例
+
+```bash
+# 触发智能演进分析
+@master 优化项目规则
+@master 分析项目并改进
+@master 学习用户习惯后调整
+
+# 或通过对话
+"帮我看看规则系统有哪些可以优化的地方"
+"根据最近的使用情况，有什么改进建议？"
+```
+
 ---
 
 *引用: @intelligent_evolution-entry @intelligent_evolution-strategies*

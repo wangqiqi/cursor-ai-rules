@@ -407,6 +407,9 @@ class MasterCommandExecutor {
                 case 'natural_language':
                     return await this.executeNaturalLanguage(parseResult);
 
+                case 'needs_clarification':
+                    return this.formatClarificationResponse(parseResult);
+
                 case 'error':
                     return parseResult;
 
@@ -636,12 +639,53 @@ class MasterCommandExecutor {
             case 'natural_language':
                 return await this.executeNaturalLanguage(parsedCommand);
 
+            case 'needs_clarification':
+                return this.formatClarificationResponse(parsedCommand);
+
             case 'error':
                 return parsedCommand;
 
             default:
                 return this.createErrorResult(`未知的子命令类型: ${parsedCommand.type}`);
         }
+    }
+
+    /**
+     * 格式化意图澄清响应（任务 22：Question 模块集成）
+     * 意图无法精确匹配时，返回选择题和开放输入建议
+     * @param {Object} parseResult - 解析结果（type: needs_clarification）
+     * @returns {Object} 格式化响应
+     */
+    formatClarificationResponse(parseResult) {
+        const { message, suggestedQuestions, originalInput } = parseResult;
+        let response = `## ❓ 意图澄清\n\n`;
+        response += `${message}\n\n`;
+        response += `**您的输入**: "${originalInput}"\n\n`;
+
+        if (suggestedQuestions && suggestedQuestions.length > 0) {
+            response += `### 请选择或补充：\n\n`;
+            for (const q of suggestedQuestions) {
+                if (q.type === 'single_choice' && q.options) {
+                    response += `**${q.question}**\n`;
+                    q.options.forEach((opt, i) => {
+                        response += `  ${i + 1}. ${opt.label}\n`;
+                    });
+                    response += `\n`;
+                } else if (q.type === 'open_input') {
+                    response += `**${q.question}**\n`;
+                    response += `  _${q.placeholder || '请输入...'}_\n\n`;
+                }
+            }
+            response += `\n回复选项编号或补充描述后，我将继续为您服务。`;
+        }
+
+        return {
+            success: true,
+            type: 'needs_clarification',
+            message: response,
+            suggestedQuestions: suggestedQuestions,
+            originalInput: originalInput
+        };
     }
 
     /**
@@ -1816,7 +1860,7 @@ class MasterCommandExecutor {
      */
     async logConstitutionEvent(eventType, data) {
         try {
-            const logDir = path.join(this.projectRoot, '.cursorGrowth', 'monitoring', 'logs');
+            const logDir = path.join(this.projectRoot, '.cursorGrowth', 'logs');
             if (!fs.existsSync(logDir)) {
                 fs.mkdirSync(logDir, { recursive: true });
             }

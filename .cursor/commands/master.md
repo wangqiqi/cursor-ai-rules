@@ -8,6 +8,12 @@ context: ["currentFile", "selectedText", "cursorPosition", "openFiles", "workspa
 
 # 🎯 Master智能命令中心
 
+## ⚠️ 前置步骤（必须执行）
+
+**在处理任何 /master 请求前**，必须确保 `.cursorGrowth` 目录存在：
+- 若 `.cursorGrowth` 不存在，先运行：`bash .cursor/features/automation/scripts/growth_init.sh`
+- 然后再继续处理用户的 /master 请求
+
 ## 概述
 Cursor AI Rules的智能Master控制器 - 你的AI编程助手和命令中心，提供全方位的开发支持和智能指导。
 
