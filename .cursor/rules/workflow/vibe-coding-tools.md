@@ -1,10 +1,8 @@
 ---
-description: "VIBE Coding 工具与质量门禁 - 对齐检查、阶段管理、质量保障"
-apply_when:
-  - keywords: ["vibe-align", "vibe-phase", "对齐检查", "质量门禁"]
-globs: []
-priority: 11
+description: "VIBE Coding 工具与质量门禁 - 对齐检查、阶段管理、质量保障 (vibe-align, vibe-phase, 对齐检查, 质量门禁)"
+globs: ["**/*"]
 alwaysApply: false
+priority: 11
 ---
 
 # 🛠️ VIBE Coding 工具与质量门禁

@@ -1,9 +1,7 @@
 ---
 description: "系统信息获取器 - 自动获取时间、路径和作者信息的通用机制"
-apply_when:
-  - file_pattern: "**/*.md"
-  - file_pattern: "**/*.mdc"
-  - file_pattern: "**/*.txt"
+globs: ["**/*.md", "**/*.mdc", "**/*.txt"]
+alwaysApply: false
 priority: 20
 ---
 

@@ -120,7 +120,7 @@ verify_rules() {
     
     local RULES_DIR="$CURSOR_DIR/rules"
     local total=0
-    local with_apply_when=0
+    local with_globs_or_always=0
     local with_priority=0
     local with_examples=0
     local command_style=0
@@ -131,16 +131,16 @@ verify_rules() {
         if [[ -f "$file" ]]; then
             total=$((total + 1))
             
-            local has_apply_when=false
+            local has_globs_or_always=false
             local has_priority=false
             
             while IFS= read -r line; do
-                if [[ "$line" == "---" ]] && [[ $has_apply_when == true || $has_priority == true ]]; then
+                if [[ "$line" == "---" ]] && [[ $has_globs_or_always == true || $has_priority == true ]]; then
                     break
                 fi
                 
-                if [[ "$line" =~ apply_when: ]]; then
-                    has_apply_when=true
+                if [[ "$line" =~ ^globs: ]] || [[ "$line" =~ alwaysApply: ]]; then
+                    has_globs_or_always=true
                 fi
                 
                 if [[ "$line" =~ priority: ]]; then
@@ -148,7 +148,7 @@ verify_rules() {
                 fi
             done < "$file"
             
-            [[ "$has_apply_when" == true ]] && with_apply_when=$((with_apply_when + 1))
+            [[ "$has_globs_or_always" == true ]] && with_globs_or_always=$((with_globs_or_always + 1))
             [[ "$has_priority" == true ]] && with_priority=$((with_priority + 1))
             grep -q '```' "$file" && with_examples=$((with_examples + 1))
             grep -qiE 'MUST|NEVER|ALWAYS|DO NOT|REQUIRED|禁止|必须' "$file" && command_style=$((command_style + 1))
@@ -161,19 +161,19 @@ verify_rules() {
     # 输出统计
     print_section "合规性统计"
     
-    local percent_apply_when=$((with_apply_when * 100 / total))
+    local percent_globs=$((with_globs_or_always * 100 / total))
     local percent_priority=$((with_priority * 100 / total))
     local percent_examples=$((with_examples * 100 / total))
     local percent_command=$((command_style * 100 / total))
     
     echo "  总规则数: $total"
-    echo -e "${GREEN}包含apply_when: $with_apply_when (${percent_apply_when}%)${NC}"
+    echo -e "${GREEN}包含globs/alwaysApply: $with_globs_or_always (${percent_globs}%)${NC}"
     echo -e "${GREEN}包含priority: $with_priority (${percent_priority}%)${NC}"
     echo -e "${GREEN}包含代码示例: $with_examples (${percent_examples}%)${NC}"
     echo -e "${GREEN}使用命令式语言: $command_style (${percent_command}%)${NC}"
     echo -e "${YELLOW}文件过长(>500行): $too_long${NC}"
     
-    local compliance_score=$(( (with_apply_when + with_priority) * 100 / (total * 2) ))
+    local compliance_score=$(( (with_globs_or_always + with_priority) * 100 / (total * 2) ))
     echo -e "\n总体合规性: ${compliance_score}%"
     
     if [[ $compliance_score -eq 100 ]]; then

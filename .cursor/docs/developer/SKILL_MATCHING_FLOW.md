@@ -11,13 +11,13 @@
     ↓
 ② 识别为 skills_execution 意图
     ↓
-③ 委托给 skill-dispatcher（规范入口）
+③ master-parser 委托 skills-loader match <input>（关键词→技能名）
     ↓
-④ skill-dispatcher 读取 registry.json
+④ skills-loader 读取 registry.json，匹配 key/name/description/category
     ↓
-⑤ 匹配：关键词 → 分类 → 依赖检查
+⑤ 返回匹配的技能名列表（JSON）
     ↓
-⑥ 加载 features/skills/[name].md
+⑥ master-executor 委托 skills-loader load + execute
     ↓
 ⑦ 应用技能指导，返回结果
 ```
@@ -26,19 +26,20 @@
 
 | 组件 | 职责 | 不负责 |
 |------|------|--------|
-| **skill-dispatcher** | 技能发现、匹配、加载的规范入口 | 不直接执行脚本 |
-| **skills-loader.sh** | 批量加载、缓存、供脚本调用 | 不替代 skill-dispatcher 的匹配逻辑 |
-| **master-executor** | 执行 capability 时调用 skills，应委托 skill-dispatcher 或 skills-loader | 不独立实现匹配算法 |
+| **skill-dispatcher** | AI 侧规范入口，描述匹配策略与调用流程 | 不直接执行脚本 |
+| **skills-loader.sh** | 脚本侧匹配（match）、加载（load）、执行（execute） | 匹配逻辑基于 registry，不硬编码 |
+| **master-parser** | 意图识别后委托 `skills-loader match` 提取技能名 | 不独立实现关键词→技能映射 |
+| **master-executor** | 执行 skills 时委托 `skills-loader load/execute` | 不独立实现匹配算法 |
 | **agent-orchestration-smart-router** | Agent 任务分配，可查询技能能力 | 不替代技能内容加载 |
 
-## 实现建议
+## 实现状态（2026-02-24 收敛完成）
 
-1. **匹配逻辑集中**: 新增技能时只更新 `registry.json`，匹配规则统一在 skill-dispatcher 描述
-2. **脚本调用**: skills-loader 作为 skill-dispatcher 的脚本侧补充，用于批量/缓存场景
-3. **master-executor**: 执行 skills 时调用 `skills-loader.sh` 或读取 registry，不重复实现匹配
+1. **skills-loader match**: 新增 `match <input>` 命令，基于 registry 匹配，输出 JSON 数组
+2. **master-parser**: 已移除硬编码 skillKeywords，委托 `matchSkillByInput()` → skills-loader match
+3. **master-executor**: 已移除 findSkill 依赖，纯委托 skills-loader load+execute
 
 ## 相关文件
 
-- `.cursor/skills/skill-dispatcher/SKILL.md` - 规范入口
-- `.cursor/features/skills/registry.json` - 技能元数据
-- `.cursor/core/skills-loader.sh` - 脚本侧加载器
+- `.cursor/skills/skill-dispatcher/SKILL.md` - AI 规范入口
+- `.cursor/features/skills/registry.json` - 技能元数据（唯一数据源）
+- `.cursor/core/skills-loader.sh` - 脚本侧加载器（含 match 命令）

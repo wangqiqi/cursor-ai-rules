@@ -1,7 +1,7 @@
 ---
-description: "VIBE Coding 开发原则 - 文档驱动、测试先行、前后端对齐的开发模式"
-apply_when:
-  - keywords: ["开发", "coding", "implementation", "vibe", "测试", "功能"]
+description: "VIBE Coding 开发原则 - 文档驱动、测试先行、前后端对齐的开发模式 (开发, coding, implementation, vibe, 测试, 功能)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 12
 ---
 

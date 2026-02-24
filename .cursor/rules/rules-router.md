@@ -1,7 +1,6 @@
 ---
 description: "规则路由器 - 智能管理规则激活、依赖和优先级"
-apply_when:
-  - always: true
+alwaysApply: true
 priority: 20
 ---
 

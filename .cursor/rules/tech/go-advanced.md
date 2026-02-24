@@ -1,7 +1,7 @@
 ---
-description: "Go高级实践 - 测试、性能优化、安全实践和最佳实践"
-apply_when:
-  - keywords: ["go", "测试", "性能", "安全", "优化"]
+description: "Go高级实践 - 测试、性能优化、安全实践和最佳实践 (go, 测试, 性能, 安全, 优化)"
+globs: ["**/*.go"]
+alwaysApply: false
 priority: 9
 ---
 

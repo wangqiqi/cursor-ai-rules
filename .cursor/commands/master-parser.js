@@ -3,6 +3,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const { execSync } = require('child_process');
 
 class MasterCommandParser {
     constructor(projectRoot) {
@@ -447,6 +448,29 @@ class MasterCommandParser {
     }
 
     /**
+     * 委托 skills-loader match 根据用户输入匹配技能（规范入口）
+     * @param {string} input - 用户输入
+     * @returns {string|null} 匹配到的第一个技能名，无匹配返回 null
+     */
+    matchSkillByInput(input) {
+        try {
+            const loaderPath = path.join(this.cursorDir, 'core', 'skills-loader.sh');
+            if (!fs.existsSync(loaderPath)) return null;
+            const safeInput = String(input || '').replace(/\n/g, ' ').trim();
+            if (!safeInput) return null;
+            const result = execSync(`bash "${loaderPath}" match ${JSON.stringify(safeInput)}`, {
+                cwd: this.projectRoot,
+                encoding: 'utf8',
+                timeout: 5000
+            });
+            const matched = JSON.parse(result.trim());
+            return Array.isArray(matched) && matched.length > 0 ? matched[0] : null;
+        } catch {
+            return null;
+        }
+    }
+
+    /**
      * 提取参数
      * @param {string} input - 输入字符串
      * @param {string} intent - 识别的意图
@@ -504,13 +528,10 @@ class MasterCommandParser {
                 break;
 
             case 'skills_execution':
-                // 🚀 尝试提取技能名称
-                const skillKeywords = ['pdf', 'word', 'docx', 'xlsx', 'excel', 'theme', 'design', 'test'];
-                for (const sk of skillKeywords) {
-                    if (input.toLowerCase().includes(sk)) {
-                        parameters.skill_name = sk;
-                        break;
-                    }
+                // 委托 skills-loader match（规范入口，基于 registry.json）
+                const matchedSkill = this.matchSkillByInput(input);
+                if (matchedSkill) {
+                    parameters.skill_name = matchedSkill;
                 }
                 break;
         }

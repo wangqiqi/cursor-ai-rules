@@ -1,8 +1,7 @@
 ---
-description: "Python开发规则 - Python最佳实践和项目结构"
-apply_when:
-  - file_pattern: "**/*.py"
-  - keywords: ["python", "pip", "django", "flask", "fastapi"]
+description: "Python开发规则 - Python最佳实践和项目结构 (python, pip, django, flask, fastapi)"
+globs: ["**/*.py"]
+alwaysApply: false
 priority: 10
 ---
 

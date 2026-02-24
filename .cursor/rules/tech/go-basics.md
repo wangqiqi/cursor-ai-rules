@@ -1,8 +1,7 @@
 ---
-description: "Go开发规则 - 云原生微服务和系统编程最佳实践"
-apply_when:
-  - file_pattern: "**/*.go"
-  - keywords: ["golang", "go"]
+description: "Go开发规则 - 云原生微服务和系统编程最佳实践 (golang, go)"
+globs: ["**/*.go"]
+alwaysApply: false
 priority: 10
 ---
 

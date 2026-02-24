@@ -1,9 +1,8 @@
 ---
-description: "项目规则生成器 - 自动化生成个性化项目规则配置。仅在用户已确认项目方案后使用（宪法要求：检测到创建意图时须先讨论再执行）"
-apply_when:
-  - keywords: ["生成规则", "规则配置", "project rules", "generator"]
-priority: 8
+description: "项目规则生成器 - 自动化生成个性化项目规则配置 (生成规则, 规则配置, project rules, generator)。仅在用户已确认项目方案后使用"
+globs: ["**/*"]
 alwaysApply: false
+priority: 8
 ---
 
 # 🎯 项目规则生成器 (Project Rules Generator)

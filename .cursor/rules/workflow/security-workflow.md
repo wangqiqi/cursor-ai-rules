@@ -1,7 +1,7 @@
 ---
-description: "安全工作流 - 自动化安全审计和漏洞检测"
-apply_when:
-  - keywords: ["安全", "security", "漏洞", "audit", "检测"]
+description: "安全工作流 - 自动化安全审计和漏洞检测 (安全, security, 漏洞, audit, 检测)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 8
 ---
 

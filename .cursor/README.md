@@ -6,7 +6,7 @@
 
 [![宪法](https://img.shields.io/badge/constitution-三大公理-red?style=flat-square)]()
 [![独立性](https://img.shields.io/badge/agnostic-三大独立-blue?style=flat-square)]()
-[![规则](https://img.shields.io/badge/rules-46-blue?style=flat-square)]()
+[![规则](https://img.shields.io/badge/rules-74-blue?style=flat-square)]()
 [![脚本](https://img.shields.io/badge/scripts-75+-cyan?style=flat-square)]()
 [![角色](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
 [![技能](https://img.shields.io/badge/skills-37-purple?style=flat-square)]()
@@ -25,7 +25,7 @@
 - **合规机制**: 自动STOP机制确保AI行为合规
 
 ### 🎯 100%能力覆盖
-- ✅ **规则系统**: 46个技术规则全覆盖
+- ✅ **规则系统**: 74个技术规则全覆盖
 - ✅ **核心脚本**: 75+脚本完整实现
 - ✅ **自动化钩子**: 36个 Git/系统钩子
 - ✅ **技能系统**: 37个专业技能
@@ -87,14 +87,14 @@ AI的所有输出必须携带可追溯、可验证、可归属的原始信号链
 ## 🚀 核心功能
 
 ### 🧠 智能Master命令系统
-- **单一入口**: `/master` 命令自动编排75+脚本 + 46规则 + 37技能
+- **单一入口**: `/master` 命令自动编排75+脚本 + 74规则 + 37技能
 - **意图理解**: 自然语言处理复杂用户需求
 - **自学习**: A/B测试框架、用户反馈循环、持续优化
 - **性能监控**: 全面监控，响应时间 <500ms
 
 ### 🎯 智能能力编排系统
 - **75+ 脚本**: 环境感知、质量检查、性能监控、部署管理
-- **46 规则**: 宪法合规、代码质量、开发规范
+- **74 规则**: 宪法合规、代码质量、开发规范
 - **36 钩子**: 自动化Git钩子、代码质量检查、事件日志
 
 ### 🛠️ 增强特性能力
@@ -289,7 +289,7 @@ AI的所有输出必须携带可追溯、可验证、可归属的原始信号链
 │   ├── skills/           # 技能库 (37个)
 │   │   └── registry.json
 │   └── hooks/            # 系统钩子 (36个)
-├── rules/                # 📋 规则系统 (46个)
+├── rules/                # 📋 规则系统 (74个)
 │   ├── system/           # 系统规则
 │   ├── tech/             # 技术栈规则
 │   └── workflow/         # 工作流规则

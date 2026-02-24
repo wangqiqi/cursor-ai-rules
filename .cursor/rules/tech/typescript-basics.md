@@ -1,9 +1,7 @@
 ---
-description: "TypeScript开发规则 - 类型安全和高级类型系统最佳实践"
-apply_when:
-  - file_pattern: "**/*.ts"
-  - file_pattern: "**/*.tsx"
-  - keywords: ["typescript", "ts"]
+description: "TypeScript开发规则 - 类型安全和高级类型系统最佳实践 (typescript, ts)"
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
 priority: 10
 ---
 

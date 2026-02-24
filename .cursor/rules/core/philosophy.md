@@ -1,9 +1,7 @@
 ---
 description: "交流哲学与协作模式 - 定义人机协作的沟通准则和协作模式"
-apply_when:
-  - always: true
-priority: 12
 alwaysApply: true
+priority: 12
 ---
 
 # 🧠 交流哲学与协作模式 (Communication Philosophy & Collaboration Modes)

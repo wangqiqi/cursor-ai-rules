@@ -350,9 +350,8 @@ Cursor AI Rules的核心架构和功能已全部完成，达到生产就绪标�
 
 基于 **[CURSOR_IMPROVEMENT_PLAN.md](CURSOR_IMPROVEMENT_PLAN.md)**，三轮迭代已完成：
 
-- **✅ 已完成**: verify-system、硬编码消除、alwaysApply、skills 说明、config-manager、AGENTS.md、quality-check 插件、规则拆分（platform_adapter、vibe-coding）、技能流程文档、跨平台清单
-- **🔄 进行中**: 超长规则拆分（11 个待处理）
-- **⏳ 待办**: 技能匹配代码级收敛
+- **✅ 已完成**: verify-system、硬编码消除、alwaysApply、skills 说明、config-manager、AGENTS.md、quality-check 插件、规则拆分（74 规则，超长 0 个）、技能流程文档、跨平台清单
+- **✅ 已完成**: 技能匹配代码级收敛（skills-loader match、parser 委托、executor 纯委托）
 
 ---
 

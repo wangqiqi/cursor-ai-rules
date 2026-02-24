@@ -1,7 +1,6 @@
 ---
 description: "跨平台适配器 - 统一管理不同操作系统间的命令、路径和环境适配"
-apply_when:
-  - always: true
+alwaysApply: true
 priority: 20
 ---
 

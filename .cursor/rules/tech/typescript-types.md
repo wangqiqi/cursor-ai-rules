@@ -1,7 +1,7 @@
 ---
-description: "TypeScript高级类型系统 - 泛型、条件类型和类型推导"
-apply_when:
-  - keywords: ["typescript", "泛型", "类型", "泛型", "条件类型"]
+description: "TypeScript高级类型系统 - 泛型、条件类型和类型推导 (typescript, 泛型, 类型, 条件类型)"
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
 priority: 9
 ---
 

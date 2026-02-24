@@ -380,6 +380,50 @@ list_loaded_skills() {
     done
 }
 
+# 根据用户输入匹配技能（规范入口，供 master-parser 等调用）
+# 输出: JSON 数组 ["skill1", "skill2"]，无匹配时 []
+# 支持：1) 全文匹配 2) 按 token 匹配（中英文混合如「执行PDF处理」）
+match_skills_by_input() {
+    local input="$1"
+    local registry_file="$2"
+
+    if [ -z "$input" ] || [ ! -f "$registry_file" ]; then
+        echo "[]"
+        return
+    fi
+
+    # 1) 先尝试全文匹配
+    local matched
+    matched=$(jq -r --arg input "$input" '
+        .skills.legacy | to_entries[] | select(
+            ((.key + " " + (.value.name // "") + " " + (.value.description // "") + " " + (.value.category // "")) | test($input; "i"))
+        ) | .key
+    ' "$registry_file" 2>/dev/null || echo "")
+
+    # 2) 若无结果，按 token 匹配（提取英文/数字序列，如 PDF、docx、word）
+    if [ -z "$matched" ]; then
+        local tokens
+        tokens=$(echo "$input" | grep -oE '[a-zA-Z0-9_-]+' 2>/dev/null || true)
+        for token in $tokens; do
+            [ ${#token} -lt 2 ] && continue
+            matched=$(jq -r --arg input "$token" '
+                .skills.legacy | to_entries[] | select(
+                    ((.key + " " + (.value.name // "") + " " + (.value.description // "") + " " + (.value.category // "")) | test($input; "i"))
+                ) | .key
+            ' "$registry_file" 2>/dev/null || echo "")
+            [ -n "$matched" ] && break
+        done
+    fi
+
+    if [ -z "$matched" ]; then
+        echo "[]"
+        return
+    fi
+
+    # 转为 JSON 数组
+    echo "$matched" | jq -R -s -c 'split("\n") | map(select(length > 0))'
+}
+
 # 显示技能信息
 show_skill_info() {
     local skill_name="$1"
@@ -416,6 +460,7 @@ show_help() {
 命令:
     load <skill_name>          加载指定技能
     load-all [pattern]         批量加载技能 (可选: category=xx, source=xx, 或正则表达式)
+    match <input>              根据用户输入匹配技能 (输出 JSON 数组，供 parser 等调用)
     execute <skill_name> [args] 执行已加载的技能
     list                      列出已加载的技能
     info <skill_name>         显示技能详细信息
@@ -475,6 +520,18 @@ main() {
             fi
             shift 2
             execute_skill "$skill_name" "$*"
+            ;;
+        match)
+            local input="${2:-}"
+            if [ -z "$input" ]; then
+                log_error "请提供匹配输入"
+                echo "[]"
+                exit 1
+            fi
+            init_directories
+            check_dependencies || exit 1
+            local registry_file=$(load_skills_registry) || exit 1
+            match_skills_by_input "$input" "$registry_file"
             ;;
         list)
             list_loaded_skills

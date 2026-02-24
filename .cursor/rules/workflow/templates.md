@@ -1,11 +1,7 @@
 ---
-description: "项目配置模板框架 - 自动化生成项目初始化配置"
-apply_when:
-  - file_pattern: "**/*.json"
-  - file_pattern: "**/*.yaml"
-  - file_pattern: "**/*.yml"
-  - file_pattern: "**/*.toml"
-  - keywords: ["template", "配置", "模板"]
+description: "项目配置模板框架 - 自动化生成项目初始化配置 (template, 配置, 模板)"
+globs: ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.toml"]
+alwaysApply: false
 priority: 8
 ---
 

@@ -1,7 +1,7 @@
 ---
-description: "模块执行器和监控器 - 命令调度、性能监控和配置管理"
-apply_when:
-  - keywords: ["执行", "调度", "监控", "性能", "配置"]
+description: "模块执行器和监控器 - 命令调度、性能监控和配置管理 (执行, 调度, 监控, 性能, 配置)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 19
 ---
 

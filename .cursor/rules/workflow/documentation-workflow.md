@@ -1,7 +1,7 @@
 ---
-description: "文档生成工作流 - 自动化生成项目文档和API文档"
-apply_when:
-  - keywords: ["文档", "documentation", "readme", "api doc", "docs"]
+description: "文档生成工作流 - 自动化生成项目文档和API文档 (文档, documentation, readme, api doc, docs)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 8
 ---
 

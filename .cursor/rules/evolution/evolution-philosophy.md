@@ -1,7 +1,7 @@
 ---
-description: "演进哲学 - 项目规则持续演进的核心理念和原则指导"
-apply_when:
-  - keywords: ["演进", "evolution", "优化", "改进", "迭代"]
+description: "演进哲学 - 项目规则持续演进的核心理念和原则指导 (演进, evolution, 优化, 改进, 迭代)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 8
 ---
 

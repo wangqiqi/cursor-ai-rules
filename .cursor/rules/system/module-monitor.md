@@ -1,7 +1,7 @@
 ---
-description: "模块监控和配置管理 - 性能监控、配置管理和工具系统"
-apply_when:
-  - keywords: ["监控", "配置", "性能", "工具"]
+description: "模块监控和配置管理 - 性能监控、配置管理和工具系统 (监控, 配置, 性能, 工具)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 19
 ---
 

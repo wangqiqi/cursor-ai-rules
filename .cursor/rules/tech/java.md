@@ -1,8 +1,7 @@
 ---
-description: "Java开发规则 - 企业级Java开发最佳实践"
-apply_when:
-  - file_pattern: "**/*.java"
-  - keywords: ["java", "spring", "maven", "gradle"]
+description: "Java开发规则 - 企业级Java开发最佳实践 (java, spring, maven, gradle)"
+globs: ["**/*.java"]
+alwaysApply: false
 priority: 10
 ---
 

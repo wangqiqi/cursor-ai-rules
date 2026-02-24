@@ -1217,17 +1217,14 @@ class MasterCommandExecutor {
     }
 
     /**
-     * 执行技能
-     * @param {string} skillName - 技能名称
+     * 执行技能（委托 skills-loader，不独立实现匹配逻辑）
+     * @param {string} skillName - 技能名称（来自 registry.json 或 capability 映射）
      * @returns {Promise<Object>} 执行结果
      */
     async executeSkill(skillName) {
         console.log(`🎯 执行技能: ${skillName}`);
 
         try {
-            // 查找技能文件 (可能在 features/skills/)
-            const skillPath = this.resourceDiscovery.findSkill(skillName);
-
             const loaderScript = path.join(this.cursorDir, 'core', 'skills-loader.sh');
             if (!fs.existsSync(loaderScript)) {
                 return this.createErrorResult(`技能加载器不存在`);
@@ -1252,7 +1249,6 @@ class MasterCommandExecutor {
 
             return this.createSuccessResult(`技能执行成功: ${skillName}`, {
                 skill: skillName,
-                path: skillPath,
                 loadOutput: loadResult.trim(),
                 executeOutput: result.trim()
             });

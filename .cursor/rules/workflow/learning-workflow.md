@@ -1,7 +1,7 @@
 ---
-description: "学习工作流 - 智能学习新技术栈和编程概念"
-apply_when:
-  - keywords: ["学习", "learn", "新技术", "new technology", "教程"]
+description: "学习工作流 - 智能学习新技术栈和编程概念 (学习, learn, 新技术, new technology, 教程)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 8
 ---
 

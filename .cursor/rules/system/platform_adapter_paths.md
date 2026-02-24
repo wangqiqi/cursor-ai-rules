@@ -1,10 +1,8 @@
 ---
-description: "跨平台路径处理 - 路径规范化、拼接、解析的跨平台实现"
-apply_when:
-  - keywords: ["路径", "path", "normalize", "join", "resolve"]
-globs: []
-priority: 19
+description: "跨平台路径处理 - 路径规范化、拼接、解析的跨平台实现 (路径, path, normalize, join, resolve)"
+globs: ["**/*"]
 alwaysApply: false
+priority: 19
 ---
 
 # 📁 跨平台路径处理 (Path Handling)

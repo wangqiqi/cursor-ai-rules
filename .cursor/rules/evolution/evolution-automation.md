@@ -1,10 +1,7 @@
 ---
-description: "自动化演进系统 - 基于感知数据的智能规则自动优化"
-apply_when:
-  - file_pattern: "**/*.json"
-  - file_pattern: "**/*.yaml"
-  - file_pattern: "**/*.yml"
-  - keywords: ["自动化", "automation", "自动优化"]
+description: "自动化演进系统 - 基于感知数据的智能规则自动优化 (自动化, automation, 自动优化)"
+globs: ["**/*.json", "**/*.yaml", "**/*.yml"]
+alwaysApply: false
 priority: 8
 ---
 

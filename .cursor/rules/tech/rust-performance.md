@@ -1,7 +1,7 @@
 ---
-description: "Rust性能优化和最佳实践 - 零成本抽象和unsafe指南"
-apply_when:
-  - keywords: ["rust", "性能", "优化", "unsafe", "最佳实践"]
+description: "Rust性能优化和最佳实践 - 零成本抽象和unsafe指南 (rust, 性能, 优化, unsafe, 最佳实践)"
+globs: ["**/*.rs"]
+alwaysApply: false
 priority: 9
 ---
 

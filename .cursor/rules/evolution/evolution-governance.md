@@ -1,7 +1,7 @@
 ---
-description: "演进治理机制 - 规则演进的安全保障和质量控制体系"
-apply_when:
-  - keywords: ["治理", "governance", "安全", "质量控制", "审计"]
+description: "演进治理机制 - 规则演进的安全保障和质量控制体系 (治理, governance, 安全, 质量控制, 审计)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 8
 ---
 

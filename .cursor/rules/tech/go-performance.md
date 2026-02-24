@@ -1,7 +1,7 @@
 ---
-description: "Go性能优化 - 并发、内存和CPU优化技巧"
-apply_when:
-  - keywords: ["go", "性能", "优化", "performance", "并发"]
+description: "Go性能优化 - 并发、内存和CPU优化技巧 (go, 性能, 优化, performance, 并发)"
+globs: ["**/*.go"]
+alwaysApply: false
 priority: 9
 ---
 

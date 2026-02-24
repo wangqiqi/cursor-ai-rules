@@ -1,10 +1,7 @@
 ---
-description: "JavaScript开发规则 - 现代JavaScript最佳实践"
-apply_when:
-  - file_pattern: "**/*.js"
-  - file_pattern: "**/*.mjs"
-  - file_pattern: "**/*.cjs"
-  - keywords: ["javascript", "node", "npm"]
+description: "JavaScript开发规则 - 现代JavaScript最佳实践 (javascript, node, npm)"
+globs: ["**/*.js", "**/*.mjs", "**/*.cjs"]
+alwaysApply: false
 priority: 10
 ---
 

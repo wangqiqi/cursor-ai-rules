@@ -1,7 +1,6 @@
 ---
 description: "规则管理系统 - 管理.cursor规则的依赖关系和激活控制"
-apply_when:
-  - always: true
+alwaysApply: true
 priority: 20
 ---
 

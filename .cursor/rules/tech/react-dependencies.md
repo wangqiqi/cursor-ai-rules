@@ -1,11 +1,7 @@
 ---
-description: "React依赖管理和测试 - 包管理、依赖优化和测试策略"
-apply_when:
-  - file_pattern: "**/package.json"
-  - file_pattern: "**/jest.config.js"
-  - file_pattern: "**/*.test.jsx"
-  - file_pattern: "**/*.test.tsx"
-  - keywords: ["npm", "yarn", "测试", "test", "依赖"]
+description: "React依赖管理和测试 - 包管理、依赖优化和测试策略 (npm, yarn, 测试, test, 依赖)"
+globs: ["**/package.json", "**/jest.config.js", "**/*.test.jsx", "**/*.test.tsx"]
+alwaysApply: false
 priority: 9
 ---
 

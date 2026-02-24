@@ -1,7 +1,7 @@
 ---
-description: "Go安全实践和最佳实践 - 安全编码和生产环境指南"
-apply_when:
-  - keywords: ["go", "安全", "最佳实践", "security"]
+description: "Go安全实践和最佳实践 - 安全编码和生产环境指南 (go, 安全, 最佳实践, security)"
+globs: ["**/*.go"]
+alwaysApply: false
 priority: 9
 ---
 

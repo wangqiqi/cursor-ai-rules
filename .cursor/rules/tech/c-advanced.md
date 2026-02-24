@@ -1,7 +1,7 @@
 ---
-description: "C高级实践 - 测试、性能优化、安全实践和最佳实践"
-apply_when:
-  - keywords: ["c", "测试", "性能", "安全", "优化"]
+description: "C高级实践 - 测试、性能优化、安全实践和最佳实践 (c, 测试, 性能, 安全, 优化)"
+globs: ["**/*.c", "**/*.h"]
+alwaysApply: false
 priority: 9
 ---
 

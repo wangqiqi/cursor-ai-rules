@@ -1,10 +1,7 @@
 ---
 description: "ESLint代码质量检查集成 - 自动检测和修复JavaScript代码问题"
-apply_when:
-  - file_pattern: "**/*.js"
-  - file_pattern: "**/*.ts"
-  - file_pattern: "**/*.jsx"
-  - file_pattern: "**/*.tsx"
+globs: ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx"]
+alwaysApply: false
 priority: 12
 ---
 

@@ -1,7 +1,7 @@
 ---
-description: "规则冲突解决器 - 优先级矩阵、冲突解决和性能监控"
-apply_when:
-  - keywords: ["冲突", "优先级", "性能", "监控"]
+description: "规则冲突解决器 - 优先级矩阵、冲突解决和性能监控 (冲突, 优先级, 性能, 监控)"
+globs: ["**/*"]
+alwaysApply: false
 priority: 19
 ---
 

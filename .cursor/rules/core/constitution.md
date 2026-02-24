@@ -1,9 +1,7 @@
 ---
 description: "AI共生宪法 - 定义人机协作的核心原则和最高准则"
-apply_when:
-  - always: true
-priority: 15
 alwaysApply: true
+priority: 15
 ---
 
 # 🏛️ AI共生宪法 (Constitution of AI Symbiosis)
@@ -180,103 +178,11 @@ AI的一切输出，必须附带可追溯、可验证、可归因的原始信号
 
 **注**：具体协作模式和交互规范请参考 `@philosophy` 规则。
 
-## 第二章：四层运行时架构 (Four-Layer Runtime Architecture)
+## 第二章至第三章：架构与协议
 
-AI共生操作系统的运行逻辑 = **信号注入 → 协议调度 → 代理执行 → 主权确认 → （循环）**
+详见 @constitution_architecture.md（四层架构、双目录、六维协议、多文件协作）
 
-| 层级   | 名称                       | 职责               | 对应概念                                                            | 关键保障机制                                                                                             |
-| ------ | -------------------------- | ------------------ | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **L1** | 信号层 (Signal Layer)      | 输入世界的可信映射 | ✅ Context（动态组装）<br>✅ Index（知识底座）<br>✅ Rules（约束信号） | • 所有信号自带 source_id + freshness_ttl + sensitivity_level<br>• Context裁剪算法必须公开                |
-| **L2** | 协议层 (Protocol Layer)    | 人机交互的语义总线 | ✅ MCP（模型控制协议）<br>✅ Tools（工具注册与调用）                  | • MCP必须声明 intent_confidence_score<br>• 所有Tool调用强制返回 provenance_trace                         |
-| **L3** | 代理层 (Agency Layer)      | 目标导向的自治单元 | ✅ Agent（智能体）<br>✅ Model（模型作为执行引擎）                    | • 每个Agent必须声明 sovereignty_boundary<br>• 计划生成必须输出 plan_rationale                            |
-| **L4** | 主权层 (Sovereignty Layer) | 人类决策的终极界面 | ✅ 道（哲学）<br>✅ 法（治理）<br>✅ 5D法则                            | • 每个Gate必须显示AI建议原文 + 依据信号快照<br>• 1个保守方案 / 1个激进方案<br>• "跳过此步"按钮旁标注风险 |
-
-### ⚠️ 第二章附则：双目录架构强制要求 (Dual Directory Architecture Mandatory Requirement)
-
-**所有系统组件必须严格遵守双目录架构设计原则，任何违反此原则的行为都构成违反宪法**：
-
-#### 📁 目录职责强制分离
-- **`.cursor/` 目录**: **绝对禁止**存储任何运行时生成的数据文件
-  - ❌ 禁止：日志文件、缓存文件、报告文件、临时文件
-  - ❌ 禁止：用户数据、学习记录、监控数据
-  - ✅ 允许：规则文件、脚本文件、配置文件、文档文件
-
-- **`.cursorGrowth/` 目录**: **必须**存储所有运行时生成的数据
-  - ✅ 必需：所有日志文件、缓存文件、报告文件
-  - ✅ 必需：用户学习数据、对话记录、监控数据
-  - ✅ 必需：项目特定配置和个性化数据
-
-#### 🔒 隐私保护强制要求
-- 所有用户数据必须存储在 `.cursorGrowth/` 目录
-- `.cursorGrowth/` 目录必须自动添加到 `.gitignore`
-- 禁止任何用户数据泄露到版本控制系统
-
-#### 🚫 违反后果
-任何在 `.cursor/` 目录中生成运行时数据的行为都构成：
-- **违反宪法第2条**：信号可信公理
-- **违反宪法第3条**：认知可审计公理
-- **严重安全违规**：可能导致用户数据泄露
-
-## 第三章：六维交互协议 (Six-Dimensional Interaction Protocol)
-
-| API    | 名称                          | 输入（Human → OS）            | 输出（OS → Human）                                             | 设计目的                             | 防错机制                           |
-| ------ | ----------------------------- | ----------------------------- | -------------------------------------------------------------- | ------------------------------------ | ---------------------------------- |
-| **D1** | 意图声明 (Intent Declaration) | 自然语言描述目标+硬约束       | 返回 intent_fidelity_score（0–100）+ 未覆盖约束清单            | 确保AI理解"你要什么"                 | 若分数<85，强制弹出补充提示        |
-| **D2** | 信号校验 (Signal Check)       | 点击AI输出任一部分            | 高亮显示支撑该句的原始Context片段 + Rules匹配状态 + Tool调用ID | 打破"AI很聪明"的幻觉                 | 支持一键跳转至源文件/规则/YAML行号 |
-| **D3** | 边界设定 (Boundary Set)       | 拖拽滑块选择委托深度（1–5级） | 实时渲染AI能力范围图                                           | 把模糊的"信任"转化为可量化的权限开关 | 每次提升级别，弹出授权确认         |
-| **D4** | 审计留痕 (Audit Log)          | 按下 Ctrl+Shift+A             | 自动生成本会话摘要                                             | 将隐性经验固化为显性资产             | 日志自动同步至个人ai-learn-log.md  |
-| **D5** | 认知演进 (Evolution)          | 每周点击"升级我的OS"按钮      | 生成认知进化报告                                               | 让成长可测量、可感知、可庆祝         | 报告末尾必有一行进步证据           |
-| **D6** | 多文件协作 (Multi-File)       | 提及跨文件任务或Composer模式   | 自动规划多文件编辑序列，支持依赖关系追踪                     | 复杂任务的系统化处理                  | 每个文件变更前确认，保持原子性操作 |
-
-## 多文件协作模式 (Multi-File Collaboration Mode)
-
-### 协作触发条件 (Collaboration Triggers)
-- **复杂任务识别**：涉及多个文件的重构、迁移、新功能开发
-- **依赖关系复杂**：文件间存在强耦合或多层依赖
-- **系统性变更**：需要协调多个组件的架构调整
-- **Composer模式**：用户明确要求系统性任务处理
-
-### 协作执行原则 (Collaboration Execution Principles)
-```typescript
-interface MultiFileCollaboration {
-  // 任务分解
-  decomposeTask(task: ComplexTask): TaskSteps[]
-
-  // 依赖分析
-  analyzeDependencies(files: File[]): DependencyGraph
-
-  // 执行规划
-  planExecution(dependencies: DependencyGraph): ExecutionPlan
-
-  // 原子操作
-  executeAtomically(plan: ExecutionPlan): ExecutionResult
-
-  // 回滚支持
-  rollbackOnFailure(result: ExecutionResult): boolean
-}
-
-// 协作执行流程
-const collaboration = new MultiFileCollaboration()
-
-// 示例：重构用户认证模块
-const authRefactor = {
-  task: "重构JWT认证为OAuth2",
-  files: ["auth.ts", "middleware.ts", "routes.ts", "config.ts"],
-  dependencies: [
-    {from: "routes.ts", to: "middleware.ts", type: "imports"},
-    {from: "middleware.ts", to: "auth.ts", type: "calls"},
-    {from: "auth.ts", to: "config.ts", type: "config"}
-  ]
-}
-```
-
-### 安全保障机制 (Safety Mechanisms)
-- **变更隔离**：每个文件变更独立验证
-- **依赖验证**：确保变更不会破坏现有依赖
-- **备份机制**：自动创建变更前的备份
-- **渐进执行**：支持分步骤执行和验证
-
-### D6.1 模块同步检测 (Module Synchronization Detection) ⭐ 新增
+### D6.1 模块同步检测 (Module Synchronization Detection) ⭐
 
 **触发条件**：
 - **共享资源修改**：常量、类型定义、配置文件的变更

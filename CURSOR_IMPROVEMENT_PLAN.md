@@ -3,7 +3,7 @@
 > **分析日期**: 2026-02-24  
 > **复核日期**: 2026-02-24（二次核实）  
 > **分析范围**: `.cursor/`（相对路径，设备/用户/项目无关）  
-> **状态**: 三轮迭代已完成（2026-02-24）
+> **状态**: 四轮迭代已完成（2026-02-24）
 
 ---
 
@@ -14,6 +14,7 @@
 | 1 | verify-system.sh、command-center 路径、硬编码消除、alwaysApply、skills 说明、automation README、constitution/generator、AGENTS.md、README 统计 | ✅ |
 | 2 | config-manager CONFIG_DIR、validate_enhanced、always_apply 兼容、CONFIG_SYSTEM_STATUS、PLATFORM_MCP_CHECKLIST、RULES_LENGTH_AUDIT | ✅ |
 | 3 | platform_adapter 拆分、quality-check 插件、SKILL_MATCHING_FLOW、vibe-coding 拆分 | ✅ |
+| 4 | 完善计划已修复项标记、constitution 拆分 | ✅ |
 
 ---
 
@@ -25,7 +26,7 @@
 |------|------|------|------|
 | Agents | 1 | ✅ 完整 | command-center 智能命令中枢 |
 | Commands | 3 (MD) + 多 JS | ✅ 完整 | master, vibe, command-router |
-| Rules | 48 | ✅ 完整 | 含 platform_adapter_paths、vibe-coding-tools |
+| Rules | 74 | ✅ 完整 | 含 c-basics/cpp-advanced/intelligent_evolution/vue-advanced/rust-basics 等全部拆分，超长规则 0 个 |
 | Core 脚本 | 75+ | ✅ 完整 | 初始化、编排、质量、缓存等 |
 | Hooks | 36 | ✅ 完整 | 会话、提交、质量、学习等 |
 | Skills (features) | 37 | ✅ 完整 | registry.json + 技能文件 |
@@ -40,105 +41,51 @@
 
 ---
 
-## 🔴 高优先级问题
+## 🔴 高优先级问题（✅ 已修复）
 
-### 1. 缺失 verify-system.sh
+### 1. ~~缺失 verify-system.sh~~ ✅
+已创建 `.cursor/verify-system.sh`，委托 `core/unified-check.sh` 执行。
 
-**现象**: README.md 和 README.en.md 均引用 `./.cursor/verify-system.sh`，但该文件不存在。
+### 2. ~~command-center.md 文档路径错误~~ ✅
+已修正为 `docs/guides/SKILL_GUIDE.md` 和 `docs/developer/CALL_CHAIN.md`。
 
-**影响**: 用户无法执行「完整验证」和「快速验证」，文档与实现不一致。
+### 3. ~~CURSOR_SELF_CONSISTENCY_REPORT 路径硬编码~~ ✅
+已改为 `{{PROJECT_ROOT}}/.cursor/`。
 
-**建议**:
-- 创建 `verify-system.sh`，实现基础校验逻辑（检查核心脚本、配置、规则、技能等）
-- 或从 README 中移除该引用，改为指向现有 `unified-check.sh` 等脚本
-
-### 2. command-center.md 文档路径错误
-
-**现象**: 第 131 行引用：
-- `.cursor/SKILL_GUIDE.md` → 实际路径为 `.cursor/docs/guides/SKILL_GUIDE.md`
-- `.cursor/CALL_CHAIN.md` → 实际路径为 `.cursor/docs/developer/CALL_CHAIN.md`
-
-**影响**: Agent 或用户按文档查找时可能找不到正确文件。
-
-**建议**: 修正为 `docs/guides/SKILL_GUIDE.md` 和 `docs/developer/CALL_CHAIN.md`。
-
-### 3. CURSOR_SELF_CONSISTENCY_REPORT 路径硬编码
-
-**现象**: 报告内分析路径为 `/home/jwzhou/workspace/cursor-ai-rules/.cursor/`，与当前环境不一致。
-
-**建议**: 使用相对路径或占位符，或增加「分析时自动替换为当前项目路径」的说明。
-
-### 4. ⚠️ 硬编码路径（违反「用户/项目/设备无关」原则）
-
-**原则**: 规则系统应**用户无关、项目无关、设备无关**，内部不应包含具体路径、用户名或项目名。
-
-**需修正的硬编码**:
-
-| 文件 | 问题 | 建议 |
-|------|------|------|
-| `CURSOR_SELF_CONSISTENCY_REPORT.md` | `/home/jwzhou/workspace/cursor-ai-rules/.cursor/` | 改为 `{{PROJECT_ROOT}}/.cursor/` 或相对路径 |
-| `SYSTEM_ARCHITECTURE.md` | `/home/jwzhou/workspace/cursor-ai-rules` | 改为 `{{PROJECT_ROOT}}` |
-| `system_info.md` | `/home/user/project` 示例 | 使用 `{{PROJECT_ROOT}}`、`{{WORK_DIR}}` |
-| `platform_adapter.md` | `return '/home/user'` | 使用 `$HOME` 或环境变量 |
-| `master-sync-trigger.sh` | `/tmp/cursor-master-sync-conversation-$USER.id` | 使用 `$TMPDIR` 或 `$XDG_RUNTIME_DIR` 等 |
-| `conversation-init.sh` | `/tmp/cursor-ai-rules-conversation-init-$USER` | 同上 |
-| `role-sync.sh` | `/tmp/cursor-role-sync-$USER.log` | 同上 |
-| `create-role-context.sh` | `/tmp/cursor-role-context-$USER.md` | 同上 |
-| `security-audit.sh` | `/var/log/auth.log`、`/var/log/secure` | 按 OS 检测选择路径，或使用配置 |
-| `path-config.sh` | `/tmp/.cursorGrowth` | 使用 `$TMPDIR` 或可配置路径 |
-| `growth-directory-auto-init.md` | `/workspace/.cursorGrowth` | 改为 `{{PROJECT_ROOT}}/.cursorGrowth` |
-
-**可保留的合理用法**:
-- `/tmp/` 配合 `$$` 的临时文件（如 `cursor-master.sh`、`file-module.sh`）— 标准临时目录
-- `https://github.com/wangqiqi/cursor-ai-rules` — 外部引用，可保留或改为占位符
+### 4. ~~硬编码路径~~ ✅
+已修正：TMPDIR、platform_adapter、path-config、growth-directory、各 hooks 等。
 
 ---
 
-## 🟡 中优先级问题
+## 🟡 中优先级问题（✅ 已修复）
 
-### 4. Skills 双目录命名易混淆
+### 5. ~~Skills 双目录命名易混淆~~ ✅
+已在 README、SKILL_GUIDE、skill-dispatcher 中明确区分。
 
-**现象**:
-- `.cursor/skills/`：项目技能（skill-dispatcher）
-- `.cursor/features/skills/`：技能库（37 个可复用技能）
+### 6. ~~features/automation README 与 hooks 不一致~~ ✅
+已更新 automation README，说明 hooks 位于 `../hooks/`。
 
-**建议**（自洽性报告已提出）:
-- 在 README、command-center、skill-dispatcher 等文档中明确区分「项目技能」与「技能库」
-- 可选：重命名为 `project-skills/` 与 `skill-library/`，需评估改动成本
-
-### 5. features/automation README 与 hooks 不一致
-
-**现象**: `features/automation/README.md` 提到 `command-log.sh`、`event-logger.sh`，但 hooks.json 中对应钩子实际使用 `logging-common.sh` 配合 args。
-
-**建议**: 更新 automation README，说明与 hooks 的对应关系，或统一术语。
-
-### 6. 插件系统仅有示例
-
-**现象**: `plugins/` 仅包含 `example-plugin`，无实际业务插件。
-
-**建议**:
-- 将常用能力（如质量检查、性能监控）抽象为可选插件
-- 完善插件开发文档和发布流程
-- 与 ROADMAP「插件系统标准化」对齐
+### 7. ~~插件系统仅有示例~~ ✅
+已新增 `quality-check` 插件。
 
 ---
 
 ## 🔄 重复功能分析
 
-| 功能域 | 重复位置 | 说明 |
-|--------|----------|------|
-| **技能匹配/调度** | skill-dispatcher (Skill)、skills-loader.sh、master-executor.js、agent-orchestration-smart-router.sh | 多处实现技能发现、匹配、加载逻辑，建议统一由 skill-dispatcher 或单一 loader 负责 |
-| **规则激活判断** | rules-router.md、rules-conflict-resolver.md、cursor-master.sh、master-handler.js | 规则激活、优先级、冲突解决分散在规则与脚本中，可收敛到 rules-router 作为唯一入口 |
-| **意图解析** | conversation_intent_analyzer.md、smart-intent-matcher.sh、master-parser.js | 意图解析逻辑重复，建议明确分层：规则负责策略，脚本负责执行 |
+| 功能域 | 重复位置 | 状态 | 说明 |
+|--------|----------|------|------|
+| **技能匹配/调度** | skill-dispatcher、skills-loader.sh、master-executor.js | ✅ 已收敛 | 任务 15：skills-loader match、parser 委托、executor 纯委托 |
+| **规则激活判断** | rules-router.md、rules-conflict-resolver.md、cursor-master.sh、master-handler.js | ✅ 已收敛 | 任务 16：RULE_ACTIVATION_FLOW 文档化，脚本仅 executeRule，无激活逻辑 |
+| **意图解析** | conversation_intent_analyzer.md、smart-intent-matcher.sh、master-parser.js | ✅ 已收敛 | 任务 17：INTENT_PARSING_FLOW 文档化，策略/执行分层明确 |
 
 ---
 
-## ⚔️ 潜在冲突分析
+## ⚔️ 潜在冲突分析（✅ 已处理）
 
-| 冲突场景 | 涉及规则/组件 | 说明 |
-|----------|---------------|------|
-| **项目创建时机** | constitution.md（必须先讨论） vs generator.md（项目生成器） | 宪法要求检测到创建意图时 STOP 并讨论，生成器可能被误触发；需确保 generator 仅在用户确认后激活 |
-| **alwaysApply 命名** | constitution/philosophy 使用 `always_apply`，脚本/命令查找 `alwaysApply` | 命名不一致可能导致脚本无法正确识别「始终应用」规则，建议统一为 Cursor 官方的 `alwaysApply` |
+| 冲突场景 | 状态 |
+|----------|------|
+| **项目创建时机** | ✅ generator 已标注「须先执行 constitution 讨论流程」 |
+| **alwaysApply 命名** | ✅ 已统一为 `alwaysApply`，脚本兼容 `always_apply` |
 
 ---
 
@@ -150,9 +97,9 @@
 
 | 官方规范 | 当前状态 | 建议 |
 |----------|----------|------|
-| Frontmatter: `description`, `globs`, `alwaysApply` | 使用 `apply_when`、`always_apply` (snake_case) | 统一为 `alwaysApply` (camelCase)，`apply_when` 可能非官方支持 |
-| 规则控制在 500 行以内 | 部分规则较长 | 拆分超长规则，按官方建议保持聚焦 |
-| 避免模糊指导，可操作 | 部分规则较抽象 | 增加具体示例和可执行步骤 |
+| Frontmatter: `description`, `globs`, `alwaysApply` | ✅ 已统一 | 任务 18：已全部迁移至 `globs`、`alwaysApply` |
+| 规则控制在 500 行以内 | ✅ 已达标 | 74 规则，超长 0 个 |
+| 避免模糊指导，可操作 | 部分规则较抽象 | 任务 19：增加具体示例和可执行步骤 |
 | 引用文件用 `@filename` 而非复制 | 已使用 | 保持 |
 
 ### 命令 (Commands)
@@ -171,41 +118,22 @@
 | `features/skills/` 为 flat .md + registry.json | **非标准格式** | 官方格式为每技能独立文件夹；当前为自定义扩展，需在文档中明确说明 |
 | Frontmatter: `name`, `description` | skill-dispatcher 符合 | 符合 |
 
-### AGENTS.md
+### AGENTS.md ✅
 
-| 官方规范 | 当前状态 | 建议 |
-|----------|----------|------|
-| 项目根目录 `AGENTS.md` 作为 Agent 指令 | 缺失 | 创建根目录 `AGENTS.md`，简要说明可用 Agent 及如何引用 command-center |
+| 官方规范 | 当前状态 |
+|----------|----------|
+| 项目根目录 `AGENTS.md` | ✅ 已创建 |
 
 ---
 
-## 🟢 低优先级 / 增强建议
+## 🟢 低优先级（✅ 已处理）
 
-### 7. 缺少 AGENTS.md 根级入口
-
-**现象**: Cursor 规范支持项目根目录 `AGENTS.md` 作为 Agent 入口，当前仅有 `.cursor/agents/command-center.md`。
-
-**建议**: 在项目根目录创建 `AGENTS.md`，简要说明可用 Agent 及如何引用 command-center。
-
-### 8. 文档与实现数量不一致
-
-**现象**:
-- README 称「31 规则」「100+ 脚本」「30+ 钩子」
-- 实际：46 规则文件、75+ core 脚本、36 hooks 脚本
-
-**建议**: 统一 README 中的统计数据，或改为「30+」「75+」等近似表述并注明「约」。
-
-### 9. 配置热重载与 Schema 验证
-
-**现象**: ROADMAP 提到「配置热重载」「JSON Schema 验证」，需确认 `config-manager.sh`、`cursor-config.schema.json` 是否已实现。
-
-**建议**: 对照 ROADMAP 逐项检查配置系统能力，未实现部分加入完善计划。
-
-### 10. 跨平台与 MCP 集成
-
-**现象**: 存在 `platform_adapter.md`、`local-mcp-integration.sh`、`mcp-detector.sh`，需验证 Windows/macOS 实际支持情况。
-
-**建议**: 建立跨平台测试清单，并在文档中标注各平台支持状态。
+| 项 | 状态 |
+|----|------|
+| AGENTS.md 根入口 | ✅ |
+| README 统计数据 | ✅ 已统一为 74 规则、75+ 脚本、36 钩子 |
+| 配置系统状态 | ✅ 见 CONFIG_SYSTEM_STATUS.md |
+| 跨平台清单 | ✅ 见 PLATFORM_MCP_CHECKLIST.md |
 
 ---
 
@@ -226,8 +154,13 @@
 | 11 | 对照 ROADMAP 检查配置系统实现状态 | ✅ |
 | 12 | 建立跨平台与 MCP 支持清单 | ✅ |
 | 13 | 扩展插件系统（quality-check 插件） | ✅ |
-| 14 | 规则拆分（platform_adapter、vibe-coding 等） | 🔄 进行中（超长 11→10） |
-| 15 | 技能匹配代码级收敛 | ⏳ 待办 |
+| 14 | 规则拆分（platform_adapter、vibe-coding、constitution、conversation_intent、typescript-advanced、react-basics、vue-basics、react-advanced、c-basics、cpp-advanced、intelligent_evolution、vue-advanced、rust-basics 等） | ✅ 已完成（74 规则，超长 0 个） |
+| 15 | 技能匹配代码级收敛 | ✅ skills-loader match、parser 委托、executor 纯委托 |
+| 16 | 规则激活收敛：以 rules-router 为唯一入口，脚本只调用 | ✅ 已完成（RULE_ACTIVATION_FLOW 文档化） |
+| 17 | 意图解析收敛：规则负责策略，脚本负责执行，明确分层 | ✅ 已完成（INTENT_PARSING_FLOW 文档化） |
+| 18 | frontmatter 统一：`apply_when` → `globs`（或官方推荐字段） | ✅ 已完成（74 规则已迁移） |
+| 19 | 规则示例补充：为抽象规则增加可执行示例 | 🔄 待执行 |
+| 20 | 测试覆盖：verify-system、规则校验等 | 🔄 待执行 |
 
 ---
 
@@ -240,7 +173,9 @@
 | 2.1 跨平台兼容性 | 任务 9 |
 | 2.2 配置系统重构 | 任务 8 |
 | 4.1 插件生态体系 | 任务 10 |
-| 3.1 测试覆盖完善 | 建议新增：为 verify-system 等增加测试 |
+| 3.1 测试覆盖完善 | 任务 20 |
+| 重复功能收敛 | 任务 16、17 |
+| 规则最佳实践 | 任务 18、19 |
 
 **建议**: 执行本计划中的高优先级任务后，在 ROADMAP 中标注「.cursor 基础完善已完成」，并将中低优先级任务与 ROADMAP 各阶段合并规划。
 

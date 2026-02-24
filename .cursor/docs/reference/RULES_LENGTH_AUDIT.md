@@ -2,22 +2,27 @@
 
 > Cursor 建议规则控制在 500 行以内 | 更新: 2026-02-24
 
-## 超长规则 (>500 行)
+## 当前状态
+
+- **规则总数**: 74 个
+- **超长规则 (>500 行)**: 0 个 ✅ 已全部拆分达标
+
+## 历史超长规则（已拆分）
 
 | 规则 | 行数 | 建议 |
 |------|------|------|
-| conversation_intent_analyzer.md | 712 | 拆分为「意图分类」+「对话模板」 |
-| typescript-advanced.md | 674 | 拆分为「类型系统」+「高级模式」 |
-| react-basics.md | 673 | 拆分为「组件」+「Hooks」+「状态」 |
-| c-basics.md | 670 | 拆分为「语法」+「内存」+「实践」 |
-| react-advanced.md | 570 | 拆分为「性能」+「安全」+「测试」 |
-| cpp-advanced.md | 568 | 拆分为「模板」+「并发」+「最佳实践」 |
-| vue-basics.md | 561 | 拆分为「组件」+「组合式」+「路由」 |
-| intelligent_evolution.md | 554 | 拆分为「入口」+「策略」+「规则」 |
-| constitution.md | 542 | 核心宪法，可拆分「检测」+「原则」 |
-| vibe-coding.md | ~~540~~ 470 | ✅ 已拆分工具与门禁至 vibe-coding-tools.md |
-| vue-advanced.md | 529 | 拆分为「测试」+「性能」+「安全」 |
-| rust-basics.md | 517 | 拆分为「所有权」+「类型」+「实践」 |
+| conversation_intent_analyzer.md | ~~712~~ 106 | ✅ 已拆分至 conversation_intent_classification、conversation_intent_templates |
+| typescript-advanced.md | ~~674~~ 29 | ✅ 已拆分至 typescript-advanced-types、typescript-advanced-practices |
+| react-basics.md | ~~673~~ 36 | ✅ 已拆分至 react-basics-components、react-basics-hooks、react-basics-state |
+| c-basics.md | ~~670~~ 精简 | ✅ 已拆分至 c-basics-syntax、c-basics-memory、c-basics-practices |
+| react-advanced.md | ~~570~~ 29 | ✅ 已拆分至 react-advanced-performance、react-advanced-security、react-advanced-practices |
+| cpp-advanced.md | ~~568~~ 精简 | ✅ 已拆分至 cpp-advanced-templates、cpp-advanced-concurrency、cpp-advanced-practices |
+| vue-basics.md | ~~561~~ 33 | ✅ 已拆分至 vue-basics-components、vue-basics-composables |
+| intelligent_evolution.md | ~~554~~ 精简 | ✅ 已拆分至 intelligent_evolution-entry、intelligent_evolution-strategies |
+| constitution.md | ~~542~~ 450 | ✅ 已拆分至 constitution_architecture.md（已达标） |
+| vibe-coding.md | ~~540~~ 470 | ✅ 已拆分至 vibe-coding-tools.md |
+| vue-advanced.md | ~~529~~ 精简 | ✅ 已拆分至 vue-advanced-testing、vue-advanced-performance |
+| rust-basics.md | ~~517~~ 精简 | ✅ 已拆分至 rust-basics-ownership、rust-basics-types、rust-basics-practices |
 | platform_adapter.md | ~~501~~ 424 | ✅ 已拆分路径至 platform_adapter_paths.md |
 
 ## 拆分原则
