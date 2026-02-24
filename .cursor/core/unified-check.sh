@@ -101,7 +101,7 @@ verify_system() {
     local agent_count=$(find "$CURSOR_DIR/agents" -name "*.md" 2>/dev/null | wc -l)
     local command_count=$(find "$CURSOR_DIR/commands" -name "*.md" 2>/dev/null | wc -l)
     local rule_count=$(find "$CURSOR_DIR/rules" -name "*.md" 2>/dev/null | wc -l)
-    local skill_count=$(find "$CURSOR_DIR/features/skills" -type d -mindepth 1 2>/dev/null | wc -l)
+    local skill_count=$(find "$CURSOR_DIR/features/skills" -maxdepth 1 -name "*.md" 2>/dev/null | wc -l)
     
     echo "  Agents: $agent_count 个"
     echo "  Commands: $command_count 个"

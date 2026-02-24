@@ -7,18 +7,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
 
-# 获取项目角色配置
+# 获取项目角色配置（使用 shared-functions 统一路径）
 get_project_role() {
     local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local cursor_dir="$(dirname "$script_dir")"
     local project_root="$(dirname "$cursor_dir")"
-    # 确保我们到达真正的项目根目录（包含.cursor目录的地方）
     while [[ "$project_root" != "/" && ! -d "$project_root/.cursor" ]]; do
         project_root="$(dirname "$project_root")"
     done
-    local project_config="$project_root/.cursorGrowth/user/config/project_state.json"
-    local legacy_config="$project_root/.cursor-project.json"
-    [[ -f "$project_config" ]] || project_config="$legacy_config"
+
+    local project_config
+    if source "$(dirname "$cursor_dir")/core/shared-functions.sh" 2>/dev/null; then
+        project_config=$(get_project_state_path "$project_root")
+    else
+        project_config="$project_root/.cursorGrowth/user/config/project_state.json"
+        [[ -f "$project_config" ]] || project_config="$project_root/.cursor-project.json"
+    fi
 
     if [[ ! -f "$project_config" ]]; then
         echo "professional_assistant"

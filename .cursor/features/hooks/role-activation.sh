@@ -11,12 +11,16 @@ HOOK_DATA="$2"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
-# 确保到达项目根（含 .cursor 的目录）
 [[ -d "$PROJECT_ROOT/.cursor" ]] || PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
 
-# 项目状态路径（.cursorGrowth/user/config/project_state.json）
-PROJECT_STATE="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
-LEGACY_STATE="$PROJECT_ROOT/.cursor-project.json"
+# 使用 shared-functions 统一的项目状态路径
+source "$PROJECT_ROOT/.cursor/core/shared-functions.sh" 2>/dev/null || true
+init_project_state_env "$PROJECT_ROOT" 2>/dev/null || {
+    PROJECT_STATE_PATH="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
+    PROJECT_STATE_LEGACY="$PROJECT_ROOT/.cursor-project.json"
+    PROJECT_STATE_READ_PATH="$PROJECT_STATE_PATH"
+    [[ -f "$PROJECT_STATE_READ_PATH" ]] || PROJECT_STATE_READ_PATH="$PROJECT_STATE_LEGACY"
+}
 
 # 日志函数
 log() {
@@ -40,18 +44,19 @@ check_nodejs() {
 
 # 获取项目角色配置（.cursorGrowth/user/config/project_state.json）
 get_project_role() {
-    local project_config="$PROJECT_STATE"
-    [[ -f "$project_config" ]] || project_config="$LEGACY_STATE"
+    local project_config="${PROJECT_STATE_READ_PATH:-$PROJECT_STATE_PATH}"
+    [[ -z "$project_config" ]] && project_config="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
+    [[ -f "$project_config" ]] || project_config="$PROJECT_ROOT/.cursor-project.json"
     log "🔍 查找配置文件: $project_config"
 
     if [[ ! -f "$project_config" ]]; then
-        mkdir -p "$(dirname "$PROJECT_STATE")"
+        mkdir -p "$(dirname "$PROJECT_STATE_PATH")"
         local default_config="{
   \"currentRole\": \"professional_assistant\",
   \"lastUpdated\": \"$(date -Iseconds)\",
   \"projectPath\": \"$PROJECT_ROOT\"
 }"
-        echo "$default_config" > "$PROJECT_STATE"
+        echo "$default_config" > "${PROJECT_STATE_PATH:-$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json}"
         log "✅ 创建默认项目角色配置: professional_assistant"
         echo "professional_assistant"
         return 0

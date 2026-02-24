@@ -176,6 +176,54 @@ validate_project_context() {
 }
 
 # ------------------------------------------------------------------------------
+# 项目状态路径 (project_state.json 迁移逻辑统一入口)
+# 供 hooks、role-sync、conversation-init 等调用，避免重复实现
+# ------------------------------------------------------------------------------
+get_project_state_path() {
+    local project_root="${1:-$PROJECT_ROOT}"
+    [[ -z "$project_root" ]] && project_root=$(get_project_root_path 2>/dev/null)
+    [[ -z "$project_root" ]] && { echo "ERROR: get_project_state_path 需要 PROJECT_ROOT" >&2; return 1; }
+
+    local growth_path="$project_root/.cursorGrowth/user/config/project_state.json"
+    local legacy_path="$project_root/.cursor-project.json"
+
+    # 迁移：旧文件存在且新文件不存在时迁移
+    if [[ -f "$legacy_path" && ! -f "$growth_path" ]]; then
+        mkdir -p "$(dirname "$growth_path")"
+        cp "$legacy_path" "$growth_path" 2>/dev/null && rm -f "$legacy_path" 2>/dev/null || true
+    fi
+
+    # 返回读取路径（优先新路径）
+    if [[ -f "$growth_path" ]]; then
+        echo "$growth_path"
+    else
+        echo "$legacy_path"
+    fi
+}
+
+# 初始化项目状态环境变量（供 hooks 使用）
+# 用法: source shared-functions.sh; init_project_state_env "$PROJECT_ROOT"
+# 设置: PROJECT_STATE_PATH, PROJECT_STATE_READ_PATH
+init_project_state_env() {
+    local project_root="${1:-$PROJECT_ROOT}"
+    [[ -z "$project_root" ]] && return 1
+
+    export PROJECT_STATE_PATH="$project_root/.cursorGrowth/user/config/project_state.json"
+    export PROJECT_STATE_LEGACY="$project_root/.cursor-project.json"
+
+    if [[ -f "$PROJECT_STATE_LEGACY" && ! -f "$PROJECT_STATE_PATH" ]]; then
+        mkdir -p "$(dirname "$PROJECT_STATE_PATH")"
+        cp "$PROJECT_STATE_LEGACY" "$PROJECT_STATE_PATH" 2>/dev/null && rm -f "$PROJECT_STATE_LEGACY" 2>/dev/null || true
+    fi
+
+    if [[ -f "$PROJECT_STATE_PATH" ]]; then
+        export PROJECT_STATE_READ_PATH="$PROJECT_STATE_PATH"
+    else
+        export PROJECT_STATE_READ_PATH="$PROJECT_STATE_LEGACY"
+    fi
+}
+
+# ------------------------------------------------------------------------------
 # 路径操作相关函数 (所有脚本都需要)
 # 提供安全的文件和目录操作接口
 # ------------------------------------------------------------------------------

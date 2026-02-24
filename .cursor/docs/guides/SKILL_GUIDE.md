@@ -74,7 +74,9 @@
 
 **定位**: 可跨项目共享的通用技能库
 
-**格式**: 自定义扩展（flat .md 文件 + registry.json），由 skill-dispatcher 统一调度。非 Cursor 官方「每技能一文件夹」格式。
+**格式**: 自定义扩展（flat .md 文件 + registry.json），由 skill-dispatcher 统一调度。
+
+> ⚠️ **格式说明**：Cursor 官方 Skills 格式为「每技能一个独立文件夹，含 SKILL.md」。本仓库 `features/skills/` 采用**自定义扁平结构**（.md + registry.json），以简化维护和批量管理。skill-dispatcher 负责发现、匹配和调用。
 
 **作用域**: 可以在任何项目中使用
 

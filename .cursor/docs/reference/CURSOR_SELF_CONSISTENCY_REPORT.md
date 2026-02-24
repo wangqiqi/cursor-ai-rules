@@ -20,7 +20,7 @@
 │   ├── hooks/        # Git钩子 (36个)
 │   └── automation/   # 自动化脚本
 ├── plugins/          # 插件系统 (2个)
-├── rules/            # 规则系统 (74个)
+├── rules/            # 规则系统 (75个)
 └── skills/           # 项目技能 (1个: skill-dispatcher)
 ```
 
@@ -235,9 +235,9 @@ command-center.md (Agent 处理)
 | Skills 系统 | ✅ 自洽 | skill-dispatcher 功能完整 |
 | Features Skills | ✅ 自洽 | 30+ 技能定义完整 |
 | Commands 系统 | ✅ 自洽 | 命令定义完整 |
-| Core 脚本系统 | ✅ 自洽 | 100+ 脚本功能完整 |
+| Core 脚本系统 | ✅ 自洽 | 75+ 脚本功能完整 |
 | Config 配置系统 | ✅ 自洽 | 34 个配置文件完整 |
-| Rules 规则系统 | ✅ 自洽 | 31 个规则文件完整 |
+| Rules 规则系统 | ✅ 自洽 | 75 个规则文件完整 |
 | Docs 文档系统 | ✅ 自洽 | 文档结构完整 |
 
 | 关系 | 状态 | 说明 |
@@ -353,5 +353,35 @@ command-center.md (Agent 处理)
 
 ---
 
-**生成时间**: 2026-02-07
+---
+
+## 📊 冗余性与冲突性确认 (2026-02-24 合并)
+
+### 冗余性
+
+| 项目 | 说明 |
+|------|------|
+| **hooks.json 双位置** | `.cursor/hooks.json` = Cursor 原生；`features/hooks/hooks.json` = hooks-engine。两者不同系统，非冗余。 |
+| **ESLint 双配置** | 根目录 `.eslintrc.json` = 运行时；`.cursor/config/eslint-config.json` = 模板。用途不同。 |
+
+### 冲突性
+
+| 检查项 | 状态 |
+|------|------|
+| alwaysApply 命名 | ✅ 已统一 |
+| project_state 路径 | ✅ 已统一至 .cursorGrowth |
+| hooks 双系统 | ✅ 分离清晰 |
+
+### 数字统计（2026-02-24）
+
+| 模块 | 实际 | 文档 |
+|------|------|------|
+| 规则 | 75 | 75 |
+| 技能 | 35 .md / 42 registry | 37 |
+| 钩子 | 36 | 36 |
+| 核心脚本 | 87 | 75+ |
+
+---
+
+**生成时间**: 2026-02-07 | **最后更新**: 2026-02-24（合并冗余性/冲突性确认）
 **下次审查**: 建议在添加新组件后重新检查自洽性

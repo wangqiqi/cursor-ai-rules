@@ -1,5 +1,15 @@
 # 🔗 Cursor AI Rules 完整钩子系统集成指南
 
+## ⚠️ 双系统区分（必读）
+
+| 系统 | 配置文件 | 执行者 | 说明 |
+|------|----------|--------|------|
+| **Cursor 原生 Hooks** | `.cursor/hooks.json` | Cursor IDE | Cursor 1.7+ 内置，支持 beforeSubmitPrompt 等，需在 Settings 启用 |
+| **hooks-engine** | `.cursor/features/hooks/hooks.json` | `core/hooks-engine.sh` | 自定义事件驱动，由脚本解析并调用钩子 |
+
+- **Cursor 原生**：路径 `.cursor/hooks.json`，命令相对 `.cursor/`，如 `./hooks/ensure-growth-on-prompt.sh`
+- **hooks-engine**：路径 `features/hooks/hooks.json`，命令相对项目根，如 `features/hooks/master-init.sh`
+
 ## 🎯 概述
 
 Cursor AI Rules 现在提供了完整的钩子系统，包含8个专业钩子脚本，覆盖从初始化到监控的完整自动化流程：

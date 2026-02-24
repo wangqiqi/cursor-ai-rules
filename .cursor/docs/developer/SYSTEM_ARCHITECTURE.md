@@ -27,14 +27,14 @@
 │   ├── vibe.md                      # VIBE开发模式
 │   └── capability-maps/             # 能力映射
 ├── config/              # 配置系统
-├── core/                # 核心脚本库 (100+ 脚本)
+├── core/                # 核心脚本库 (75+ 脚本)
 ├── docs/                # 文档系统
 ├── features/            # 特性系统
 │   ├── skills/          # 技能库 (37个技能)
 │   ├── hooks/           # Git钩子系统
 │   └── automation/      # 自动化脚本
 ├── plugins/             # 插件系统
-├── rules/               # 规则系统 (31个规则)
+├── rules/               # 规则系统 (75个规则)
 └── skills/              # 项目技能
     └── skill-dispatcher/             # 技能调度器
 ```
@@ -236,7 +236,7 @@
 
 **职责**: 项目规则和AI行为指导
 
-**数量**: 31个规则文件
+**数量**: 75个规则文件
 
 ---
 
@@ -513,7 +513,7 @@ command-center 整合结果
 | Core Scripts | 100+ |
 | Features Skills | 37 |
 | Hooks | 30+ |
-| Rules | 31 |
+| Rules | 75 |
 | Config Files | 22 |
 | AI Roles | 21 |
 

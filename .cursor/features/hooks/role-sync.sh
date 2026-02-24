@@ -16,34 +16,32 @@ log() {
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$CURSOR_DIR")"
-# 项目持久化状态路径（.cursorGrowth/user/config/project_state.json）
-PROJECT_STATE="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
-LEGACY_STATE="$PROJECT_ROOT/.cursor-project.json"
+# 确保到达项目根（.cursor 的父目录）
+[[ -d "$PROJECT_ROOT/.cursor" ]] || PROJECT_ROOT="$(dirname "$PROJECT_ROOT")"
 
-# 迁移：旧文件存在且新文件不存在时迁移
-if [[ -f "$LEGACY_STATE" && ! -f "$PROJECT_STATE" ]]; then
-    mkdir -p "$(dirname "$PROJECT_STATE")"
-    cp "$LEGACY_STATE" "$PROJECT_STATE" 2>/dev/null && rm -f "$LEGACY_STATE" 2>/dev/null || true
-fi
-# 读取路径：优先新路径
-STATE_FILE="$PROJECT_STATE"
-[[ -f "$STATE_FILE" ]] || STATE_FILE="$LEGACY_STATE"
+# 使用 shared-functions 统一的项目状态路径（含迁移逻辑）
+source "$PROJECT_ROOT/.cursor/core/shared-functions.sh" 2>/dev/null || true
+init_project_state_env "$PROJECT_ROOT" 2>/dev/null || {
+    PROJECT_STATE_PATH="$PROJECT_ROOT/.cursorGrowth/user/config/project_state.json"
+    PROJECT_STATE_READ_PATH="${PROJECT_STATE_PATH}"
+    [[ -f "$PROJECT_STATE_PATH" ]] || PROJECT_STATE_READ_PATH="$PROJECT_ROOT/.cursor-project.json"
+}
 
 log "开始角色同步检查..."
 
 # 确保项目角色配置存在
-if [[ ! -f "$STATE_FILE" ]]; then
-    mkdir -p "$(dirname "$PROJECT_STATE")"
+if [[ ! -f "$PROJECT_STATE_READ_PATH" ]]; then
+    mkdir -p "$(dirname "$PROJECT_STATE_PATH")"
     default_config="{
   \"currentRole\": \"professional_assistant\",
   \"lastUpdated\": \"$(date -Iseconds)\",
   \"projectPath\": \"$PROJECT_ROOT\"
 }"
-    echo "$default_config" > "$PROJECT_STATE"
+    echo "$default_config" > "$PROJECT_STATE_PATH"
     log "✅ 创建默认项目角色配置: professional_assistant"
     ROLE="professional_assistant"
 else
-    ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$STATE_FILE" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
+    ROLE=$(grep -o '"currentRole"\s*:\s*"[^"]*"' "$PROJECT_STATE_READ_PATH" 2>/dev/null | sed 's/.*"currentRole"\s*:\s*"\([^"]*\)".*/\1/' 2>/dev/null)
 fi
 
 if [[ -n "$ROLE" ]]; then

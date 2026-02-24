@@ -2,11 +2,22 @@
 
 钩子系统提供了事件驱动的自动化处理能力，在特定事件发生时自动执行相应的处理逻辑。
 
+## ⚠️ 双系统说明（重要）
+
+本仓库存在**两套独立的钩子配置**，用途不同：
+
+| 配置位置 | 读取者 | 用途 |
+|----------|--------|------|
+| **`.cursor/hooks.json`** | Cursor IDE 原生 | Cursor 1.7+ 原生 Hooks，如 `beforeSubmitPrompt`，由 Cursor 直接执行 |
+| **`.cursor/features/hooks/hooks.json`** | hooks-engine.sh | 自定义钩子引擎，由 `core/hooks-engine.sh` 解析并执行 |
+
+两者互不替代，可同时存在。详见 [hooks-integration-guide.md](../docs/developer/hooks-integration-guide.md)。
+
 ## 📁 目录结构
 
 ```
 hooks/
-├── hooks.json      # 钩子配置文件
+├── hooks.json      # 钩子配置文件（hooks-engine 用）
 └── README.md       # 钩子系统文档
 ```
 

@@ -51,7 +51,7 @@ setup_directory_structure() {
 
     # 注意: 不应该在运行时创建.cursor目录结构
     # 所有.cursor内容都应该是预先存在的
-    # 项目ID信息统一写入到 .cursor-project.json 文件
+    # 项目状态统一写入到 .cursorGrowth/user/config/project_state.json
 
     # 检查必要的目录是否存在
     if [ ! -d "$SCRIPT_DIR/../core" ]; then
