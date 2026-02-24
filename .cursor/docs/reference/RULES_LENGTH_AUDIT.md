@@ -15,7 +15,7 @@
 | vue-basics.md | 561 | 拆分为「组件」+「组合式」+「路由」 |
 | intelligent_evolution.md | 554 | 拆分为「入口」+「策略」+「规则」 |
 | constitution.md | 542 | 核心宪法，可拆分「检测」+「原则」 |
-| vibe-coding.md | 540 | 拆分为「流程」+「接口」+「示例」 |
+| vibe-coding.md | ~~540~~ 470 | ✅ 已拆分工具与门禁至 vibe-coding-tools.md |
 | vue-advanced.md | 529 | 拆分为「测试」+「性能」+「安全」 |
 | rust-basics.md | 517 | 拆分为「所有权」+「类型」+「实践」 |
 | platform_adapter.md | ~~501~~ 424 | ✅ 已拆分路径至 platform_adapter_paths.md |
