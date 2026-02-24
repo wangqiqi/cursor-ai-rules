@@ -2979,8 +2979,8 @@ execute_rule_call() {
         return 1
     fi
 
-    # 解析规则配置
-    local always_apply=$(grep -E "^alwaysApply:" "$rule_file" | head -1 | sed 's/alwaysApply: *//;s/ *$//')
+    # 解析规则配置（兼容 alwaysApply 与 always_apply）
+    local always_apply=$(grep -E "^(alwaysApply|always_apply):" "$rule_file" | head -1 | sed 's/.*: *//;s/ *$//')
     local handler=$(grep -E "^handler:" "$rule_file" | head -1 | sed 's/handler: *//;s/ *$//')
 
     if [ "$always_apply" = "true" ]; then

@@ -2522,8 +2522,8 @@ class MasterCommandHandler {
             const ruleContent = fs.readFileSync(rulePath, 'utf8');
             console.log(`📄 文件内容长度: ${ruleContent.length} 字符`);
 
-            // 解析规则配置
-            const alwaysApplyMatch = ruleContent.match(/^alwaysApply:\s*(.+)$/m);
+            // 解析规则配置（兼容 alwaysApply 与 always_apply）
+            const alwaysApplyMatch = ruleContent.match(/^(?:alwaysApply|always_apply):\s*(.+)$/m);
             const handlerMatch = ruleContent.match(/^handler:\s*(.+)$/m);
 
             const alwaysApply = alwaysApplyMatch ? alwaysApplyMatch[1].trim() === 'true' : false;

@@ -27,6 +27,9 @@ docs/
 └── reference/             # 📚 参考资料
     ├── faq.md            # 常见问题解答
     ├── CURSOR_SELF_CONSISTENCY_REPORT.md  # 系统自洽性评估报告
+    ├── CONFIG_SYSTEM_STATUS.md   # 配置系统实现状态
+    ├── PLATFORM_MCP_CHECKLIST.md # 跨平台与 MCP 支持清单
+    ├── RULES_LENGTH_AUDIT.md     # 规则长度审计
     └── specifications/   # 技术规范
         └── constitution.md # 宪法规范
 ```

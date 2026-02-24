@@ -11,7 +11,8 @@ GROWTH_DIR="$CURSOR_GROWTH"
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_DIR="$SCRIPT_DIR"
+CURSOR_DIR="$(dirname "$SCRIPT_DIR")"
+CONFIG_DIR="${CURSOR_DIR}/config"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -412,6 +413,8 @@ generate_config_recommendations() {
 # 🎯 主函数
 main() {
     local command="${1:-status}"
+    # 兼容 hooks 传入的 validate_enhanced
+    [[ "$command" == "validate_enhanced" ]] && command="validate"
 
     case "$command" in
         "init")

@@ -1123,7 +1123,7 @@ class MasterCommandExecutor {
      * @returns {Object} 解析后的配置
      */
     parseRuleContent(content) {
-        const alwaysApplyMatch = content.match(/^alwaysApply:\s*(.+)$/m);
+            const alwaysApplyMatch = content.match(/^(?:alwaysApply|always_apply):\s*(.+)$/m);
         const handlerMatch = content.match(/^handler:\s*(.+)$/m);
 
         return {
