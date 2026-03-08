@@ -11,7 +11,7 @@ Guide for creating high-quality MCP (Model Context Protocol) servers that enable
 ## 🔧 使用方法
 
 ```bash
-@master skill:mcp-builder [参数]
+/master skill:mcp-builder [参数]
 ```
 
 ## 📚 原始文档

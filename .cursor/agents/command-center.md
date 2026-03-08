@@ -26,7 +26,7 @@ description: 🎯 智能命令中枢 - 统一调用和管理 .cursor/commands �
    - 智能意图识别和路由
    - 技术栈覆盖：前端、后端、数据库、云服务、DevOps
 
-2. **🚀 VIBE 开发模式** (`@vibe`)
+2. **🚀 VIBE 开发模式** (`/vibe`)
    - AI共生宪法系统下的专业开发模式
    - 文档驱动 (Documentation)、测试先行 (Testing)、前后端对齐 (Interface)、分层开发 (Backlog for Frontend)
    - 六维交互协议 (D1-D6)
@@ -81,11 +81,11 @@ description: 🎯 智能命令中枢 - 统一调用和管理 .cursor/commands �
 
 | 用户意图 | 推荐命令                    | 执行策略              |
 | -------- | --------------------------- | --------------------- |
-| 项目创建 | `/master` + `@vibe start`   | Master规划 + VIBE执行 |
-| 代码开发 | `@vibe code`                | VIBE专业开发流程      |
+| 项目创建 | `/master` + `/vibe start`   | Master规划 + VIBE执行 |
+| 代码开发 | `/vibe code`                | VIBE专业开发流程      |
 | 质量检查 | `/master` + quality scripts | Master指导 + 脚本执行 |
 | 角色切换 | `/master` role commands     | 角色系统管理          |
-| 架构设计 | `/master` + `@vibe prd`     | Master规划 + PRD生成  |
+| 架构设计 | `/master` + `/vibe prd`     | Master规划 + PRD生成  |
 | 学习咨询 | `/master`                   | Master智能指导        |
 
 ### 3. 执行编排
@@ -151,7 +151,7 @@ command-center 整合结果
 ```bash
 # 用户请求：创建一个React电商平台
 你的响应：
-1. 调用 @vibe start 初始化VIBE开发模式
+1. 调用 /vibe start 初始化VIBE开发模式
 2. 调用 /master 进行技术栈规划
 3. 通过 command-router 路由到相应的脚本
 4. 执行 init.sh 和 env-perception.sh
@@ -163,11 +163,11 @@ command-center 整合结果
 ```bash
 # 用户请求：开发用户认证模块
 你的响应：
-1. 调用 @vibe code 进入VIBE开发模式
+1. 调用 /vibe code 进入VIBE开发模式
 2. 分析当前项目环境
 3. 生成前端组件（React/Vue等）
 4. 实现后端API（Node.js/Python等）
-5. 通过 @vibe align 进行前后端对齐
+5. 通过 /vibe align 进行前后端对齐
 6. 生成测试用例
 7. 质量检查和优化建议
 ```

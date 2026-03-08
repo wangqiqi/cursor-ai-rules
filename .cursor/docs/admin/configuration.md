@@ -63,37 +63,37 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 #### 查看当前配置
 ```bash
 # 显示所有配置层级
-@master 显示配置
+/master 显示配置
 
 # 查看特定配置项
-@master 显示配置 ai.model
+/master 显示配置 ai.model
 
 # 查看配置层级优先级
-@master 配置层级
+/master 配置层级
 ```
 
 #### 修改配置
 ```bash
 # 设置全局配置
-@master 设置配置 global.language zh-CN
+/master 设置配置 global.language zh-CN
 
 # 设置项目配置
-@master 设置配置 project.type nodejs
+/master 设置配置 project.type nodejs
 
 # 设置用户配置
-@master 设置配置 user.theme dark
+/master 设置配置 user.theme dark
 ```
 
 #### 配置验证
 ```bash
 # 验证配置完整性
-@master 验证配置
+/master 验证配置
 
 # 检查配置冲突
-@master 检查配置冲突
+/master 检查配置冲突
 
 # 生成配置报告
-@master 配置报告
+/master 配置报告
 ```
 
 ### 高级配置管理
@@ -101,25 +101,25 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 #### 配置导入导出
 ```bash
 # 导出配置
-@master 导出配置 /path/to/config.json
+/master 导出配置 /path/to/config.json
 
 # 导入配置
-@master 导入配置 /path/to/config.json
+/master 导入配置 /path/to/config.json
 
 # 备份当前配置
-@master 备份配置
+/master 备份配置
 ```
 
 #### 配置重置
 ```bash
 # 重置项目配置
-@master 重置配置 project
+/master 重置配置 project
 
 # 重置全局配置
-@master 重置配置 global
+/master 重置配置 global
 
 # 恢复默认配置
-@master 恢复默认配置
+/master 恢复默认配置
 ```
 
 ## 🎯 核心配置项详解
@@ -271,25 +271,25 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 #### 配置变更追踪
 ```bash
 # 查看配置历史
-@master 配置历史
+/master 配置历史
 
 # 回滚配置变更
-@master 回滚配置 [commit-hash]
+/master 回滚配置 [commit-hash]
 
 # 比较配置差异
-@master 配置差异 [file1] [file2]
+/master 配置差异 [file1] [file2]
 ```
 
 #### 配置模板管理
 ```bash
 # 创建配置模板
-@master 创建模板 react-app
+/master 创建模板 react-app
 
 # 应用配置模板
-@master 应用模板 react-app
+/master 应用模板 react-app
 
 # 管理模板库
-@master 模板列表
+/master 模板列表
 ```
 
 ## 🔧 高级配置技巧
@@ -337,25 +337,25 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 ### 配置性能监控
 ```bash
 # 配置加载性能
-@master 配置性能
+/master 配置性能
 
 # 内存使用统计
-@master 配置内存
+/master 配置内存
 
 # 缓存命中率
-@master 配置缓存
+/master 配置缓存
 ```
 
 ### 配置优化建议
 ```bash
 # 获取优化建议
-@master 配置优化建议
+/master 配置优化建议
 
 # 自动化优化
-@master 优化配置
+/master 优化配置
 
 # 清理无效配置
-@master 清理配置
+/master 清理配置
 ```
 
 ## 🛡️ 配置安全
@@ -387,25 +387,25 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 ### 从旧版本迁移
 ```bash
 # 检测配置兼容性
-@master 检查配置兼容性
+/master 检查配置兼容性
 
 # 自动迁移配置
-@master 迁移配置
+/master 迁移配置
 
 # 手动调整配置
-@master 配置向导
+/master 配置向导
 ```
 
 ### 跨项目配置复用
 ```bash
 # 导出配置模板
-@master 导出配置模板
+/master 导出配置模板
 
 # 导入配置模板
-@master 导入配置模板
+/master 导入配置模板
 
 # 同步团队配置
-@master 同步团队配置
+/master 同步团队配置
 ```
 
 ## 📚 故障排除
@@ -415,37 +415,37 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 #### 配置不生效
 ```bash
 # 检查配置优先级
-@master 配置优先级
+/master 配置优先级
 
 # 验证配置文件格式
-@master 验证配置格式
+/master 验证配置格式
 
 # 重新加载配置
-@master 重新加载配置
+/master 重新加载配置
 ```
 
 #### 配置冲突
 ```bash
 # 检测配置冲突
-@master 检测配置冲突
+/master 检测配置冲突
 
 # 解决配置冲突
-@master 解决配置冲突
+/master 解决配置冲突
 
 # 合并配置
-@master 合并配置
+/master 合并配置
 ```
 
 #### 配置丢失
 ```bash
 # 从备份恢复
-@master 恢复配置备份
+/master 恢复配置备份
 
 # 重置为默认配置
-@master 重置为默认
+/master 重置为默认
 
 # 重新初始化配置
-@master 重新初始化配置
+/master 重新初始化配置
 ```
 
 ---

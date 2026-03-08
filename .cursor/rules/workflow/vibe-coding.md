@@ -427,7 +427,7 @@ if (coverage.functions < 90) {
 
 ## 🛠️ 实施工具与质量门禁
 
-详见 @vibe-coding-tools.md
+详见 vibe-coding-tools 规则
 
 ---
 

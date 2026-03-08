@@ -11,7 +11,7 @@ Presentation creation, editing, and analysis. When Claude needs to work with pre
 ## 🔧 使用方法
 
 ```bash
-@master skill:pptx [参数]
+/master skill:pptx [参数]
 ```
 
 ## 📚 原始文档

@@ -11,7 +11,7 @@ Intelligent debugging assistant using isolation and pattern analysis techniques.
 ## 🔧 使用方法
 
 ```bash
-@master skill:debug-assistant [参数]
+/master skill:debug-assistant [参数]
 ```
 
 ## 📚 原始文档
@@ -28,9 +28,9 @@ license: Complete terms in LICENSE.txt
 
 ```bash
 # 自动隔离调试
-@master 隔离调试 [模块路径]     # 智能注释模块并测试
-@master 调试隔离模式           # 进入交互式隔离调试
-@master 恢复隔离模块           # 恢复被注释的模块
+/master 隔离调试 [模块路径]     # 智能注释模块并测试
+/master 调试隔离模式           # 进入交互式隔离调试
+/master 恢复隔离模块           # 恢复被注释的模块
 ```
 
 **工作原理**：
@@ -45,9 +45,9 @@ license: Complete terms in LICENSE.txt
 
 ```bash
 # 错误模式分析
-@master 分析错误模式         # 自动识别错误类型和频率
-@master 错误统计报告         # 生成错误分布分析图
-@master 批量修复 [错误类型]   # 智能批量修复同类错误
+/master 分析错误模式         # 自动识别错误类型和频率
+/master 错误统计报告         # 生成错误分布分析图
+/master 批量修复 [错误类型]   # 智能批量修复同类错误
 ```
 
 **工作原理**：
@@ -79,7 +79,7 @@ license: Complete terms in LICENSE.txt
 #### 场景1: 复杂系统调试
 ```bash
 # 当遇到复杂系统错误时
-@master 隔离调试 problematic_module.js
+/master 隔离调试 problematic_module.js
 # 系统会：
 # 1. 备份原始文件
 # 2. 注释可疑模块
@@ -90,7 +90,7 @@ license: Complete terms in LICENSE.txt
 #### 场景2: 批量错误修复
 ```bash
 # 当发现大量相似错误时
-@master 分析错误模式
+/master 分析错误模式
 # 系统会：
 # 1. 扫描所有错误日志
 # 2. 分类错误类型
@@ -101,7 +101,7 @@ license: Complete terms in LICENSE.txt
 #### 场景3: 配置问题排查
 ```bash
 # 当怀疑配置问题时
-@master 调试配置隔离 config.json
+/master 调试配置隔离 config.json
 # 系统会：
 # 1. 备份配置文件
 # 2. 逐个注释配置项
@@ -272,4 +272,4 @@ graph TD
 
 *核心创新*: 将工程实践经验转化为AI驱动的智能调试系统，实现安全、高效、自动化的调试体验！
 
-*🚀 使用方法: `@master skill:debug-assistant` 或 `@master 调试助手`*
+*🚀 使用方法: `/master skill:debug-assistant` 或 `/master 调试助手`*

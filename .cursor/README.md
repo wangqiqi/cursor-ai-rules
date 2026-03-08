@@ -116,11 +116,11 @@ AI的所有输出必须携带可追溯、可验证、可归属的原始信号链
 
 ### 💬 VIBE对话开发
 ```bash
-@vibe start    # 一键项目和开发环境初始化
-@vibe prd      # 自动生成产品需求文档
-@vibe code     # 智能代码生成和审查
-@vibe test     # 自动化测试生成和执行
-@vibe deploy   # 一键部署和环境配置
+/vibe start    # 一键项目和开发环境初始化
+/vibe prd      # 自动生成产品需求文档
+/vibe code     # 智能代码生成和审查
+/vibe test     # 自动化测试生成和执行
+/vibe deploy   # 一键部署和环境配置
 ```
 
 ---
@@ -229,11 +229,11 @@ AI的所有输出必须携带可追溯、可验证、可归属的原始信号链
 ### 方法2: VIBE开发流程
 ```bash
 # 📋 文档驱动的开发流程
-@vibe start              # 初始化开发模式
-@vibe prd                # 生成产品需求文档
-@vibe code               # 智能代码生成
-@vibe test               # 自动化测试
-@vibe deploy             # 一键部署
+/vibe start              # 初始化开发模式
+/vibe prd                # 生成产品需求文档
+/vibe code               # 智能代码生成
+/vibe test               # 自动化测试
+/vibe deploy             # 一键部署
 
 # ✨ 特点: 文档驱动、测试先行、前后端对齐
 ```

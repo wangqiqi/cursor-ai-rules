@@ -550,7 +550,7 @@ class PerformanceMonitor {
 #### 性能分析报告
 ```bash
 # 性能分析命令
-@master 性能深度分析
+/master 性能深度分析
 
 # 输出示例：
 # 📊 深度性能分析报告
@@ -646,7 +646,7 @@ const poolConfig = {
 #### 1. 内存泄漏排查
 ```bash
 # 内存使用监控
-@master 内存分析
+/master 内存分析
 
 # 输出示例：
 # 🧠 内存使用分析
@@ -659,7 +659,7 @@ const poolConfig = {
 #### 2. CPU使用率过高
 ```bash
 # CPU分析
-@master CPU分析
+/master CPU分析
 
 # 输出示例：
 # ⚡ CPU使用率分析
@@ -672,7 +672,7 @@ const poolConfig = {
 #### 3. 响应时间过长
 ```bash
 # 响应时间分析
-@master 响应时间分析
+/master 响应时间分析
 
 # 输出示例：
 # ⏱️ 响应时间分析
@@ -687,7 +687,7 @@ const poolConfig = {
 #### 自动化基准测试
 ```bash
 # 运行性能基准测试
-@master 运行基准测试
+/master 运行基准测试
 
 # 输出示例：
 # 🏁 性能基准测试结果
@@ -828,7 +828,7 @@ class OptimizationAdvisor {
 #### 建立性能基线
 ```bash
 # 创建性能基线
-@master 创建性能基线
+/master 创建性能基线
 
 # 输出示例：
 # 📊 性能基线已建立
@@ -842,7 +842,7 @@ class OptimizationAdvisor {
 #### 性能回归检测
 ```bash
 # 性能回归测试
-@master 性能回归检测
+/master 性能回归检测
 
 # 输出示例：
 # ⚠️ 性能回归检测

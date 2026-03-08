@@ -1740,7 +1740,7 @@ intelligent_master() {
     echo "🎯 user_input: '$user_input'" >&2
 
     # 🎯 VIBE命令检测和处理
-    if echo "$user_input" | grep -q "^@vibe" || echo "$user_input" | grep -q "^vibe"; then
+    if echo "$user_input" | grep -q "^/vibe" || echo "$user_input" | grep -q "^vibe"; then
         process_vibe_command "$user_input"
         return
     fi
@@ -2130,11 +2130,11 @@ show_smart_guidance() {
 
         echo ""
         echo -e "${GREEN}🚀 热门使用场景:${NC}"
-        echo "  • @master 创建React项目"
-        echo "  • @master 检查代码质量"
-        echo "  • @master 设置CI/CD"
-        echo "  • @master 调试应用"
-        echo "  • @master 学习新技术"
+        echo "  • /master 创建React项目"
+        echo "  • /master 检查代码质量"
+        echo "  • /master 设置CI/CD"
+        echo "  • /master 调试应用"
+        echo "  • /master 学习新技术"
     fi
 }
 
@@ -2215,11 +2215,11 @@ show_intelligent_help() {
 # 主函数
 main() {
     # 🌱 强制初始化生长目录（在任何操作之前）
-    # 确保 cursor-master.sh 或 @master 调用时 .cursorGrowth 自动生成
+    # 确保 cursor-master.sh 或 /master 调用时 .cursorGrowth 自动生成
     init_growth_directory
 
     # 🎯 VIBE命令检测和处理 (直接调用)
-    if echo "$*" | grep -q "^@vibe" || echo "$*" | grep -q "^vibe"; then
+    if echo "$*" | grep -q "^/vibe" || echo "$*" | grep -q "^vibe"; then
         process_vibe_command "$*"
         return
     fi
@@ -2429,7 +2429,7 @@ execute_skill() {
 
     if [ -f "$skill_file" ]; then
         echo -e "${GREEN}✅ Skills文件存在: $skill_file${NC}"
-        echo -e "${YELLOW}💡 此技能已准备就绪，可通过 @master skill:$skill_name 调用${NC}"
+        echo -e "${YELLOW}💡 此技能已准备就绪，可通过 /master skill:$skill_name 调用${NC}"
     else
         echo -e "${RED}❌ Skills文件不存在: $skill_file${NC}"
         echo -e "${YELLOW}💡 尝试运行技能发现器...${NC}"
@@ -2589,8 +2589,8 @@ display_growth_metrics() {
 process_vibe_command() {
     local user_input="$1"
 
-    # 移除 @vibe 或 vibe 前缀
-    local vibe_command=$(echo "$user_input" | sed 's/^@vibe//;s/^vibe//' | sed 's/^ *//')
+    # 移除 /vibe 或 vibe 前缀
+    local vibe_command=$(echo "$user_input" | sed 's/^/vibe//;s/^vibe//' | sed 's/^ *//')
 
     # 如果没有子命令，显示VIBE帮助
     if [ -z "$vibe_command" ]; then

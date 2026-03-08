@@ -98,7 +98,7 @@
 
 **已知命令**:
 - `/master` - Master智能命令中心
-- `@vibe` - VIBE开发模式
+- `/vibe` - VIBE开发模式
 - `command-router` - 统一命令路由器
 
 **状态**: ✅ **基本自洽**
@@ -294,7 +294,7 @@ command-center.md (Agent 处理)
 
 确保文档中使用一致的术语:
 - Agent (代理) - command-center
-- Command (命令) - /master, @vibe
+- Command (命令) - /master, /vibe
 - Skill (技能) - 可重用的专业知识
 - Project Skill (项目技能) - 项目特定的技能
 - Library Skill (库技能) - features/skills/ 中的技能

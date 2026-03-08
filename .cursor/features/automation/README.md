@@ -78,10 +78,10 @@ bash automation/git-hooks/pre-push     # 推送前检查
 
 ```bash
 # 环境检查
-@master script env-perception
+/master script env-perception
 
 # 代码质量检查
-@master script quality
+/master script quality
 
 ```
 

@@ -15,7 +15,7 @@ graph TB
     Start[用户输入] --> Intent{意图识别}
     
     Intent -->|/master| MasterCmd[Master命令]
-    Intent -->|@vibe| VibeCmd[VIBE命令]
+    Intent -->|/vibe| VibeCmd[VIBE命令]
     Intent -->|直接对话| Direct[直接对话]
     
     MasterCmd --> MasterHandler[master-handler.js]
@@ -143,7 +143,7 @@ graph TB
 #### 调用流程
 
 ```
-用户输入: @vibe [子命令]
+用户输入: /vibe [子命令]
     ↓
 第一步: 命令捕获
     文件: .cursor/commands/vibe.md
@@ -151,11 +151,11 @@ graph TB
     ↓
 第二步: 子命令解析
     可能子命令:
-    - @vibe start    # 初始化VIBE模式
-    - @vibe code     # 进入开发模式
-    - @vibe prd      # 生成PRD
-    - @vibe align    # 前后端对齐
-    - @vibe test     # 测试驱动
+    - /vibe start    # 初始化VIBE模式
+    - /vibe code     # 进入开发模式
+    - /vibe prd      # 生成PRD
+    - /vibe align    # 前后端对齐
+    - /vibe test     # 测试驱动
     ↓
 第三步: Agent处理
     文件: .cursor/agents/command-center.md
@@ -181,7 +181,7 @@ graph TB
 
 **用户输入**:
 ```
-@vibe code 开发用户登录功能
+/vibe code 开发用户登录功能
 ```
 
 **调用链路**:
@@ -609,7 +609,7 @@ command-center 接收结果
 └────────────┬────────────────────────────┘
              ↓
 ┌─────────────────────────────────────────┐
-│  命令捕获 (/master, @vibe, etc)         │
+│  命令捕获 (/master, /vibe, etc)         │
 │  输出: 标准化请求对象                    │
 └────────────┬────────────────────────────┘
              ↓

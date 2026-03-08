@@ -21,7 +21,7 @@ cd /path/to/your-project
 ./.cursor/core/init.sh
 
 # 5. 开始使用
-@master 你好，我想创建一个React项目
+/master 你好，我想创建一个React项目
 ```
 
 ### Q: 系统支持哪些操作系统？
@@ -42,12 +42,12 @@ cd /path/to/your-project
 
 ## 🎯 核心功能相关
 
-### Q: @master命令不响应怎么办？
+### Q: /master命令不响应怎么办？
 **A:** 按以下步骤排查：
 
 ```bash
 # 1. 检查系统状态
-@master 系统状态
+/master 系统状态
 
 # 2. 重新初始化
 ./.cursor/core/init.sh
@@ -56,7 +56,7 @@ cd /path/to/your-project
 tail -f .cursor/logs/system.log
 
 # 4. 验证配置
-@master 验证配置
+/master 验证配置
 ```
 
 ### Q: 如何查看系统支持的所有功能？
@@ -64,13 +64,13 @@ tail -f .cursor/logs/system.log
 
 ```bash
 # 查看所有可用命令
-@master 帮助
+/master 帮助
 
 # 查看具体功能说明
-@master 功能列表
+/master 功能列表
 
 # 获取使用示例
-@master 示例 [功能名]
+/master 示例 [功能名]
 ```
 
 ### Q: 宪法保护机制是什么？
@@ -93,13 +93,13 @@ tail -f .cursor/logs/system.log
 
 ```bash
 # 备份当前配置
-@master 导出配置 backup.json
+/master 导出配置 backup.json
 
 # 从备份恢复
-@master 导入配置 backup.json
+/master 导入配置 backup.json
 
 # 重置为默认配置
-@master 重置配置
+/master 重置配置
 ```
 
 ### Q: 配置文件在哪？如何修改？
@@ -120,10 +120,10 @@ tail -f .cursor/logs/system.log
 **修改配置**:
 ```bash
 # 设置项目配置
-@master 设置配置 project.type nodejs
+/master 设置配置 project.type nodejs
 
 # 设置全局配置
-@master 设置配置 global.language zh-CN
+/master 设置配置 global.language zh-CN
 ```
 
 ### Q: 配置不生效怎么办？
@@ -131,13 +131,13 @@ tail -f .cursor/logs/system.log
 
 ```bash
 # 1. 检查配置语法
-@master 验证配置
+/master 验证配置
 
 # 2. 查看配置层级
-@master 配置层级
+/master 配置层级
 
 # 3. 强制重新加载
-@master 重新加载配置
+/master 重新加载配置
 
 # 4. 检查权限
 ls -la .cursor/config/
@@ -150,16 +150,16 @@ ls -la .cursor/config/
 
 ```bash
 # 切换到专业助手
-@master 切换角色 professional_assistant
+/master 切换角色 professional_assistant
 
 # 使用昵称呼叫
-@master 呼叫 小妮
+/master 呼叫 小妮
 
 # 查看当前角色
-@master 当前角色
+/master 当前角色
 
 # 查看所有可用角色
-@master 列出角色
+/master 列出角色
 ```
 
 ### Q: 有哪些预设角色可用？
@@ -234,7 +234,7 @@ EOF
 ./.cursor/core/env-perception.sh
 
 # 查看感知结果
-@master 项目信息
+/master 项目信息
 
 # 感知内容包括：
 # - 技术栈识别 (React, Vue, Node.js等)
@@ -248,13 +248,13 @@ EOF
 
 ```bash
 # 总体状态
-@master 系统状态
+/master 系统状态
 
 # 性能指标
-@master 性能监控
+/master 性能监控
 
 # 资源使用
-@master 资源统计
+/master 资源统计
 
 # 日志查看
 tail -f .cursor/logs/system.log
@@ -347,7 +347,7 @@ tail -f .cursor/logs/debug.log
 ./.cursor/core/diagnostics.sh
 
 # 生成系统报告
-@master 系统诊断报告
+/master 系统诊断报告
 ```
 
 ## 🚨 故障排除
@@ -357,16 +357,16 @@ tail -f .cursor/logs/debug.log
 
 ```bash
 # 1. 清理缓存
-@master 清理缓存
+/master 清理缓存
 
 # 2. 重启服务
 ./.cursor/core/restart.sh
 
 # 3. 性能分析
-@master 性能分析
+/master 性能分析
 
 # 4. 内存优化
-@master 内存优化
+/master 内存优化
 ```
 
 ### Q: 磁盘空间不足怎么办？
@@ -374,16 +374,16 @@ tail -f .cursor/logs/debug.log
 
 ```bash
 # 查看存储统计
-@master 存储统计
+/master 存储统计
 
 # 清理过期缓存
-@master 清理过期数据
+/master 清理过期数据
 
 # 压缩日志文件
-@master 压缩日志
+/master 压缩日志
 
 # 优化数据存储
-@master 数据优化
+/master 数据优化
 ```
 
 ### Q: 如何完全重置系统？
@@ -393,7 +393,7 @@ tail -f .cursor/logs/debug.log
 # ⚠️ 警告：此操作会清除所有用户数据
 
 # 1. 备份重要数据
-@master 导出数据 backup.zip
+/master 导出数据 backup.zip
 
 # 2. 停止所有服务
 ./.cursor/core/stop.sh
@@ -405,7 +405,7 @@ rm -rf .cursorGrowth/
 ./.cursor/core/init.sh
 
 # 5. 恢复备份数据
-@master 导入数据 backup.zip
+/master 导入数据 backup.zip
 ```
 
 ## 📞 获取帮助
@@ -415,8 +415,8 @@ rm -rf .cursorGrowth/
 
 ```bash
 # 1. 内置帮助系统
-@master 帮助
-@master 帮助 [具体主题]
+/master 帮助
+/master 帮助 [具体主题]
 
 # 2. 查看文档
 # 访问 docs/ 目录下的相关文档
@@ -432,7 +432,7 @@ rm -rf .cursorGrowth/
 
 ```bash
 # 1. 收集诊断信息
-@master 生成诊断报告
+/master 生成诊断报告
 
 # 2. 描述问题
 # - 问题现象
@@ -449,7 +449,7 @@ rm -rf .cursorGrowth/
 
 ```bash
 # 1. 检查是否已存在
-@master 功能列表 | grep "类似功能"
+/master 功能列表 | grep "类似功能"
 
 # 2. 描述需求
 # - 功能场景

@@ -116,11 +116,11 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 
 ### 💬 VIBE Conversational Development
 ```bash
-@vibe start    # One-click project and dev environment initialization
-@vibe prd      # Auto-generate product requirement docs
-@vibe code     # Smart code generation and review
-@vibe test     # Automated test generation and execution
-@vibe deploy   # One-click deployment and environment configuration
+/vibe start    # One-click project and dev environment initialization
+/vibe prd      # Auto-generate product requirement docs
+/vibe code     # Smart code generation and review
+/vibe test     # Automated test generation and execution
+/vibe deploy   # One-click deployment and environment configuration
 ```
 
 ---
@@ -234,11 +234,11 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 ### Method 2: VIBE Development Flow
 ```bash
 # 📋 Documentation-driven development flow
-@vibe start              # Initialize development mode
-@vibe prd                # Generate product requirement docs
-@vibe code               # Smart code generation
-@vibe test               # Automated testing
-@vibe deploy             # One-click deployment
+/vibe start              # Initialize development mode
+/vibe prd                # Generate product requirement docs
+/vibe code               # Smart code generation
+/vibe test               # Automated testing
+/vibe deploy             # One-click deployment
 
 # ✨ Features: Documentation-driven, test-first, frontend-backend alignment
 ```

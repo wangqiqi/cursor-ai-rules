@@ -86,7 +86,7 @@
   - 代码分析优化
   - 21种AI人格角色
 
-#### `@vibe` (VIBE开发模式)
+#### `/vibe` (VIBE开发模式)
 - **文件**: `vibe.md`
 - **定位**: AI共生宪法系统下的专业开发模式
 - **功能**:
@@ -276,7 +276,7 @@
 ```
 用户请求 (自然语言)
     ↓
-命令入口 (/master, @vibe, 直接对话)
+命令入口 (/master, /vibe, 直接对话)
     ↓
 command-center.md (Agent) 解析意图
     ↓
@@ -314,7 +314,7 @@ command-center.md (Agent)
 │  可能调用:                       │
 │  - skill-dispatcher (技能调度)   │
 │  - core/*.sh (核心脚本)          │
-│  - @vibe (VIBE模式)              │
+│  - /vibe (VIBE模式)              │
 │  - role-system (角色系统)        │
 └─────────────────────────────────┘
     ↓
@@ -450,7 +450,7 @@ command-center 整合结果
 | 术语 | 定义 |
 |------|------|
 | Agent (代理) | AI代理，处理用户意图并协调系统资源 |
-| Command (命令) | 用户交互入口，如 `/master`, `@vibe` |
+| Command (命令) | 用户交互入口，如 `/master`, `/vibe` |
 | Skill (技能) | 可重用的专业知识包 |
 | Project Skill (项目技能) | `.cursor/skills/` 中的项目特定技能 |
 | Library Skill (库技能) | `.cursor/features/skills/` 中的可重用技能 |
@@ -497,9 +497,9 @@ command-center 整合结果
 ### 使用VIBE模式
 
 ```bash
-@vibe start    # 初始化VIBE模式
-@vibe code     # 进入开发模式
-@vibe prd      # 生成PRD文档
+/vibe start    # 初始化VIBE模式
+/vibe code     # 进入开发模式
+/vibe prd      # 生成PRD文档
 ```
 
 ---

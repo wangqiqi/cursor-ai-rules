@@ -78,7 +78,7 @@ show_directory_info() {
     echo "### 🎯 核心生长数据"
     echo "- **learning/** - AI学习数据"
     echo "  - \`profile.json\` - 用户学习档案"
-    echo "  - \`master_interactions.json\` - @master交互历史"
+    echo "  - \`master_interactions.json\` - /master交互历史"
     echo "  - \`patterns.json\` - 意图识别模式"
     echo "- **conversations/** - 对话记录"
     echo "  - \`cursor_*.json\` - Cursor IDE对话同步"
@@ -137,7 +137,7 @@ create_readme_file() {
 ### 🎯 核心生长数据
 - **learning/** - AI学习数据
   - `profile.json` - 用户学习档案
-  - `master_interactions.json` - @master交互历史
+  - `master_interactions.json` - /master交互历史
   - `patterns.json` - 意图识别模式
 - **conversations/** - 对话记录
   - `cursor_*.json` - Cursor IDE对话同步

@@ -27,8 +27,8 @@ priority: 8
 #### 编程语言学习
 ```bash
 # 学习新编程语言
-@master 学习Rust语言
-@master 掌握Go并发编程
+/master 学习Rust语言
+/master 掌握Go并发编程
 
 # 提供：
 - 语法基础
@@ -40,8 +40,8 @@ priority: 8
 #### 框架技术学习
 ```bash
 # 学习前端框架
-@master 学习React生态
-@master 掌握Vue 3组合式API
+/master 学习React生态
+/master 掌握Vue 3组合式API
 
 # 包含：
 - 框架核心概念
@@ -53,8 +53,8 @@ priority: 8
 #### 工具链学习
 ```bash
 # 学习开发工具
-@master 学习Docker容器化
-@master 掌握Git工作流
+/master 学习Docker容器化
+/master 掌握Git工作流
 
 # 涵盖：
 - 工具安装配置

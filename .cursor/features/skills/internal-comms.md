@@ -11,7 +11,7 @@ A set of resources to help me write all kinds of internal communications, using 
 ## 🔧 使用方法
 
 ```bash
-@master skill:internal-comms [参数]
+/master skill:internal-comms [参数]
 ```
 
 ## 📚 原始文档

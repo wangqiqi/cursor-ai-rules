@@ -11,7 +11,7 @@ Comprehensive spreadsheet creation, editing, and analysis with support for formu
 ## 🔧 使用方法
 
 ```bash
-@master skill:xlsx [参数]
+/master skill:xlsx [参数]
 ```
 
 ## 📚 原始文档

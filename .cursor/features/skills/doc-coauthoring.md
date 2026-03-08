@@ -11,7 +11,7 @@ Guide users through a structured workflow for co-authoring documentation. Use wh
 ## 🔧 使用方法
 
 ```bash
-@master skill:doc-coauthoring [参数]
+/master skill:doc-coauthoring [参数]
 ```
 
 ## 📚 原始文档

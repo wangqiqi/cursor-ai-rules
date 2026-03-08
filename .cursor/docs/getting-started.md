@@ -45,7 +45,7 @@ cp -r /path/to/cursor-ai-rules/.cursor ./
 ### 第一个AI命令
 在Cursor编辑器中输入：
 ```bash
-@master 我想创建一个React项目
+/master 我想创建一个React项目
 ```
 
 系统会自动：
@@ -58,19 +58,19 @@ cp -r /path/to/cursor-ai-rules/.cursor ./
 ### 验证安装成功
 ```bash
 # 检查系统状态
-@master 系统状态
+/master 系统状态
 
 # 查看可用功能
-@master 帮助
+/master 帮助
 ```
 
 ## 🧠 AI核心特性
 
 ### 智能意图理解
 ```bash
-@master 帮我优化代码质量      # 自动质量检查和修复
-@master 分析项目架构          # 智能架构分析报告
-@master 创建API接口           # 自动生成RESTful API
+/master 帮我优化代码质量      # 自动质量检查和修复
+/master 分析项目架构          # 智能架构分析报告
+/master 创建API接口           # 自动生成RESTful API
 ```
 
 ### 宪法强制执行
@@ -105,7 +105,7 @@ A: 确保有执行权限 `chmod +x .cursor/core/init.sh`
 A: 检查.cursor目录是否在项目根目录
 
 ### 使用问题
-**Q: @master命令无响应？**
+**Q: /master命令无响应？**
 A: 确保在Cursor编辑器中输入，并在对话框中发送
 
 **Q: 宪法保护机制？**

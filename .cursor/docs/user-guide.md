@@ -9,19 +9,19 @@
 
 ```bash
 # 项目相关
-@master 我想创建一个React项目
-@master 搭建Node.js后端API
-@master 初始化Python数据分析项目
+/master 我想创建一个React项目
+/master 搭建Node.js后端API
+/master 初始化Python数据分析项目
 
 # 代码质量
-@master 优化代码质量
-@master 检查安全漏洞
-@master 重构这个函数
+/master 优化代码质量
+/master 检查安全漏洞
+/master 重构这个函数
 
 # 项目管理
-@master 分析项目现状
-@master 生成项目文档
-@master 设置CI/CD流水线
+/master 分析项目现状
+/master 生成项目文档
+/master 设置CI/CD流水线
 ```
 
 ### 命令行使用
@@ -37,7 +37,7 @@
 
 #### 智能项目脚手架
 ```bash
-@master 创建一个全栈电商网站
+/master 创建一个全栈电商网站
 ```
 系统会自动：
 - 分析需求复杂度
@@ -57,9 +57,9 @@
 
 #### 自动化代码审查
 ```bash
-@master 检查代码质量
-@master 修复ESLint错误
-@master 格式化代码
+/master 检查代码质量
+/master 修复ESLint错误
+/master 格式化代码
 ```
 
 支持的质量工具：
@@ -70,16 +70,16 @@
 
 #### 智能重构
 ```bash
-@master 重构这个类
-@master 优化数据库查询
-@master 简化复杂函数
+/master 重构这个类
+/master 优化数据库查询
+/master 简化复杂函数
 ```
 
 ### 3. 项目分析与报告
 
 #### 全面项目分析
 ```bash
-@master 分析项目现状
+/master 分析项目现状
 ```
 生成包含：
 - 技术栈评估
@@ -90,9 +90,9 @@
 
 #### 进度跟踪
 ```bash
-@master 项目进度报告
-@master 代码统计
-@master 质量趋势分析
+/master 项目进度报告
+/master 代码统计
+/master 质量趋势分析
 ```
 
 ## 💼 高级使用场景
@@ -102,13 +102,13 @@
 #### 多团队协作模式
 ```bash
 # 团队项目初始化
-@master 初始化企业级项目
+/master 初始化企业级项目
 
 # 代码规范同步
-@master 同步团队代码规范
+/master 同步团队代码规范
 
 # 质量门禁检查
-@master 执行质量门禁
+/master 执行质量门禁
 ```
 
 #### 合规性管理
@@ -121,13 +121,13 @@
 #### 微服务架构
 ```bash
 # 微服务项目分析
-@master 分析微服务架构
+/master 分析微服务架构
 
 # 服务间依赖检查
-@master 检查服务依赖关系
+/master 检查服务依赖关系
 
 # 部署配置优化
-@master 优化部署配置
+/master 优化部署配置
 ```
 
 #### 多语言项目
@@ -140,25 +140,25 @@
 #### CI/CD流水线
 ```bash
 # 生成GitHub Actions配置
-@master 创建CI/CD流水线
+/master 创建CI/CD流水线
 
 # Docker容器化
-@master 生成Docker配置
+/master 生成Docker配置
 
 # 部署到云平台
-@master 配置云部署
+/master 配置云部署
 ```
 
 #### 环境管理
 ```bash
 # 开发环境设置
-@master 配置开发环境
+/master 配置开发环境
 
 # 测试环境部署
-@master 设置测试环境
+/master 设置测试环境
 
 # 生产环境优化
-@master 生产环境配置
+/master 生产环境配置
 ```
 
 ## 🎭 AI人格角色系统
@@ -187,16 +187,16 @@
 ### 角色切换方法
 ```bash
 # 切换到指定角色
-@master 切换角色 queen_sister
+/master 切换角色 queen_sister
 
 # 使用昵称呼叫
-@master 呼叫 小妮
+/master 呼叫 小妮
 
 # 查看当前角色
-@master 当前角色
+/master 当前角色
 
 # 查看所有可用角色
-@master 列出角色
+/master 列出角色
 ```
 
 ## ⚙️ 配置与个性化
@@ -226,16 +226,16 @@
 ### 配置管理命令
 ```bash
 # 查看当前配置
-@master 显示配置
+/master 显示配置
 
 # 修改项目配置
-@master 设置配置 key value
+/master 设置配置 key value
 
 # 重置配置
-@master 重置配置
+/master 重置配置
 
 # 验证配置
-@master 验证配置
+/master 验证配置
 ```
 
 ## 🔍 故障排除
@@ -245,7 +245,7 @@
 #### 命令无响应
 ```bash
 # 检查系统状态
-@master 系统状态
+/master 系统状态
 
 # 重新初始化
 ./.cursor/core/init.sh
@@ -257,10 +257,10 @@ tail -f .cursor/logs/system.log
 #### 性能问题
 ```bash
 # 性能分析
-@master 性能分析
+/master 性能分析
 
 # 缓存清理
-@master 清理缓存
+/master 清理缓存
 
 # 重启服务
 ./.cursor/core/restart.sh
@@ -269,13 +269,13 @@ tail -f .cursor/logs/system.log
 #### 配置问题
 ```bash
 # 验证配置
-@master 验证配置
+/master 验证配置
 
 # 重置配置
-@master 重置配置
+/master 重置配置
 
 # 查看配置文档
-@master 配置帮助
+/master 配置帮助
 ```
 
 ## 📊 最佳实践
@@ -285,32 +285,32 @@ tail -f .cursor/logs/system.log
 #### 1. 意图明确表达
 ```bash
 # ✅ 好的表达
-@master 创建一个用户管理系统，包含登录注册和权限管理
+/master 创建一个用户管理系统，包含登录注册和权限管理
 
 # ❌ 模糊表达
-@master 做个管理系统
+/master 做个管理系统
 ```
 
 #### 2. 分阶段执行
 ```bash
 # 先规划
-@master 分析需求并制定开发计划
+/master 分析需求并制定开发计划
 
 # 再执行
-@master 开始实现用户模块
+/master 开始实现用户模块
 
 # 后优化
-@master 优化性能和用户体验
+/master 优化性能和用户体验
 ```
 
 #### 3. 利用AI学习能力
 ```bash
 # 建立上下文
-@master 我正在开发电商网站，后端使用Node.js
+/master 我正在开发电商网站，后端使用Node.js
 
 # AI会记住上下文，提供更精准的建议
-@master 添加购物车功能
-@master 实现支付接口
+/master 添加购物车功能
+/master 实现支付接口
 ```
 
 ### 项目管理建议
@@ -335,25 +335,25 @@ tail -f .cursor/logs/system.log
 ### 第三方工具集成
 ```bash
 # GitHub集成
-@master 配置GitHub集成
+/master 配置GitHub集成
 
 # Slack通知
-@master 设置Slack通知
+/master 设置Slack通知
 
 # Jira任务管理
-@master 集成Jira
+/master 集成Jira
 ```
 
 ### 自定义扩展开发
 ```bash
 # 创建自定义技能
-@master 创建新技能
+/master 创建新技能
 
 # 开发自定义规则
-@master 添加新规则
+/master 添加新规则
 
 # 集成外部工具
-@master 配置外部集成
+/master 配置外部集成
 ```
 
 ## 📈 学习与成长
@@ -368,13 +368,13 @@ tail -f .cursor/logs/system.log
 ### 进度追踪
 ```bash
 # 查看学习进度
-@master 学习进度
+/master 学习进度
 
 # 获取个性化推荐
-@master 推荐学习内容
+/master 推荐学习内容
 
 # 生成能力报告
-@master 能力评估
+/master 能力评估
 ```
 
 ## 🎯 总结

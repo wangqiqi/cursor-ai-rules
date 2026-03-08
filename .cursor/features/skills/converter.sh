@@ -46,7 +46,7 @@ $description
 ## 🔧 使用方法
 
 \`\`\`bash
-@master skill:$name [参数]
+/master skill:$name [参数]
 \`\`\`
 
 ## 📚 原始文档

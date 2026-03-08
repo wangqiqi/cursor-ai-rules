@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 🎯 Cursor AI Rules - 对话式命令系统
-# 实现@vibe start/prd/code/test/deploy命令，支持快速原型开发
+# 实现/vibe start/prd/code/test/deploy命令，支持快速原型开发
 
 set -e
 
@@ -90,73 +90,73 @@ register_vibe_commands() {
   "commands": {
     "start": {
       "description": "启动新的VIBE开发会话",
-      "syntax": "@vibe start <project_name> [template]",
+      "syntax": "/vibe start <project_name> [template]",
       "examples": [
-        "@vibe start my-app",
-        "@vibe start ecommerce-app react",
-        "@vibe start api-server fastapi"
+        "/vibe start my-app",
+        "/vibe start ecommerce-app react",
+        "/vibe start api-server fastapi"
       ],
       "handler": "handle_vibe_start",
       "requires_session": false
     },
     "prd": {
       "description": "生成产品需求文档(PRD)",
-      "syntax": "@vibe prd <requirements>",
+      "syntax": "/vibe prd <requirements>",
       "examples": [
-        "@vibe prd 开发一个任务管理应用",
-        "@vibe prd 创建用户注册和登录功能"
+        "/vibe prd 开发一个任务管理应用",
+        "/vibe prd 创建用户注册和登录功能"
       ],
       "handler": "handle_vibe_prd",
       "requires_session": true
     },
     "code": {
       "description": "生成代码实现",
-      "syntax": "@vibe code [component|api|model|test]",
+      "syntax": "/vibe code [component|api|model|test]",
       "examples": [
-        "@vibe code",
-        "@vibe code UserComponent",
-        "@vibe code /api/users"
+        "/vibe code",
+        "/vibe code UserComponent",
+        "/vibe code /api/users"
       ],
       "handler": "handle_vibe_code",
       "requires_session": true
     },
     "test": {
       "description": "生成和运行测试",
-      "syntax": "@vibe test [unit|integration|e2e]",
+      "syntax": "/vibe test [unit|integration|e2e]",
       "examples": [
-        "@vibe test",
-        "@vibe test unit",
-        "@vibe test e2e login"
+        "/vibe test",
+        "/vibe test unit",
+        "/vibe test e2e login"
       ],
       "handler": "handle_vibe_test",
       "requires_session": true
     },
     "deploy": {
       "description": "部署应用",
-      "syntax": "@vibe deploy [staging|production]",
+      "syntax": "/vibe deploy [staging|production]",
       "examples": [
-        "@vibe deploy",
-        "@vibe deploy staging",
-        "@vibe deploy production"
+        "/vibe deploy",
+        "/vibe deploy staging",
+        "/vibe deploy production"
       ],
       "handler": "handle_vibe_deploy",
       "requires_session": true
     },
     "status": {
       "description": "查看VIBE项目状态",
-      "syntax": "@vibe status",
+      "syntax": "/vibe status",
       "examples": [
-        "@vibe status"
+        "/vibe status"
       ],
       "handler": "handle_vibe_status",
       "requires_session": false
     },
     "switch": {
       "description": "切换VIBE项目或会话",
-      "syntax": "@vibe switch <project_name|session_id>",
+      "syntax": "/vibe switch <project_name|session_id>",
       "examples": [
-        "@vibe switch my-app",
-        "@vibe switch session_123"
+        "/vibe switch my-app",
+        "/vibe switch session_123"
       ],
       "handler": "handle_vibe_switch",
       "requires_session": false
@@ -171,7 +171,7 @@ EOF
 
 # 🎯 VIBE命令处理器
 
-# 处理@vibe命令
+# 处理/vibe命令
 process_vibe_command() {
     local command_line="$1"
 
@@ -196,7 +196,7 @@ process_vibe_command() {
     if [[ "$requires_session" == "true" ]]; then
         local active_session=$(get_active_vibe_session)
         if [[ -z "$active_session" ]]; then
-            smart_echo "此命令需要激活的VIBE会话，请先运行 @vibe start" "warning"
+            smart_echo "此命令需要激活的VIBE会话，请先运行 /vibe start" "warning"
             return 1
         fi
     fi
@@ -230,7 +230,7 @@ get_vibe_command_requires_session() {
 
 # 🎯 VIBE子命令处理器
 
-# @vibe start - 启动新会话
+# /vibe start - 启动新会话
 handle_vibe_start() {
     local args=("$@")
     local project_name="${args[1]}"
@@ -238,7 +238,7 @@ handle_vibe_start() {
 
     if [[ -z "$project_name" ]]; then
         smart_echo "错误: 请提供项目名称" "error"
-        smart_echo "用法: @vibe start <project_name> [template]" "info"
+        smart_echo "用法: /vibe start <project_name> [template]" "info"
         return 1
     fi
 
@@ -270,17 +270,17 @@ handle_vibe_start() {
     smart_echo "📁 项目目录: $CURSOR_GROWTH/vibe_commands/projects/$project_id" "info"
     smart_echo "" "info"
     smart_echo "💡 接下来你可以运行:" "info"
-    smart_echo "   @vibe prd [需求描述]  - 生成产品需求文档" "info"
-    smart_echo "   @vibe status           - 查看项目状态" "info"
+    smart_echo "   /vibe prd [需求描述]  - 生成产品需求文档" "info"
+    smart_echo "   /vibe status           - 查看项目状态" "info"
 }
 
-# @vibe prd - 生成PRD
+# /vibe prd - 生成PRD
 handle_vibe_prd() {
     local requirements="${*:1}"
 
     if [[ -z "$requirements" ]]; then
         smart_echo "错误: 请提供需求描述" "error"
-        smart_echo "用法: @vibe prd <需求描述>" "info"
+        smart_echo "用法: /vibe prd <需求描述>" "info"
         return 1
     fi
 
@@ -303,7 +303,7 @@ handle_vibe_prd() {
     smart_echo "📄 PRD已保存到项目文档中" "info"
 }
 
-# @vibe code - 生成代码
+# /vibe code - 生成代码
 handle_vibe_code() {
     local component="${1:-}"
 
@@ -316,7 +316,7 @@ handle_vibe_code() {
     local prd_content=$(get_project_artifact "$project_id" "prd")
 
     if [[ -z "$prd_content" ]]; then
-        smart_echo "警告: 未找到PRD，请先运行 @vibe prd" "warning"
+        smart_echo "警告: 未找到PRD，请先运行 /vibe prd" "warning"
     fi
 
     # 调用代码生成服务
@@ -332,7 +332,7 @@ handle_vibe_code() {
     smart_echo "🔧 代码已添加到项目中" "info"
 }
 
-# @vibe test - 生成和运行测试
+# /vibe test - 生成和运行测试
 handle_vibe_test() {
     local test_type="${1:-all}"
 
@@ -357,7 +357,7 @@ handle_vibe_test() {
     smart_echo "📊 测试结果已保存" "info"
 }
 
-# @vibe deploy - 部署应用
+# /vibe deploy - 部署应用
 handle_vibe_deploy() {
     local environment="${1:-staging}"
 
@@ -379,7 +379,7 @@ handle_vibe_deploy() {
     smart_echo "🌐 应用已部署到$environment环境" "info"
 }
 
-# @vibe status - 查看状态
+# /vibe status - 查看状态
 handle_vibe_status() {
     smart_echo "📊 VIBE项目状态" "info"
 
@@ -398,14 +398,14 @@ handle_vibe_status() {
         fi
     else
         smart_echo "⚠️  没有活动的VIBE会话" "warning"
-        smart_echo "💡 请运行 @vibe start <project_name> 开始新会话" "info"
+        smart_echo "💡 请运行 /vibe start <project_name> 开始新会话" "info"
     fi
 
     # 显示可用项目
     show_available_vibe_projects
 }
 
-# @vibe switch - 切换项目/会话
+# /vibe switch - 切换项目/会话
 handle_vibe_switch() {
     local target="$1"
 
@@ -734,20 +734,20 @@ show_vibe_help() {
     smart_echo "=== 🎯 VIBE对话式开发系统 ===" "info"
     smart_echo "" "info"
     smart_echo "📋 可用命令:" "info"
-    smart_echo "  @vibe start <项目名> [模板]  - 启动新项目" "info"
-    smart_echo "  @vibe prd <需求描述>        - 生成PRD" "info"
-    smart_echo "  @vibe code [组件]           - 生成代码" "info"
-    smart_echo "  @vibe test [类型]           - 生成测试" "info"
-    smart_echo "  @vibe deploy [环境]         - 部署应用" "info"
-    smart_echo "  @vibe status                - 查看状态" "info"
-    smart_echo "  @vibe switch <项目>         - 切换项目" "info"
+    smart_echo "  /vibe start <项目名> [模板]  - 启动新项目" "info"
+    smart_echo "  /vibe prd <需求描述>        - 生成PRD" "info"
+    smart_echo "  /vibe code [组件]           - 生成代码" "info"
+    smart_echo "  /vibe test [类型]           - 生成测试" "info"
+    smart_echo "  /vibe deploy [环境]         - 部署应用" "info"
+    smart_echo "  /vibe status                - 查看状态" "info"
+    smart_echo "  /vibe switch <项目>         - 切换项目" "info"
     smart_echo "" "info"
     smart_echo "💡 示例:" "info"
-    smart_echo "  @vibe start my-app react" "info"
-    smart_echo "  @vibe prd 开发任务管理应用" "info"
-    smart_echo "  @vibe code UserComponent" "info"
-    smart_echo "  @vibe test unit" "info"
-    smart_echo "  @vibe deploy production" "info"
+    smart_echo "  /vibe start my-app react" "info"
+    smart_echo "  /vibe prd 开发任务管理应用" "info"
+    smart_echo "  /vibe code UserComponent" "info"
+    smart_echo "  /vibe test unit" "info"
+    smart_echo "  /vibe deploy production" "info"
 }
 
 # 导出函数

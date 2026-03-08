@@ -28,7 +28,7 @@
 
 ```
 API层
-├── 统一入口 API       # @master 命令
+├── 统一入口 API       # /master 命令
 ├── 组件调用 API       # 内部组件通信
 ├── 扩展插件 API       # 第三方插件接口
 └── 管理控制 API       # 系统管理接口
@@ -38,7 +38,7 @@ API层
 
 ### 命令格式
 ```bash
-@master <intent_description> [options]
+/master <intent_description> [options]
 ```
 
 ### 参数规范
@@ -324,13 +324,13 @@ enum ErrorCode {
 ### API调用示例
 ```bash
 # 感知引擎调用
-@master script core/env-perception.sh perception
+/master script core/env-perception.sh perception
 
 # 配置管理调用
-@master script core/core/config/config-manager.sh get .system.log_level
+/master script core/core/config/config-manager.sh get .system.log_level
 
 # 质量检查调用
-@master script core/quality-manager.sh lint
+/master script core/quality-manager.sh lint
 ```
 
 ### 错误处理示例

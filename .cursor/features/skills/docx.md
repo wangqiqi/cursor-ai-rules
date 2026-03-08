@@ -17,7 +17,7 @@ Guide for creating, editing, and formatting Microsoft Word documents with advanc
 ## 🔧 使用方法
 
 ```bash
-@master skill:docx [参数]    # 调用Word文档处理技能
+/master skill:docx [参数]    # 调用Word文档处理技能
 ```
 
 ## 📚 原始文档

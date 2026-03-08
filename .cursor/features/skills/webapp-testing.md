@@ -11,7 +11,7 @@ Toolkit for interacting with and testing local web applications using Playwright
 ## 🔧 使用方法
 
 ```bash
-@master skill:webapp-testing [参数]
+/master skill:webapp-testing [参数]
 ```
 
 ## 📚 原始文档
@@ -25,9 +25,9 @@ license: Complete terms in LICENSE.txt
 
 ```bash
 # VIBE Coding 测试流程
-@master vibe-coding test-plan    # 生成测试计划
-@master vibe-coding e2e-tests    # 执行端到端测试
-@master vibe-coding alignment-check # 测试与功能对齐验证
+/master vibe-coding test-plan    # 生成测试计划
+/master vibe-coding e2e-tests    # 执行端到端测试
+/master vibe-coding alignment-check # 测试与功能对齐验证
 ```
 
 ## 📖 详细技术指南

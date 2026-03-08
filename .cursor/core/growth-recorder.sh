@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 🌱 Cursor AI Rules - 生长数据记录器
-# 专门为 @master 规则提供生长数据记录功能
+# 专门为 /master 规则提供生长数据记录功能
 #
 # 使用方法:
 #   ./growth-recorder.sh record "用户输入" "决策结果" "意图类型"

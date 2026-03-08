@@ -11,7 +11,7 @@ Comprehensive PDF manipulation toolkit for extracting text and tables, creating 
 ## 🔧 使用方法
 
 ```bash
-@master skill:pdf [参数]
+/master skill:pdf [参数]
 ```
 
 ## 📚 原始文档

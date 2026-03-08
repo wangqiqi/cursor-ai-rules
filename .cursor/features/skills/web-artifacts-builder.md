@@ -11,7 +11,7 @@ Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts 
 ## 🔧 使用方法
 
 ```bash
-@master skill:web-artifacts-builder [参数]
+/master skill:web-artifacts-builder [参数]
 ```
 
 ## 📚 原始文档

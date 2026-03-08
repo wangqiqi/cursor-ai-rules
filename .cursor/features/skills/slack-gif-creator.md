@@ -11,7 +11,7 @@ Knowledge and utilities for creating animated GIFs optimized for Slack. Provides
 ## 🔧 使用方法
 
 ```bash
-@master skill:slack-gif-creator [参数]
+/master skill:slack-gif-creator [参数]
 ```
 
 ## 📚 原始文档

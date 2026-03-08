@@ -11,7 +11,7 @@ Create distinctive, production-grade frontend interfaces with high design qualit
 ## 🔧 使用方法
 
 ```bash
-@master skill:frontend-design [参数]
+/master skill:frontend-design [参数]
 ```
 
 ## 📚 原始文档

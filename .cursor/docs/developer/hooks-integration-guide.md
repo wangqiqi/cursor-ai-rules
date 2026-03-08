@@ -397,9 +397,9 @@ HOOKS_ENGINE=".cursor/core/hooks-engine.sh"
 #### 4. Master命令集成
 
 ```bash
-# 通过@master命令触发hooks
-@master 执行会话优化钩子    # 自动调用 hooks-engine.sh onSessionStart
-@master 运行质量检查钩子    # 自动调用 hooks-engine.sh qualityReportGeneration
+# 通过/master命令触发hooks
+/master 执行会话优化钩子    # 自动调用 hooks-engine.sh onSessionStart
+/master 运行质量检查钩子    # 自动调用 hooks-engine.sh qualityReportGeneration
 ```
 
 ### 触发器类型

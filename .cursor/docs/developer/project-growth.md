@@ -99,7 +99,7 @@ Cursor AI Rules 采用创新的双目录架构，将项目无关的配置与项�
     ]
   },
   "behavior": {
-    "frequent_commands": ["@master optimize", "@master test"],
+    "frequent_commands": ["/master optimize", "/master test"],
     "working_hours": "09:00-18:00",
     "collaboration_style": "detailed_feedback"
   }
@@ -232,9 +232,9 @@ class DataSyncManager {
     "total_commands": 15420,
     "unique_commands": 89,
     "top_commands": [
-      {"command": "@master optimize", "count": 1240},
-      {"command": "@master test", "count": 980},
-      {"command": "@master analyze", "count": 756}
+      {"command": "/master optimize", "count": 1240},
+      {"command": "/master test", "count": 980},
+      {"command": "/master analyze", "count": 756}
     ]
   }
 }
@@ -285,13 +285,13 @@ class DataSyncManager {
 #### 手动维护命令
 ```bash
 # 查看存储统计
-@master 数据统计
+/master 数据统计
 
 # 清理无用数据
-@master 清理数据
+/master 清理数据
 
 # 导出用户数据
-@master 导出数据
+/master 导出数据
 ```
 
 ## 🚨 安全与合规

@@ -11,7 +11,7 @@ Applies Anthropic's official brand colors and typography to any sort of artifact
 ## 🔧 使用方法
 
 ```bash
-@master skill:brand-guidelines [参数]
+/master skill:brand-guidelines [参数]
 ```
 
 ## 📚 原始文档

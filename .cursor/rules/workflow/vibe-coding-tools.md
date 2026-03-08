@@ -7,7 +7,7 @@ priority: 11
 
 # 🛠️ VIBE Coding 工具与质量门禁
 
-> 由 @vibe-coding 引用
+> 由 vibe-coding 规则引用
 
 ## 实施工具
 
@@ -27,8 +27,8 @@ priority: 11
 ```
 
 ### 技能集成
-- `@master skill:webapp-testing e2e` - Playwright E2E
-- `@master generator vibe-coding --template bs-architecture` - 项目结构
+- `/master skill:webapp-testing e2e` - Playwright E2E
+- `/master generator vibe-coding --template bs-architecture` - 项目结构
 
 ## 质量门禁
 

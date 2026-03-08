@@ -11,7 +11,7 @@ Create beautiful visual art in .png and .pdf documents using design philosophy. 
 ## 🔧 使用方法
 
 ```bash
-@master skill:canvas-design [参数]
+/master skill:canvas-design [参数]
 ```
 
 ## 📚 原始文档

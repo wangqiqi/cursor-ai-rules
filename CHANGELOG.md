@@ -6,6 +6,12 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **精简 Master 入口** (2026-03-08): 删除冗余的 master 技能，保留 master-skill 规则。Master 等效能力现为：命令 + 子代理 + 规则（三者）。
+- **批量修复** (2026-03-08): 全项目 `@master`→`/master`、`@vibe`→`/vibe` 替换；修正 vibe-coding 规则引用；精简 master-skill 规则，以子代理为唯一实现。
+
 ### Added
 
-- **master-skill 规则** (2026-03-08): 新增 `.cursor/rules/master-skill.md`，实现与 `/master` 命令相同的效果和功能。当用户未使用 `/master` 但表达类似需求时，AI 将采用 Master 的完整处理流程，包括意图解析、智能路由、规则/技能/脚本调用、21 种 AI 人格支持。优先通过 mcp_task 调用 command-center 子 agent 执行。
+- **master subagent** (2026-03-08): 新增 `.cursor/agents/master.md`，Master 专用子代理，通过 `mcp_task(subagent_type: "master", ...)` 调用。
+- **master-skill 规则** (2026-03-08): 新增 `.cursor/rules/master-skill.md`，实现与 `/master` 命令相同的效果和功能。

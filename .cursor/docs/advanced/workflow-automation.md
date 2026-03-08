@@ -30,7 +30,7 @@ git add .
 git commit -m "feat: add new feature"
 
 # 智能方式 - 自动执行
-@master 提交代码
+/master 提交代码
 # 系统自动：
 # 1. 分析变更内容
 # 2. 生成标准提交消息
@@ -62,7 +62,7 @@ interface SmartCommit {
 #### 批量提交优化
 ```bash
 # 智能批量处理
-@master 批量提交
+/master 批量提交
 
 # 自动分组相关变更
 # - feat: 用户认证功能 (3个文件)
@@ -168,7 +168,7 @@ interface PerformanceMonitor {
 #### 自动性能优化
 ```bash
 # 性能分析
-@master 性能分析
+/master 性能分析
 
 # 输出示例：
 # 📊 性能分析报告
@@ -400,7 +400,7 @@ interface WorkflowMetrics {
 ### 智能优化建议
 ```bash
 # 工作流分析
-@master 分析工作流
+/master 分析工作流
 
 # 输出示例：
 # 📊 工作流效率分析
@@ -459,25 +459,25 @@ interface WorkflowMetrics {
 #### 执行失败排查
 ```bash
 # 查看执行日志
-@master 查看工作流日志 [workflow-id]
+/master 查看工作流日志 [workflow-id]
 
 # 重新执行步骤
-@master 重试工作流步骤 [workflow-id] [step-id]
+/master 重试工作流步骤 [workflow-id] [step-id]
 
 # 跳过失败步骤
-@master 跳过步骤 [workflow-id] [step-id]
+/master 跳过步骤 [workflow-id] [step-id]
 ```
 
 #### 性能问题诊断
 ```bash
 # 性能分析
-@master 工作流性能分析
+/master 工作流性能分析
 
 # 识别瓶颈
-@master 识别工作流瓶颈
+/master 识别工作流瓶颈
 
 # 生成优化报告
-@master 工作流优化报告
+/master 工作流优化报告
 ```
 
 ## 📚 相关文档

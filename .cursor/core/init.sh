@@ -198,7 +198,7 @@ main() {
     echo "💡 下一步建议："
     echo "   • 运行完整初始化: ./cursor/init.sh"
     echo "   • 运行环境感知: ./cursor/core/env-perception.sh"
-    echo "   • 查看帮助: @master help"
+    echo "   • 查看帮助: /master help"
 }
 
 # 如果直接运行此脚本，执行主函数

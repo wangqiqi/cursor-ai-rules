@@ -27,7 +27,7 @@ priority: 8
 #### README生成
 ```markdown
 # 自动生成项目README
-@master 生成项目文档
+/master 生成项目文档
 
 # 包含以下内容：
 - 项目简介
@@ -40,7 +40,7 @@ priority: 8
 #### API文档生成
 ```bash
 # 从代码注释生成API文档
-@master 生成API文档
+/master 生成API文档
 
 # 支持格式：
 - JSDoc
@@ -51,7 +51,7 @@ priority: 8
 #### 使用指南生成
 ```bash
 # 生成用户使用指南
-@master 创建使用教程
+/master 创建使用教程
 
 # 包含：
 - 快速开始

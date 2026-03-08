@@ -35,13 +35,13 @@ features/
 
 ```bash
 # 激活技能
-@master 我想使用PDF处理技能
+/master 我想使用PDF处理技能
 
 # 运行自动化脚本
-@master 执行代码质量检查
+/master 执行代码质量检查
 
 # 触发钩子事件
-@master 提交代码  # 自动触发pre-commit钩子
+/master 提交代码  # 自动触发pre-commit钩子
 ```
 
 ## 🔌 扩展开发

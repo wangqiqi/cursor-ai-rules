@@ -26,7 +26,7 @@ Creating algorithmic art using p5.js with seeded randomness and interactive para
 此技能已集成到Cursor AI Rules系统中，可以通过以下方式调用：
 
 ```bash
-@master skill:algorithmic-art [参数]    # 直接调用此技能
+/master skill:algorithmic-art [参数]    # 直接调用此技能
 ```
 
 ## 📚 原始技能文档

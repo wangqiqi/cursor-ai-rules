@@ -11,7 +11,7 @@ Guide for creating effective skills. This skill should be used when users want t
 ## 🔧 使用方法
 
 ```bash
-@master skill:skill-creator [参数]
+/master skill:skill-creator [参数]
 ```
 
 ## 📚 原始文档

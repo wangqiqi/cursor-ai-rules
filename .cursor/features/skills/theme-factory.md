@@ -11,7 +11,7 @@ Toolkit for styling artifacts with a theme. These artifacts can be slides, docs,
 ## 🔧 使用方法
 
 ```bash
-@master skill:theme-factory [参数]
+/master skill:theme-factory [参数]
 ```
 
 ## 📚 原始文档
