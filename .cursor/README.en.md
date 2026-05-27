@@ -17,6 +17,21 @@
 
 ---
 
+## 📌 What This Repository Is (and Is Not)
+
+This repository is an **open-source Cursor project configuration template** (rules, skills, commands, workflow scripts) shared via Git. It is **not** a hosted service and does **not** automatically launch agents in a visitor’s or cloner’s environment.
+
+| Topic | Details |
+|-------|---------|
+| **What it is** | Static `.cursor/` configuration and documentation for developers to **optionally** copy or reference into their own projects |
+| **What it is not** | Not an official Cursor product; not a fleet of remote multi-agent workers; not a code-execution-as-a-service platform |
+| **Parallelism** | Settings such as `max_parallel_executions` and orchestration scripts describe **optional local** workflows only. Whether they run is entirely up to the user in their own Cursor session |
+| **Reference docs** | Files such as `.cursor/features/skills/reference/python-sdk-README.md` are **local copies** of upstream documentation (e.g. the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)) for skills like `mcp-builder`. They are not runtime components |
+
+If you receive third-party mail (security scanners, ecosystem outreach) asking about “parallel agents” or `.cursor` paths, it is often a **misread** of this public configuration. The table above is the intended clarification.
+
+---
+
 ## 🏆 Core Features Overview
 
 ### ⚖️ Constitution-Driven AI System

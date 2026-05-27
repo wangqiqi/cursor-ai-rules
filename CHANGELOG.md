@@ -4,6 +4,13 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.4.1] - 2026-05-27
+
+### Added
+
+- **仓库性质说明** (2026-05-27): 在 `README.md` / `README.en.md` 增加「本仓库是什么 / 不是什么」说明，澄清非托管多 Agent 服务、并行配置与 `reference/` 文档用途，便于回应第三方扫描或调研误读。
+- **reference 目录说明** (2026-05-27): 新增 `.cursor/features/skills/reference/README.md`，标明 SDK 参考文档为静态副本、非运行时组件。
+
 ## [Unreleased]
 
 ### Changed
