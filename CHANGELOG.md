@@ -4,6 +4,58 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.6.2] - 2026-06-01
+
+### Fixed
+
+- **logging-common.sh**：修复 `\"` 误转义导致在仓库根创建带 `"` 的畸形目录及 `event.log"` 文件名；日志正确写入 `.cursor/monitoring/logs/hooks/`。
+- **command-log.sh**：改为委托 `logging-common.sh`，修复未加引号的重定向与错误的 `source` 路径。
+- **test-common.sh**：宪法规则改为检查 `.mdc`；jq/node 检查仅限引导脚本，不再对全部 `core/*.sh` 误报（消除 55 项假失败）。
+
+### Added
+
+- **unified-check.sh**：Hook 脚本路径引号防回归检查。
+- **.gitignore**：忽略 `.cursor/monitoring/` 运行时目录。
+
+## [4.6.1] - 2026-06-01
+
+### Changed
+
+- **README.en.md**: 英文长文档迁至 `.cursor/README.en.md`，根目录软链改为 `.cursor/README.en.md`。
+- **CI** (`.github/workflows/test.yml`): 测试改为 `.cursor/tests/test-agent-orchestration.sh` 与 `run-verify-test.sh`，不再引用已删除的 `.cursor-extras/`。
+- **运行时补齐**: 自原扩展层迁入 `commands/capability-maps/`、`verify-system.sh`、`features/hooks/hooks.json`（hooks-engine）、`docs/`、`config/`、`plugins/` 等至 `.cursor/`。
+
+### Fixed
+
+- **verify-system / unified-check.sh**: 修正 `SCRIPT_DIR` 在 `source colors.sh` 之前未定义导致的验证失败。
+
+### Removed
+
+- **`.cursor-extras/`**: Phase 3 收尾后整目录删除；运行时唯一入口为 `.cursor/`。说明见 `archive/20260601_222100_cursor-extras_官方对齐收尾说明.md`。
+
+## [4.6.0] - 2026-06-01
+
+### Changed
+
+- **100% 对齐 Cursor 官方目录规范（Phase 2）**: 规则迁移为 `.cursor/rules/**/*.mdc`（76 个，含 `constitution.mdc`）；技能迁至 `.cursor/skills/skill-dispatcher/SKILL.md`；子代理迁至 `.cursor/agents/{master,command-center}.md`；项目根新增 `AGENTS.md`。
+- **Hooks 官方 schema**: 新增 `.cursor/hooks.json`（`version: 1`），标准事件名 `sessionStart` / `sessionEnd` / `beforeSubmitPrompt` / `afterFileEdit` / `afterShellExecution` / `afterAgentResponse`；钩子脚本置于 `.cursor/hooks/`，`command` 相对项目根，`timeout` 单位为秒，`failClosed` 按安全级别配置。
+- **路径自洽**: `.cursor/` 树内脚本、规则、技能路径统一为 `.cursor/`；核心 shell 与 `features/skills` 注册表并入 `.cursor/core` 与 `.cursor/features/`。
+
+### Added
+
+- **开箱即用**: 复制 `.cursor/` + 根目录 `AGENTS.md` 即可被 Cursor 自动发现 Rules、Skills、Subagents、Hooks。
+
+### Note
+
+- v4.6.1 起已移除 `.cursor-extras/`；历史分层说明见 CHANGELOG `4.5.x` 与 `archive/`。
+
+## [4.5.1] - 2026-06-01
+
+### Fixed
+
+- **README 英文版软链接**: 修复了 `README.en.md` 的错误软链接，将其重定向到正确的相对路径 `.cursor/README.en.md`，经验证文件完全可读。
+- **路径一致性扫描与批量修复**: 针对核心层 `.cursor/` 精简后导致的 59 个失效路径引用，在全仓 51 个文本文件（包括 `.cursor/AGENTS.md`、`.cursor/rules/master-skill.md`、`plan.md` 等）中进行了高精度的批量文本替换，使路径引用恢复完全自洽。经最终扫描验证，全仓已无悬挂失效引用。
+
 ## [4.5.0] - 2026-06-01
 
 ### Changed
@@ -18,7 +70,7 @@
 
 - **集成测试** (2026-06-01): 核心层 22 用例 + Agent Orchestration 33 用例；统一技能分类映射（补 21 个缺失项）。
 - **CI 与文档** (2026-06-01): GitHub Actions 测试工作流；36 个 hooks 参考文档；系统组件交互文档。
-- **技能工具归位** (2026-06-01): `converter.sh` / `discovery.sh` 迁至 `.cursor-extras/core/`。
+- **技能工具归位** (2026-06-01): `converter.sh` / `discovery.sh` 迁至 `.cursor/core/`。
 
 ### Fixed
 
@@ -35,7 +87,7 @@
 ### Added
 
 - **仓库性质说明** (2026-05-27): 在 `README.md` / `README.en.md` 增加「本仓库是什么 / 不是什么」说明，澄清非托管多 Agent 服务、并行配置与 `reference/` 文档用途，便于回应第三方扫描或调研误读。
-- **reference 目录说明** (2026-05-27): 新增 `.cursor/features/skills/reference/README.md`，标明 SDK 参考文档为静态副本、非运行时组件。
+- **reference 目录说明** (2026-05-27): 新增 `.cursor/skills/skill-dispatcher/README.md`，标明 SDK 参考文档为静态副本、非运行时组件。
 
 ## [Unreleased]
 

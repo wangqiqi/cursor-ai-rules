@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "description": "Cursor AI Rules — project hooks (official schema)",
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": ".cursor/hooks/role-activation.sh",
+        "timeout": 8,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/master-init.sh",
+        "timeout": 7,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/env-perception.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/session-optimizer.sh",
+        "timeout": 6,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/features/automation/automation/scripts/growth_init.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/session-state-guard.sh",
+        "timeout": 2,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/conversation-init.sh",
+        "timeout": 3,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/master-sync-init.sh",
+        "timeout": 2,
+        "failClosed": false
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": ".cursor/hooks/cursor-sync.sh",
+        "timeout": 10,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/core/continuous-learning-loop.sh",
+        "timeout": 15,
+        "failClosed": false
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/consistency-check.sh",
+        "timeout": 10,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/architecture-check.sh",
+        "timeout": 8,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/code-quality.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/quality-check.sh",
+        "timeout": 15,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/core/config-manager.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/dependency-check.sh",
+        "timeout": 8,
+        "failClosed": false
+      }
+    ],
+    "afterShellExecution": [
+      {
+        "command": ".cursor/hooks/performance-monitor.sh",
+        "timeout": 3,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/logging-common.sh",
+        "timeout": 3,
+        "failClosed": false
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": ".cursor/hooks/growth-recorder.sh",
+        "timeout": 3,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/token-compression.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/core/agent-orchestration-engine.sh",
+        "timeout": 15,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/core/context-pool-manager.sh",
+        "timeout": 8,
+        "failClosed": false
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": ".cursor/hooks/session-state-guard.sh",
+        "timeout": 4,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/role-sync.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/core/context-manager.sh",
+        "timeout": 5,
+        "failClosed": false
+      },
+      {
+        "command": ".cursor/hooks/prompt-security.sh",
+        "timeout": 2,
+        "failClosed": true
+      },
+      {
+        "command": ".cursor/hooks/master-sync-trigger.sh",
+        "timeout": 10,
+        "failClosed": false
+      }
+    ]
+  }
+}

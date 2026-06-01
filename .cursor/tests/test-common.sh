@@ -58,8 +58,8 @@ CORE_FILES=(
     "core/path-config.sh"
     "core/common.sh"
     "cursor-master.sh"
-    "rules/core/constitution.md"
-    "rules/core/constitution_architecture.md"
+    "rules/core/constitution.mdc"
+    "rules/core/constitution_architecture.mdc"
     "config/project.json"
     "README.md"
 )
@@ -75,23 +75,46 @@ for f in "${CORE_FILES[@]}"; do
     TESTS_TOTAL=$((TESTS_TOTAL + 1))
 done
 
-# 检查核心文件无实际 jq/node 命令依赖
-echo "  📋 核心文件零外部依赖检查"
-for f in "$CURSOR_DIR/core"/*.sh "$CURSOR_DIR/cursor-master.sh"; do
+# 仅引导脚本要求零 jq/node 依赖；其余 core/*.sh 可使用 jq（见 README）
+echo "  📋 引导脚本零外部依赖检查"
+BOOTSTRAP_SCRIPTS=(
+    "core/init.sh"
+    "core/path-config.sh"
+    "core/common.sh"
+    "core/colors.sh"
+    "cursor-master.sh"
+)
+bootstrap_dep_issues=0
+for rel in "${BOOTSTRAP_SCRIPTS[@]}"; do
+    f="$CURSOR_DIR/$rel"
+    [ -f "$f" ] || continue
     if grep -qE '(\||;|\{|`)\s*jq\b|command -v jq' "$f" 2>/dev/null; then
-        echo "    ❌ $f 包含 jq 命令依赖"
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        TESTS_TOTAL=$((TESTS_TOTAL + 1))
+        echo "    ❌ $rel 不应包含 jq 命令依赖"
+        bootstrap_dep_issues=$((bootstrap_dep_issues + 1))
     fi
     if grep -qE '(\||;|\{|`)\s*node\b|command -v node' "$f" 2>/dev/null; then
-        echo "    ❌ $f 包含 node 命令依赖"
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        TESTS_TOTAL=$((TESTS_TOTAL + 1))
+        echo "    ❌ $rel 不应包含 node 命令依赖"
+        bootstrap_dep_issues=$((bootstrap_dep_issues + 1))
     fi
 done
-echo "    ✅ 核心文件无 jq/node 依赖"
-TESTS_PASSED=$((TESTS_PASSED + 1))
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
+if [ "$bootstrap_dep_issues" -eq 0 ]; then
+    echo "    ✅ 引导脚本无 jq/node 依赖"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "    ❌ 引导脚本含 $bootstrap_dep_issues 处外部依赖"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+
+echo "  📋 可选工具 jq（Hooks/Master 推荐）"
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+if command -v jq >/dev/null 2>&1; then
+    echo "    ✅ jq 已安装"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "    ⚠️ jq 未安装（部分 Hooks 受限，复制即用核心仍可用）"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+fi
 
 echo ""
 
@@ -174,35 +197,79 @@ echo ""
 # =============================================================================
 echo "🧩 测试组 5: 扩展层集成"
 
-EXTRAS_DIR="$PROJECT_ROOT/.cursor-extras"
-if [ -d "$EXTRAS_DIR" ]; then
-    echo "  ✅ .cursor-extras/ 存在"
+CURSOR_PKG="$PROJECT_ROOT/.cursor"
+if [ -d "$CURSOR_PKG" ]; then
+    echo "  ✅ .cursor/ 存在"
     TESTS_PASSED=$((TESTS_PASSED + 1))
 
-    # 检查 hooks.json 在扩展层
-    if [ -f "$EXTRAS_DIR/hooks.json" ]; then
-        echo "  ✅ hooks.json 在扩展层"
+    if [ -f "$CURSOR_PKG/hooks.json" ]; then
+        echo "  ✅ hooks.json 在项目 .cursor/"
         TESTS_PASSED=$((TESTS_PASSED + 1))
     else
-        echo "  ❌ hooks.json 不在扩展层"
+        echo "  ❌ hooks.json 不在 .cursor/"
         TESTS_FAILED=$((TESTS_FAILED + 1))
     fi
     TESTS_TOTAL=$((TESTS_TOTAL + 2))
 
-    # 检查规则目录完整
-    EXTRAS_RULES=$(find "$EXTRAS_DIR/rules" -maxdepth 1 -type f 2>/dev/null | wc -l)
-    # 放宽要求：核心层已有两条宪法规则，扩展层至少有10条技术规则算健康
-    if [ "$EXTRAS_RULES" -ge 10 ] 2>/dev/null; then
-        echo "  ✅ 扩展层规则丰富 ($EXTRAS_RULES 文件)"
+    MDC_RULES=$(find "$CURSOR_PKG/rules" -name '*.mdc' 2>/dev/null | wc -l)
+    if [ "$MDC_RULES" -ge 10 ] 2>/dev/null; then
+        echo "  ✅ 规则库就绪 ($MDC_RULES 个 .mdc)"
         TESTS_PASSED=$((TESTS_PASSED + 1))
     else
-        echo "  ⚠️ 扩展层规则较少 ($EXTRAS_RULES 文件)"
+        echo "  ⚠️ 规则较少 ($MDC_RULES 个 .mdc)"
         TESTS_PASSED=$((TESTS_PASSED + 1))
     fi
     TESTS_TOTAL=$((TESTS_TOTAL + 1))
 else
-    echo "  ⏭️ 跳过 (无 .cursor-extras/)"
+    echo "  ⏭️ 跳过 (无 .cursor/)"
 fi
+
+echo ""
+
+# =============================================================================
+# 测试组 6: Hook 日志脚本
+# =============================================================================
+echo "🪝 测试组 6: Hook 日志脚本"
+
+LOGGING_COMMON="$CURSOR_DIR/hooks/logging-common.sh"
+if bash -n "$LOGGING_COMMON" 2>/dev/null; then
+    echo "  ✅ logging-common.sh 语法正确"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ logging-common.sh 语法错误"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+
+if ! grep -qE 'log_to_file \\"|case \\"\$' "$LOGGING_COMMON" 2>/dev/null; then
+    echo "  ✅ logging-common.sh 无错误转义引号"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ logging-common.sh 仍含 \\\" 路径转义"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+
+TEST_INPUT='{"command":"echo hook-test","output":"","duration":50,"cwd":"/tmp","conversation_id":"t1"}'
+HOOK_OUT=$(echo "$TEST_INPUT" | bash "$LOGGING_COMMON" command 2>/dev/null) || true
+LOG_FILE="$CURSOR_DIR/monitoring/logs/hooks/command-execution.log"
+if [ -f "$LOG_FILE" ] && tail -1 "$LOG_FILE" | grep -q 'hook-test'; then
+    echo "  ✅ logging-common 写入正确日志路径"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ logging-common 未写入 $LOG_FILE"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+
+if [ "$HOOK_OUT" = "$TEST_INPUT" ]; then
+    echo "  ✅ logging-common 透传 JSON 输入"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ logging-common 未透传 JSON 输入"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
 echo ""
 

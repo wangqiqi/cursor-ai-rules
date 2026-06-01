@@ -35,8 +35,8 @@ init_quickstart() {
     echo "✅ 项目根目录: $PROJECT_ROOT"
     echo "✅ Cursor 目录: $CURSOR_DIR"
 
-    if [ -d "$CURSOR_DIR/../.cursor-extras" ]; then
-        echo "✅ 检测到扩展层: .cursor-extras/"
+    if [ -f "$CURSOR_DIR/hooks.json" ] && [ -d "$CURSOR_DIR/skills" ]; then
+        echo "✅ 官方规范布局: rules / skills / agents / hooks 已就绪"
     fi
 
     echo ""

@@ -13,8 +13,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: 核心层测试
         run: bash .cursor/tests/test-common.sh
-      - name: 扩展层测试
-        run: bash .cursor-extras/tests/test-agent-orchestration.sh || echo "扩展测试未就绪，跳过"
+      - name: Agent 编排集成测试
+        run: bash .cursor/tests/test-agent-orchestration.sh
+      - name: 系统验证测试
+        run: bash .cursor/tests/run-verify-test.sh
       - name: Shell 语法检查
         run: |
           for f in .cursor/core/*.sh .cursor/cursor-master.sh; do

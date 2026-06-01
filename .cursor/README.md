@@ -1,7 +1,7 @@
 # Cursor AI Rules - 核心版 v2.0.0
 
 > **宪法驱动的超级 AI 编程伙伴**
-> 复制 `.cursor/` 到任意项目，零配置，立即使用。
+> 复制 `.cursor/` 与根目录 `AGENTS.md` 到任意项目，零配置，立即使用。
 
 ---
 
@@ -10,8 +10,9 @@
 ### 方式一：复制即用（推荐）
 
 ```bash
-# 1. 把 .cursor/ 复制到你的项目根目录
+# 1. 把 .cursor/ 与 AGENTS.md 复制到你的项目根目录
 cp -r cursor-ai-rules/.cursor your-project/
+cp cursor-ai-rules/AGENTS.md your-project/
 
 # 2. 打开 Cursor IDE，开始使用
 ```
@@ -25,50 +26,35 @@ cp -r cursor-ai-rules/.cursor your-project/
 | `/master 切换角色 [角色名]` | 切换对话风格 |
 | `/vibe start` | 启动 VIBE 开发模式 |
 
-### 方式二：全功能安装
+### 方式二：可选初始化
 
 ```bash
-# 复制核心层 + 扩展层
-cp -r cursor-ai-rules/.cursor your-project/
-cp -r cursor-ai-rules/.cursor-extras your-project/
-
-# 一键初始化
 bash your-project/.cursor/core/init.sh --quickstart
 ```
 
-扩展层包含 70+ 规则、80+ 脚本、37 个技能、42 个钩子、21 种人格角色。
+`.cursor/` 已包含 70+ 规则（`.mdc`）、技能、子代理、钩子与核心脚本；`AGENTS.md` 供 Cursor 发现子代理说明。
 
 ---
 
 ## 📦 目录结构
 
 ```
-.cursor/                          ← 核心层（7 个文件，零依赖）
-├── init.sh                       # 一键初始化
-├── cursor-master.sh              # 命令行入口
-├── core/
-│   ├── path-config.sh            # 路径配置
-│   ├── common.sh                 # 公共函数
-│   └── compact-output.sh         # 输出格式化
-├── rules/
-│   ├── constitution.md           # 三大公理
-│   └── core/
-│       └── constitution_architecture.md  # 架构宪法
-├── config/
-│   └── project.json
-└── README.md
-
-.cursor-extras/                   ← 扩展层（按需复制）
-├── rules/                        # 70+ 技术/工作流规则
-├── core/                         # 80+ 脚本
-├── features/                     # 技能、钩子、自动化
-├── agents/                       # Agent 定义
-├── commands/                     # 命令系统
-├── skills/                       # 技能调度器
-├── plugins/                      # 插件
-├── docs/                         # 文档
-├── tests/                        # 测试
-└── config/roles/                 # 21 种人格角色
+your-project/
+├── AGENTS.md                     ← 子代理与 Master 入口说明
+└── .cursor/                      ← 官方结构（复制即用）
+    ├── hooks.json                # Cursor 官方 Hooks schema
+    ├── hooks/                    # 钩子脚本
+    ├── rules/                    # 70+ .mdc 规则
+    ├── skills/                   # 技能（含 skill-dispatcher）
+    ├── agents/                   # master、command-center 子代理
+    ├── commands/                 # /master、/vibe 等命令实现
+    ├── core/                     # Shell 核心与 agent-orchestration
+    ├── features/                 # 技能库、自动化、hooks-engine 配置
+    ├── config/                   # 项目与人格角色配置
+    ├── docs/                     # 开发与使用文档
+    ├── tests/                    # CI 测试脚本
+    ├── README.md
+    └── README.en.md              # 英文长文档（根 README.en.md 软链至此）
 ```
 
 ---
@@ -107,7 +93,7 @@ bash your-project/.cursor/core/init.sh --quickstart
 - **Bash** 4.0+
 - **Git**（可选，没有也能用）
 
-无其他外部依赖。`jq`、`node`、`openssl` 等仅在扩展层中使用。
+部分扩展能力（hooks-engine、部分 Master 脚本）可选依赖 `jq`；核心复制即用路径不强制外部工具。
 
 ---
 

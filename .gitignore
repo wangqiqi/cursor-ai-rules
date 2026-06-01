@@ -9,6 +9,12 @@
 .cursor/web/server.log
 .cursor/**/*.log
 .cursor/**/*.pid
+# Hook 运行时监控目录（由 logging-common.sh 自动创建）
+.cursor/monitoring/
+
+CHANGELOG.md
+archive/
+
 
 # 项目角色配置（每个用户独立）
 # 已迁移至 .cursorGrowth/user/config/project_state.json
