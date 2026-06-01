@@ -16,10 +16,14 @@ if [ -f "$SCRIPT_DIR/../config/token-optimization.env" ]; then
     source "$SCRIPT_DIR/../config/token-optimization.env"
 fi
 
-# 压缩配置 - 优化为节省token
-COMPRESSION_LEVEL="${COMPRESSION_LEVEL:-minimal}"  # minimal, balanced, aggressive, maximum
+# 压缩配置 - 优化为节省 token（见 docs/reference/TOKEN_COMPRESSION_BENCHMARK.md）
+COMPRESSION_LEVEL="${COMPRESSION_LEVEL:-minimal}"  # minimal | balanced | aggressive | maximum(已降级)
 STREAMING_ENABLED="${STREAMING_ENABLED:-true}"
 INCREMENTAL_UPDATES="${INCREMENTAL_UPDATES:-true}"
+# 默认关闭 JSON 键名替换（对 Markdown 无益，tiktoken 下可能变大）
+TOKEN_COMPRESS_JSON_KEYS="${TOKEN_COMPRESS_JSON_KEYS:-false}"
+TOKEN_COMPRESS_MARKDOWN="${TOKEN_COMPRESS_MARKDOWN:-true}"
+TOKEN_COMPRESS_SEMANTIC="${TOKEN_COMPRESS_SEMANTIC:-false}"
 
 # 字典编码表（常用术语压缩）
 declare -A COMPRESSION_DICT=(
@@ -59,55 +63,89 @@ init_compression() {
     smart_echo "Token压缩系统初始化完成" "success"
 }
 
-# 高级token压缩
+# 按字符粗算 token（用于压缩效果统计；非官方计费）
+estimate_compression_tokens() {
+    local byte_size="${1:-0}"
+    echo $(( (byte_size * 10 + 36) / 37 ))
+}
+
+is_json_payload() {
+    local first
+    first="$(printf '%s' "$1" | sed -e 's/^[[:space:]]*//' | head -c 1)"
+    [[ "$first" == "{" || "$first" == "[" ]]
+}
+
+# Markdown / 纯文本：空白、徽章行、重复分隔线、常见 emoji（需 python3）
+compress_markdown_and_whitespace() {
+    local data="$1"
+    if [[ "${TOKEN_COMPRESS_MARKDOWN}" != "true" ]]; then
+        remove_decorative_chars "$data"
+        return
+    fi
+    local py="${SCRIPT_DIR}/compress-markdown-text.py"
+    if ! command -v python3 >/dev/null 2>&1 || [[ ! -f "$py" ]]; then
+        remove_decorative_chars "$data"
+        return
+    fi
+    printf '%s' "$data" | python3 "$py"
+}
+
+# 移除装饰性字符（无 python 时的回退）
+remove_decorative_chars() {
+    local data="$1"
+    data=$(printf '%s' "$data" | sed 's/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊]//g')
+    data=$(printf '%s' "$data" | sed 's/!!!*/!/g; s/???*/?/g; s/,,*/,/g')
+    printf '%s' "$data"
+}
+
+# 统一压缩管线
+_apply_compression_pipeline() {
+    local data="$1"
+    local level="${2:-minimal}"
+
+    if [[ "${TOKEN_COMPRESS_MARKDOWN}" == "true" ]]; then
+        data=$(compress_markdown_and_whitespace "$data")
+    else
+        data=$(remove_decorative_chars "$data")
+    fi
+
+    if [[ "${TOKEN_COMPRESS_JSON_KEYS}" == "true" ]] && is_json_payload "$data"; then
+        data=$(compress_json_keys "$data")
+        if [[ "$level" == "aggressive" || "$level" == "balanced" ]]; then
+            if [[ "${TOKEN_COMPRESS_SEMANTIC}" == "true" ]]; then
+                data=$(compress_semantic "$data")
+            fi
+        fi
+    fi
+
+    printf '%s' "$data"
+}
+
+# 高级 token 压缩
 compress_tokens() {
     local data="$1"
     local level="${2:-$COMPRESSION_LEVEL}"
 
     case "$level" in
-        "minimal")
-            # 基础压缩：只压缩JSON键名 + 移除装饰性字符
-            data=$(compress_json_keys "$data")
-            data=$(remove_decorative_chars "$data")
-            ;;
-        "balanced")
-            # 平衡压缩：键名压缩 + 重复字符串消除 + 装饰字符移除
-            data=$(compress_json_keys "$data")
-            data=$(compress_repeated_strings "$data")
-            data=$(remove_decorative_chars "$data")
+        "minimal"|"balanced")
+            data=$(_apply_compression_pipeline "$data" "$level")
             ;;
         "aggressive")
-            # 激进压缩：多层压缩 + 语义压缩 + 流式优化
-            data=$(compress_json_keys "$data")
-            data=$(compress_repeated_strings "$data")
-            data=$(compress_semantic "$data")
-            data=$(remove_decorative_chars "$data")
+            TOKEN_COMPRESS_JSON_KEYS="${TOKEN_COMPRESS_JSON_KEYS:-true}"
+            TOKEN_COMPRESS_SEMANTIC="${TOKEN_COMPRESS_SEMANTIC:-true}"
+            data=$(_apply_compression_pipeline "$data" "aggressive")
             ;;
         "maximum")
-            # 最大压缩：所有技术 + 二进制编码 + 流式传输
-            data=$(compress_json_keys "$data")
-            data=$(compress_repeated_strings "$data")
-            data=$(compress_semantic "$data")
-            data=$(compress_to_binary "$data")
-            data=$(remove_decorative_chars "$data")
+            # 曾使用 base64 会膨胀；maximum 降级为 aggressive 管线
+            [[ "${DEBUG:-0}" == "1" ]] && smart_echo "maximum 已降级为 aggressive（禁用 base64）" "warning" >&2 || true
+            TOKEN_COMPRESS_JSON_KEYS="${TOKEN_COMPRESS_JSON_KEYS:-true}"
+            TOKEN_COMPRESS_SEMANTIC="${TOKEN_COMPRESS_SEMANTIC:-true}"
+            data=$(_apply_compression_pipeline "$data" "aggressive")
+            ;;
+        *)
+            data=$(_apply_compression_pipeline "$data" "minimal")
             ;;
     esac
-
-    echo "$data"
-}
-
-# 移除装饰性字符（节省token）
-remove_decorative_chars() {
-    local data="$1"
-
-    # 移除emoji和装饰性符号
-    data=$(echo "$data" | sed 's/[🎯✨🚀💡📚🎭🔧⚡🎨🏗️📁✅❌⚠️🔄📊🎯]//g')
-
-    # 移除多余的换行符和空格
-    data=$(echo "$data" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/\n\n\n*/\n\n/g')
-
-    # 移除重复的标点符号
-    data=$(echo "$data" | sed 's/!!!*/!/g; s/???*/?/g; s/,,*/,/g')
 
     echo "$data"
 }
@@ -187,12 +225,11 @@ compress_semantic() {
     echo "$data"
 }
 
-# 二进制压缩（实验性）
+# 二进制压缩（已弃用 — base64 会膨胀，保留函数供兼容）
 compress_to_binary() {
     local data="$1"
-
-    # 简单的base64编码作为二进制压缩的替代
-    echo "$data" | base64 | tr -d '\n'
+    smart_echo "compress_to_binary 已弃用，返回原文" "warning" >&2 || true
+    printf '%s' "$data"
 }
 
 # Token解压缩
@@ -308,8 +345,9 @@ end_streaming() {
     fi
 
     # 计算token节省
-    local original_tokens=$(estimate_tokens "response" "${#STREAM_BUFFER}")
-    local compressed_tokens=$(estimate_tokens "compressed_response" "$((${#STREAM_BUFFER} * 7 / 10))")
+    local original_tokens compressed_tokens
+    original_tokens=$(estimate_compression_tokens "${#STREAM_BUFFER}")
+    compressed_tokens=$(estimate_compression_tokens "${#STREAM_BUFFER}")
 
     smart_echo "流式输出完成，估算Token节省: $((original_tokens - compressed_tokens))" "info"
 }
@@ -591,8 +629,17 @@ validate_compression_effectiveness() {
     local original="$1"
     local compressed="$2"
 
-    local original_tokens=$(estimate_tokens "original" "${#original}")
-    local compressed_tokens=$(estimate_tokens "compressed" "${#compressed}")
+    local original_tokens compressed_tokens
+    if command -v estimate_compression_tokens >/dev/null 2>&1; then
+        original_tokens=$(estimate_compression_tokens "${#original}")
+        compressed_tokens=$(estimate_compression_tokens "${#compressed}")
+    elif command -v estimate_tokens >/dev/null 2>&1; then
+        original_tokens=$(estimate_tokens "generic" "${#original}")
+        compressed_tokens=$(estimate_tokens "generic" "${#compressed}")
+    else
+        original_tokens=$(( ${#original} / 4 ))
+        compressed_tokens=$(( ${#compressed} / 4 ))
+    fi
     local token_savings=$((original_tokens - compressed_tokens))
     local compression_ratio
 
@@ -886,7 +933,9 @@ generate_incremental_response() {
 
 # 导出函数
 export -f init_compression
+export -f estimate_compression_tokens
 export -f compress_tokens
+export -f compress_markdown_and_whitespace
 export -f decompress_tokens
 export -f init_streaming
 export -f send_stream_chunk

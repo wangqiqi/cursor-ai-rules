@@ -729,8 +729,11 @@ estimate_tokens() {
         "cache_hit")
             echo "5"   # 缓存命中消耗很少
             ;;
+        "response"|"original"|"compressed"|"compressed_response"|"generic"|"optimized")
+            echo $(( (data_size * 10 + 36) / 37 ))  # ~chars/3.7，近似 cl100k
+            ;;
         *)
-            echo "50"  # 默认估算
+            echo $(( (data_size * 10 + 36) / 37 ))
             ;;
     esac
 }

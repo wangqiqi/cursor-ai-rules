@@ -127,11 +127,11 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 - **Intelligent Cache System**: Multi-level caching for faster repeated operations
 - **Learning Data Isolation**: `.cursorGrowth/` privacy protection design
 
-### ⚡ Token Optimization System (25–35% Savings)
-- **Multi-layer Compression**: Support four-level compression strategies
-- **Streaming Output**: Chunked output to avoid large responses
-- **Context Caching**: Smart caching to avoid duplicate transmission
-- **Real-time Monitoring**: Token consumption smart warning
+### ⚡ Token Optimization (indexing + lean text first)
+- **`.cursorignore`**: Excludes `references/`, tests, growth data from `@codebase` (highest impact)
+- **`compress-markdown-text.py` + `token-compression.sh`**: Trims badges, emoji, extra `---` (~**15%** on README samples — [benchmark](docs/reference/TOKEN_COMPRESSION_BENCHMARK.md))
+- **Streaming / context cache**: Less duplicate payload
+- **Monitoring**: `token-monitor.js` + optional tiktoken benchmarks
 
 ### 🧠 Self-Learning & Adaptation
 - **Pattern Learning**: Identify user behavior patterns
@@ -400,7 +400,7 @@ your-project/
 |--------|------|------|-------------|
 | Initialization Time | ~30s | ~3s | **90%↑** |
 | Perception Time | ~10s | ~0.5s | **95%↑** |
-| Token Savings | Baseline | 70%↓ | **70%↑** |
+| Token savings (script/index) | Varies | See benchmark | **Measure locally**, no fixed % claim |
 | Component Count | 42 | 161+ | **283%↑** |
 | System Stability | 95% | 99.9% | **99.9% Uptime** |
 

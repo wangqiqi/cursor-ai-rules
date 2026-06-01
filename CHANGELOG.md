@@ -4,6 +4,19 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.8.0] - 2026-06-02
+
+### Added
+
+- **`compress-markdown-text.py`**：Markdown 空白/徽章行/emoji/重复分隔线压缩（默认 `minimal` 管线）。
+- **`scripts/benchmark-token-compression.sh`**：tiktoken 可复现基准。
+
+### Changed
+
+- **`token-compression.sh`**：弃用 base64 `maximum`；默认关闭 JSON 键名替换；`estimate_compression_tokens` 统计；`maximum` 降级为 aggressive。
+- **`token-optimization.env`**：`TOKEN_COMPRESS_MARKDOWN` / `TOKEN_COMPRESS_JSON_KEYS` / `TOKEN_COMPRESS_SEMANTIC` 开关。
+- **README / TOKEN_COMPRESSION_BENCHMARK**：移除未验证的 25–35%、70% 宣传；补充实测约 15%（README 样本）。
+
 ## [4.7.9] - 2026-06-01
 
 ### Changed
