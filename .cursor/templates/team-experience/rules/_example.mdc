@@ -1,0 +1,28 @@
+---
+description: "示例：改 plugin.json 后必须跑 manifest 校验（请复制后改名并删除本示例）"
+alwaysApply: false
+globs: ".cursor-plugin/plugin.json,scripts/verify-plugin-manifest.sh"
+priority: 10
+---
+
+# 示例团队规则（可删除）
+
+## 现象
+
+发版后插件版本与 CHANGELOG 不一致。
+
+## 根因
+
+只改了 `plugin.json` 未跑校验脚本。
+
+## 必须
+
+修改 `.cursor-plugin/plugin.json` 后执行：
+
+```bash
+bash scripts/verify-plugin-manifest.sh
+```
+
+## 来源
+
+`manifest.json` 中应记录：`source: changelog@x.y.z`、`author`、`status: active`。

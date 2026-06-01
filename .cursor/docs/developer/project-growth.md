@@ -24,6 +24,7 @@ Cursor AI Rules 采用创新的双目录架构，将项目无关的配置与项�
 **特性**: 隐私保护、个性化学习、数据隔离、跨会话持久化
 ```
 .cursorGrowth/
+├── team-experience/  # 团队沉淀规则（rules/*.mdc，桥接规则加载；可 Git 白名单共享）
 ├── perception/       # 环境感知数据
 ├── user_data/        # 用户偏好和学习数据
 ├── project/          # 项目特定标识符

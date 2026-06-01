@@ -3,6 +3,9 @@
 # 安装：INSTALL.md | 详解：.cursor/docs/admin/configuration.md
 
 .cursorGrowth/
+# 团队经验规则：供 @codebase 检索与桥接规则加载（勿整棵放行 Growth）
+!.cursorGrowth/team-experience/
+!.cursorGrowth/team-experience/**
 archive/
 .cursor/skills/**/references/
 .cursor/monitoring/

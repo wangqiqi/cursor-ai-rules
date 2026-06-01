@@ -66,7 +66,9 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 | `alwaysApply: true` 的 `.mdc` 规则 | ❌ 仍按规则 frontmatter 注入 |
 | 手动 `@文件`、Agent 主动 Read | ❌ 仍可访问 |
 
-**默认排除**：`.cursorGrowth/`、`archive/`、`.cursor/skills/**/references/`、监控日志、`node_modules/` 等。复制到业务项目时建议一并复制 `.cursorignore`（清单见仓库根 [INSTALL.md](../../../INSTALL.md)）。
+**默认排除**：`.cursorGrowth/`（**例外白名单**：`!.cursorGrowth/team-experience/**` 供团队沉淀规则索引）、`archive/`、`.cursor/skills/**/references/`、监控日志、`node_modules/` 等。复制到业务项目时建议一并复制 `.cursorignore`（清单见仓库根 [INSTALL.md](../../../INSTALL.md)）。
+
+**团队经验沉淀**：规则写在 `.cursorGrowth/team-experience/rules/*.mdc`，由 `.cursor/rules/workflow/growth-team-experience-bridge.mdc` 加载；技能 `team-experience` 将 CHANGELOG/git 原文交予大模型生成草案。可选 Git 提交该子目录（见根 `.gitignore` 白名单）。
 
 ## 🛠️ 配置管理工具
 

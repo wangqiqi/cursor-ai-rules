@@ -15,6 +15,7 @@
 - [x] **Task 6.6–6.9** CI verify、hooks、release、文档 [completed，已改为 manifest 校验]
 - [ ] **Task 6.5: 提交 Cursor 插件市场** [pending，见 docs/MARKETPLACE_SUBMIT.md]
 - [x] **Task 6.11: `.cursorignore` + INSTALL.md** — 索引排除与复制安装清单 [completed 2026-06-01]
+- [x] **Task 6.12: `team-experience` + 桥接规则** — Growth 沉淀 + 不修改 `.cursor` 主树 [completed 2026-06-01]
 
 ### 维护命令
 
@@ -36,4 +37,5 @@ bash scripts/install-githooks.sh       # 可选
 
 - **2026-06-01 (Phase 6 单仓库)**：放弃 `packages/` 双份树；插件安装 = 链式克隆本仓库；权威源仅 `.cursor/`。
 - **2026-06-01**：`.cursorignore` 减小 `@codebase` 索引；`INSTALL.md` 明确必复制三项，不改目录名。
+- **2026-06-01**：`team-experience` 目录 + `growth-team-experience-bridge.mdc`；经验写 Growth、桥接引用，ignore 白名单。
 - **官方文档**: https://cursor.com/docs/skills | https://cursor.com/docs/plugins/building

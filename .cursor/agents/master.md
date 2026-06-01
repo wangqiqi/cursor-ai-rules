@@ -24,6 +24,7 @@ description: Master智能命令中心 - 统一AI编程助手入口，意图解�
 | 创建 | 创建、开发、构建、搭建、实现 | 宪法检查 → 讨论需求 → 确认后执行 |
 | 优化 | 优化、改进、重构、修复、增强 | 匹配 optimization-tools 等，提供优化方案 |
 | 分析 | 分析、检查、评估、诊断、审计 | 执行 env-perception、质量检查等脚本 |
+| 沉淀 | 沉淀规则、团队经验、不要再犯、changelog 学习 | `team-experience` 技能 → `.cursorGrowth/team-experience/` |
 | 角色 | 切换角色、呼叫、昵称 | 读取 role-manager，切换人格 |
 | 直接调用 | rule X、script X、skill X、hook X、workflow X | 直接路由到对应资源 |
 

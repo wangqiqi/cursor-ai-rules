@@ -52,7 +52,7 @@ cd "$DEST" && bash .cursor/core/init.sh --quickstart
 
 ### 默认排除项（摘要）
 
-- `.cursorGrowth/` — 本地隐私数据  
+- `.cursorGrowth/` — 本地隐私数据（**例外**：`team-experience/` 已白名单，供团队规则索引与可选 Git 共享）  
 - `archive/` — 归档  
 - `.cursor/skills/**/references/` — 技能内上游文档副本（需要时用 `@路径` 手动引用）  
 - `.cursor/monitoring/`、日志、`node_modules/`、`.cursor/tests/` 等  

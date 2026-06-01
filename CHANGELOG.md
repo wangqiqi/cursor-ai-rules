@@ -4,6 +4,19 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.8] - 2026-06-01
+
+### Added
+
+- **团队经验沉淀**：`.cursorGrowth/team-experience/`（`rules/`、`inbox/`、`manifest.json`）固定目录；`.cursor/rules/workflow/growth-team-experience-bridge.mdc` 桥接加载，不修改主规则树。
+- **技能 `team-experience`**：将 CHANGELOG / `git log` / 对话原文交给大模型生成 `.mdc`；`scripts/collect-context.sh` 仅采集文本不解析。
+- **`.cursor/core/team-experience-init.sh`** + 模板 `.cursor/templates/team-experience/`；`growth_init.sh` 自动初始化。
+
+### Changed
+
+- **`.cursorignore` / `.gitignore`**：白名单 `team-experience/`，支持索引与可选 Git 共享。
+- **文档**：`configuration.md`、`INSTALL.md`、`project-growth.md` 补充说明；技能注册表 +1（46 skills）；规则 +1（77 rules）。
+
 ## [4.7.7] - 2026-06-01
 
 ### Added

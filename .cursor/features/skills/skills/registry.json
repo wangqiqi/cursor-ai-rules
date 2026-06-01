@@ -408,6 +408,21 @@
         "canonical_id": "learning-assistant",
         "deprecated_flat_md": true
       },
+      "team-experience": {
+        "name": "团队经验沉淀",
+        "description": "从 CHANGELOG/git/对话沉淀 .mdc 到 .cursorGrowth/team-experience（大模型归纳，不解析）",
+        "category": "learning",
+        "auto_install": true,
+        "path": "skills/team-experience.md",
+        "conditions": {},
+        "dependencies": [],
+        "source": "cursor-ai-rules",
+        "legacy_path": "team-experience.md",
+        "package": ".cursor/skills/team-experience/SKILL.md",
+        "guide": ".cursor/skills/team-experience/references/workflow.md",
+        "canonical_id": "team-experience",
+        "deprecated_flat_md": true
+      },
       "optimization-tools": {
         "name": "优化工具",
         "description": "代码和性能优化工具集",
@@ -827,7 +842,8 @@
     ],
     "learning": [
       "code-examples",
-      "learning-assistant"
+      "learning-assistant",
+      "team-experience"
     ],
     "formatting": [
       "code-formatting"

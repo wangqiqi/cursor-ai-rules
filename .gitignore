@@ -1,6 +1,9 @@
 # Cursor AI 生长数据 - 自动感知和学习
 # 这些数据包含用户偏好、本地配置和学习数据，不应在仓库中跟踪
 .cursorGrowth/
+# 可选：仅提交团队沉淀规则（多人共享经验）
+!.cursorGrowth/team-experience/
+!.cursorGrowth/team-experience/**
 
 # Cursor 系统文件
 .cursor/web/node_modules/

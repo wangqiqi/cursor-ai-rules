@@ -1,0 +1,42 @@
+---
+description: "桥接 .cursorGrowth/team-experience/rules 团队沉淀规则（不修改 .cursor 主规则树）"
+alwaysApply: true
+priority: 17
+---
+
+# 🌉 团队经验规则桥接 (Team Experience Rules Bridge)
+
+## 固定路径（跨项目、跨成员统一）
+
+| 路径 | 用途 |
+|------|------|
+| `.cursorGrowth/team-experience/rules/` | 已采纳的 `.mdc` 团队规则（与 `.cursor/rules` 同格式） |
+| `.cursorGrowth/team-experience/inbox/` | 大模型草案，待确认 |
+| `.cursorGrowth/team-experience/manifest.json` | 索引：作者、日期、来源、状态 |
+
+目录不存在时：运行 `bash .cursor/core/team-experience-init.sh` 或 `bash .cursor/features/automation/automation/scripts/growth_init.sh`。
+
+## 每次任务开始前（MUST）
+
+1. 若存在 `.cursorGrowth/team-experience/rules/*.mdc`，**读取全部**（可按 `manifest.json` 的 `active` 条目排序）。
+2. 将其中约束与 `.cursor/rules` 一并遵守；冲突时：**宪法 > `.cursor/rules` 主树 > 本目录规则**。
+3. **禁止**为沉淀经验而修改 `.cursor/rules/` 下除本桥接文件以外的任何文件。
+
+## 沉淀流程（MUST）
+
+当用户表达「沉淀」「不要再犯」「写成规则」「从 changelog 学习」或调用 `team-experience` 技能时：
+
+1. 收集材料：`CHANGELOG.md`、相关 `git log` 文本、当前对话中的问题与根因（由大模型归纳，**不要用脚本解析 CHANGELOG**）。
+2. 生成完整 `.mdc` 草案（含 `description`、`alwaysApply: false`、窄 `globs`、`priority` ≤ 12）。
+3. 默认写入 **inbox/**；用户明确确认后移至 **rules/** 并更新 **manifest.json**（`status`: `draft` → `active`）。
+4. 每条规则正文保持短小：**现象 → 根因 → 必须/禁止 → 推荐做法**；`manifest` 记录 `source`（如 `changelog@4.7.7`、`commits: abc123`）。
+
+## 索引与退役
+
+- 合并同类 inbox/rules 条目时更新 `manifest.json`，旧条目标 `deprecated`。
+- 不得删除 manifest 历史记录，仅改 `status`。
+
+## 与 `.cursorignore` / Git
+
+- `team-experience/` 已在 `.cursorignore` 白名单，可供 `@codebase` 检索。
+- 团队若需 Git 共享：仅提交 `.cursorGrowth/team-experience/`（见根目录 `.gitignore` 白名单），勿提交 Growth 其他目录。

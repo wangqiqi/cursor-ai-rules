@@ -41,6 +41,12 @@ echo "🏗️  创建目录结构..."
 ensure_directory_structure
 echo "✅ 目录结构创建完成"
 
+# 团队经验沉淀目录（team-experience）
+TE_INIT="$SCRIPT_DIR/../../../../../.cursor/core/team-experience-init.sh"
+if [[ -x "$TE_INIT" ]]; then
+    bash "$TE_INIT" || echo "⚠️  team-experience-init 跳过（非致命）" >&2
+fi
+
 # 检查并创建基础配置文件
 echo ""
 echo "📄 检查配置文件..."
