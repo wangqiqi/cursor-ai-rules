@@ -441,7 +441,7 @@ command-center 整合结果
 - **作用域**: 跨项目共享
 - **用途**: 通用的可重用技能
 - **数量**: 45 个技能包
-- **注册表**: `registry.json` (v2.0.0)
+- **注册表**: `registry.json`（schema `2.0.0`，非插件发版号；发版号见 CHANGELOG / `plugin.json`）
 
 ### 调用关系
 

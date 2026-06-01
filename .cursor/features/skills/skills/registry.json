@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "last_updated": "2026-06-01",
-  "description": "Cursor AI Rules 技能注册表 — 官方包位于 .cursor/skills/；legacy 扁平 .md 已归档，path 字段仅供索引",
+  "description": "Cursor AI Rules 技能注册表 — 官方包位于 .cursor/skills/；legacy 扁平 .md 已归档，path 字段仅供索引。注意：本文件顶部的 version 为注册表 schema 版本，不是插件发版号（发版号见 CHANGELOG 与 .cursor-plugin/plugin.json）。",
   "skills": {
     "legacy": {
       "algorithmic-art": {

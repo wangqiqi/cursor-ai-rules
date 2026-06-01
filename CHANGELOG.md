@@ -4,6 +4,15 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.6] - 2026-06-01
+
+### Changed
+
+- **README 中英文完整版对齐**：`.cursor/README.md` 与 `.cursor/README.en.md` 结构一一对应（476 行）；合并安装方式、架构、快速开始、文档索引等章节；根目录软链不变。
+- **文档统一**：规则数量统一为 **76**；修正文档链接至 `.cursor/docs/`；补充产品线 v2.0.0 / registry schema 说明（`SKILL_GUIDE.md`、`SYSTEM_ARCHITECTURE.md`、`registry.json` description）。
+- **插件版本**：`.cursor-plugin/plugin.json` → **4.7.6**。
+- **`.gitignore`**：移除对已跟踪的 `plan.md`、`CHANGELOG.md` 的无效忽略项。
+
 ## [4.7.5] - 2026-06-01
 
 ### Changed

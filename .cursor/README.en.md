@@ -6,14 +6,16 @@
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-75-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-76-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-75+-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/skills-45-purple?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
-**🌟 Constitution-Driven Super AI Programming Partner - Three Axioms + Three Agnostic Principles + Dual Directory Architecture + VIBE Development Methodology**
+**🌟 Constitution-Driven Super AI Programming Partner — Three Axioms + Three Agnostic Principles + Dual Directory Architecture + VIBE Development Methodology**
+
+Copy `.cursor/` and root `AGENTS.md` into any project for zero-config use, or install this repo as a Cursor plugin.
 
 ---
 
@@ -36,13 +38,13 @@ If you receive third-party mail (security scanners, ecosystem outreach) asking a
 
 ### ⚖️ Constitution-Driven AI System
 - **Three Axioms**: Intent Sovereignty, Signal Trustworthiness, Cognitive Auditability
-- **Six-Dimensional Protocol**: Complete D1-D6 interaction protocol
+- **Six-Dimensional Protocol**: Complete D1–D6 interaction protocol
 - **Compliance Mechanism**: Automatic STOP mechanism ensures AI behavior compliance
 
 ### 🎯 100% Capability Coverage
-- ✅ **Rules System**: 75 technical rules fully covered
-- ✅ **Core Scripts**: 75+ scripts fully implemented
-- ✅ **Automation Hooks**: 36 Git/system hooks
+- ✅ **Rules System**: 76 technical rules (`.mdc`)
+- ✅ **Core Scripts**: 75+ shell scripts under `.cursor/core/`
+- ✅ **Automation Hooks**: Git/system hooks via `.cursor/hooks.json`
 - ✅ **Skills System**: 45 official Agent Skills packages
 
 ### 🎭 21 AI Personality Roles
@@ -77,9 +79,15 @@ All AI outputs must carry traceable, verifiable, attributable original signal ch
 ### 3. Cognitive Auditability Axiom
 All AI collaboration processes must support "three-second retrospection" - complete traceability within 3 seconds
 
-- ✅ **Audit Trail Logging**: All interactions structured logs stored in `.cursorGrowth/`
+- ✅ **Audit Trail Logging**: Structured logs stored in `.cursorGrowth/`
 - ✅ **Decision Path Visualization**: Display complete decision path from input to output
 - ✅ **Historical Traceability**: Support complete retrospection of any historical session
+
+| Axiom | Meaning |
+|-------|---------|
+| **Intent Sovereignty** | Humans retain final authority over *why* we build and *what is correct* |
+| **Signal Trustworthiness** | Every AI output must cite traceable, verifiable source signals |
+| **Cognitive Auditability** | Any moment in a session can be understood within ~3 seconds |
 
 ---
 
@@ -102,22 +110,22 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 ## 🚀 Core Features
 
 ### 🧠 Intelligent Master Command System
-- **Single Entry**: `/master` command auto-orchestrates 75+ scripts + 76 rules + 45 skills
+- **Single Entry**: `/master` orchestrates 75+ scripts + 76 rules + 45 skills
 - **Intent Understanding**: Natural language processing for complex user requirements
 - **Self-Learning**: A/B testing framework, user feedback loop, continuous optimization
-- **Performance Monitoring**: Comprehensive monitoring with response time <500ms
+- **Performance Monitoring**: Comprehensive monitoring with response time &lt;500ms (local)
 
 ### 🎯 Intelligent Capability Orchestration System
 - **75+ Scripts**: Environment perception, quality checks, performance monitoring, deployment
-- **75 Rules**: Constitution compliance, code quality, development standards
-- **36 Hooks**: Automated Git hooks, code quality checks, event logging
+- **76 Rules**: Constitution compliance, code quality, development standards
+- **Hooks**: Automated Git hooks, code quality checks, event logging
 
 ### 🛠️ Enhanced Feature Capabilities
-- **Error Handling Optimization**: Smart diagnostics with 83% efficiency improvement
-- **Intelligent Cache System**: Three-level architecture with 60% speed improvement
+- **Error Handling Optimization**: Smart diagnostics with improved recovery paths
+- **Intelligent Cache System**: Multi-level caching for faster repeated operations
 - **Learning Data Isolation**: `.cursorGrowth/` privacy protection design
 
-### ⚡ Token Optimization System (25-35% Savings)
+### ⚡ Token Optimization System (25–35% Savings)
 - **Multi-layer Compression**: Support four-level compression strategies
 - **Streaming Output**: Chunked output to avoid large responses
 - **Context Caching**: Smart caching to avoid duplicate transmission
@@ -180,11 +188,26 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 ### 📦 Self-Contained & Migration Design
 - **Fully Self-Contained**: All essential content (rules, scripts, skills, docs, Agent instructions) is inside `.cursor/`
 - **One-Click Migration**: Copy the entire `.cursor/` directory to any project for complete AI capabilities
-- **Root Shortcuts**: Root-level `AGENTS.md`, `README.md` etc. are shortcuts for GitHub display or Cursor entry points, not core content
+- **Root Shortcuts**: Root-level `AGENTS.md`, `README.md` etc. are symlinks for GitHub display or Cursor entry points
+
+### Repository layout (this repo)
+
+```
+cursor-ai-rules/
+├── AGENTS.md
+├── .cursor-plugin/plugin.json    ← plugin manifest (points at .cursor/)
+├── .cursor/                      ← single source of truth
+├── scripts/verify-plugin-manifest.sh
+└── docs/MARKETPLACE_SUBMIT.md
+```
+
+Maintainers: `bash scripts/install-githooks.sh` (validates plugin manifest when `.cursor/` changes)
 
 ---
 
 ## 🎭 21 AI Personality Roles System
+
+All roles are **fully capable** — differences are **conversation style**, not professional limits.
 
 ### Professional Roles (8)
 | Role | Personality | Best For |
@@ -206,29 +229,15 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 | Perfect Maid | Ultimate elegant, absolute loyalty | Ultimate service, perfect experience |
 | Cyberpunk Hacker | Edgy, cool, tech-savvy | Network mastery, cool personality |
 | Magical Girl Coder | Magical, cheerful, creative | Spell-like coding, inspirational |
-| ... | ... | ... |
+| … | … | … |
 
 ### Role Switching Commands
 ```bash
-# View all available roles
-/master List roles
-
-# Switch to different personalities
-/master Switch role expert_mentor       # Expert mentor
-/master Switch role loli                 # Cute loli
-/master Switch role queen_sister         # Queen sister
-
-# 🆕 Nickname Calling (Multiple nicknames supported)
-/master Call 小妮                    # Call cute loli
-/master Call 小可                    # Call perfect maid
-/master Call 小萝                    # Call cute loli
-/master Call 女王                    # Call queen sister
-
-# Check current role
-/master Current role
-
-# View all nicknames
-/master View nicknames
+/master 切换角色 loli              # Cute loli style
+/master 切换角色 expert_mentor     # Expert mentor style
+/master List roles                 # List all roles
+/master Switch role queen_sister   # Queen sister (English alias)
+/master Call 小妮                  # Nickname call
 ```
 
 ---
@@ -248,6 +257,7 @@ cp cursor-ai-rules/AGENTS.md your-project/
 **Option B — Cursor plugin (single repo, symlink whole repository)**
 
 ```bash
+git clone https://github.com/wangqiqi/cursor-ai-rules.git
 cd cursor-ai-rules
 mkdir -p ~/.cursor/plugins/local
 ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
@@ -256,7 +266,7 @@ ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 
 `.cursor-plugin/plugin.json` points at `.cursor/` — no separate `packages/` copy.
 
-See [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md).
+See [docs/MARKETPLACE_SUBMIT.md](../docs/MARKETPLACE_SUBMIT.md).
 
 | Capability | Copy `.cursor/` | Install repo as plugin |
 |------------|-----------------|-------------------------|
@@ -265,29 +275,36 @@ See [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md).
 | Hooks + `core/` | ✅ | ✅ |
 | `.cursorGrowth` per project | ✅ | ✅ |
 
----
+**Option C — Optional init**
 
-### Method 1: Chat Command `/master` (Recommended for Beginners)
 ```bash
-# 💬 Input in Cursor IDE chat dialog
+bash your-project/.cursor/core/init.sh --quickstart
+```
+
+### Chat commands (after install)
+
+| Command | Description |
+|---------|-------------|
+| `/master` | Enter AI command mode |
+| `/master analyze this project` | Analyze structure and tech stack |
+| `/master switch role [name]` | Switch conversation style |
+| `/vibe start` | Start VIBE development mode |
+
+### Method 1: `/master` (recommended for beginners)
+```bash
 /master Create a React project
 /master Learn JavaScript basics
 /master Optimize code performance
 /master Analyze project architecture
-
-# ✨ Features: AI-enhanced understanding, natural language interaction, smart suggestions
 ```
 
 ### Method 2: VIBE Development Flow
 ```bash
-# 📋 Documentation-driven development flow
 /vibe start              # Initialize development mode
 /vibe prd                # Generate product requirement docs
 /vibe code               # Smart code generation
 /vibe test               # Automated testing
 /vibe deploy             # One-click deployment
-
-# ✨ Features: Documentation-driven, test-first, frontend-backend alignment
 ```
 
 ### Method 3: Skills System
@@ -298,56 +315,53 @@ What skills are available?
 # Use specific skills
 Use backend-development skill to design API
 Use security-analysis skill to check code
-
-# ✨ Features: 45 official skill packages, smart matching, auto-application
 ```
 
 ### Method 4: Role System
 ```bash
-# Switch to different personalities
-/master Switch role expert_mentor    # Learning mode
-/master Switch role loli             # Cute and energetic
-/master Switch role queen_sister     # Regal guidance
-
-# ✨ Features: 21 personalities, nickname calling, personalized interaction
+/master Switch role expert_mentor
+/master Switch role loli
+/master Switch role queen_sister
 ```
 
 ---
 
 ## 📁 Directory Structure
 
+**Your project (after copy install)**
+
+```
+your-project/
+├── AGENTS.md                     ← sub-agents & Master entry
+└── .cursor/
+    ├── hooks.json                # Cursor Hooks schema
+    ├── hooks/                    # hook scripts
+    ├── rules/                    # 76 .mdc rules
+    ├── skills/                   # 45 Agent Skills packages
+    ├── agents/                   # master, command-center
+    ├── commands/                 # /master, /vibe implementations
+    ├── core/                     # shell core & orchestration
+    ├── features/                 # registry, automation, hooks-engine
+    ├── config/                   # project & persona config
+    ├── docs/                     # full documentation
+    ├── tests/                    # CI test scripts
+    ├── README.md                 # Chinese (this file’s counterpart)
+    └── README.en.md              # English (symlinked from repo root)
+```
+
+**Inside `.cursor/` (detail)**
+
 ```
 .cursor/
-├── README.md              # 📚 System navigation
-├── AGENTS.md              # 🤖 Agent instructions (full version; root AGENTS.md is shortcut)
-├── agents/               # 🤖 AI agents (1)
-│   └── command-center.md # Intelligent command center
-├── commands/             # ⚡ Command system (30+)
-│   ├── master.md         # Master command
-│   ├── vibe.md           # VIBE development mode
-│   └── master-handler.js # Handler
-├── config/               # ⚙️ Configuration files
-├── core/                 # 🔧 Core scripts (75+)
-│   ├── init.sh           # Initialization
-│   ├── env-perception.sh # Environment perception
-│   └── quality-manager.sh # Quality management
-├── docs/                 # 📖 Complete documentation
-│   ├── developer/        # Developer docs
-│   │   ├── SYSTEM_ARCHITECTURE.md
-│   │   └── CALL_CHAIN.md
-│   ├── guides/           # Usage guides
-│   │   └── SKILL_GUIDE.md
-│   └── reference/        # Reference materials
-├── features/             # 🎯 Feature system
-│   ├── skills/           # Official Agent Skills (45 packages)
-│   │   └── registry.json
-│   └── hooks/            # System hooks (36)
-├── rules/                # 📋 Rules system (75)
-│   ├── system/           # System rules
-│   ├── tech/             # Tech stack rules
-│   └── workflow/         # Workflow rules
-└── skills/               # 🎭 Project skills
-    └── skill-dispatcher/ # Skill dispatcher
+├── README.md / README.en.md
+├── agents/               # command-center, master
+├── commands/             # master.md, vibe.md, handlers
+├── config/
+├── core/                 # init.sh, env-perception, quality-manager, …
+├── docs/                 # developer/, guides/, reference/, admin/
+├── features/             # skills registry, hooks
+├── rules/                # core/, system/, tech/, workflow/, evolution/
+└── skills/               # 45 SKILL.md packages + skill-dispatcher
 ```
 
 ---
@@ -362,15 +376,17 @@ Use security-analysis skill to check code
 | Component Count | 42 | 161+ | **283%↑** |
 | System Stability | 95% | 99.9% | **99.9% Uptime** |
 
+*Metrics reflect design goals and internal benchmarks; your environment may vary.*
+
 ---
 
 ## 🔧 System Requirements
 
 ### Environment Requirements
 - **Cursor Editor** v0.40+
-- **Git** 2.0+
+- **Git** 2.0+ (optional; core copy path works without it)
 - **Bash** 4.0+
-- **jq** (JSON processor, optional but recommended)
+- **jq** (optional; recommended for hooks-engine and some Master scripts)
 
 ### Out-of-the-Box Features
 
@@ -394,36 +410,36 @@ Use security-analysis skill to check code
 
 ## 📚 Complete Documentation
 
-All detailed documentation is in the **[docs/](docs/README.md)** directory:
+All detailed documentation lives under **[.cursor/docs/](docs/README.md)**:
 
 | Document | Description |
 |----------|-------------|
-| [Getting Started](docs/getting-started.md) | 5-minute quick start guide |
+| [Getting Started](docs/getting-started.md) | 5-minute quick start |
 | [User Guide](docs/user-guide.md) | Complete feature documentation |
-| [System Architecture](docs/developer/SYSTEM_ARCHITECTURE.md) | Architecture design details |
+| [System Architecture](docs/developer/SYSTEM_ARCHITECTURE.md) | Architecture design |
 | [Call Chain](docs/developer/CALL_CHAIN.md) | System call flow |
 | [Skills Guide](docs/guides/SKILL_GUIDE.md) | Skills system usage |
-| [Consistency Report](docs/reference/CURSOR_SELF_CONSISTENCY_REPORT.md) | System evaluation |
+| [Consistency Report](docs/reference/CURSOR_SELF_CONSISTENCY_REPORT.md) | System self-consistency evaluation |
+| [Marketplace Submit](../docs/MARKETPLACE_SUBMIT.md) | Plugin / marketplace notes |
 
 ---
 
 ## 🌱 Project Growth System (.cursorGrowth)
 
-The system automatically creates a `.cursorGrowth` directory for storing project-private information:
+The system can create a `.cursorGrowth` directory for project-private data:
 
 ### 🔒 Automatic Privacy Protection
 ```gitignore
-# Cursor AI Growth Data - Automatic perception and learning
+# Cursor AI Growth Data
 .cursorGrowth/
 ```
 
 ### 📊 Automatically Recorded Data
-- **AI Core Data**: Status and config of 8 AI agents
+- **AI Core Data**: Status and config of agents
 - **Analytics & Monitoring**: Code quality, performance, dependency analysis
 - **Configuration Data**: Compression strategies, user config
 - **External Integrations**: Cache config, service config, tool detection
 - **Research & Experiments**: Experiment queue, optimization history
-- **Service Status**: Command config, service management
 
 ### 🧠 Intelligent Learning Mechanism
 - **Automatic Learning**: Record and learn on every call
@@ -449,12 +465,12 @@ The system automatically creates a `.cursorGrowth` directory for storing project
 
 ## 📜 License
 
-MIT License - See [LICENSE](LICENSE)
+MIT License — See [LICENSE](../LICENSE)
 
 ---
 
 **🚀 Cursor AI Rules v2.0.0 - Constitution-Driven Super AI Programming Partner**
 
-*Last updated: 2026-02-07 | Author: wangqiqi (https://github.com/wangqiqi)*
+*Last updated: 2026-06-01 | Author: wangqiqi (https://github.com/wangqiqi)*
 
-*Based on Cursor official specifications, constitution-driven AI + intelligent perception + intelligent decision-making + continuous evolution*
+*Based on Cursor official specifications: constitution-driven AI + intelligent perception + intelligent decision-making + continuous evolution*

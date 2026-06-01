@@ -77,6 +77,8 @@ Short summary (under ~100 lines). Point to references/ for detail.
 
 ## registry.json 字段
 
+> **版本号别搞混**：`registry.json` 顶部的 `"version": "2.0.0"` 是**注册表 schema 版本**（条目结构约定），不是 Cursor 插件发版号。插件/仓库发版号见根目录 `CHANGELOG.md` 与 `.cursor-plugin/plugin.json`；README 标题的「核心版 v2.0.0」是产品线品牌版本。
+
 | 字段 | 含义 |
 |------|------|
 | `package` | `.cursor/skills/<canonical>/SKILL.md` |
@@ -89,4 +91,4 @@ Short summary (under ~100 lines). Point to references/ for detail.
 - 调度器：`.cursor/skills/skill-dispatcher/SKILL.md`
 - Master：`.cursor/skills/master/SKILL.md`
 - 计划与验收：`plan.md` Phase 5
-- 变更记录：`CHANGELOG.md` `[4.7.0]`–`[4.7.1]`
+- 变更记录：`CHANGELOG.md`（发版号以首条为准）
