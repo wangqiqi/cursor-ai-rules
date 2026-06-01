@@ -1,7 +1,7 @@
 {
   "name": "cursor-ai-rules",
   "displayName": "Cursor AI Rules",
-  "version": "4.7.8",
+  "version": "4.7.9",
   "description": "Constitution-driven AI pair programming: 77 rules, 46 skills, team-experience in Growth, Master/VIBE, hooks. Single repo: copy .cursor/ to a project, or install this repository as a Cursor plugin.",
   "author": {
     "name": "wangqiqi",

@@ -59,6 +59,15 @@ cd "$DEST" && bash .cursor/core/init.sh --quickstart
 
 业务项目若已有 `.cursorignore`，请**合并**上述条目，勿直接覆盖。
 
+### 团队经验沉淀（重要）
+
+反复 bug / 发版教训可写入 **`.cursorGrowth/team-experience/rules/`**，由 `.cursor` 内桥接规则加载，**不必改**主规则树。见 [.cursor/README.md](.cursor/README.md) 专节「团队经验沉淀」与技能 `team-experience`。
+
+```bash
+bash .cursor/core/team-experience-init.sh
+/master 沉淀规则
+```
+
 ---
 
 ## 三、插件安装（全局）

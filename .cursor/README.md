@@ -6,10 +6,11 @@
 
 [![Constitution](https://img.shields.io/badge/constitution-三大公理-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-三大无关-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-76-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-77-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-75+-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-45-purple?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-46-purple?style=flat-square)]()
+[![Team Experience](https://img.shields.io/badge/team--experience-Growth-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -42,10 +43,11 @@
 - **合规机制**：自动 STOP 机制，约束 AI 行为边界
 
 ### 🎯 能力全覆盖
-- ✅ **规则体系**：76 条技术规则（`.mdc`）
+- ✅ **规则体系**：77 条技术规则（`.mdc`，含 1 条 Growth 桥接）
 - ✅ **核心脚本**：`.cursor/core/` 下 75+ Shell 脚本
 - ✅ **自动化钩子**：通过 `.cursor/hooks.json` 接入 Git/系统钩子
-- ✅ **技能体系**：45 个官方 Agent Skills 包
+- ✅ **技能体系**：46 个官方 Agent Skills 包
+- ✅ **团队经验沉淀**：`team-experience` — 从 CHANGELOG / Git / 踩坑对话归纳规则，写入 `.cursorGrowth`，**不污染** `.cursor` 主规则树
 
 ### 🎭 21 种 AI 人格角色
 - **专业风格**（8 种）：专家导师、架构师、代码审查等
@@ -159,8 +161,8 @@ AI 的一切输出必须附带可追溯、可验证、可归因的原始信号�
 
 #### `.cursorGrowth/` 🌱 项目私有数据
 - AI 学习记录、缓存、性能监控
-- 各项目独立生长
-- 建议加入 `.gitignore` 保护隐私
+- **`team-experience/`**：团队可复用 `.mdc` 规则（多项目、多成员统一路径）
+- 各项目独立生长；`team-experience/` 可在 `.gitignore` / `.cursorignore` 中 **白名单** 后选择性提交或纳入索引
 
 ### 三大无关设计原则
 
@@ -271,7 +273,7 @@ ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 
 | 能力 | 复制 `.cursor/` | 安装本仓库为插件 |
 |------|-----------------|------------------|
-| 76 rules / 45 skills | ✅ | ✅（同一 `.cursor/`） |
+| 77 rules / 46 skills | ✅ | ✅（同一 `.cursor/`） |
 | `/master`、`/vibe` | ✅ | ✅ |
 | Hooks + `core/` | ✅ | ✅ |
 | `.cursorGrowth` | ✅ 各项目独立 | ✅ 各项目独立 |
@@ -325,6 +327,25 @@ bash your-project/.cursor/core/init.sh --quickstart
 /master 切换角色 queen_sister
 ```
 
+### 方式五：团队经验沉淀（⭐ 重要）
+
+反复出现的 bug、发版教训 → 固化为规则，供全团队复用：
+
+```bash
+bash .cursor/core/team-experience-init.sh
+bash .cursor/skills/team-experience/scripts/collect-context.sh   # 仅采集 CHANGELOG/git 原文
+/master 沉淀规则
+/master skill:team-experience
+```
+
+| 组件 | 路径 |
+|------|------|
+| 沉淀目录 | `.cursorGrowth/team-experience/rules/`（草案在 `inbox/`） |
+| 桥接规则（`.cursor` 内唯一相关新增） | `.cursor/rules/workflow/growth-team-experience-bridge.mdc` |
+| 技能 | `.cursor/skills/team-experience/` |
+
+大模型阅读原文并生成 `.mdc`；**不用脚本解析** CHANGELOG。详见下文 **「团队经验沉淀」** 专节。
+
 ---
 
 ## 📁 目录结构
@@ -334,6 +355,12 @@ bash your-project/.cursor/core/init.sh --quickstart
 ```
 your-project/
 ├── AGENTS.md                     ← 子代理与 Master 入口说明
+├── .cursorignore                 ← 推荐；team-experience 已白名单
+├── .cursorGrowth/                ← 运行后生成（可选提交 team-experience/）
+│   └── team-experience/          ← 团队沉淀规则（固定目录名）
+│       ├── rules/*.mdc
+│       ├── inbox/
+│       └── manifest.json
 └── .cursor/
     ├── hooks.json                # Cursor 官方 Hooks schema
     ├── hooks/                    # 钩子脚本
@@ -431,8 +458,11 @@ your-project/
 
 ### 🔒 自动隐私保护
 ```gitignore
-# Cursor AI 生长数据
+# Cursor AI 生长数据（默认忽略）
 .cursorGrowth/
+# 可选：仅共享团队沉淀规则
+!.cursorGrowth/team-experience/
+!.cursorGrowth/team-experience/**
 ```
 
 ### 📊 典型记录内容
@@ -446,6 +476,53 @@ your-project/
 - **被动学习**：每次调用记录模式
 - **主动学习**：特定命令触发深度学习
 - **持续优化**：基于历史数据改进响应
+
+---
+
+## 🤝 团队经验沉淀（`team-experience`）⭐
+
+> **核心思路**：教训写在 **Growth**，生效靠 **桥接**；`.cursor/rules` 主树保持稳定，团队经验可跨项目、可多人、可选进 Git。
+
+### 为什么需要
+
+| 场景 | 做法 |
+|------|------|
+| 同一小 bug 反复出现 | 沉淀为 `rules/*.mdc`，下次自动加载 |
+| 发版记录在 CHANGELOG | 大模型从原文归纳「必须 / 禁止」 |
+| 多人协作 | 统一目录名 `team-experience/`，只提交该子树即可共享 |
+
+### 架构（双轨）
+
+```mermaid
+flowchart LR
+  A[CHANGELOG + git log + 对话] --> B[大模型归纳]
+  B --> C[inbox 草案]
+  C -->|用户确认| D[team-experience/rules/*.mdc]
+  D --> E[growth-team-experience-bridge.mdc]
+  E --> F[Agent 遵守补充规则]
+```
+
+- **不修改** `.cursor/rules/` 主树（除桥接文件 `growth-team-experience-bridge.mdc`）。
+- **脚本** `collect-context.sh` 只输出原文，**不解析** CHANGELOG。
+
+### 固定路径（所有项目一致）
+
+| 路径 | 说明 |
+|------|------|
+| `.cursorGrowth/team-experience/rules/` | 已采纳的 `.mdc` |
+| `.cursorGrowth/team-experience/inbox/` | 待确认草案 |
+| `.cursorGrowth/team-experience/manifest.json` | 作者、日期、来源 commit/版本、status |
+| `.cursor/rules/workflow/growth-team-experience-bridge.mdc` | 加载 `rules/` 下全部 `.mdc` |
+| `.cursor/skills/team-experience/` | 技能与工作流说明 |
+
+初始化：`bash .cursor/core/team-experience-init.sh`（`growth_init.sh` 也会创建）。
+
+### 索引与 Git
+
+- **`.cursorignore`** 已对 `team-experience/` 白名单 → 支持 `@codebase` 检索。
+- **`.gitignore`** 同路径白名单 → 团队可 **只 commit** `team-experience/` 汇聚整体经验。
+
+更多细节：[配置说明](docs/admin/configuration.md) · [模板说明](templates/team-experience/README.md)
 
 ---
 

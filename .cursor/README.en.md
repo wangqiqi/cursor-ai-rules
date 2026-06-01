@@ -6,10 +6,11 @@
 
 [![Constitution](https://img.shields.io/badge/constitution-Three_Axioms-red?style=flat-square)]()
 [![Agnostic](https://img.shields.io/badge/agnostic-Three_Agnostic-blue?style=flat-square)]()
-[![Rules](https://img.shields.io/badge/rules-76-blue?style=flat-square)]()
+[![Rules](https://img.shields.io/badge/rules-77-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-75+-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-45-purple?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-46-purple?style=flat-square)]()
+[![Team Experience](https://img.shields.io/badge/team--experience-Growth-orange?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -42,10 +43,11 @@ If you receive third-party mail (security scanners, ecosystem outreach) asking a
 - **Compliance Mechanism**: Automatic STOP mechanism ensures AI behavior compliance
 
 ### 🎯 100% Capability Coverage
-- ✅ **Rules System**: 76 technical rules (`.mdc`)
+- ✅ **Rules System**: 77 technical rules (`.mdc`, including one Growth bridge)
 - ✅ **Core Scripts**: 75+ shell scripts under `.cursor/core/`
 - ✅ **Automation Hooks**: Git/system hooks via `.cursor/hooks.json`
-- ✅ **Skills System**: 45 official Agent Skills packages
+- ✅ **Skills System**: 46 official Agent Skills packages
+- ✅ **Team Experience**: `team-experience` skill — learn from CHANGELOG / git / incidents into `.cursorGrowth` without touching the main `.cursor/rules` tree
 
 ### 🎭 21 AI Personality Roles
 - **Professional Roles** (8): Expert Mentor, Architect, Code Reviewer, etc.
@@ -159,8 +161,8 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 
 #### `.cursorGrowth/` 🌱 Project-Private Data
 - AI learning records, cache data, performance monitoring
-- Each project grows independently
-- Auto-added to `.gitignore` for privacy
+- **`team-experience/`**: shared team `.mdc` rules (same path in every project)
+- Each project grows independently; `team-experience/` can be whitelisted in `.gitignore` / `.cursorignore` for commit or indexing
 
 ### Three Agnostic Design Principles
 
@@ -271,7 +273,7 @@ See [INSTALL.md](../INSTALL.md) and [docs/MARKETPLACE_SUBMIT.md](../docs/MARKETP
 
 | Capability | Copy `.cursor/` | Install repo as plugin |
 |------------|-----------------|-------------------------|
-| 76 rules / 45 skills | ✅ | ✅ (same `.cursor/`) |
+| 77 rules / 46 skills | ✅ | ✅ (same `.cursor/`) |
 | `/master`, `/vibe` | ✅ | ✅ |
 | Hooks + `core/` | ✅ | ✅ |
 | `.cursorGrowth` per project | ✅ | ✅ |
@@ -325,6 +327,25 @@ Use security-analysis skill to check code
 /master Switch role queen_sister
 ```
 
+### Method 5: Team Experience (⭐ important)
+
+Turn recurring bugs and release lessons into reusable rules:
+
+```bash
+bash .cursor/core/team-experience-init.sh
+bash .cursor/skills/team-experience/scripts/collect-context.sh   # raw CHANGELOG/git text only
+/master Capture this as a team rule
+/master skill:team-experience
+```
+
+| Piece | Path |
+|-------|------|
+| Stored rules | `.cursorGrowth/team-experience/rules/` (drafts in `inbox/`) |
+| Bridge (only related file under `.cursor/rules`) | `.cursor/rules/workflow/growth-team-experience-bridge.mdc` |
+| Skill | `.cursor/skills/team-experience/` |
+
+The LLM reads raw materials and writes `.mdc` files — **no script parsing** of CHANGELOG. See **Team Experience** section below.
+
 ---
 
 ## 📁 Directory Structure
@@ -334,6 +355,12 @@ Use security-analysis skill to check code
 ```
 your-project/
 ├── AGENTS.md                     ← sub-agents & Master entry
+├── .cursorignore                 ← recommended; team-experience whitelisted
+├── .cursorGrowth/                ← created at runtime (optional: commit team-experience/)
+│   └── team-experience/
+│       ├── rules/*.mdc
+│       ├── inbox/
+│       └── manifest.json
 └── .cursor/
     ├── hooks.json                # Cursor Hooks schema
     ├── hooks/                    # hook scripts
@@ -431,8 +458,11 @@ The system can create a `.cursorGrowth` directory for project-private data:
 
 ### 🔒 Automatic Privacy Protection
 ```gitignore
-# Cursor AI Growth Data
+# Cursor AI Growth Data (ignored by default)
 .cursorGrowth/
+# Optional: share only team rules
+!.cursorGrowth/team-experience/
+!.cursorGrowth/team-experience/**
 ```
 
 ### 📊 Automatically Recorded Data
@@ -446,6 +476,53 @@ The system can create a `.cursorGrowth` directory for project-private data:
 - **Automatic Learning**: Record and learn on every call
 - **Active Learning**: Specific commands trigger deep learning
 - **Continuous Optimization**: Optimize responses based on historical data
+
+---
+
+## 🤝 Team Experience (`team-experience`) ⭐
+
+> **Idea**: lessons live in **Growth**, activation via a **bridge**; the main `.cursor/rules` tree stays stable; teams can share the same folder name across projects and optionally commit it.
+
+### Why it matters
+
+| Situation | Action |
+|-----------|--------|
+| Same small bug keeps returning | Save a `rules/*.mdc` entry; bridge loads it next time |
+| Lessons in CHANGELOG | LLM summarizes must / must-not from raw text |
+| Multi-developer teams | Fixed path `team-experience/`; commit only that subtree to share |
+
+### Architecture
+
+```mermaid
+flowchart LR
+  A[CHANGELOG + git log + chat] --> B[LLM synthesis]
+  B --> C[inbox draft]
+  C -->|user confirms| D[team-experience/rules/*.mdc]
+  D --> E[growth-team-experience-bridge.mdc]
+  E --> F[Agent follows supplemental rules]
+```
+
+- **Do not edit** the main `.cursor/rules/` tree (except `growth-team-experience-bridge.mdc`).
+- `collect-context.sh` outputs **raw text only** — no CHANGELOG parsing.
+
+### Fixed paths (every project)
+
+| Path | Role |
+|------|------|
+| `.cursorGrowth/team-experience/rules/` | Active `.mdc` rules |
+| `.cursorGrowth/team-experience/inbox/` | Drafts pending review |
+| `.cursorGrowth/team-experience/manifest.json` | author, date, source, status |
+| `.cursor/rules/workflow/growth-team-experience-bridge.mdc` | Loads all `rules/*.mdc` |
+| `.cursor/skills/team-experience/` | Skill and workflow docs |
+
+Init: `bash .cursor/core/team-experience-init.sh` (also run from `growth_init.sh`).
+
+### Indexing and Git
+
+- **`.cursorignore`** whitelists `team-experience/` for `@codebase`.
+- **`.gitignore`** whitelists the same path so teams can **commit only** shared experience.
+
+Details: [Configuration](docs/admin/configuration.md) · [Template README](templates/team-experience/README.md)
 
 ---
 

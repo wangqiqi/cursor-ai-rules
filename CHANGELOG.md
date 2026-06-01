@@ -4,6 +4,13 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.9] - 2026-06-01
+
+### Changed
+
+- **README 中英文**：新增「团队经验沉淀（team-experience）」专节（架构图、固定路径、快速开始方式五）；更新徽章 77 rules / 46 skills；目录结构含 `team-experience/`。
+- **INSTALL.md**：增加团队经验沉淀入口说明。
+
 ## [4.7.8] - 2026-06-01
 
 ### Added

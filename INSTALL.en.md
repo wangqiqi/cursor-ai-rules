@@ -16,6 +16,15 @@ cp    cursor-ai-rules/.cursorignore /path/to/your-project/
 | `AGENTS.md` | Agent entrypoints |
 | `.cursorignore` | Shrinks `@codebase` index; **does not** remove `alwaysApply` rules from chat |
 
+## Team experience (important)
+
+Recurring bugs and release lessons → `.cursorGrowth/team-experience/rules/*.mdc`, loaded via bridge rule (main `.cursor/rules` tree unchanged). See [.cursor/README.en.md](.cursor/README.en.md) section **Team Experience** and skill `team-experience`.
+
+```bash
+bash .cursor/core/team-experience-init.sh
+/master skill:team-experience
+```
+
 ## Do not copy
 
 `.cursorGrowth/`, `.cursor-plugin/`, `scripts/`, `docs/`, `CHANGELOG.md`, `archive/`, etc.
