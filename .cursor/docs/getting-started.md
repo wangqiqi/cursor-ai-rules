@@ -33,18 +33,17 @@ cd /path/to/your-project
 ./.cursor/core/init.sh
 ```
 
-### 方法2：Cursor 插件（全局，所有工作区）
+### 方法2：Cursor 插件（单仓库，链到本仓库根目录）
 
 ```bash
 cd cursor-ai-rules
-bash scripts/sync-plugin-package.sh
 mkdir -p ~/.cursor/plugins/local
-ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 ```
 
-重启 Cursor。可选：`cp packages/cursor-ai-rules-plugin/templates/AGENTS.md /path/to/your-project/`
+`.cursor-plugin/plugin.json` 指向 `.cursor/`。重启 Cursor。可选：`cp AGENTS.md /path/to/your-project/`
 
-详见仓库根 [README.md](../../README.md) 与 [packages/cursor-ai-rules-plugin/README.md](../../packages/cursor-ai-rules-plugin/README.md)。
+详见仓库根 [README.md](../../README.md) 与 [docs/MARKETPLACE_SUBMIT.md](../../docs/MARKETPLACE_SUBMIT.md)。
 
 ### 方法3：手动设置（仅复制 .cursor）
 

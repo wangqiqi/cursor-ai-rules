@@ -17,34 +17,31 @@ cp cursor-ai-rules/AGENTS.md your-project/
 # 2. 打开 Cursor IDE，开始使用
 ```
 
-### 方式二：Cursor 插件（全局 rules/skills/agents/commands）
+### 方式二：Cursor 插件（单仓库，全局 rules/skills/agents/commands）
 
-本仓库同步生成市场插件包：`packages/cursor-ai-rules-plugin/`（由 `scripts/sync-plugin-package.sh` 从 `.cursor/` 同步）。
+本仓库根目录 `.cursor-plugin/plugin.json` **直接指向** `.cursor/`，无需 `packages/` 副本。
 
-**本地安装（开发 / 自用）：**
+**本地安装：**
 
 ```bash
-bash scripts/sync-plugin-package.sh
+git clone https://github.com/wangqiqi/cursor-ai-rules.git
+cd cursor-ai-rules
 mkdir -p ~/.cursor/plugins/local
-ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 ```
 
-重启 Cursor 后，规则与技能对所有工作区生效。可选将子代理说明复制到项目根：
-
-```bash
-cp packages/cursor-ai-rules-plugin/templates/AGENTS.md your-project/
-```
+重启 Cursor。可选：`cp AGENTS.md your-project/`
 
 **与复制安装对比：**
 
-| 能力 | 复制 `.cursor/` | 插件包 |
-|------|-----------------|--------|
-| 70+ rules / 45+ skills | ✅ | ✅ |
-| `/master`、`/vibe` 命令 | ✅ | ✅ |
-| Hooks + `core/` | ✅ 项目路径 | ✅ 插件相对路径 |
-| 每项目 `.cursorGrowth` | ✅ | ✅（仍写在项目根） |
+| 能力 | 复制 `.cursor/` | 安装本仓库为插件 |
+|------|-----------------|------------------|
+| 76 rules / 45 skills | ✅ | ✅（同一 `.cursor/`） |
+| `/master`、`/vibe` | ✅ | ✅ |
+| Hooks + `core/` | ✅ | ✅（`.cursor/hooks.json`） |
+| `.cursorGrowth` | ✅ 各项目 | ✅ 各项目 |
 
-详见 [packages/cursor-ai-rules-plugin/README.md](packages/cursor-ai-rules-plugin/README.md)。
+详见 [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md)。
 
 在 Cursor 聊天框中输入：
 
@@ -67,21 +64,18 @@ bash your-project/.cursor/core/init.sh --quickstart
 
 ## 📦 目录结构
 
-**本仓库（维护者）**
+**本仓库（单仓库双轨）**
 
 ```
 cursor-ai-rules/
 ├── AGENTS.md
-├── .cursor/                      ← 权威源：复制即用
-├── packages/cursor-ai-rules-plugin/  ← 同步生成的 Cursor 插件包
-├── scripts/
-│   ├── sync-plugin-package.sh
-│   ├── verify-plugin-package.sh
-│   └── check-plugin-package-drift.sh
-└── docs/MARKETPLACE_SUBMIT.md    ← 市场上架清单
+├── .cursor-plugin/plugin.json    ← 插件清单（指向 .cursor/）
+├── .cursor/                      ← 唯一权威源：复制即用 + 插件共用
+├── scripts/verify-plugin-manifest.sh
+└── docs/MARKETPLACE_SUBMIT.md
 ```
 
-维护者可选：`bash scripts/install-githooks.sh`（改 `.cursor/` 时自动 sync 并 stage `packages/`）
+维护者可选：`bash scripts/install-githooks.sh`（改 `.cursor/` 时校验插件清单）
 
 **你的项目（复制安装后）**
 

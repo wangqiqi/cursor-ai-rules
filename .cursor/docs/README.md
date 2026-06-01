@@ -42,7 +42,7 @@ docs/
 - **内容范围**: 5分钟快速安装和基础体验（**复制 `.cursor/`** 或 **Cursor 插件** 双轨）
 - **文件**: `getting-started.md`
 - **适用场景**: 首次接触系统，不知从何开始
-- **插件包**: 仓库根 `packages/cursor-ai-rules-plugin/README.md`；市场上架见 `docs/MARKETPLACE_SUBMIT.md`
+- **插件（单仓库）**: `.cursor-plugin/plugin.json` → `.cursor/`；市场上架见 `docs/MARKETPLACE_SUBMIT.md`
 
 ### 📖 完整使用指南 (User Guide)
 - **目标读者**: 普通用户，需要全面了解功能

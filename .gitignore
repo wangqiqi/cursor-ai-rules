@@ -16,6 +16,9 @@ plan.md
 CHANGELOG.md
 archive/
 
+# Legacy dual-tree plugin output (removed — use .cursor-plugin/ + .cursor/ only)
+packages/
+
 
 # 项目角色配置（每个用户独立）
 # 已迁移至 .cursorGrowth/user/config/project_state.json

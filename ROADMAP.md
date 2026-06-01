@@ -276,7 +276,7 @@ Cursor AI Rules的核心架构和功能已全部完成，达到生产就绪标�
 ## 4.1 生态系统扩展
 
 **插件化目标** (来自 CURSOR_IMPROVEMENT_PLAN):
-- ✅ **Phase 6 已落地（本仓）**：`packages/cursor-ai-rules-plugin/` + `scripts/sync-plugin-package.sh`；与复制 `.cursor/` **双轨**并存
+- ✅ **Phase 6 已落地（单仓库）**：`.cursor-plugin/plugin.json` → `.cursor/`；复制与插件**共用一棵树**，无 `packages/` 副本
 - 待完成：**Cursor 官方市场上架** — 见 [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md)
 - 按 [Cursor Plugins Building](https://cursor.com/docs/plugins/building) 规范维护 `plugin.json`
 

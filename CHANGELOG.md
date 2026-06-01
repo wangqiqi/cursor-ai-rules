@@ -4,6 +4,18 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.5] - 2026-06-01
+
+### Changed
+
+- **单仓库插件**：移除 `packages/cursor-ai-rules-plugin/` 副本；根目录 `.cursor-plugin/plugin.json` 直接引用 `.cursor/`（复制与插件共用一棵树）。
+- **脚本**：`verify-plugin-manifest.sh`、`bump-plugin-version.sh` 替代 sync/drift；CI 与 release 对齐单仓库布局。
+
+### Removed
+
+- `scripts/sync-plugin-package.sh`、`verify-plugin-package.sh`、`check-plugin-package-drift.sh`
+- `packages/`（加入 `.gitignore`）
+
 ## [4.7.4] - 2026-06-01
 
 ### Added

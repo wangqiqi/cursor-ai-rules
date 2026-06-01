@@ -18,12 +18,11 @@ cd /path/to/your-project
 /master 你好，我想创建一个React项目
 ```
 
-**B. 安装 Cursor 插件（全局 rules/skills，所有项目）**
+**B. 安装 Cursor 插件（单仓库，链到仓库根）**
 
 ```bash
 cd cursor-ai-rules
-bash scripts/sync-plugin-package.sh
-ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 # 重启 Cursor
 ```
 

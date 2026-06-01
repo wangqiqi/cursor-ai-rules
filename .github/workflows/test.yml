@@ -24,8 +24,5 @@ jobs:
           for f in .cursor/core/*.sh .cursor/cursor-master.sh; do
             bash -n "$f" && echo "✅ $f" || echo "❌ $f"
           done
-      - name: 同步、校验插件包并检查漂移
-        run: |
-          bash scripts/sync-plugin-package.sh
-          bash scripts/verify-plugin-package.sh
-          bash scripts/check-plugin-package-drift.sh
+      - name: 单仓库插件清单校验
+        run: bash scripts/verify-plugin-manifest.sh

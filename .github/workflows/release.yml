@@ -17,17 +17,19 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Sync, verify, drift check
-        run: |
-          bash scripts/sync-plugin-package.sh
-          bash scripts/verify-plugin-package.sh
-          bash scripts/check-plugin-package-drift.sh
+      - name: Verify plugin manifest
+        run: bash scripts/verify-plugin-manifest.sh
 
-      - name: Build plugin archive
+      - name: Build release archive (single-repo layout)
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          ARCHIVE="cursor-ai-rules-plugin-${VERSION}.tar.gz"
-          tar -czf "$ARCHIVE" -C packages cursor-ai-rules-plugin
+          ARCHIVE="cursor-ai-rules-${VERSION}.tar.gz"
+          tar -czf "$ARCHIVE" \
+            .cursor-plugin \
+            .cursor \
+            AGENTS.md \
+            LICENSE \
+            README.md
           echo "ARCHIVE=$ARCHIVE" >> "$GITHUB_ENV"
 
       - name: Create GitHub Release

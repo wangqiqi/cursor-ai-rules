@@ -245,23 +245,24 @@ cp -r cursor-ai-rules/.cursor your-project/
 cp cursor-ai-rules/AGENTS.md your-project/
 ```
 
-**Option B — Cursor local plugin (global rules/skills/agents/commands)**
+**Option B — Cursor plugin (single repo, symlink whole repository)**
 
 ```bash
 cd cursor-ai-rules
-bash scripts/sync-plugin-package.sh
 mkdir -p ~/.cursor/plugins/local
-ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
-# Restart Cursor; optional: cp packages/cursor-ai-rules-plugin/templates/AGENTS.md your-project/
+ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
+# Restart Cursor; optional: cp AGENTS.md your-project/
 ```
 
-See [packages/cursor-ai-rules-plugin/README.md](packages/cursor-ai-rules-plugin/README.md) and [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md).
+`.cursor-plugin/plugin.json` points at `.cursor/` — no separate `packages/` copy.
 
-| Capability | Copy `.cursor/` | Plugin package |
-|------------|-----------------|----------------|
-| 76 rules / 45 skills | ✅ | ✅ |
+See [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md).
+
+| Capability | Copy `.cursor/` | Install repo as plugin |
+|------------|-----------------|-------------------------|
+| 76 rules / 45 skills | ✅ | ✅ (same `.cursor/`) |
 | `/master`, `/vibe` | ✅ | ✅ |
-| Hooks + `core/` | ✅ project paths | ✅ plugin-relative paths |
+| Hooks + `core/` | ✅ | ✅ |
 | `.cursorGrowth` per project | ✅ | ✅ |
 
 ---

@@ -6,18 +6,19 @@
 
 ### 项目信息
 - **项目路径**: {{PROJECT_ROOT}} （运行时替换为当前项目根目录）
-- **配置路径**: `.cursor/`（复制安装）或 `packages/cursor-ai-rules-plugin/`（Cursor 插件，由 sync 生成）
+- **配置路径**: `.cursor/`（唯一权威源；复制安装与 Cursor 插件共用）
+- **插件清单**: 根目录 `.cursor-plugin/plugin.json` → `.cursor/*`
 - **版本**: 2.0.0
 - **最后更新**: 2026-06-01
 
-### 双轨分发（Phase 6）
+### 双轨分发（Phase 6，单仓库）
 
-| 轨道 | 路径 | 用途 |
+| 轨道 | 操作 | 说明 |
 |------|------|------|
-| 复制轨 | `.cursor/` + 根 `AGENTS.md` | 完整运行时；权威源 |
-| 插件轨 | `packages/cursor-ai-rules-plugin/` | Cursor 本地/市场插件；`scripts/sync-plugin-package.sh` 同步 |
+| 复制轨 | `cp -r .cursor` + `AGENTS.md` | 项目内开箱即用 |
+| 插件轨 | `ln -s` 本仓库 → `~/.cursor/plugins/local/` | 全局加载同一 `.cursor/` |
 
-CI：`verify-plugin-package.sh` + `check-plugin-package-drift.sh`（防止 `packages/` 与 `.cursor/` 漂移）。
+CI：`scripts/verify-plugin-manifest.sh`
 
 ---
 

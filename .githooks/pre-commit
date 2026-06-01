@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Auto-sync plugin package when .cursor/ distributable files change.
-# Install: bash scripts/install-githooks.sh
+# Verify single-repo plugin manifest when .cursor/ or plugin.json changes.
 
 set -euo pipefail
 
@@ -8,16 +7,11 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
 STAGED="$(git diff --cached --name-only)"
-if ! echo "$STAGED" | grep -qE '^\.cursor/(rules|skills|agents|commands|hooks|core)/|^\.cursor/hooks\.json$'; then
+if ! echo "$STAGED" | grep -qE '^\.cursor/|^\.cursor-plugin/'; then
   exit 0
 fi
 
-echo "📦 .cursor/ changed — syncing packages/cursor-ai-rules-plugin ..."
-bash scripts/sync-plugin-package.sh
-
-if ! git diff --quiet -- packages/cursor-ai-rules-plugin; then
-  git add packages/cursor-ai-rules-plugin
-  echo "✅ Staged updated packages/cursor-ai-rules-plugin (included in this commit)"
-fi
-
-exit 0
+echo "🔍 .cursor/ or .cursor-plugin/ changed — verifying plugin manifest ..."
+bash scripts/bump-plugin-version.sh 2>/dev/null || true
+git add .cursor-plugin/plugin.json 2>/dev/null || true
+bash scripts/verify-plugin-manifest.sh

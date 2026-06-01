@@ -3,7 +3,7 @@
 *开发者自定义功能和配置的完整指南*
 
 > **注意：两种「插件」**  
-> - **Cursor 市场插件**：`packages/cursor-ai-rules-plugin/` + `.cursor-plugin/plugin.json`（全局 rules/skills/agents/commands）。  
+> - **Cursor 市场插件**：根目录 `.cursor-plugin/plugin.json` 指向 `.cursor/`（单仓库，无 `packages/` 副本）。  
 > - **Master 内部 JS 插件**：`.cursor/plugins/*/manifest.json`（`component-manager` 加载的 Node 组件）。  
 > 本文档主体描述后者；双轨分发见 [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)。
 
