@@ -1,5 +1,48 @@
 {
   "version": "1.0.0",
   "description": "项目特定配置，包含项目级别的个性化设置",
-  "last_updated": "2026-01-22T14:00:00Z"
+  "last_updated": "2026-06-01T00:00:00Z",
+  "project": {
+    "name": "cursor-ai-rules",
+    "tech_stack": "shell",
+    "team_size": "1",
+    "maturity": "stable",
+    "has_git": true,
+    "languages": ["shell", "javascript"],
+    "frameworks": []
+  },
+  "environment": {
+    "os": "linux",
+    "architecture": "x86_64"
+  },
+  "features": {
+    "automation": {
+      "enabled": true,
+      "hooks": true,
+      "scripts": true,
+      "scheduling": false
+    },
+    "skills": {
+      "enabled": true,
+      "auto_install": true,
+      "available": 37
+    },
+    "rules": {
+      "enabled": true,
+      "activated": 75,
+      "custom": []
+    }
+  },
+  "metrics": {
+    "total_files": 200,
+    "total_dirs": 30,
+    "code_lines": 15000
+  },
+  "integrations": {
+    "git": {
+      "enabled": true,
+      "remote_url": "https://github.com/wangqiqi/cursor-ai-rules",
+      "branch": "main"
+    }
+  }
 }

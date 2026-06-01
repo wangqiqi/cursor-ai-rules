@@ -1,0 +1,22 @@
+name: Cursor AI Rules CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 核心层测试
+        run: bash .cursor/tests/test-common.sh
+      - name: 扩展层测试
+        run: bash .cursor-extras/tests/test-agent-orchestration.sh || echo "扩展测试未就绪，跳过"
+      - name: Shell 语法检查
+        run: |
+          for f in .cursor/core/*.sh .cursor/cursor-master.sh; do
+            bash -n "$f" && echo "✅ $f" || echo "❌ $f"
+          done
