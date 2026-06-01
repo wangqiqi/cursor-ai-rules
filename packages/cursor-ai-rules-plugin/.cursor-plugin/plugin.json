@@ -1,7 +1,7 @@
 {
   "name": "cursor-ai-rules",
   "displayName": "Cursor AI Rules",
-  "version": "4.7.3",
+  "version": "4.7.4",
   "description": "Constitution-driven AI pair programming: 70+ rules, 45+ skills, Master/VIBE commands, and optional hooks. Dual install: copy .cursor/ or install this plugin.",
   "author": {
     "name": "wangqiqi",

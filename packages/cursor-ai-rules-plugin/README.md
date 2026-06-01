@@ -36,6 +36,16 @@ For **maximum** parity (custom project hooks, local tests), still use root [READ
 cp packages/cursor-ai-rules-plugin/templates/AGENTS.md ./AGENTS.md
 ```
 
+## Maintainer workflow
+
+```bash
+bash scripts/sync-plugin-package.sh
+bash scripts/check-plugin-package-drift.sh
+bash scripts/install-githooks.sh   # optional: auto-sync on commit
+```
+
 ## Sync manifest
 
 See `SYNC_MANIFEST.json` for last sync time and version.
+
+Marketplace checklist: [docs/MARKETPLACE_SUBMIT.md](../../docs/MARKETPLACE_SUBMIT.md).

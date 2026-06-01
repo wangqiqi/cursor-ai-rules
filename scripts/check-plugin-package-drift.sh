@@ -8,7 +8,9 @@ cd "$REPO_ROOT"
 
 bash scripts/sync-plugin-package.sh
 
-if git diff --quiet -- packages/cursor-ai-rules-plugin 2>/dev/null; then
+# SYNC_MANIFEST.json only stores sync timestamp — exclude from drift compare
+if git diff --quiet -- packages/cursor-ai-rules-plugin \
+  ':(exclude)packages/cursor-ai-rules-plugin/SYNC_MANIFEST.json' 2>/dev/null; then
   echo "✅ packages/cursor-ai-rules-plugin is in sync with .cursor/"
   exit 0
 fi
@@ -16,5 +18,6 @@ fi
 echo "❌ packages/cursor-ai-rules-plugin is OUT OF SYNC with .cursor/" >&2
 echo "   Run: bash scripts/sync-plugin-package.sh && git add packages/cursor-ai-rules-plugin" >&2
 echo "" >&2
-git diff --stat -- packages/cursor-ai-rules-plugin >&2 || true
+git diff --stat -- packages/cursor-ai-rules-plugin \
+  ':(exclude)packages/cursor-ai-rules-plugin/SYNC_MANIFEST.json' >&2 || true
 exit 1

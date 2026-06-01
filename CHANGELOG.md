@@ -4,6 +4,25 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.4] - 2026-06-01
+
+### Added
+
+- **`scripts/check-plugin-package-drift.sh`** — CI/发版前检测 `packages/` 是否与 `.cursor/` 同步。
+- **`.githooks/pre-commit`** + **`scripts/install-githooks.sh`** — 改 `.cursor/` 时自动 sync 并 stage 插件包。
+- **`.github/workflows/release.yml`** — `v*` tag 打包 `cursor-ai-rules-plugin-*.tar.gz` 并创建 GitHub Release。
+- **`docs/MARKETPLACE_SUBMIT.md`** — Cursor 插件市场上架自检清单。
+
+### Changed
+
+- **CI**：`test.yml` 增加 jq、漂移检查；`verify-plugin-package.sh` 校验版本与 CHANGELOG 一致。
+- **文档**：`README.en.md`、`getting-started.md`、`faq.md`、`ROADMAP.md`、`.cursor/docs/README.md`、`SYSTEM_ARCHITECTURE.md`、`extension-guide.md` 双轨说明。
+
+### Tests
+
+- `bash scripts/check-plugin-package-drift.sh` — 通过
+- `bash scripts/verify-plugin-package.sh` — 版本与 CHANGELOG 一致 (4.7.4)
+
 ## [4.7.3] - 2026-06-01
 
 ### Added

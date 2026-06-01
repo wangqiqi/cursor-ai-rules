@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Auto-sync plugin package when .cursor/ distributable files change.
+# Install: bash scripts/install-githooks.sh
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+STAGED="$(git diff --cached --name-only)"
+if ! echo "$STAGED" | grep -qE '^\.cursor/(rules|skills|agents|commands|hooks|core)/|^\.cursor/hooks\.json$'; then
+  exit 0
+fi
+
+echo "📦 .cursor/ changed — syncing packages/cursor-ai-rules-plugin ..."
+bash scripts/sync-plugin-package.sh
+
+if ! git diff --quiet -- packages/cursor-ai-rules-plugin; then
+  git add packages/cursor-ai-rules-plugin
+  echo "✅ Staged updated packages/cursor-ai-rules-plugin (included in this commit)"
+fi
+
+exit 0
