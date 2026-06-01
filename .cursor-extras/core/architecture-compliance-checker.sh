@@ -6,7 +6,7 @@ set -euo pipefail
 
 # 导入通用函数
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/common.sh"
 
 source "$SCRIPT_DIR/colors.sh"

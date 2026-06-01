@@ -13,7 +13,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 加载统一路径配置
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"  # 统一路径配置
 GROWTH_DIR="$CURSOR_GROWTH"
 
 source "$SCRIPT_DIR/colors.sh"

@@ -8,7 +8,7 @@ set -e
 # 加载所有优化模块
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 加载统一路径配置
-source "$SCRIPT_DIR/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"  # 统一路径配置
 source "$SCRIPT_DIR/compact-output.sh"
 source "$SCRIPT_DIR/batch-executor.sh"
 source "$SCRIPT_DIR/token-compression.sh"

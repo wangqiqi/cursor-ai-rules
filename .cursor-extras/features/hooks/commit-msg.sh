@@ -1,14 +1,14 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 
 # 🎯 Cursor AI Rules - 提交信息验证Hook
 # 验证Git提交信息的格式和质量
 
 COMMIT_MSG_FILE="$1"
 
-source "$SCRIPT_DIR/../../../core/colors.sh"
+source "$SCRIPT_DIR/../../../.cursor/core/colors.sh"
 
 # 统计
 WARNINGS=0

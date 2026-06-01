@@ -23,7 +23,7 @@ validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置（设置非严格模式）
 export STRICT_MODE=0
 export DEBUG=0
-if ! source "$SCRIPT_DIR/path-config.sh" 2>/dev/null; then
+if ! source "$SCRIPT_DIR/../../.cursor/core/path-config.sh" 2>/dev/null; then
     handle_error 1 "路径配置加载失败"
 fi
 

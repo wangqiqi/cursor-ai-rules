@@ -4,6 +4,32 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.5.0] - 2026-06-01
+
+### Changed
+
+- **核心-扩展分层架构** (2026-06-01): 将 `.cursor/` 精简为核心层（11 个文件），新增 `.cursor-extras/` 扩展层（374 文件）按需复制；核心层零外部依赖（无 jq/node/openssl）。
+- **扩展层路径统一** (2026-06-01): `.cursor-extras/` 内 40+ 脚本改为引用 `.cursor/core/path-config.sh` 与 `colors.sh`，消除与核心层的路径配置重复。
+- **日志与入口规范** (2026-06-01): 统一 `logging.sh` 函数命名（`log_warning`/`log_success`）；入口脚本统一 `set -euo pipefail`。
+- **代码去重** (2026-06-01): 消除 24 个 agent-orchestration 样板重复；29 个文件颜色变量迁移至 `colors.sh`。
+- **README 精简** (2026-06-01): 简化 `.cursor/README.md` 为一页快速入门。
+
+### Added
+
+- **集成测试** (2026-06-01): 核心层 22 用例 + Agent Orchestration 33 用例；统一技能分类映射（补 21 个缺失项）。
+- **CI 与文档** (2026-06-01): GitHub Actions 测试工作流；36 个 hooks 参考文档；系统组件交互文档。
+- **技能工具归位** (2026-06-01): `converter.sh` / `discovery.sh` 迁至 `.cursor-extras/core/`。
+
+### Fixed
+
+- **配置写入** (2026-06-01): `common.sh` 中 `save_config_file` 错误处理不再默认强制退出。
+- **环境变量** (2026-06-01): `init.sh` heredoc 单引号→双引号，修复变量未展开。
+- **Hooks** (2026-06-01): 修复 `hooks.json` 中 `growth-directory-check` copy-paste 错误。
+
+### Removed
+
+- **扩展层冗余** (2026-06-01): 删除 `.cursor-extras/` 内重复的 `LICENSE`、`hooks.json`、`web/`、`patterns.json`、`stop-web.sh` 及旧版 skills 工具路径。
+
 ## [4.4.1] - 2026-05-27
 
 ### Added

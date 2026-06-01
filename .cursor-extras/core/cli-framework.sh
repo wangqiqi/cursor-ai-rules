@@ -7,7 +7,7 @@
 # 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/shared-functions.sh"
-source "$SCRIPT_DIR/path-config.sh"
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"
 
 # =============================================================================
 # CLI框架配置

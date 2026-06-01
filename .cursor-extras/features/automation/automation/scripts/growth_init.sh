@@ -9,7 +9,7 @@ echo "================================"
 
 # 🔧 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../core/shared-functions.sh"
+source "$SCRIPT_DIR/../../../../../.cursor/core/shared-functions.sh"
 
 # 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
 validate_project_context || handle_error 1 "项目上下文验证失败"
@@ -18,11 +18,11 @@ validate_project_context || handle_error 1 "项目上下文验证失败"
 export STRICT_MODE=0
 export DEBUG=0  # 减少调试输出，避免干扰
 
-if ! source "$SCRIPT_DIR/../../../core/path-config.sh" 2>/dev/null; then
+if ! source "$SCRIPT_DIR/../../../../../.cursor/core/path-config.sh" 2>/dev/null; then
     echo "⚠️  路径配置加载失败，尝试手动设置..." >&2
 
     # 手动设置关键路径变量
-    export PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+    export PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../../../../.." && pwd)"
     export CURSOR_DIR="$PROJECT_ROOT/.cursor"
     export CURSOR_GROWTH="$PROJECT_ROOT/.cursorGrowth"
 

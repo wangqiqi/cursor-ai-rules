@@ -1,12 +1,12 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 
 # 🎯 Cursor AI Rules - 提交前格式化Hook
 # 在提交前自动格式化代码文件
 
-source "$SCRIPT_DIR/../../../core/colors.sh"
+source "$SCRIPT_DIR/../../../.cursor/core/colors.sh"
 
 # 统计
 FILES_FORMATTED=0

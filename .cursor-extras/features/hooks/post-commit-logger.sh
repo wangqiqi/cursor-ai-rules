@@ -6,7 +6,7 @@
 set -e
 
 # 加载共享函数库
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../core" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.cursor/core" && pwd)"
 source "$SCRIPT_DIR/shared-functions.sh"
 source "$SCRIPT_DIR/path-config.sh"
 

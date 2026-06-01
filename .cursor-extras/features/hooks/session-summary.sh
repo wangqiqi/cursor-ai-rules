@@ -1,18 +1,18 @@
 #!/bin/bash
 # 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../core/shared-functions.sh"
+source "$SCRIPT_DIR/../../../.cursor/core/shared-functions.sh"
 
 # 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
 validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../core/shared-functions.sh"
+source "$SCRIPT_DIR/../../../.cursor/core/shared-functions.sh"
 
 # 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
 validate_project_context || handle_error 1 "项目上下文验证失败"
 
-source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 
 # 📋 会话摘要Hook - 在AI会话结束时生成总结报告
 # 用于分析和改进AI协作效果

@@ -1,13 +1,13 @@
 #!/bin/bash
 # 加载共享函数库
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../core/shared-functions.sh"
+source "$SCRIPT_DIR/../../../.cursor/core/shared-functions.sh"
 
 # 🛡️ 项目上下文验证 (确保脚本在正确的项目中运行)
 validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 
 # 📊 规则使用追踪Hook - 监控AI规则系统使用情况
 # 用于优化和改进Cursor AI Rules系统

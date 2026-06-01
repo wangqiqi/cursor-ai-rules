@@ -13,7 +13,7 @@ if [[ "$command_text" =~ "/master" ]] || [[ "$prompt_text" =~ "/master" ]] || [[
 # 获取项目根目录
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 加载统一路径配置
-source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 # 加载共享函数库
 source "$SCRIPT_DIR/../../core/shared-functions.sh"  # 统一目录创建
 GROWTH_DIR="$CURSOR_GROWTH"

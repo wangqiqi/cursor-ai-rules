@@ -1,12 +1,12 @@
 #!/bin/bash
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 
 # 🎯 Cursor AI Rules - 学习进度跟踪Hook
 # 跟踪和记录学习活动，生成学习报告
 
-source "$SCRIPT_DIR/../../../core/colors.sh"
+source "$SCRIPT_DIR/../../../.cursor/core/colors.sh"
 
 # 学习统计
 LEARNING_SESSIONS=0

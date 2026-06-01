@@ -3,8 +3,8 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "$SCRIPT_DIR/path-config.sh" ]; then
     source "$SCRIPT_DIR/path-config.sh"
-elif [ -f "$SCRIPT_DIR/../.cursor/core/path-config.sh" ]; then
-    source "$SCRIPT_DIR/../.cursor/core/path-config.sh"
+elif [ -f "$SCRIPT_DIR/../../.cursor/core/path-config.sh" ]; then
+    source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"
 fi
 
 

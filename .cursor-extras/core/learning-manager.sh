@@ -7,7 +7,7 @@
 # 加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/cli-framework.sh"
-source "$SCRIPT_DIR/path-config.sh"
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"
 
 # 初始化CLI框架
 cli_init "Learning Manager"

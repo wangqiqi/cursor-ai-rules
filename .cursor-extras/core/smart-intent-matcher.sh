@@ -42,7 +42,7 @@ fi
 # 非JSON模式才加载依赖
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/shared-functions.sh"
-source "$SCRIPT_DIR/path-config.sh"
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"
 
 source "$SCRIPT_DIR/colors.sh"
 
@@ -112,7 +112,7 @@ smart_match_capability() {
     if [ "$3" != "json" ]; then
         # 加载依赖脚本
         source "$SCRIPT_DIR/shared-functions.sh" 2>/dev/null || true
-        source "$SCRIPT_DIR/path-config.sh" 2>/dev/null || true
+        source "$SCRIPT_DIR/../../.cursor/core/path-config.sh" 2>/dev/null || true
     fi
 
     # 特殊处理commit_code能力

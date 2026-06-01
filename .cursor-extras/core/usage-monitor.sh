@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/shared-functions.sh"
 # 保存SCRIPT_DIR，避免被path-config.sh覆盖
 ORIGINAL_SCRIPT_DIR="$SCRIPT_DIR"
-source "$SCRIPT_DIR/path-config.sh"
+source "$SCRIPT_DIR/../../.cursor/core/path-config.sh"
 SCRIPT_DIR="$ORIGINAL_SCRIPT_DIR"
 
 # 验证项目上下文

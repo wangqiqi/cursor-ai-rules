@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/../../core/shared-functions.sh"
 validate_project_context || handle_error 1 "项目上下文验证失败"
 # 加载统一路径配置
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../core/path-config.sh"  # 统一路径配置
+source "$SCRIPT_DIR/../../../.cursor/core/path-config.sh"  # 统一路径配置
 
 # 🔒 Prompt安全检查Hook - 检查用户输入是否包含敏感信息
 # 防止意外泄露API密钥、密码等敏感信息
