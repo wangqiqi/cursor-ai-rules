@@ -25,6 +25,7 @@ git clone https://github.com/wangqiqi/cursor-ai-rules.git
 # 2. 复制到你的项目
 cp -r cursor-ai-rules/.cursor /path/to/your-project/
 cp cursor-ai-rules/AGENTS.md /path/to/your-project/
+cp cursor-ai-rules/.cursorignore /path/to/your-project/
 
 # 3. 进入项目目录
 cd /path/to/your-project
@@ -43,12 +44,13 @@ ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 
 `.cursor-plugin/plugin.json` 指向 `.cursor/`。重启 Cursor。可选：`cp AGENTS.md /path/to/your-project/`
 
-详见仓库根 [README.md](../../README.md) 与 [docs/MARKETPLACE_SUBMIT.md](../../docs/MARKETPLACE_SUBMIT.md)。
+详见根目录 [INSTALL.md](../../INSTALL.md)、[README.md](../README.md) 与 [docs/MARKETPLACE_SUBMIT.md](../../docs/MARKETPLACE_SUBMIT.md)。
 
 ### 方法3：手动设置（仅复制 .cursor）
 
 ```bash
 cp -r /path/to/cursor-ai-rules/.cursor ./
+cp /path/to/cursor-ai-rules/.cursorignore ./   # 若尚无该文件
 ./.cursor/core/init.sh --help
 ```
 

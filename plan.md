@@ -1,6 +1,6 @@
 # Cursor AI Rules — 项目计划 (plan.md)
 
-> 运行时以 `.cursor/` + 根目录 `AGENTS.md` 为准。插件与复制**共用同一 `.cursor/`**（单仓库）。
+> 运行时以 `.cursor/` + 根目录 `AGENTS.md` + `.cursorignore` 为准。复制清单见 [INSTALL.md](INSTALL.md)。插件与复制**共用同一 `.cursor/`**（单仓库）。
 
 ---
 
@@ -14,6 +14,7 @@
 - [x] **Task 6.10: 单仓库重构** — 根 `.cursor-plugin/plugin.json` → `.cursor/`；删除 `packages/` [completed]
 - [x] **Task 6.6–6.9** CI verify、hooks、release、文档 [completed，已改为 manifest 校验]
 - [ ] **Task 6.5: 提交 Cursor 插件市场** [pending，见 docs/MARKETPLACE_SUBMIT.md]
+- [x] **Task 6.11: `.cursorignore` + INSTALL.md** — 索引排除与复制安装清单 [completed 2026-06-01]
 
 ### 维护命令
 
@@ -34,4 +35,5 @@ bash scripts/install-githooks.sh       # 可选
 ## 讨论与决策记录
 
 - **2026-06-01 (Phase 6 单仓库)**：放弃 `packages/` 双份树；插件安装 = 链式克隆本仓库；权威源仅 `.cursor/`。
+- **2026-06-01**：`.cursorignore` 减小 `@codebase` 索引；`INSTALL.md` 明确必复制三项，不改目录名。
 - **官方文档**: https://cursor.com/docs/skills | https://cursor.com/docs/plugins/building

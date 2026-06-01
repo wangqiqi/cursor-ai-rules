@@ -1,0 +1,16 @@
+# Cursor 索引与 @codebase 排除（语法同 .gitignore）
+# 作用：减小 @codebase / 自动检索索引体积（不影响 alwaysApply 规则）
+# 安装：INSTALL.md | 详解：.cursor/docs/admin/configuration.md
+
+.cursorGrowth/
+archive/
+.cursor/skills/**/references/
+.cursor/monitoring/
+.cursor/**/*.log
+.cursor/**/*.pid
+.cursor/web/node_modules/
+.cursor/tests/
+.cursor/web/package-lock.json
+node_modules/
+**/.DS_Store
+Thumbs.db

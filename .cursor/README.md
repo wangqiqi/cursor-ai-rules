@@ -15,7 +15,7 @@
 
 **🌟 宪法驱动的超级 AI 编程伙伴 — 三大公理 + 三大无关原则 + 双目录架构 + VIBE 开发方法论**
 
-将 `.cursor/` 与根目录 `AGENTS.md` 复制到任意项目即可零配置使用，或将本仓库安装为 Cursor 插件。
+将 `.cursor/`、`AGENTS.md`、**`.cursorignore`** 复制到任意项目即可零配置使用，或将本仓库安装为 Cursor 插件。安装清单见根目录 **[INSTALL.md](../INSTALL.md)**。
 
 ---
 
@@ -252,6 +252,7 @@ cursor-ai-rules/
 git clone https://github.com/wangqiqi/cursor-ai-rules.git
 cp -r cursor-ai-rules/.cursor your-project/
 cp cursor-ai-rules/AGENTS.md your-project/
+cp cursor-ai-rules/.cursorignore your-project/   # 推荐：缩小 @codebase 索引
 ```
 
 **方式 B — Cursor 插件（单仓库，软链整个仓库）**
@@ -266,7 +267,7 @@ ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 
 `.cursor-plugin/plugin.json` **直接指向** `.cursor/`，无需 `packages/` 副本。
 
-详见 [docs/MARKETPLACE_SUBMIT.md](../docs/MARKETPLACE_SUBMIT.md)。
+详见 [INSTALL.md](../INSTALL.md) 与 [docs/MARKETPLACE_SUBMIT.md](../docs/MARKETPLACE_SUBMIT.md)。
 
 | 能力 | 复制 `.cursor/` | 安装本仓库为插件 |
 |------|-----------------|------------------|

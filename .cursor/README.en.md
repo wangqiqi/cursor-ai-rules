@@ -15,7 +15,7 @@
 
 **🌟 Constitution-Driven Super AI Programming Partner — Three Axioms + Three Agnostic Principles + Dual Directory Architecture + VIBE Development Methodology**
 
-Copy `.cursor/` and root `AGENTS.md` into any project for zero-config use, or install this repo as a Cursor plugin.
+Copy `.cursor/`, root `AGENTS.md`, and **`.cursorignore`** into any project for zero-config use, or install this repo as a Cursor plugin. See **[INSTALL.md](../INSTALL.md)** / [INSTALL.en.md](../INSTALL.en.md).
 
 ---
 
@@ -252,6 +252,7 @@ All roles are **fully capable** — differences are **conversation style**, not 
 git clone https://github.com/wangqiqi/cursor-ai-rules.git
 cp -r cursor-ai-rules/.cursor your-project/
 cp cursor-ai-rules/AGENTS.md your-project/
+cp cursor-ai-rules/.cursorignore your-project/   # recommended: slimmer @codebase index
 ```
 
 **Option B — Cursor plugin (single repo, symlink whole repository)**
@@ -266,7 +267,7 @@ ln -sfn "$(pwd)" ~/.cursor/plugins/local/cursor-ai-rules
 
 `.cursor-plugin/plugin.json` points at `.cursor/` — no separate `packages/` copy.
 
-See [docs/MARKETPLACE_SUBMIT.md](../docs/MARKETPLACE_SUBMIT.md).
+See [INSTALL.md](../INSTALL.md) and [docs/MARKETPLACE_SUBMIT.md](../docs/MARKETPLACE_SUBMIT.md).
 
 | Capability | Copy `.cursor/` | Install repo as plugin |
 |------------|-----------------|-------------------------|

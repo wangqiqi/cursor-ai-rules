@@ -4,6 +4,17 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.7] - 2026-06-01
+
+### Added
+
+- **`.cursorignore`**：默认排除生长数据、`references/`、监控日志等，减小 `@codebase` 索引噪音。
+- **`INSTALL.md`** / **`INSTALL.en.md`**：复制安装清单（`.cursor/` + `AGENTS.md` + `.cursorignore`）与上下文说明。
+
+### Changed
+
+- **文档**：`configuration.md`、`getting-started.md`、README 安装段链到 INSTALL；插件版本 **4.7.7**。
+
 ## [4.7.6] - 2026-06-01
 
 ### Changed

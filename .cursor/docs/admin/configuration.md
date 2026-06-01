@@ -56,6 +56,18 @@ Cursor AI Rules 采用5层配置体系，按优先级从低到高：
 - **用途**: 运行时状态和临时配置
 - **特点**: 自动生成，不需要手动维护
 
+### Cursor 索引排除 (`.cursorignore`)
+
+根目录 **`.cursorignore`** 控制 Cursor **代码索引**、`@codebase` 与自动文件检索的排除范围（语法与 `.gitignore` 相同）。与 `.gitignore` 互补：前者管 Git 跟踪，后者管 AI 是否索引该路径。
+
+| 机制 | 是否受 `.cursorignore` 影响 |
+|------|---------------------------|
+| `@codebase`、语义搜索、自动读文件 | ✅ 排除列表内路径尽量不进入索引 |
+| `alwaysApply: true` 的 `.mdc` 规则 | ❌ 仍按规则 frontmatter 注入 |
+| 手动 `@文件`、Agent 主动 Read | ❌ 仍可访问 |
+
+**默认排除**：`.cursorGrowth/`、`archive/`、`.cursor/skills/**/references/`、监控日志、`node_modules/` 等。复制到业务项目时建议一并复制 `.cursorignore`（清单见仓库根 [INSTALL.md](../../../INSTALL.md)）。
+
 ## 🛠️ 配置管理工具
 
 ### 基本配置命令
