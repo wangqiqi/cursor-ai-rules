@@ -1,27 +1,25 @@
 ---
 name: mcp-builder
-description: Build MCP servers and tools for LLM integrations (Node/Python). Use when scaffolding MCP servers, defining tools/resources, or connecting external APIs via MCP.
+description: Build MCP servers and tools for LLM integrations. Use when creating or auditing Model Context Protocol servers.
 ---
 
-# MCP Builder
+# Mcp Builder
 
-Guidance for production-quality MCP servers: tool design, auth, error handling, and SDK usage.
+Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).
 
 ## When to use
 
-- New MCP server for an API or internal service
-- Extending existing MCP with tools/resources
-- Security review of MCP exposure
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Workflow
+## Instructions
 
-1. Define tools, inputs/outputs, and auth model.
-2. Scaffold with official SDK (Node or Python).
-3. Implement handlers with validation and structured errors.
-4. Test with MCP inspector / Cursor client.
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:mcp-builder` when the project uses the command center.
 
-## References
+## Related
 
-- Skill: `.cursor/features/skills/skills/mcp-builder.md`
-- Spec samples: `.cursor/features/skills/skills/reference/mcp-specification.md`
-- Registry: `legacy.mcp-builder`
+- Package root: `.cursor/skills/mcp-builder/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`

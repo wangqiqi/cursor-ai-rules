@@ -285,6 +285,43 @@ TESTS_TOTAL=$((TESTS_TOTAL + 1))
 echo ""
 
 # =============================================================================
+# 测试组 7: Agent Skills 官方合规
+# =============================================================================
+echo "🧩 测试组 7: Agent Skills 官方合规"
+
+if bash "$CURSOR_DIR/scripts/verify-skills.sh" >/dev/null 2>&1; then
+    echo "  ✅ verify-skills.sh 全部通过"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ verify-skills.sh 未通过"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+
+for s in api-design webapp-testing; do
+    if [ -f "$CURSOR_DIR/skills/$s/references/full-guide.md" ]; then
+        echo "  ✅ $s 含 references/full-guide.md"
+        TESTS_PASSED=$((TESTS_PASSED + 1))
+    else
+        echo "  ❌ $s 缺少 references/full-guide.md"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+    fi
+    TESTS_TOTAL=$((TESTS_TOTAL + 1))
+done
+
+skill_pkg_count=$(find "$CURSOR_DIR/skills" -name 'SKILL.md' 2>/dev/null | wc -l)
+if [ "$skill_pkg_count" -ge 43 ]; then
+    echo "  ✅ 官方技能包数量 ≥43（当前 ${skill_pkg_count}）"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ 官方技能包不足 43（当前 ${skill_pkg_count}）"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+
+echo ""
+
+# =============================================================================
 # 汇总
 # =============================================================================
 echo "=================================="

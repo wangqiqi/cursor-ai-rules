@@ -1,26 +1,25 @@
 ---
 name: fullstack-development
-description: End-to-end fullstack guidance—frontend, API, data, and deployment coherence. Use when features span UI and backend or need aligned contracts.
+description: End-to-end features across frontend, backend, and data layers. Use for full-stack implementation or architecture.
 ---
 
 # Fullstack Development
 
-Coordinates UI, API contracts, shared types, and deployment so stacks stay consistent.
+提供端到端的Web应用全栈开发能力，涵盖前端、后端、数据库、部署等完整技术栈，帮助开发者构建现代化的全栈Web应用，实现前后端分离、API设计、状态管理和部署运维的完整解决方案。
 
 ## When to use
 
-- Feature spanning React/Vue and Node/Python APIs
-- Shared DTO/types between client and server
-- Fullstack performance or auth flows
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Workflow
+## Instructions
 
-1. Define API contract and error shapes first.
-2. Implement backend + client against contract.
-3. Add integration tests across boundary.
-4. Document env and deployment order.
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:fullstack-development` when the project uses the command center.
 
-## Full reference
+## Related
 
-`.cursor/features/skills/skills/fullstack-development.md`  
-Registry: `legacy.fullstack-development`
+- Package root: `.cursor/skills/fullstack-development/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`

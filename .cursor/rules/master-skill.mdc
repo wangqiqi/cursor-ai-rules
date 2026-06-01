@@ -39,4 +39,4 @@ priority: 25
 - Master 子代理：`.cursor/agents/master.md`
 - 命令中枢 Agent：`.cursor/agents/command-center.md`
 - 技能调度器：`.cursor/skills/skill-dispatcher/SKILL.md`
-- 技能注册表：`.cursor/features/skills/skills/registry.json`
+- 技能注册表：`.cursor/features/skills/skills/registry.json`（索引 `package` → `.cursor/skills/<canonical>/SKILL.md`）

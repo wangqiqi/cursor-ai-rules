@@ -4,6 +4,42 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.1] - 2026-06-01
+
+### Changed
+
+- **Skills 最佳实践抛光**：45 个 `SKILL.md` 的 `description` 统一为英文「能力 + Use when…」；`Related` 节标准化，移除对已废弃扁平 `features/skills/skills/*.md` 的引用。
+- **skill-dispatcher**：`operator-manual.md` 重写为官方路径；`SKILL.md` 表格与 Registry 说明更新。
+- **SKILL_GUIDE.md**：改为以 `.cursor/skills/` 为主的官方架构说明。
+- **verify-skills.sh**：禁止 SKILL 内引用 legacy `.md`；校验 description 含英文关键词。
+
+### Added
+
+- **`.cursor/scripts/polish-skills-best-practice.py`** — 可重复执行的技能抛光脚本。
+
+## [4.7.0] - 2026-06-01
+
+### Changed
+
+- **Agent Skills 全量迁移（Phase 5 完成）**：`registry.json` 全部 **43** 项迁入 `.cursor/skills/<canonical>/`（`canonical_id` 小写连字符；含 `reference/*` 与下划线键如 `python_mcp_server` → `python-mcp-server`）；每项含 `SKILL.md` + `references/full-guide.md`。
+- **registry.json**：新增 `package`、`guide`、`canonical_id`、`legacy_path`；`path` 改为 `skills/...` 索引；标记 `deprecated_flat_md`。
+- **skills-loader.sh**：优先从 `guide` / `package` 加载官方技能包正文。
+- **skill-dispatcher** / **master**：保留精简 `SKILL.md`；P0 共 8 个技能保留既有英文 `description` 正文。
+
+### Added
+
+- **45 个 Cursor 可发现技能包**（43 registry + `master` + `skill-dispatcher`）。
+- **`.cursor/scripts/verify-skills.sh`**、**`migrate-skills-to-official.py`**（全量 registry 驱动）；`test-common.sh` 测试组 7。
+
+### Removed
+
+- **legacy 扁平 `.md`**：自 `features/skills/skills/` 删除（已归档至 `archive/20260601_224608_skills_legacy_md/`）。
+
+### Tests
+
+- `bash .cursor/scripts/verify-skills.sh` — **45** 包全部通过
+- `bash .cursor/tests/test-common.sh` — **106/106** 通过
+
 ## [4.6.3] - 2026-06-01
 
 ### Changed

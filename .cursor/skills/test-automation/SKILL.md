@@ -1,26 +1,25 @@
 ---
 name: test-automation
-description: Design and implement automated test suites—unit, integration, and CI-friendly runners. Use when setting up or improving test coverage and pipelines.
+description: Automated testing strategy, CI integration, and test design. Use when building or improving test suites.
 ---
 
 # Test Automation
 
-Framework selection, test pyramid, fixtures, mocking, and CI integration.
+提供全面的测试自动化能力，包括单元测试、集成测试、端到端测试、性能测试等，支持测试用例生成、执行编排、结果分析和持续集成，帮助团队建立可靠的自动化测试体系。
 
 ## When to use
 
-- Greenfield test setup for a service or app
-- Flaky test diagnosis or CI stabilization
-- Coverage gaps before release
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Workflow
+## Instructions
 
-1. Map critical paths and risk areas.
-2. Choose layers (unit/integration/e2e) per cost/benefit.
-3. Add stable fixtures and deterministic data.
-4. Wire into `.cursor/tests/` or project CI.
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:test-automation` when the project uses the command center.
 
-## Full reference
+## Related
 
-`.cursor/features/skills/skills/test-automation.md`  
-Registry: `legacy.test-automation`
+- Package root: `.cursor/skills/test-automation/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`

@@ -1,25 +1,30 @@
 ---
 name: code-analysis
-description: Analyze code quality, complexity, and maintainability with actionable refactors. Use for reviews, tech debt assessment, or pre-refactor baselines.
+description: Static analysis, complexity, security patterns, and quality metrics. Use for code review, audits, or refactoring planning.
 ---
 
 # Code Analysis
 
-Quality metrics, smell detection, dependency structure, and refactor prioritization.
+使用代码分析技能后，您将获得:
+- ✅ **质量提升**: 识别并修复代码质量问题
+- ✅ **风险降低**: 及早发现潜在的安全和性能问题
+- ✅ **维护友好**: 提高代码的可维护性和可读性
+- ✅ **团队协作**: 统一代码规范，提升团队效率
+- ✅ **持续改进**: 建立代码质量改进的良性循环
 
 ## When to use
 
-- Large PR review or legacy module assessment
-- Before/after refactor measurement
-- Architecture drift detection
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Workflow
+## Instructions
 
-1. Scope files/modules and goals (perf vs maintainability).
-2. Run/static-review hotspots (complexity, coupling).
-3. Propose ordered, small refactors with tests.
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:code-analysis` when the project uses the command center.
 
-## Full reference
+## Related
 
-`.cursor/features/skills/skills/code-analysis.md`  
-Registry: `legacy.code-analysis`
+- Package root: `.cursor/skills/code-analysis/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`

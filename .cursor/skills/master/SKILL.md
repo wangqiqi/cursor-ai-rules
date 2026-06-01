@@ -1,6 +1,6 @@
 ---
 name: master
-description: Master command center—intent routing, rules/skills/scripts, 21 AI roles, and constitution compliance. Use when user mentions master, 命令中枢, or needs orchestration without typing /master.
+description: Master command center: intent routing, rules/skills orchestration, and 21 AI personas. Use when invoking /master or unified project orchestration.
 ---
 
 # Master (Command Center)
@@ -29,8 +29,10 @@ Equivalent to `/master`: parse intent, route rules/skills/scripts, optional suba
 | Skill dispatcher | `.cursor/skills/skill-dispatcher/SKILL.md` |
 | Capability maps | `.cursor/commands/capability-maps/` |
 
-## Skill library
+## Skill library (official)
 
-Flat definitions: `.cursor/features/skills/skills/*.md`  
-Registry: `.cursor/features/skills/skills/registry.json`  
-Cursor-discoverable wrappers: `.cursor/skills/*/SKILL.md`
+Discover and load skills from **`.cursor/skills/<name>/SKILL.md`** (see [Agent Skills](https://cursor.com/cn/docs/skills)).
+
+- List packages: `bash .cursor/skills/skill-dispatcher/scripts/list-skills.sh`
+- Route via **skill-dispatcher** or `/master skill:<name>`
+- Full guides: `references/full-guide.md` inside each skill folder

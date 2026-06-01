@@ -1,29 +1,25 @@
 ---
 name: webapp-testing
-description: Test local web apps with Playwright—E2E flows, UI debugging, screenshots, and browser logs. Use for frontend verification, regression, or VIBE test-driven workflows.
+description: Test local web apps with Playwright—E2E flows, UI debugging, screenshots, and browser logs. Use for frontend verification or regression.
 ---
 
-# Web Application Testing
+# Webapp Testing
 
-Playwright-based testing for local dev servers: functional checks, visual debugging, and log capture.
+Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
 
 ## When to use
 
-- E2E or smoke tests after UI changes
-- Reproducing UI bugs with traces/screenshots
-- VIBE alignment: test plan → e2e → alignment-check
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Quick commands (via Master)
+## Instructions
 
-```bash
-/master skill:webapp-testing [args]
-/master vibe-coding test-plan
-/master vibe-coding e2e-tests
-```
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:webapp-testing` when the project uses the command center.
 
-Prefer **scripts in the skill tree** when present; otherwise follow steps in the full doc.
+## Related
 
-## Full reference
-
-`.cursor/features/skills/skills/webapp-testing.md`  
-Registry: `legacy.webapp-testing`
+- Package root: `.cursor/skills/webapp-testing/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`

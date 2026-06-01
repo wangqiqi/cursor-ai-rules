@@ -31,6 +31,7 @@ log_error() {
 # 全局变量
 SKILLS_REGISTRY="$PROJECT_ROOT/.cursor/features/skills/skills/registry.json"
 SKILLS_DIR="$PROJECT_ROOT/.cursor/features/skills"
+OFFICIAL_SKILLS_ROOT="$PROJECT_ROOT/.cursor/skills"
 LOADED_SKILLS_DIR="$PROJECT_ROOT/.cursorGrowth/ai/skills"
 CACHE_DIR="$PROJECT_ROOT/.cursorGrowth/ai/cache"
 LOG_DIR="$PROJECT_ROOT/.cursorGrowth/logs"
@@ -142,11 +143,21 @@ load_skill_file() {
     local skill_name="$1"
     local skill_config="$2"
 
+    local package_path=$(echo "$skill_config" | jq -r '.package // empty' 2>/dev/null || true)
+    local guide_path=$(echo "$skill_config" | jq -r '.guide // empty' 2>/dev/null || true)
     local skill_path=$(echo "$skill_config" | jq -r '.path // empty' 2>/dev/null || true)
-    local skill_file="$SKILLS_DIR/$skill_path"
+    local skill_file=""
 
-    if [ -z "$skill_path" ] || [ ! -f "$skill_file" ]; then
-        log_error "技能文件不存在: $skill_file"
+    if [ -n "$guide_path" ] && [ -f "$PROJECT_ROOT/$guide_path" ]; then
+        skill_file="$PROJECT_ROOT/$guide_path"
+    elif [ -n "$package_path" ] && [ -f "$PROJECT_ROOT/$package_path" ]; then
+        skill_file="$PROJECT_ROOT/$package_path"
+    elif [ -n "$skill_path" ] && [ -f "$SKILLS_DIR/$skill_path" ]; then
+        skill_file="$SKILLS_DIR/$skill_path"
+    fi
+
+    if [ -z "$skill_file" ] || [ ! -f "$skill_file" ]; then
+        log_error "技能文件不存在 (package/guide/path): ${package_path:-—} / ${guide_path:-—} / ${skill_path:-—}"
         return 1
     fi
 

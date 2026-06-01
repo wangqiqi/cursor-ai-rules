@@ -1,51 +1,85 @@
-# 项目路径全量一致性扫描与修复计划 (Plan)
+# Cursor AI Rules — 项目计划 (plan.md)
 
-本项目已完成从「核心层 + `.cursor-extras` 扩展层」到 **单一官方 `.cursor/` 目录** 的迁移。运行时与 CI 均以 `.cursor/` + 根目录 `AGENTS.md` 为准。
+> 运行时以 `.cursor/` + 根目录 `AGENTS.md` 为准。历史 Phase 1–4 已完成，见文末讨论记录。
 
-## 待办任务清单 (Todo List) — Phase 1
+---
 
-- [x] **Task 1: 修复 README.en.md 软链接问题** [completed]
-- [x] **Task 2: 全量路径一致性扫描** [completed]
-- [x] **Task 3: 生成路径错配映射表** [completed]
-- [x] **Task 4: 执行批量路径修复** [completed]
-- [x] **Task 5: 验证修复后的自洽性** [completed]
-- [x] **Task 6: 更新 Plan、CHANGELOG.md 与版本管理** [completed]
+## Phase 5：Agent Skills 官方标准对齐
 
-## 待办任务清单 (Todo List) — Phase 2：Cursor 官方规范
+**目标**：与 [Cursor Agent Skills 官方文档](https://cursor.com/cn/docs/skills) 一致——`.cursor/skills/<name>/SKILL.md` 自包含、`name`/`description` 合规、详细内容进 `references/`，Cursor 可自动发现全部常用技能。
 
-- [x] **Task 2.1: 升级规则至 `.mdc` 标准格式** [completed]
-- [x] **Task 2.2: 升级技能（Skills）至标准目录** [completed]
-- [x] **Task 2.3: 升级子代理（Subagents）至标准目录** [completed]
-- [x] **Task 2.4: 升级配置钩子（Hooks）到标准目录** [completed]
-- [x] **Task 2.5: 移除硬编码路径并实行路径自洽** [completed]
-- [x] **Task 2.6: 进行最终功能验证与版本管理更新** [completed]
+**现状摘要**（2026-06-01 审计）：
 
-## 待办任务清单 (Todo List) — Phase 3：收尾与清理
+| 项 | 数量 |
+|----|------|
+| 官方可发现包（`.cursor/skills/*/SKILL.md`） | **45**（43 registry + master + skill-dispatcher） |
+| legacy 扁平 `.md` | 已归档至 `archive/*_skills_legacy_md/` |
+| `skill-dispatcher` 主文件 | 已精简（~52 行 + references/） |
 
-- [x] **Task 3.1: README.en.md 迁至 `.cursor/` 并更新根软链** [completed]
-- [x] **Task 3.2: CI 与测试脚本统一至 `.cursor/tests/`** [completed]
-- [x] **Task 3.3: 根文档 `README.md` / `plan.md` 更新为「复制 `.cursor/` + `AGENTS.md`」** [completed]
-- [x] **Task 3.4: 运行时依赖自 extras 并入 `.cursor/` 后删除 `.cursor-extras/`** [completed]
-- [x] **Task 3.5: 归档说明写入 `archive/` 并更新 CHANGELOG `[4.6.1]`** [completed]
+### 待办任务清单 — Phase 5
+
+- [x] **Task 5.1: 技能合规验证脚本** — `verify-skills.sh` + 接入 `test-common.sh` [completed]
+- [x] **Task 5.2: 重构 skill-dispatcher** — 主 `SKILL.md` 精简；`references/operator-manual.md`；`list-skills.sh` 扫描 `.cursor/skills` [completed]
+- [x] **Task 5.3: 迁移 8 个已登记技能（P0）** — `references/full-guide.md` + 标准 `SKILL.md` [completed]
+- [x] **Task 5.4: 迁移高频 legacy 技能（P1）** [completed 2026-06-01]
+- [x] **Task 5.5: 迁移其余 legacy 技能（P2 + reference/*）** [completed 2026-06-01]
+- [x] **Task 5.6: 统一 registry.json** — `package` / `guide` / `canonical_id` 指向 `.cursor/skills`；`skills-loader.sh` 优先加载 guide [completed]
+- [x] **Task 5.7: 归档与清理** — `archive/20260601_224608_skills_legacy_md/`；`features/skills/skills/` 仅保留 `registry.json` [completed]
+- [x] **Task 5.8: 全量验证** — `verify-skills.sh` 45 包、`test-common.sh` **106/106** [completed]
+- [x] **Task 5.9: 最佳实践抛光** — 英文 `description`、`SKILL_GUIDE` / `operator-manual`、`polish-skills-best-practice.py` [completed 2026-06-01]
+
+### 官方标准技能包模板（Task 5.1 产出）
+
+```text
+.cursor/skills/<skill-name>/
+├── SKILL.md              # 必填：name, description；可选 paths, disable-model-invocation
+├── references/           # 可选：详细文档（按需 Read）
+│   └── full-guide.md
+├── scripts/              # 可选：可执行脚本
+└── assets/               # 可选：模板/静态资源
+```
+
+**SKILL.md 最小 frontmatter**：
+
+```yaml
+---
+name: <skill-name>          # 必须与目录名一致，仅 a-z0-9-
+description: <何时使用>    # Agent 用于相关性判断
+paths:                      # 可选；留空=全局可用
+  - "**/*.tsx"
+---
+```
+
+### P1 技能清单（Task 5.4）
+
+`frontend-design`, `debug-assistant`, `learning-assistant`, `git-management`, `documentation-tools`, `code-formatting`, `optimization-tools`, `performance-analysis`, `refactoring-tools`, `system-analysis`, `api-testing`, `vulnerability-scanning`
+
+### P2 技能清单（Task 5.5）
+
+`algorithmic-art`, `brand-guidelines`, `canvas-design`, `doc-coauthoring`, `docx`, `pptx`, `pdf`, `xlsx`, `internal-comms`, `slack-gif-creator`, `theme-factory`, `web-artifacts-builder`, `skill-creator`, `ssr-optimization`, `code-examples`, 及 `reference/*` 附属文档
+
+### 验收标准
+
+1. Cursor Settings → Rules → Agent Decides 可列出 **≥43** 个技能（或 Phase 5 完成后的目标数量）
+2. 任意技能目录不含 `alwaysApply`/`globs`/`priority`（Rules 专用字段）
+3. 无「仅见 `.cursor/features/skills/...`」的薄包装 `SKILL.md`
+4. `bash .cursor/scripts/verify-skills.sh` 退出码 0
+
+---
+
+## 历史 Phase（已完成）
+
+### Phase 1–4
+
+见 Git 历史与 `CHANGELOG.md` `[4.6.0]`–`[4.6.3]`。
+
+### Phase 4 讨论记录
+
+- **2026-06-01**: 规则 `.mdc` 官方化、`@规则名` 无后缀、删除重复 `.md` 规则；10 个技能薄包装就位。
 
 ---
 
 ## 讨论与决策记录
 
-- **2026-06-01**: Phase 1 路径一致性修复完成。
-- **2026-06-01 (Phase 2)**: Rules/Skills/Agents/Hooks 全面对齐 Cursor 官方 `.cursor/` 结构；76 条 `.mdc`、skill-dispatcher、master/command-center、`hooks.json` + 36 钩子脚本。
-- **2026-06-01 (Phase 3 收尾)**: `README.en.md` → `.cursor/README.en.md`；CI 改 `.cursor/tests/`；`plugins/`、automation 等并入 `.cursor/`；**已删除** `.cursor-extras/`；详见 `archive/20260601_222400_cursor-extras_目录删除说明.md`。
-
-**当前开箱即用方式**：`cp -r .cursor` 与 `cp AGENTS.md` 到目标项目根目录即可。
-
-## 待办任务清单 (Todo List) — Phase 4：规范收尾
-
-- [x] **Task 4.1: 删除与 `.mdc` 重复的 workflow/tech `.md` 规则** [completed]
-- [x] **Task 4.2: 修复 `constitution.mdc` 及全仓 `.mdc` frontmatter 粘连** [completed]
-- [x] **Task 4.3: 迁移高频技能至 `.cursor/skills/<name>/SKILL.md`（10 个含 dispatcher）** [completed]
-- [x] **Task 4.4: `unified-check` 适配 `.mdc` / 标准技能路径** [completed]
-- [x] **Task 4.5: 验证测试与 CHANGELOG `[4.6.3]`** [completed]
-
-### Phase 4 讨论记录
-
-- **2026-06-01**: Phase 2 剩余小尾巴收尾；`.cursor-extras` 运行时引用仅保留于 `CHANGELOG.md` / `plan.md` 历史说明。
+- **2026-06-01 (Phase 5 启动)**: 采用「SKILL.md 精简 + references/full-guide.md」策略，避免单文件超 500 行；保留 `registry.json` 作 Master 路由索引，路径指向 `.cursor/skills`。
+- **官方文档**: https://cursor.com/cn/docs/skills

@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
-  "last_updated": "2026-01-15",
-  "description": "Cursor AI Rules 技能注册表 - 合并了agent和legacy技能",
+  "last_updated": "2026-06-01",
+  "description": "Cursor AI Rules 技能注册表 — 官方包位于 .cursor/skills/；legacy 扁平 .md 已归档，path 字段仅供索引",
   "skills": {
     "legacy": {
       "algorithmic-art": {
@@ -9,7 +9,7 @@
         "description": "使用p5.js创建算法艺术和交互式可视化",
         "category": "creative",
         "auto_install": false,
-        "path": "algorithmic-art.md",
+        "path": "skills/algorithmic-art.md",
         "conditions": {
           "dependencies": [
             "javascript"
@@ -18,24 +18,34 @@
         "dependencies": [
           "javascript"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "algorithmic-art.md",
+        "package": ".cursor/skills/algorithmic-art/SKILL.md",
+        "guide": ".cursor/skills/algorithmic-art/references/full-guide.md",
+        "canonical_id": "algorithmic-art",
+        "deprecated_flat_md": true
       },
       "brand-guidelines": {
         "name": "品牌指南",
         "description": "应用Anthropic品牌颜色和排版规范",
         "category": "enterprise",
         "auto_install": false,
-        "path": "brand-guidelines.md",
+        "path": "skills/brand-guidelines.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "brand-guidelines.md",
+        "package": ".cursor/skills/brand-guidelines/SKILL.md",
+        "guide": ".cursor/skills/brand-guidelines/references/full-guide.md",
+        "canonical_id": "brand-guidelines",
+        "deprecated_flat_md": true
       },
       "canvas-design": {
         "name": "画布设计",
         "description": "基于画布的设计和图形创建",
         "category": "design",
         "auto_install": false,
-        "path": "canvas-design.md",
+        "path": "skills/canvas-design.md",
         "conditions": {
           "dependencies": [
             "fonts"
@@ -44,34 +54,49 @@
         "dependencies": [
           "fonts"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "canvas-design.md",
+        "package": ".cursor/skills/canvas-design/SKILL.md",
+        "guide": ".cursor/skills/canvas-design/references/full-guide.md",
+        "canonical_id": "canvas-design",
+        "deprecated_flat_md": true
       },
       "doc-coauthoring": {
         "name": "文档协作",
         "description": "文档共同创作和协作工具",
         "category": "productivity",
         "auto_install": false,
-        "path": "doc-coauthoring.md",
+        "path": "skills/doc-coauthoring.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "doc-coauthoring.md",
+        "package": ".cursor/skills/doc-coauthoring/SKILL.md",
+        "guide": ".cursor/skills/doc-coauthoring/references/full-guide.md",
+        "canonical_id": "doc-coauthoring",
+        "deprecated_flat_md": true
       },
       "docx": {
         "name": "Word文档处理",
         "description": "Microsoft Word文档创建、编辑和格式化",
         "category": "document",
         "auto_install": false,
-        "path": "docx.md",
+        "path": "skills/docx.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "docx.md",
+        "package": ".cursor/skills/docx/SKILL.md",
+        "guide": ".cursor/skills/docx/references/full-guide.md",
+        "canonical_id": "docx",
+        "deprecated_flat_md": true
       },
       "frontend-design": {
         "name": "前端界面设计",
         "description": "创建高质量的前端界面和组件",
         "category": "design",
         "auto_install": false,
-        "path": "frontend-design.md",
+        "path": "skills/frontend-design.md",
         "conditions": {
           "dependencies": [
             "javascript",
@@ -84,24 +109,34 @@
           "html",
           "css"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "frontend-design.md",
+        "package": ".cursor/skills/frontend-design/SKILL.md",
+        "guide": ".cursor/skills/frontend-design/references/full-guide.md",
+        "canonical_id": "frontend-design",
+        "deprecated_flat_md": true
       },
       "internal-comms": {
         "name": "内部通讯",
         "description": "内部通讯和消息传递",
         "category": "enterprise",
         "auto_install": false,
-        "path": "internal-comms.md",
+        "path": "skills/internal-comms.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "internal-comms.md",
+        "package": ".cursor/skills/internal-comms/SKILL.md",
+        "guide": ".cursor/skills/internal-comms/references/full-guide.md",
+        "canonical_id": "internal-comms",
+        "deprecated_flat_md": true
       },
       "mcp-builder": {
         "name": "MCP构建器",
         "description": "MCP服务器开发和集成工具",
         "category": "ai_integration",
         "auto_install": false,
-        "path": "mcp-builder.md",
+        "path": "skills/mcp-builder.md",
         "conditions": {
           "dependencies": [
             "python",
@@ -112,46 +147,66 @@
           "python",
           "node"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "mcp-builder.md",
+        "package": ".cursor/skills/mcp-builder/SKILL.md",
+        "guide": ".cursor/skills/mcp-builder/references/full-guide.md",
+        "canonical_id": "mcp-builder",
+        "deprecated_flat_md": true
       },
       "pdf": {
         "name": "PDF文档处理",
         "description": "PDF文档处理、文本提取和表单填写",
         "category": "document",
         "auto_install": false,
-        "path": "pdf.md",
+        "path": "skills/pdf.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "pdf.md",
+        "package": ".cursor/skills/pdf/SKILL.md",
+        "guide": ".cursor/skills/pdf/references/full-guide.md",
+        "canonical_id": "pdf",
+        "deprecated_flat_md": true
       },
       "pptx": {
         "name": "PowerPoint演示文稿",
         "description": "演示文稿创建、编辑和格式化",
         "category": "document",
         "auto_install": false,
-        "path": "pptx.md",
+        "path": "skills/pptx.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "pptx.md",
+        "package": ".cursor/skills/pptx/SKILL.md",
+        "guide": ".cursor/skills/pptx/references/full-guide.md",
+        "canonical_id": "pptx",
+        "deprecated_flat_md": true
       },
       "skill-creator": {
         "name": "技能创建器",
         "description": "AI技能开发和定制工具",
         "category": "ai_integration",
         "auto_install": true,
-        "path": "skill-creator.md",
+        "path": "skills/skill-creator.md",
         "conditions": {
           "always": true
         },
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "skill-creator.md",
+        "package": ".cursor/skills/skill-creator/SKILL.md",
+        "guide": ".cursor/skills/skill-creator/references/full-guide.md",
+        "canonical_id": "skill-creator",
+        "deprecated_flat_md": true
       },
       "slack-gif-creator": {
         "name": "Slack GIF创建器",
         "description": "为Slack创建动画GIF",
         "category": "creative",
         "auto_install": false,
-        "path": "slack-gif-creator.md",
+        "path": "skills/slack-gif-creator.md",
         "conditions": {
           "dependencies": [
             "python"
@@ -160,214 +215,348 @@
         "dependencies": [
           "python"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "slack-gif-creator.md",
+        "package": ".cursor/skills/slack-gif-creator/SKILL.md",
+        "guide": ".cursor/skills/slack-gif-creator/references/full-guide.md",
+        "canonical_id": "slack-gif-creator",
+        "deprecated_flat_md": true
       },
       "api-design": {
         "name": "API设计",
         "description": "专业的API设计能力，包括RESTful、GraphQL等",
         "category": "development",
         "auto_install": true,
-        "path": "api-design.md",
+        "path": "skills/api-design.md",
         "conditions": {
-          "dependencies": ["javascript", "nodejs"]
+          "dependencies": [
+            "javascript",
+            "nodejs"
+          ]
         },
-        "dependencies": ["javascript", "nodejs"],
-        "source": "cursor-ai-rules"
+        "dependencies": [
+          "javascript",
+          "nodejs"
+        ],
+        "source": "cursor-ai-rules",
+        "legacy_path": "api-design.md",
+        "package": ".cursor/skills/api-design/SKILL.md",
+        "guide": ".cursor/skills/api-design/references/full-guide.md",
+        "canonical_id": "api-design",
+        "deprecated_flat_md": true
       },
       "api-testing": {
         "name": "API测试",
         "description": "全面的API测试和验证工具",
         "category": "testing",
         "auto_install": true,
-        "path": "api-testing.md",
+        "path": "skills/api-testing.md",
         "conditions": {
-          "dependencies": ["javascript", "testing"]
+          "dependencies": [
+            "javascript",
+            "testing"
+          ]
         },
-        "dependencies": ["javascript", "testing"],
-        "source": "cursor-ai-rules"
+        "dependencies": [
+          "javascript",
+          "testing"
+        ],
+        "source": "cursor-ai-rules",
+        "legacy_path": "api-testing.md",
+        "package": ".cursor/skills/api-testing/SKILL.md",
+        "guide": ".cursor/skills/api-testing/references/full-guide.md",
+        "canonical_id": "api-testing",
+        "deprecated_flat_md": true
       },
       "backend-development": {
         "name": "后端开发",
         "description": "后端系统设计和开发指导",
         "category": "development",
         "auto_install": true,
-        "path": "backend-development.md",
+        "path": "skills/backend-development.md",
         "conditions": {
-          "dependencies": ["nodejs", "python", "java"]
+          "dependencies": [
+            "nodejs",
+            "python",
+            "java"
+          ]
         },
-        "dependencies": ["nodejs", "python", "java"],
-        "source": "cursor-ai-rules"
+        "dependencies": [
+          "nodejs",
+          "python",
+          "java"
+        ],
+        "source": "cursor-ai-rules",
+        "legacy_path": "backend-development.md",
+        "package": ".cursor/skills/backend-development/SKILL.md",
+        "guide": ".cursor/skills/backend-development/references/full-guide.md",
+        "canonical_id": "backend-development",
+        "deprecated_flat_md": true
       },
       "code-analysis": {
         "name": "代码分析",
         "description": "智能代码分析和质量评估",
         "category": "analysis",
         "auto_install": true,
-        "path": "code-analysis.md",
+        "path": "skills/code-analysis.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "code-analysis.md",
+        "package": ".cursor/skills/code-analysis/SKILL.md",
+        "guide": ".cursor/skills/code-analysis/references/full-guide.md",
+        "canonical_id": "code-analysis",
+        "deprecated_flat_md": true
       },
       "code-examples": {
         "name": "代码示例",
         "description": "丰富的编程语言代码示例库",
         "category": "learning",
         "auto_install": true,
-        "path": "code-examples.md",
+        "path": "skills/code-examples.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "code-examples.md",
+        "package": ".cursor/skills/code-examples/SKILL.md",
+        "guide": ".cursor/skills/code-examples/references/full-guide.md",
+        "canonical_id": "code-examples",
+        "deprecated_flat_md": true
       },
       "code-formatting": {
         "name": "代码格式化",
         "description": "智能代码格式化和美化工具",
         "category": "formatting",
         "auto_install": true,
-        "path": "code-formatting.md",
+        "path": "skills/code-formatting.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "code-formatting.md",
+        "package": ".cursor/skills/code-formatting/SKILL.md",
+        "guide": ".cursor/skills/code-formatting/references/full-guide.md",
+        "canonical_id": "code-formatting",
+        "deprecated_flat_md": true
       },
       "documentation-tools": {
         "name": "文档工具",
         "description": "文档生成和维护工具",
         "category": "documentation",
         "auto_install": true,
-        "path": "documentation-tools.md",
+        "path": "skills/documentation-tools.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "documentation-tools.md",
+        "package": ".cursor/skills/documentation-tools/SKILL.md",
+        "guide": ".cursor/skills/documentation-tools/references/full-guide.md",
+        "canonical_id": "documentation-tools",
+        "deprecated_flat_md": true
       },
       "fullstack-development": {
         "name": "全栈开发",
         "description": "前后端全栈开发指导",
         "category": "development",
         "auto_install": true,
-        "path": "fullstack-development.md",
+        "path": "skills/fullstack-development.md",
         "conditions": {
-          "dependencies": ["javascript", "react", "nodejs"]
+          "dependencies": [
+            "javascript",
+            "react",
+            "nodejs"
+          ]
         },
-        "dependencies": ["javascript", "react", "nodejs"],
-        "source": "cursor-ai-rules"
+        "dependencies": [
+          "javascript",
+          "react",
+          "nodejs"
+        ],
+        "source": "cursor-ai-rules",
+        "legacy_path": "fullstack-development.md",
+        "package": ".cursor/skills/fullstack-development/SKILL.md",
+        "guide": ".cursor/skills/fullstack-development/references/full-guide.md",
+        "canonical_id": "fullstack-development",
+        "deprecated_flat_md": true
       },
       "git-management": {
         "name": "Git管理",
         "description": "Git版本控制和团队协作工具",
         "category": "collaboration",
         "auto_install": true,
-        "path": "git-management.md",
+        "path": "skills/git-management.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "git-management.md",
+        "package": ".cursor/skills/git-management/SKILL.md",
+        "guide": ".cursor/skills/git-management/references/full-guide.md",
+        "canonical_id": "git-management",
+        "deprecated_flat_md": true
       },
       "learning-assistant": {
         "name": "学习助手",
         "description": "编程学习和技能提升助手",
         "category": "learning",
         "auto_install": true,
-        "path": "learning-assistant.md",
+        "path": "skills/learning-assistant.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "learning-assistant.md",
+        "package": ".cursor/skills/learning-assistant/SKILL.md",
+        "guide": ".cursor/skills/learning-assistant/references/full-guide.md",
+        "canonical_id": "learning-assistant",
+        "deprecated_flat_md": true
       },
       "optimization-tools": {
         "name": "优化工具",
         "description": "代码和性能优化工具集",
         "category": "optimization",
         "auto_install": true,
-        "path": "optimization-tools.md",
+        "path": "skills/optimization-tools.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "optimization-tools.md",
+        "package": ".cursor/skills/optimization-tools/SKILL.md",
+        "guide": ".cursor/skills/optimization-tools/references/full-guide.md",
+        "canonical_id": "optimization-tools",
+        "deprecated_flat_md": true
       },
       "performance-analysis": {
         "name": "性能分析",
         "description": "应用性能分析和优化建议",
         "category": "analysis",
         "auto_install": true,
-        "path": "performance-analysis.md",
+        "path": "skills/performance-analysis.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "performance-analysis.md",
+        "package": ".cursor/skills/performance-analysis/SKILL.md",
+        "guide": ".cursor/skills/performance-analysis/references/full-guide.md",
+        "canonical_id": "performance-analysis",
+        "deprecated_flat_md": true
       },
       "refactoring-tools": {
         "name": "重构工具",
         "description": "代码重构和架构优化工具",
         "category": "refactoring",
         "auto_install": true,
-        "path": "refactoring-tools.md",
+        "path": "skills/refactoring-tools.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "refactoring-tools.md",
+        "package": ".cursor/skills/refactoring-tools/SKILL.md",
+        "guide": ".cursor/skills/refactoring-tools/references/full-guide.md",
+        "canonical_id": "refactoring-tools",
+        "deprecated_flat_md": true
       },
       "security-analysis": {
         "name": "安全分析",
         "description": "代码安全漏洞检测和修复",
         "category": "security",
         "auto_install": true,
-        "path": "security-analysis.md",
+        "path": "skills/security-analysis.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "security-analysis.md",
+        "package": ".cursor/skills/security-analysis/SKILL.md",
+        "guide": ".cursor/skills/security-analysis/references/full-guide.md",
+        "canonical_id": "security-analysis",
+        "deprecated_flat_md": true
       },
       "ssr-optimization": {
         "name": "SSR优化",
         "description": "服务器端渲染优化和性能提升",
         "category": "optimization",
         "auto_install": false,
-        "path": "ssr-optimization.md",
+        "path": "skills/ssr-optimization.md",
         "conditions": {
-          "dependencies": ["react", "nextjs"]
+          "dependencies": [
+            "react",
+            "nextjs"
+          ]
         },
-        "dependencies": ["react", "nextjs"],
-        "source": "cursor-ai-rules"
+        "dependencies": [
+          "react",
+          "nextjs"
+        ],
+        "source": "cursor-ai-rules",
+        "legacy_path": "ssr-optimization.md",
+        "package": ".cursor/skills/ssr-optimization/SKILL.md",
+        "guide": ".cursor/skills/ssr-optimization/references/full-guide.md",
+        "canonical_id": "ssr-optimization",
+        "deprecated_flat_md": true
       },
       "system-analysis": {
         "name": "系统分析",
         "description": "系统架构和设计分析工具",
         "category": "analysis",
         "auto_install": true,
-        "path": "system-analysis.md",
+        "path": "skills/system-analysis.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "system-analysis.md",
+        "package": ".cursor/skills/system-analysis/SKILL.md",
+        "guide": ".cursor/skills/system-analysis/references/full-guide.md",
+        "canonical_id": "system-analysis",
+        "deprecated_flat_md": true
       },
       "test-automation": {
         "name": "测试自动化",
         "description": "自动化测试框架和工具",
         "category": "testing",
         "auto_install": true,
-        "path": "test-automation.md",
+        "path": "skills/test-automation.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "test-automation.md",
+        "package": ".cursor/skills/test-automation/SKILL.md",
+        "guide": ".cursor/skills/test-automation/references/full-guide.md",
+        "canonical_id": "test-automation",
+        "deprecated_flat_md": true
       },
       "vulnerability-scanning": {
         "name": "漏洞扫描",
         "description": "安全漏洞扫描和修复建议",
         "category": "security",
         "auto_install": true,
-        "path": "vulnerability-scanning.md",
+        "path": "skills/vulnerability-scanning.md",
         "conditions": {},
         "dependencies": [],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "vulnerability-scanning.md",
+        "package": ".cursor/skills/vulnerability-scanning/SKILL.md",
+        "guide": ".cursor/skills/vulnerability-scanning/references/full-guide.md",
+        "canonical_id": "vulnerability-scanning",
+        "deprecated_flat_md": true
       },
       "theme-factory": {
         "name": "主题工厂",
         "description": "设计主题创建和管理",
         "category": "design",
         "auto_install": false,
-        "path": "theme-factory.md",
+        "path": "skills/theme-factory.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "theme-factory.md",
+        "package": ".cursor/skills/theme-factory/SKILL.md",
+        "guide": ".cursor/skills/theme-factory/references/full-guide.md",
+        "canonical_id": "theme-factory",
+        "deprecated_flat_md": true
       },
       "webapp-testing": {
         "name": "Web应用测试",
         "description": "使用Playwright进行Web应用测试",
         "category": "testing",
         "auto_install": false,
-        "path": "webapp-testing.md",
+        "path": "skills/webapp-testing.md",
         "conditions": {
           "dependencies": [
             "javascript",
@@ -378,14 +567,19 @@
           "javascript",
           "node"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "webapp-testing.md",
+        "package": ".cursor/skills/webapp-testing/SKILL.md",
+        "guide": ".cursor/skills/webapp-testing/references/full-guide.md",
+        "canonical_id": "webapp-testing",
+        "deprecated_flat_md": true
       },
       "web-artifacts-builder": {
         "name": "Web工件构建器",
         "description": "使用React和Tailwind构建复杂Web组件",
         "category": "development",
         "auto_install": false,
-        "path": "web-artifacts-builder.md",
+        "path": "skills/web-artifacts-builder.md",
         "conditions": {
           "dependencies": [
             "javascript",
@@ -398,24 +592,34 @@
           "react",
           "node"
         ],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "web-artifacts-builder.md",
+        "package": ".cursor/skills/web-artifacts-builder/SKILL.md",
+        "guide": ".cursor/skills/web-artifacts-builder/references/full-guide.md",
+        "canonical_id": "web-artifacts-builder",
+        "deprecated_flat_md": true
       },
       "xlsx": {
         "name": "Excel电子表格",
         "description": "电子表格创建、编辑和数据分析",
         "category": "document",
         "auto_install": false,
-        "path": "xlsx.md",
+        "path": "skills/xlsx.md",
         "conditions": {},
         "dependencies": [],
-        "source": "anthropic-skills"
+        "source": "anthropic-skills",
+        "legacy_path": "xlsx.md",
+        "package": ".cursor/skills/xlsx/SKILL.md",
+        "guide": ".cursor/skills/xlsx/references/full-guide.md",
+        "canonical_id": "xlsx",
+        "deprecated_flat_md": true
       },
       "node_mcp_server": {
         "name": "Node.js MCP服务器",
         "description": "Node.js实现的MCP服务器框架",
         "category": "ai_integration",
         "auto_install": false,
-        "path": "reference/node_mcp_server.md",
+        "path": "skills/reference/node_mcp_server.md",
         "conditions": {
           "dependencies": [
             "node"
@@ -424,34 +628,49 @@
         "dependencies": [
           "node"
         ],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/node_mcp_server.md",
+        "package": ".cursor/skills/node-mcp-server/SKILL.md",
+        "guide": ".cursor/skills/node-mcp-server/references/full-guide.md",
+        "canonical_id": "node-mcp-server",
+        "deprecated_flat_md": true
       },
       "mcp-specification": {
         "name": "MCP规范文档",
         "description": "Model Context Protocol规范和实现指南",
         "category": "documentation",
         "auto_install": false,
-        "path": "reference/mcp-specification.md",
+        "path": "skills/reference/mcp-specification.md",
         "conditions": {},
         "dependencies": [],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/mcp-specification.md",
+        "package": ".cursor/skills/mcp-specification/SKILL.md",
+        "guide": ".cursor/skills/mcp-specification/references/full-guide.md",
+        "canonical_id": "mcp-specification",
+        "deprecated_flat_md": true
       },
       "python-sdk-README": {
         "name": "Python SDK说明",
         "description": "Python MCP SDK使用指南",
         "category": "documentation",
         "auto_install": false,
-        "path": "reference/python-sdk-README.md",
+        "path": "skills/reference/python-sdk-README.md",
         "conditions": {},
         "dependencies": [],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/python-sdk-README.md",
+        "package": ".cursor/skills/python-sdk-readme/SKILL.md",
+        "guide": ".cursor/skills/python-sdk-readme/references/full-guide.md",
+        "canonical_id": "python-sdk-readme",
+        "deprecated_flat_md": true
       },
       "debug-assistant": {
         "name": "智能调试助手",
         "description": "使用隔离和模式分析技术的智能调试助手",
         "category": "development",
         "auto_install": false,
-        "path": "debug-assistant.md",
+        "path": "skills/debug-assistant.md",
         "conditions": {
           "dependencies": [
             "bash",
@@ -462,24 +681,34 @@
           "bash",
           "coreutils"
         ],
-        "source": "cursor-ai-rules"
+        "source": "cursor-ai-rules",
+        "legacy_path": "debug-assistant.md",
+        "package": ".cursor/skills/debug-assistant/SKILL.md",
+        "guide": ".cursor/skills/debug-assistant/references/full-guide.md",
+        "canonical_id": "debug-assistant",
+        "deprecated_flat_md": true
       },
       "evaluation": {
         "name": "技能评估框架",
         "description": "MCP技能质量评估和测试框架",
         "category": "testing",
         "auto_install": false,
-        "path": "reference/evaluation.md",
+        "path": "skills/reference/evaluation.md",
         "conditions": {},
         "dependencies": [],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/evaluation.md",
+        "package": ".cursor/skills/evaluation/SKILL.md",
+        "guide": ".cursor/skills/evaluation/references/full-guide.md",
+        "canonical_id": "evaluation",
+        "deprecated_flat_md": true
       },
       "python_mcp_server": {
         "name": "Python MCP服务器",
         "description": "Python实现的MCP服务器框架",
         "category": "ai_integration",
         "auto_install": false,
-        "path": "reference/python_mcp_server.md",
+        "path": "skills/reference/python_mcp_server.md",
         "conditions": {
           "dependencies": [
             "python"
@@ -488,37 +717,57 @@
         "dependencies": [
           "python"
         ],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/python_mcp_server.md",
+        "package": ".cursor/skills/python-mcp-server/SKILL.md",
+        "guide": ".cursor/skills/python-mcp-server/references/full-guide.md",
+        "canonical_id": "python-mcp-server",
+        "deprecated_flat_md": true
       },
       "typescript-sdk-README": {
         "name": "TypeScript SDK说明",
         "description": "TypeScript MCP SDK使用指南",
         "category": "documentation",
         "auto_install": false,
-        "path": "reference/typescript-sdk-README.md",
+        "path": "skills/reference/typescript-sdk-README.md",
         "conditions": {},
         "dependencies": [],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/typescript-sdk-README.md",
+        "package": ".cursor/skills/typescript-sdk-readme/SKILL.md",
+        "guide": ".cursor/skills/typescript-sdk-readme/references/full-guide.md",
+        "canonical_id": "typescript-sdk-readme",
+        "deprecated_flat_md": true
       },
       "mcp_best_practices": {
         "name": "MCP最佳实践",
         "description": "MCP开发和部署的最佳实践指南",
         "category": "documentation",
         "auto_install": false,
-        "path": "reference/mcp_best_practices.md",
+        "path": "skills/reference/mcp_best_practices.md",
         "conditions": {},
         "dependencies": [],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/mcp_best_practices.md",
+        "package": ".cursor/skills/mcp-best-practices/SKILL.md",
+        "guide": ".cursor/skills/mcp-best-practices/references/full-guide.md",
+        "canonical_id": "mcp-best-practices",
+        "deprecated_flat_md": true
       },
       "reference-readme": {
         "name": "Reference文档索引",
         "description": "Skills reference材料目录和说明",
         "category": "documentation",
         "auto_install": false,
-        "path": "reference/README.md",
+        "path": "skills/reference/README.md",
         "conditions": {},
         "dependencies": [],
-        "source": "reference"
+        "source": "reference",
+        "legacy_path": "reference/README.md",
+        "package": ".cursor/skills/reference-readme/SKILL.md",
+        "guide": ".cursor/skills/reference-readme/references/full-guide.md",
+        "canonical_id": "reference-readme",
+        "deprecated_flat_md": true
       }
     }
   },

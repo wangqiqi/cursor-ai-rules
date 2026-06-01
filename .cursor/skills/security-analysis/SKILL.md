@@ -1,26 +1,25 @@
 ---
 name: security-analysis
-description: Analyze code for security vulnerabilities and suggest fixes—OWASP-style review, secrets, injection, and auth flaws. Use during security reviews or before release.
+description: Security review, threat modeling, and vulnerability patterns. Use for security audits or hardening tasks.
 ---
 
 # Security Analysis
 
-Static and architectural security review: common CWE classes, dependency risks, and hardening recommendations.
+提供全面的代码安全分析能力，识别潜在的安全漏洞、配置问题和最佳实践违反，保障代码的安全性和合规性。
 
 ## When to use
 
-- Pre-merge security pass on sensitive changes
-- Auth/session/crypto configuration review
-- Incident or audit follow-up
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Checklist (abbreviated)
+## Instructions
 
-- Input validation and output encoding
-- AuthZ on every protected path
-- Secrets not in repo; least-privilege credentials
-- Dependency/CVE scan where applicable
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:security-analysis` when the project uses the command center.
 
-## Full reference
+## Related
 
-`.cursor/features/skills/skills/security-analysis.md`  
-Registry: `legacy.security-analysis`
+- Package root: `.cursor/skills/security-analysis/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`

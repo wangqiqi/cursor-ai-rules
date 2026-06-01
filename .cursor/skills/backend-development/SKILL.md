@@ -1,26 +1,25 @@
 ---
 name: backend-development
-description: Backend architecture and implementation guidance—APIs, databases, caching, auth, and deployment. Use when building or refactoring server-side systems.
+description: Backend architecture, databases, APIs, caching, and deployment patterns. Use for server-side design, implementation, or review.
 ---
 
 # Backend Development
 
-Covers API layers, relational/NoSQL data stores, middleware, observability, and cloud/container deployment patterns.
+提供全面的后端开发能力支持，包括API设计、数据库管理、服务器架构、中间件集成等，帮助开发者构建可扩展、高性能的后端系统。
 
 ## When to use
 
-- Service design, data modeling, or query optimization
-- Auth, sessions, rate limits, background jobs
-- Performance tuning (caching, async, connection pools)
+- User or task matches this skill's domain (see description above).
+- Invoked via `/skill-name` or when the agent selects this skill from context.
 
-## Workflow
+## Instructions
 
-1. Capture requirements: scale, consistency, compliance.
-2. Model data and boundaries (modules/services).
-3. Implement API + persistence + cross-cutting concerns.
-4. Add tests, migrations, and operational runbooks.
+1. Read **`references/full-guide.md`** in this skill directory for full workflows, examples, and checklists (progressive disclosure).
+2. Run scripts under **`scripts/`** when present, using paths relative to this skill folder.
+3. For Master orchestration: `/master skill:backend-development` when the project uses the command center.
 
-## Full reference
+## Related
 
-`.cursor/features/skills/skills/backend-development.md`  
-Registry: `legacy.backend-development`
+- Package root: `.cursor/skills/backend-development/`
+- Full guide: `references/full-guide.md`
+- Registry metadata: `.cursor/features/skills/skills/registry.json`
