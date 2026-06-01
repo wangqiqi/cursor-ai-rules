@@ -16,7 +16,7 @@
 ├── core/             # 核心脚本 (75+)
 ├── docs/             # 文档系统
 ├── features/         # 特性系统
-│   ├── skills/       # 技能库 (37个)
+│   ├── skills/       # 官方技能包 (45个)
 │   ├── hooks/        # Git钩子 (36个)
 │   └── automation/   # 自动化脚本
 ├── plugins/          # 插件系统 (2个)
@@ -52,7 +52,7 @@
 
 **职责**:
 - 🎯 技能调度器
-- 发现、匹配和调用 `.cursor/features/skills/` 目录中的技能
+- 发现、匹配和调用 `.cursor/skills/` 官方技能包
 - 读取 registry.json 进行智能匹配
 
 **状态**: ✅ **完全自洽**
@@ -67,7 +67,7 @@
 
 **目录**: `features/skills/`
 
-**内容**: 37 个专业技能
+**内容**: 45 个官方 Agent Skills 包（`.cursor/skills/<name>/`）
 
 **分类**:
 - Development (开发): api-design, backend-development, fullstack-development
@@ -377,7 +377,7 @@ command-center.md (Agent 处理)
 | 模块 | 实际 | 文档 |
 |------|------|------|
 | 规则 | 75 | 75 |
-| 技能 | 35 .md / 42 registry | 37 |
+| 技能 | 45 官方包 / 43 registry | 45 |
 | 钩子 | 36 | 36 |
 | 核心脚本 | 87 | 75+ |
 

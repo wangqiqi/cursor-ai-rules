@@ -16,27 +16,40 @@
 
 ## ⚡ 一键安装
 
-### 方法1：智能Master (推荐)
+### 方法1：复制即用（完整运行时，推荐）
+
 ```bash
 # 1. 克隆项目
 git clone https://github.com/wangqiqi/cursor-ai-rules.git
 
 # 2. 复制到你的项目
 cp -r cursor-ai-rules/.cursor /path/to/your-project/
+cp cursor-ai-rules/AGENTS.md /path/to/your-project/
 
 # 3. 进入项目目录
 cd /path/to/your-project
 
-# 4. 运行智能初始化
+# 4. 运行智能初始化（可选）
 ./.cursor/core/init.sh
 ```
 
-### 方法2：手动设置
-```bash
-# 1. 复制.cursor目录到项目根目录
-cp -r /path/to/cursor-ai-rules/.cursor ./
+### 方法2：Cursor 插件（全局，所有工作区）
 
-# 2. 验证安装
+```bash
+cd cursor-ai-rules
+bash scripts/sync-plugin-package.sh
+mkdir -p ~/.cursor/plugins/local
+ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+```
+
+重启 Cursor。可选：`cp packages/cursor-ai-rules-plugin/templates/AGENTS.md /path/to/your-project/`
+
+详见仓库根 [README.md](../../README.md) 与 [packages/cursor-ai-rules-plugin/README.md](../../packages/cursor-ai-rules-plugin/README.md)。
+
+### 方法3：手动设置（仅复制 .cursor）
+
+```bash
+cp -r /path/to/cursor-ai-rules/.cursor ./
 ./.cursor/core/init.sh --help
 ```
 

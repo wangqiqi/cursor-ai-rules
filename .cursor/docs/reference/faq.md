@@ -5,24 +5,41 @@
 ## 🚀 快速开始相关
 
 ### Q: 如何开始使用Cursor AI Rules？
-**A:** 按照以下步骤快速上手：
+**A:** 两种方式（可并存）：
+
+**A. 复制到项目（完整 hooks + core，推荐）**
 
 ```bash
-# 1. 获取项目文件
 git clone https://github.com/wangqiqi/cursor-ai-rules.git
-
-# 2. 复制到你的项目
 cp -r cursor-ai-rules/.cursor /path/to/your-project/
-
-# 3. 进入项目目录
+cp cursor-ai-rules/AGENTS.md /path/to/your-project/
 cd /path/to/your-project
-
-# 4. 运行初始化
-./.cursor/core/init.sh
-
-# 5. 开始使用
+./.cursor/core/init.sh   # 可选
 /master 你好，我想创建一个React项目
 ```
+
+**B. 安装 Cursor 插件（全局 rules/skills，所有项目）**
+
+```bash
+cd cursor-ai-rules
+bash scripts/sync-plugin-package.sh
+ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+# 重启 Cursor
+```
+
+详见 [MARKETPLACE_SUBMIT.md](../../../docs/MARKETPLACE_SUBMIT.md)。
+
+### Q: 复制安装和插件安装有什么区别？
+**A:**
+
+| 能力 | 复制 `.cursor/` | 插件包 |
+|------|-----------------|--------|
+| 规则与技能 | ✅ | ✅ |
+| `/master`、`/vibe` | ✅ | ✅ |
+| Hooks、`core/` 脚本 | ✅ 项目内路径 | ✅ 插件内相对路径 |
+| `.cursorGrowth` 学习数据 | ✅ 各项目独立 | ✅ 仍写在各项目根 |
+
+需要**最强**编排与自定义 hooks 时优先复制；希望**一次安装、全仓库生效**时用插件。
 
 ### Q: 系统支持哪些操作系统？
 **A:** 完全跨平台支持：

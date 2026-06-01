@@ -126,7 +126,7 @@ graph TB
    → 读取 registry.json
    → 匹配技能: api-design
    → 检查依赖: javascript, nodejs ✅
-   → 加载: .cursor/features/skills/skills/api-design.md
+   → 加载: .cursor/skills/api-design/references/full-guide.md
 6. 应用技能指导
    → 生成API设计方案
    → RESTful建议
@@ -290,7 +290,7 @@ graph TB
    ✓ python - 已检测到
    ✓ java - 已检测到
 5. 加载技能
-   文件: .cursor/features/skills/skills/backend-development.md
+   文件: .cursor/skills/backend-development/references/full-guide.md
 6. 应用技能指导
    → 微服务架构设计
    → 服务拆分建议

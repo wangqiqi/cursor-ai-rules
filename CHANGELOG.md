@@ -4,6 +4,31 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.7.3] - 2026-06-01
+
+### Added
+
+- **双轨分发（Phase 6）**：`packages/cursor-ai-rules-plugin/` — Cursor 插件包（rules/skills/agents/commands/hooks/core），由 `scripts/sync-plugin-package.sh` 从 `.cursor/` 同步；`scripts/verify-plugin-package.sh` 校验。
+- **`.cursor-plugin/plugin.json`** — 本地/市场插件清单（`~/.cursor/plugins/local/cursor-ai-rules` 可链式安装）。
+- **根 README**：「复制 `.cursor/`」与「插件安装」并列说明。
+- **CI**：`test.yml` 增加插件包同步与校验步骤。
+
+### Changed
+
+- 合并 **[4.7.2] 文档清扫**（见下方条目）：开发文档与 Agent 说明统一官方技能路径。
+
+### Tests
+
+- `bash .cursor/tests/test-common.sh` — **107/107**
+- `bash scripts/verify-plugin-package.sh` — 通过
+
+## [4.7.2] - 2026-06-01
+
+### Changed
+
+- **文档清扫**：`.cursor/docs`、`agents`、`skill-dispatcher` 文档与 `ROADMAP.md` 等统一为 `.cursor/skills/<name>/` 官方路径；移除对已废弃 `features/skills/skills/*.md` 的运行时引用说明。
+- **`.cursor/scripts/docs-sweep-skills-paths.py`** — 可重复执行的文档路径清扫脚本。
+
 ## [4.7.1] - 2026-06-01
 
 ### Changed

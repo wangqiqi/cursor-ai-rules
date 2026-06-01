@@ -35,7 +35,7 @@
 ### 相关文档
 
 - [MCP 集成指南](../developer/mcp-integration-guide.md)
-- `features/skills/reference/mcp_best_practices.md`
+- `.cursor/skills/mcp-best-practices/references/full-guide.md`
 
 ## 验证命令
 

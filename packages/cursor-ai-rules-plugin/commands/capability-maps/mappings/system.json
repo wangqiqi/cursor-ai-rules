@@ -1,0 +1,377 @@
+{
+  "analyze_project": {
+    "description": "分析项目现状",
+    "intents": [
+      "analyze",
+      "assess",
+      "review",
+      "status",
+      "分析",
+      "评估",
+      "现状",
+      "自检"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "分析项目现状",
+      "项目健康检查",
+      "代码质量评估",
+      "技术债务分析"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [],
+      "scripts": [
+        "core/env-perception.sh"
+      ],
+      "workflows": [
+        "code-analysis",
+        "dependency-analysis",
+        "performance-analysis"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "scripts",
+      "rules",
+      "workflows"
+    ],
+    "parameters": {
+      "analysis_depth": "comprehensive",
+      "include_recommendations": true,
+      "generate_report": true
+    },
+    "analysis_scope": {
+      "code_quality": true,
+      "dependencies": true,
+      "performance": true,
+      "security": false
+    }
+  },
+  "check_system_info": {
+    "description": "检查系统信息",
+    "intents": [
+      "system",
+      "info",
+      "information",
+      "环境",
+      "配置"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "查看系统信息",
+      "检查环境配置",
+      "获取系统状态",
+      "显示配置信息"
+    ],
+    "capabilities": {
+      "rules": [
+        "system_info"
+      ],
+      "skills": [
+        "system-analysis"
+      ],
+      "scripts": [
+        "core/env-perception.sh"
+      ],
+      "workflows": [
+        "system-info-collection",
+        "environment-analysis",
+        "configuration-validation"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "info_type": "comprehensive",
+      "include_sensitive": false,
+      "format_output": true
+    },
+    "validation_rules": {
+      "require_complete_info": true,
+      "validate_environment": true
+    }
+  },
+  "manage_git_repository": {
+    "description": "管理Git仓库",
+    "intents": [
+      "git",
+      "repository",
+      "repo",
+      "版本控制",
+      "代码管理"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "初始化Git仓库",
+      "配置Git设置",
+      "管理分支策略",
+      "设置远程仓库"
+    ],
+    "capabilities": {
+      "rules": [
+        "platform_adapter"
+      ],
+      "skills": [
+        "git-management",
+        "repository-setup"
+      ],
+      "scripts": [
+        "core/git-manager.sh"
+      ],
+      "workflows": [
+        "repo-initialization",
+        "branch-strategy-setup",
+        "remote-configuration",
+        "collaboration-setup"
+      ],
+      "hooks": [
+        "git-setup-hooks.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "repo_type": "standard",
+      "branch_strategy": "git-flow",
+      "remote_setup": true,
+      "collaboration_features": true
+    },
+    "validation_rules": {
+      "require_git": true,
+      "validate_remote_access": true,
+      "check_collaboration_setup": true
+    }
+  },
+  "setup_development_environment": {
+    "description": "设置开发环境",
+    "intents": [
+      "setup",
+      "environment",
+      "开发环境",
+      "工具链",
+      "配置"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "设置开发环境",
+      "配置开发工具",
+      "安装必要工具",
+      "初始化工作环境"
+    ],
+    "capabilities": {
+      "rules": [
+        "platform_adapter"
+      ],
+      "skills": [
+        "environment-setup",
+        "toolchain-management"
+      ],
+      "scripts": [
+        "core/env-setup.sh"
+      ],
+      "workflows": [
+        "tool-detection",
+        "dependency-installation",
+        "environment-configuration",
+        "toolchain-validation"
+      ],
+      "hooks": [
+        "env-setup-verification.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "environment_type": "development",
+      "auto_install": true,
+      "validate_setup": true,
+      "create_shortcuts": true
+    },
+    "validation_rules": {
+      "require_all_tools": true,
+      "validate_versions": true,
+      "test_functionality": true
+    }
+  },
+  "manage_dependencies": {
+    "description": "管理项目依赖",
+    "intents": [
+      "dependency",
+      "dependencies",
+      "包管理",
+      "库管理",
+      "依赖项"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "安装项目依赖",
+      "更新依赖包",
+      "检查依赖安全",
+      "优化依赖树"
+    ],
+    "capabilities": {
+      "rules": [
+        "platform_adapter"
+      ],
+      "skills": [
+        "dependency-management",
+        "security-scanning"
+      ],
+      "scripts": [
+        "core/dependency-manager.sh"
+      ],
+      "workflows": [
+        "dependency-analysis",
+        "security-audit",
+        "update-strategy",
+        "compatibility-check"
+      ],
+      "hooks": [
+        "dependency-update-hooks.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "update_strategy": "conservative",
+      "security_audit": true,
+      "compatibility_check": true,
+      "auto_fix": false
+    },
+    "validation_rules": {
+      "max_vulnerabilities": 0,
+      "require_compatibility": true,
+      "validate_licenses": true
+    }
+  },
+  "configure_build_pipeline": {
+    "description": "配置构建流水线",
+    "intents": [
+      "build",
+      "pipeline",
+      "ci/cd",
+      "自动化",
+      "构建流程"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "配置CI/CD流水线",
+      "设置自动化构建",
+      "配置部署流程",
+      "创建构建脚本"
+    ],
+    "capabilities": {
+      "rules": [
+        "platform_adapter"
+      ],
+      "skills": [
+        "ci-cd-setup",
+        "build-automation"
+      ],
+      "scripts": [
+        "core/build-pipeline.sh"
+      ],
+      "workflows": [
+        "pipeline-design",
+        "tool-selection",
+        "configuration-generation",
+        "pipeline-validation"
+      ],
+      "hooks": [
+        "pipeline-setup-hooks.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "pipeline_type": "auto",
+      "ci_provider": "github-actions",
+      "include_testing": true,
+      "include_deployment": true
+    },
+    "validation_rules": {
+      "require_successful_build": true,
+      "require_test_execution": true,
+      "validate_deployment": true
+    }
+  },
+  "token_optimization_verification": {
+    "description": "验证token优化效果",
+    "intents": [
+      "token",
+      "optimization",
+      "verify",
+      "test",
+      "check",
+      "validate",
+      "verification",
+      "节省",
+      "优化",
+      "压缩",
+      "验证",
+      "测试",
+      "检查"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "验证token优化效果",
+      "测试token压缩是否有效",
+      "检查token节省情况",
+      "验证优化功能"
+    ],
+    "capabilities": {
+      "rules": [
+        "system_info"
+      ],
+      "skills": [],
+      "scripts": [],
+      "workflows": [
+        "token-verification"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "verification_type": "comprehensive",
+      "include_statistics": true,
+      "generate_report": true,
+      "run_compression_test": true
+    },
+    "validation_rules": {
+      "require_token_monitoring": false,
+      "allow_partial_results": true
+    }
+  }
+}

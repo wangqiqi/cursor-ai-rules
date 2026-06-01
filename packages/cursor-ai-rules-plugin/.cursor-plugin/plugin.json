@@ -1,0 +1,27 @@
+{
+  "name": "cursor-ai-rules",
+  "displayName": "Cursor AI Rules",
+  "version": "4.7.3",
+  "description": "Constitution-driven AI pair programming: 70+ rules, 45+ skills, Master/VIBE commands, and optional hooks. Dual install: copy .cursor/ or install this plugin.",
+  "author": {
+    "name": "wangqiqi",
+    "email": "zhou24388@163.com"
+  },
+  "homepage": "https://github.com/wangqiqi/cursor-ai-rules",
+  "repository": "https://github.com/wangqiqi/cursor-ai-rules",
+  "license": "MIT",
+  "keywords": [
+    "cursor-ai-rules",
+    "rules",
+    "skills",
+    "master",
+    "vibe",
+    "constitution",
+    "agent-skills"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "agents": "./agents/",
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks.json"
+}

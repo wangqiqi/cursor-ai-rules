@@ -1,0 +1,41 @@
+{
+  "skills_execution": {
+    "description": "执行特定技能",
+    "intents": [
+      "execute",
+      "run",
+      "use",
+      "执行",
+      "运行",
+      "使用",
+      "处理",
+      "技能"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "执行文档处理技能",
+      "运行PDF处理",
+      "使用前端设计技能",
+      "执行代码调试助手"
+    ],
+    "capabilities": {
+      "scripts": [
+        "core/skills-loader.sh"
+      ],
+      "skills": [
+        "docx",
+        "pdf",
+        "webapp-testing",
+        "debug-assistant"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "skills"
+    ],
+    "parameters": {
+      "skill_name": "auto",
+      "execution_mode": "sync"
+    }
+  }
+}

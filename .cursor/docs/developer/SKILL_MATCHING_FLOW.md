@@ -1,6 +1,6 @@
 # 技能匹配规范流程
 
-> 明确技能发现、匹配、加载的规范流程，避免多处重复实现 | 更新: 2026-02-24
+> 明确技能发现、匹配、加载的规范流程，避免多处重复实现 | 更新: 2026-06-01（官方 `.cursor/skills/` 包）
 
 ## 规范流程
 
@@ -13,7 +13,7 @@
     ↓
 ③ master-parser 委托 skills-loader match <input>（关键词→技能名）
     ↓
-④ skills-loader 读取 registry.json，匹配 key/name/description/category
+④ skills-loader 读取 registry.json，解析 `package` / `guide`，匹配 key/name/description/category
     ↓
 ⑤ 返回匹配的技能名列表（JSON）
     ↓
@@ -32,7 +32,7 @@
 | **master-executor** | 执行 skills 时委托 `skills-loader load/execute` | 不独立实现匹配算法 |
 | **agent-orchestration-smart-router** | Agent 任务分配，可查询技能能力 | 不替代技能内容加载 |
 
-## 实现状态（2026-02-24 收敛完成）
+## 实现状态（2026-06-01 官方包 + 2026-02-24 收敛）
 
 1. **skills-loader match**: 新增 `match <input>` 命令，基于 registry 匹配，输出 JSON 数组
 2. **master-parser**: 已移除硬编码 skillKeywords，委托 `matchSkillByInput()` → skills-loader match
@@ -41,5 +41,5 @@
 ## 相关文件
 
 - `.cursor/skills/skill-dispatcher/SKILL.md` - AI 规范入口
-- `.cursor/features/skills/skills/registry.json` - 技能元数据（唯一数据源）
+- `.cursor/features/skills/skills/registry.json` — 元数据索引；正文在 `.cursor/skills/*/references/full-guide.md`
 - `.cursor/core/skills-loader.sh` - 脚本侧加载器（含 match 命令）

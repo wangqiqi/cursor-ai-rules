@@ -7,7 +7,7 @@
 
 ## 🚀 使用方式
 
-### 方式一：复制即用（推荐）
+### 方式一：复制即用（完整运行时，推荐）
 
 ```bash
 # 1. 把 .cursor/ 与 AGENTS.md 复制到你的项目根目录
@@ -16,6 +16,35 @@ cp cursor-ai-rules/AGENTS.md your-project/
 
 # 2. 打开 Cursor IDE，开始使用
 ```
+
+### 方式二：Cursor 插件（全局 rules/skills/agents/commands）
+
+本仓库同步生成市场插件包：`packages/cursor-ai-rules-plugin/`（由 `scripts/sync-plugin-package.sh` 从 `.cursor/` 同步）。
+
+**本地安装（开发 / 自用）：**
+
+```bash
+bash scripts/sync-plugin-package.sh
+mkdir -p ~/.cursor/plugins/local
+ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+```
+
+重启 Cursor 后，规则与技能对所有工作区生效。可选将子代理说明复制到项目根：
+
+```bash
+cp packages/cursor-ai-rules-plugin/templates/AGENTS.md your-project/
+```
+
+**与复制安装对比：**
+
+| 能力 | 复制 `.cursor/` | 插件包 |
+|------|-----------------|--------|
+| 70+ rules / 45+ skills | ✅ | ✅ |
+| `/master`、`/vibe` 命令 | ✅ | ✅ |
+| Hooks + `core/` | ✅ 项目路径 | ✅ 插件相对路径 |
+| 每项目 `.cursorGrowth` | ✅ | ✅（仍写在项目根） |
+
+详见 [packages/cursor-ai-rules-plugin/README.md](packages/cursor-ai-rules-plugin/README.md)。
 
 在 Cursor 聊天框中输入：
 
@@ -26,7 +55,7 @@ cp cursor-ai-rules/AGENTS.md your-project/
 | `/master 切换角色 [角色名]` | 切换对话风格 |
 | `/vibe start` | 启动 VIBE 开发模式 |
 
-### 方式二：可选初始化
+### 方式三：可选初始化
 
 ```bash
 bash your-project/.cursor/core/init.sh --quickstart
@@ -38,6 +67,24 @@ bash your-project/.cursor/core/init.sh --quickstart
 
 ## 📦 目录结构
 
+**本仓库（维护者）**
+
+```
+cursor-ai-rules/
+├── AGENTS.md
+├── .cursor/                      ← 权威源：复制即用
+├── packages/cursor-ai-rules-plugin/  ← 同步生成的 Cursor 插件包
+├── scripts/
+│   ├── sync-plugin-package.sh
+│   ├── verify-plugin-package.sh
+│   └── check-plugin-package-drift.sh
+└── docs/MARKETPLACE_SUBMIT.md    ← 市场上架清单
+```
+
+维护者可选：`bash scripts/install-githooks.sh`（改 `.cursor/` 时自动 sync 并 stage `packages/`）
+
+**你的项目（复制安装后）**
+
 ```
 your-project/
 ├── AGENTS.md                     ← 子代理与 Master 入口说明
@@ -45,11 +92,11 @@ your-project/
     ├── hooks.json                # Cursor 官方 Hooks schema
     ├── hooks/                    # 钩子脚本
     ├── rules/                    # 70+ .mdc 规则
-    ├── skills/                   # 技能（含 skill-dispatcher）
+    ├── skills/                   # 45 个官方 Agent Skills 包
     ├── agents/                   # master、command-center 子代理
     ├── commands/                 # /master、/vibe 等命令实现
     ├── core/                     # Shell 核心与 agent-orchestration
-    ├── features/                 # 技能库、自动化、hooks-engine 配置
+    ├── features/                 # registry 索引、自动化、hooks-engine 配置
     ├── config/                   # 项目与人格角色配置
     ├── docs/                     # 开发与使用文档
     ├── tests/                    # CI 测试脚本

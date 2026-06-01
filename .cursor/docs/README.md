@@ -39,9 +39,10 @@ docs/
 
 ### 🚀 快速开始 (Getting Started)
 - **目标读者**: 完全新手用户
-- **内容范围**: 5分钟快速安装和基础体验
+- **内容范围**: 5分钟快速安装和基础体验（**复制 `.cursor/`** 或 **Cursor 插件** 双轨）
 - **文件**: `getting-started.md`
 - **适用场景**: 首次接触系统，不知从何开始
+- **插件包**: 仓库根 `packages/cursor-ai-rules-plugin/README.md`；市场上架见 `docs/MARKETPLACE_SUBMIT.md`
 
 ### 📖 完整使用指南 (User Guide)
 - **目标读者**: 普通用户，需要全面了解功能
@@ -69,7 +70,7 @@ docs/
 - **适用场景**: 掌握特定功能的高级用法
 
 **核心文档**:
-- **[技能系统指南](guides/SKILL_GUIDE.md)** ⭐ - 37个技能的完整使用指南
+- **[技能系统指南](guides/SKILL_GUIDE.md)** ⭐ - 45 个技能包的完整使用指南
 
 ### 👔 运维管理文档 (Admin Docs)
 - **目标读者**: 项目管理员和运维人员
@@ -187,7 +188,7 @@ docs/
 - **[调用链详解](developer/CALL_CHAIN.md)** - 系统间调用流程和数据流向
 
 ### 🎯 功能使用
-- **[技能系统指南](guides/SKILL_GUIDE.md)** - 37个技能的完整使用指南
+- **[技能系统指南](guides/SKILL_GUIDE.md)** - 45 个技能包的完整使用指南
 - **[完整使用指南](user-guide.md)** - 核心功能详解
 
 ### 📊 系统评估

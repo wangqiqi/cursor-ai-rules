@@ -1,0 +1,397 @@
+{
+  "loop_while_development": {
+    "description": "🎭 Loop-While自主开发控制系统 - 实现需求确认→自主开发→测试验证→文档完善→质量检查的完整闭环",
+    "category": "automation",
+    "priority": "highest",
+    "version": "1.0.0",
+    "status": "active",
+
+    "capabilities": {
+      "overview": "Loop-While系统是革命性的AI自主软件开发框架，支持24小时不间断开发，质量闭环优化，智能上下文管理",
+
+      "core_features": [
+        "🎯 需求澄清与确认",
+        "🔄 自主开发循环",
+        "🧪 自动化测试验证",
+        "📚 智能文档生成",
+        "📊 质量闭环控制",
+        "💾 上下文持久化",
+        "🎛️ 频率控制优化",
+        "🕐 24小时调度管理"
+      ],
+
+      "intents": [
+        "loop_while",
+        "autonomous_development",
+        "continuous_integration",
+        "quality_automation",
+        "context_persistence",
+        "rate_limiting",
+        "background_processing"
+      ],
+
+      "confidence_threshold": 0.85,
+
+      "user_examples": [
+        "开始Loop-While自主开发",
+        "启动自主软件开发循环",
+        "实现24小时不间断开发",
+        "创建质量闭环系统",
+        "启动上下文持久化",
+        "配置频率控制系统",
+        "开始后台开发任务"
+      ]
+    },
+
+    "execution": {
+      "primary_script": "core/agent-orchestration-loop-controller.sh",
+      "support_scripts": [
+        "core/agent-orchestration-rate-controller.sh",
+        "core/agent-orchestration-context-bridge.sh",
+        "core/agent-orchestration-clarification.sh",
+        "core/agent-orchestration-smart-router.sh",
+        "core/agent-orchestration-interaction-optimizer.sh"
+      ],
+
+      "capabilities": {
+        "rules": [
+          "intelligent_evolution"
+        ],
+        "skills": [],
+        "scripts": [
+          "core/agent-orchestration-loop-controller.sh",
+          "core/agent-orchestration-rate-controller.sh",
+          "core/agent-orchestration-context-bridge.sh",
+          "core/agent-orchestration-clarification.sh",
+          "core/agent-orchestration-smart-router.sh",
+          "core/agent-orchestration-interaction-optimizer.sh"
+        ],
+        "workflows": [
+          "loop-while-development",
+          "quality-assurance-loop",
+          "context-persistence-workflow",
+          "rate-control-optimization"
+        ],
+        "hooks": []
+      },
+
+      "execution_order": [
+        "scripts",
+        "rules",
+        "workflows"
+      ],
+
+      "parameters": {
+        "quality_threshold": 0.95,
+        "max_iterations": 50,
+        "context_persistence": true,
+        "rate_limiting": true,
+        "background_execution": true,
+        "real_time_monitoring": true
+      },
+
+      "environment": {
+        "required_modules": [
+          "agent-orchestration-loop-controller",
+          "agent-orchestration-rate-controller",
+          "agent-orchestration-context-bridge",
+          "agent-orchestration-clarification",
+          "agent-orchestration-smart-router",
+          "agent-orchestration-interaction-optimizer"
+        ],
+
+        "dependencies": [
+          "path-config.sh",
+          "compact-output.sh",
+          "agent-orchestration-core.sh",
+          "agent-orchestration-persistence.sh"
+        ]
+      }
+    },
+
+    "loop_while_phases": {
+      "clarification": {
+        "description": "🎯 需求澄清阶段",
+        "duration": "2-4 hours",
+        "success_criteria": "用户确认需求完整性",
+        "failure_handling": "暂停等待澄清",
+        "next_phase": "developing"
+      },
+
+      "developing": {
+        "description": "🔧 代码开发阶段",
+        "duration": "4-8 hours",
+        "success_criteria": "代码编译通过",
+        "failure_handling": "记录错误，继续迭代",
+        "next_phase": "testing"
+      },
+
+      "testing": {
+        "description": "🧪 测试验证阶段",
+        "duration": "2-4 hours",
+        "success_criteria": "测试覆盖率>80%，所有测试通过",
+        "failure_handling": "修复测试失败，重新测试",
+        "next_phase": "documenting"
+      },
+
+      "documenting": {
+        "description": "📚 文档完善阶段",
+        "duration": "1-2 hours",
+        "success_criteria": "API文档完整，README更新",
+        "failure_handling": "补充缺失文档",
+        "next_phase": "reviewing"
+      },
+
+      "reviewing": {
+        "description": "🔍 最终审查阶段",
+        "duration": "1-2 hours",
+        "success_criteria": "质量评分>95%",
+        "failure_handling": "质量不足，继续循环",
+        "next_phase": "completed|developing"
+      }
+    },
+
+    "quality_metrics": {
+      "compilation_success": {
+        "weight": 0.15,
+        "description": "代码编译检查",
+        "threshold": 1.0,
+        "measurement": "boolean"
+      },
+
+      "test_coverage": {
+        "weight": 0.25,
+        "description": "测试覆盖率",
+        "threshold": 0.8,
+        "measurement": "percentage"
+      },
+
+      "code_quality": {
+        "weight": 0.15,
+        "description": "代码质量评分",
+        "threshold": 0.85,
+        "measurement": "score"
+      },
+
+      "security_score": {
+        "weight": 0.20,
+        "description": "安全检查评分",
+        "threshold": 0.9,
+        "measurement": "score"
+      },
+
+      "documentation_completeness": {
+        "weight": 0.10,
+        "description": "文档完整性",
+        "threshold": 0.95,
+        "measurement": "score"
+      },
+
+      "performance_score": {
+        "weight": 0.15,
+        "description": "性能指标",
+        "threshold": 0.85,
+        "measurement": "score"
+      }
+    },
+
+    "rate_limiting_config": {
+      "providers": {
+        "openai": {
+          "rpm": 200,
+          "tpm": 40000,
+          "rpd": 10000,
+          "retry_strategy": "exponential_backoff",
+          "circuit_breaker": true
+        },
+        "anthropic": {
+          "rpm": 50,
+          "tpm": 100000,
+          "rpd": 1000,
+          "retry_strategy": "linear_backoff",
+          "circuit_breaker": true
+        },
+        "google": {
+          "rpm": 60,
+          "tpm": 1000000,
+          "rpd": 1500,
+          "retry_strategy": "immediate_retry",
+          "circuit_breaker": false
+        }
+      },
+
+      "adaptive_control": {
+        "enabled": true,
+        "performance_window": 3600,
+        "adjustment_interval": 300,
+        "max_increase": 2.0,
+        "min_decrease": 0.1
+      }
+    },
+
+    "context_management": {
+      "persistence_strategy": "hybrid",
+      "compression_enabled": true,
+      "max_context_age": 2592000,
+      "cross_session_continuity": true,
+      "conflict_resolution": "latest_wins",
+
+      "storage_structure": {
+        "sessions": "存储对话会话",
+        "versions": "版本历史管理",
+        "cache": "临时缓存数据",
+        "snapshots": "完整状态快照"
+      }
+    },
+
+    "monitoring_and_alerts": {
+      "real_time_metrics": {
+        "loop_progress": true,
+        "quality_trends": true,
+        "resource_usage": true,
+        "error_rates": true
+      },
+
+      "alerts": {
+        "quality_threshold_breach": {
+          "enabled": true,
+          "threshold": 0.9,
+          "action": "notify_user"
+        },
+        "rate_limit_exceeded": {
+          "enabled": true,
+          "threshold": "95%",
+          "action": "auto_throttle"
+        },
+        "context_overflow": {
+          "enabled": true,
+          "threshold": "85%",
+          "action": "auto_compress"
+        },
+        "iteration_limit_reached": {
+          "enabled": true,
+          "threshold": 45,
+          "action": "force_completion"
+        }
+      },
+
+      "dashboards": {
+        "loop_progress": {
+          "enabled": true,
+          "update_interval": 30,
+          "metrics": ["iteration_count", "quality_score", "completion_percentage"]
+        },
+        "resource_monitoring": {
+          "enabled": true,
+          "update_interval": 60,
+          "metrics": ["cpu_usage", "memory_usage", "api_calls", "token_usage"]
+        },
+        "quality_analytics": {
+          "enabled": true,
+          "update_interval": 300,
+          "metrics": ["compilation_rate", "test_pass_rate", "linting_score", "security_score"]
+        }
+      }
+    },
+
+    "advanced_features": {
+      "parallel_processing": {
+        "enabled": true,
+        "max_concurrent_tasks": 3,
+        "load_balancing": "intelligent",
+        "resource_awareness": true
+      },
+
+      "learning_and_adaptation": {
+        "performance_learning": true,
+        "pattern_recognition": true,
+        "adaptive_optimization": true,
+        "user_preference_learning": true
+      },
+
+      "enterprise_integration": {
+        "role_based_access": false,
+        "audit_logging": true,
+        "compliance_checking": false,
+        "enterprise_monitoring": false
+      }
+    },
+
+    "validation_rules": {
+      "pre_execution_checks": [
+        "module_dependencies_available",
+        "required_scripts_executable",
+        "configuration_files_valid",
+        "system_resources_sufficient"
+      ],
+
+      "runtime_validation": [
+        "quality_metrics_calculable",
+        "context_persistence_working",
+        "rate_limiting_functional",
+        "error_recovery_operational"
+      ],
+
+      "completion_criteria": [
+        "all_quality_thresholds_met",
+        "no_critical_errors_remaining",
+        "documentation_fully_generated",
+        "context_properly_saved"
+      ]
+    },
+
+    "troubleshooting": {
+      "common_issues": {
+        "rate_limit_exceeded": "检查API密钥和使用配额，启用自适应频率控制",
+        "context_overflow": "启用上下文压缩，清理过期会话",
+        "quality_stagnation": "检查测试配置，验证编译环境",
+        "resource_exhaustion": "调整并发数，启用资源感知调度"
+      },
+
+      "debug_modes": {
+        "verbose_logging": true,
+        "step_by_step_execution": true,
+        "quality_metric_detailed": true,
+        "context_persistence_tracing": true
+      }
+    },
+
+    "performance_optimization": {
+      "caching_strategies": {
+        "context_cache": "lru_cache",
+        "quality_metrics_cache": "time_based",
+        "api_response_cache": "ttl_cache"
+      },
+
+      "parallelization_opportunities": {
+        "clarification_parallel": false,
+        "testing_parallel": true,
+        "documentation_parallel": true,
+        "quality_checks_parallel": true
+      },
+
+      "resource_optimization": {
+        "memory_management": "adaptive_cleanup",
+        "cpu_optimization": "load_balancing",
+        "io_optimization": "async_operations",
+        "network_optimization": "connection_pooling"
+      }
+    },
+
+    "integration_points": {
+      "external_systems": {
+        "git_integration": "commit_management",
+        "ci_cd_integration": "pipeline_triggers",
+        "monitoring_integration": "metrics_export",
+        "notification_integration": "alert_delivery"
+      },
+
+      "internal_modules": {
+        "core_orchestration": "task_coordination",
+        "persistence_layer": "state_management",
+        "communication_layer": "inter_agent_messaging",
+        "quality_assurance": "validation_engine"
+      }
+    }
+  }
+}

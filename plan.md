@@ -27,6 +27,7 @@
 - [x] **Task 5.7: 归档与清理** — `archive/20260601_224608_skills_legacy_md/`；`features/skills/skills/` 仅保留 `registry.json` [completed]
 - [x] **Task 5.8: 全量验证** — `verify-skills.sh` 45 包、`test-common.sh` **106/106** [completed]
 - [x] **Task 5.9: 最佳实践抛光** — 英文 `description`、`SKILL_GUIDE` / `operator-manual`、`polish-skills-best-practice.py` [completed 2026-06-01]
+- [x] **Task 5.10: 文档清扫** — `docs-sweep-skills-paths.py`；更新 CALL_CHAIN / SYSTEM_ARCHITECTURE / agents / ROADMAP 等 [completed 2026-06-01]
 
 ### 官方标准技能包模板（Task 5.1 产出）
 
@@ -79,7 +80,35 @@ paths:                      # 可选；留空=全局可用
 
 ---
 
+## Phase 6：双轨分发（复制 + 插件包）
+
+**目标**：同一仓库维护 `.cursor/`（复制开箱即用）与 `packages/cursor-ai-rules-plugin/`（Cursor 本地/市场插件），由脚本同步，避免双份手写漂移。
+
+### 待办任务清单 — Phase 6
+
+- [x] **Task 6.1: `scripts/sync-plugin-package.sh`** — rsync rules/skills/agents/commands/core/hooks [completed]
+- [x] **Task 6.2: `scripts/verify-plugin-package.sh` + `.cursor-plugin/plugin.json`** [completed]
+- [x] **Task 6.3: 根 README 双安装说明 + `packages/.../README.md`** [completed]
+- [x] **Task 6.4: CI 接入 sync + verify** [completed]
+- [x] **Task 6.5: 市场上架清单** — `docs/MARKETPLACE_SUBMIT.md`（人工向 Cursor 提交）[completed]
+- [x] **Task 6.6: CI 漂移检查** — `scripts/check-plugin-package-drift.sh` [completed]
+- [x] **Task 6.7: 文档双轨同步** — README.en / getting-started / faq / ROADMAP / docs README / SYSTEM_ARCHITECTURE / extension-guide [completed]
+- [x] **Task 6.8: Git hooks** — `.githooks/pre-commit` + `scripts/install-githooks.sh` [completed]
+- [x] **Task 6.9: Release workflow** — `.github/workflows/release.yml`（tag `v*` 打包插件） [completed]
+
+### 同步命令
+
+```bash
+bash scripts/sync-plugin-package.sh
+bash scripts/verify-plugin-package.sh
+bash scripts/check-plugin-package-drift.sh   # CI / 发版前
+bash scripts/install-githooks.sh             # 维护者可选
+```
+
+---
+
 ## 讨论与决策记录
 
+- **2026-06-01 (Phase 6)**: 插件包放在本仓 `packages/cursor-ai-rules-plugin/`，不另建仓库；hooks 路径由 jq 从 `.cursor/hooks.json` 转换。
 - **2026-06-01 (Phase 5 启动)**: 采用「SKILL.md 精简 + references/full-guide.md」策略，避免单文件超 500 行；保留 `registry.json` 作 Master 路由索引，路径指向 `.cursor/skills`。
-- **官方文档**: https://cursor.com/cn/docs/skills
+- **官方文档**: https://cursor.com/cn/docs/skills | https://cursor.com/docs/plugins/building

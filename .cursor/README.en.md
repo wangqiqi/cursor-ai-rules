@@ -9,7 +9,7 @@
 [![Rules](https://img.shields.io/badge/rules-75-blue?style=flat-square)]()
 [![Scripts](https://img.shields.io/badge/scripts-75+-cyan?style=flat-square)]()
 [![Roles](https://img.shields.io/badge/roles-21-red?style=flat-square)]()
-[![Skills](https://img.shields.io/badge/skills-37-purple?style=flat-square)]()
+[![Skills](https://img.shields.io/badge/skills-45-purple?style=flat-square)]()
 
 🌍 **[English](README.en.md) | [中文](README.md)**
 
@@ -26,7 +26,7 @@ This repository is an **open-source Cursor project configuration template** (rul
 | **What it is** | Static `.cursor/` configuration and documentation for developers to **optionally** copy or reference into their own projects |
 | **What it is not** | Not an official Cursor product; not a fleet of remote multi-agent workers; not a code-execution-as-a-service platform |
 | **Parallelism** | Settings such as `max_parallel_executions` and orchestration scripts describe **optional local** workflows only. Whether they run is entirely up to the user in their own Cursor session |
-| **Reference docs** | Files such as `.cursor/features/skills/skills/reference/python-sdk-README.md` are **local copies** of upstream documentation (e.g. the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)) for skills like `mcp-builder`. They are not runtime components |
+| **Reference docs** | Files such as `.cursor/skills/python-sdk/references/full-guide.md` are **local copies** of upstream documentation (e.g. the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)) for skills like `mcp-builder`. They are not runtime components |
 
 If you receive third-party mail (security scanners, ecosystem outreach) asking about “parallel agents” or `.cursor` paths, it is often a **misread** of this public configuration. The table above is the intended clarification.
 
@@ -43,7 +43,7 @@ If you receive third-party mail (security scanners, ecosystem outreach) asking a
 - ✅ **Rules System**: 75 technical rules fully covered
 - ✅ **Core Scripts**: 75+ scripts fully implemented
 - ✅ **Automation Hooks**: 36 Git/system hooks
-- ✅ **Skills System**: 37 professional skills
+- ✅ **Skills System**: 45 official Agent Skills packages
 
 ### 🎭 21 AI Personality Roles
 - **Professional Roles** (8): Expert Mentor, Architect, Code Reviewer, etc.
@@ -102,7 +102,7 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 ## 🚀 Core Features
 
 ### 🧠 Intelligent Master Command System
-- **Single Entry**: `/master` command auto-orchestrates 75+ scripts + 75 rules + 37 skills
+- **Single Entry**: `/master` command auto-orchestrates 75+ scripts + 76 rules + 45 skills
 - **Intent Understanding**: Natural language processing for complex user requirements
 - **Self-Learning**: A/B testing framework, user feedback loop, continuous optimization
 - **Performance Monitoring**: Comprehensive monitoring with response time <500ms
@@ -235,6 +235,37 @@ Based on three fundamental axioms, creating a **human-AI symbiosis** collaborati
 
 ## 🚀 Quick Start
 
+### Install: Copy (full runtime) or Plugin (global)
+
+**Option A — Copy into your project (recommended for full hooks + `core/`)**
+
+```bash
+git clone https://github.com/wangqiqi/cursor-ai-rules.git
+cp -r cursor-ai-rules/.cursor your-project/
+cp cursor-ai-rules/AGENTS.md your-project/
+```
+
+**Option B — Cursor local plugin (global rules/skills/agents/commands)**
+
+```bash
+cd cursor-ai-rules
+bash scripts/sync-plugin-package.sh
+mkdir -p ~/.cursor/plugins/local
+ln -sfn "$(pwd)/packages/cursor-ai-rules-plugin" ~/.cursor/plugins/local/cursor-ai-rules
+# Restart Cursor; optional: cp packages/cursor-ai-rules-plugin/templates/AGENTS.md your-project/
+```
+
+See [packages/cursor-ai-rules-plugin/README.md](packages/cursor-ai-rules-plugin/README.md) and [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md).
+
+| Capability | Copy `.cursor/` | Plugin package |
+|------------|-----------------|----------------|
+| 76 rules / 45 skills | ✅ | ✅ |
+| `/master`, `/vibe` | ✅ | ✅ |
+| Hooks + `core/` | ✅ project paths | ✅ plugin-relative paths |
+| `.cursorGrowth` per project | ✅ | ✅ |
+
+---
+
 ### Method 1: Chat Command `/master` (Recommended for Beginners)
 ```bash
 # 💬 Input in Cursor IDE chat dialog
@@ -267,7 +298,7 @@ What skills are available?
 Use backend-development skill to design API
 Use security-analysis skill to check code
 
-# ✨ Features: 37 professional skills, smart matching, auto-application
+# ✨ Features: 45 official skill packages, smart matching, auto-application
 ```
 
 ### Method 4: Role System
@@ -307,7 +338,7 @@ Use security-analysis skill to check code
 │   │   └── SKILL_GUIDE.md
 │   └── reference/        # Reference materials
 ├── features/             # 🎯 Feature system
-│   ├── skills/           # Skills library (37)
+│   ├── skills/           # Official Agent Skills (45 packages)
 │   │   └── registry.json
 │   └── hooks/            # System hooks (36)
 ├── rules/                # 📋 Rules system (75)

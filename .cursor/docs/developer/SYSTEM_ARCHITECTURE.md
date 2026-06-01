@@ -6,9 +6,18 @@
 
 ### 项目信息
 - **项目路径**: {{PROJECT_ROOT}} （运行时替换为当前项目根目录）
-- **配置路径**: `.cursor/`
+- **配置路径**: `.cursor/`（复制安装）或 `packages/cursor-ai-rules-plugin/`（Cursor 插件，由 sync 生成）
 - **版本**: 2.0.0
-- **最后更新**: 2026-02-07
+- **最后更新**: 2026-06-01
+
+### 双轨分发（Phase 6）
+
+| 轨道 | 路径 | 用途 |
+|------|------|------|
+| 复制轨 | `.cursor/` + 根 `AGENTS.md` | 完整运行时；权威源 |
+| 插件轨 | `packages/cursor-ai-rules-plugin/` | Cursor 本地/市场插件；`scripts/sync-plugin-package.sh` 同步 |
+
+CI：`verify-plugin-package.sh` + `check-plugin-package-drift.sh`（防止 `packages/` 与 `.cursor/` 漂移）。
 
 ---
 
@@ -30,7 +39,7 @@
 ├── core/                # 核心脚本库 (75+ 脚本)
 ├── docs/                # 文档系统
 ├── features/            # 特性系统
-│   ├── skills/          # 技能库 (37个技能)
+│   ├── skills/          # 技能库 (45 个技能包)
 │   ├── hooks/           # Git钩子系统
 │   └── automation/      # 自动化脚本
 ├── plugins/             # 插件系统
@@ -115,7 +124,7 @@
 
 **定位**: 可跨项目共享的通用技能库
 
-**技能分类** (37个技能):
+**技能分类** (45 个技能包):
 
 **Development (开发)**:
 - `api-design` - API设计
@@ -336,7 +345,7 @@ skill-dispatcher (Skill)
     ↓
 检查依赖
     ↓
-加载技能文件 (.cursor/features/skills/[skill-name].md)
+加载技能正文 (.cursor/skills/<skill-name>/references/full-guide.md)
     ↓
 应用技能指导
     ↓
@@ -430,7 +439,7 @@ command-center 整合结果
 #### `.cursor/features/skills/` (技能库)
 - **作用域**: 跨项目共享
 - **用途**: 通用的可重用技能
-- **数量**: 37个技能
+- **数量**: 45 个技能包
 - **注册表**: `registry.json` (v2.0.0)
 
 ### 调用关系
@@ -440,7 +449,7 @@ command-center 整合结果
     ↓
 管理
     ↓
-.cursor/features/skills/* (37个技能)
+.cursor/skills/* (45 个官方技能包)
 ```
 
 ---
@@ -511,7 +520,7 @@ command-center 整合结果
 | Agents | 1 |
 | Commands | 30+ |
 | Core Scripts | 100+ |
-| Features Skills | 37 |
+| Agent Skills (`.cursor/skills/`) | 45 |
 | Hooks | 30+ |
 | Rules | 75 |
 | Config Files | 22 |
@@ -609,7 +618,7 @@ command-center 整合结果
 |------|-------------|------------------|
 | **所在位置** | `.cursor/rules/rules-router.md` | `.cursor/skills/skill-dispatcher/SKILL.md` |
 | **核心职责** | 规则激活与编排 | 技能发现与调用 |
-| **管理对象** | `.cursor/rules/` 下的 75 个规则文件 | `.cursor/features/skills/` 下的 37 个技能 |
+| **管理对象** | `.cursor/rules/` 下的 75 个规则文件 | `.cursor/features/skills/` 下的 45 个技能包 |
 | **触发方式** | 上下文感知自动匹配 | 用户明确请求或 Agent 按需调度 |
 | **输出结果** | 激活的规则集（约束 AI 行为） | 技能指导内容（扩展 AI 能力） |
 | **依赖关系** | 规则间通过 priority/conflicts_with 排序 | 技能间通过 dependencies 声明依赖 |

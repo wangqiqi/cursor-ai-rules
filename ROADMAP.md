@@ -276,13 +276,13 @@ Cursor AI Rules的核心架构和功能已全部完成，达到生产就绪标�
 ## 4.1 生态系统扩展
 
 **插件化目标** (来自 CURSOR_IMPROVEMENT_PLAN):
-- 将整套规则系统发展为 **Cursor 官方插件**，支持下载与使用
-- 按 [Cursor Plugins Building](https://cursor.com/docs/plugins/building) 规范重构
-- 任何人可下载、安装、使用
+- ✅ **Phase 6 已落地（本仓）**：`packages/cursor-ai-rules-plugin/` + `scripts/sync-plugin-package.sh`；与复制 `.cursor/` **双轨**并存
+- 待完成：**Cursor 官方市场上架** — 见 [docs/MARKETPLACE_SUBMIT.md](docs/MARKETPLACE_SUBMIT.md)
+- 按 [Cursor Plugins Building](https://cursor.com/docs/plugins/building) 规范维护 `plugin.json`
 
 **待确认项**:
-- `master.md` 的 `handler: "./master-handler.js"` 扩展用法，需确认 Cursor 是否原生支持
-- `features/skills` 为自定义格式（非官方每技能独立文件夹），需在文档中明确说明
+- `master.md` 的 `handler: "./master-handler.js"` 在**插件 commands** 内是否被 Cursor 原生支持
+- **Agent Skills（已完成 Phase 5）**：45 个官方包位于 `.cursor/skills/<name>/`；`registry.json` 仅作 Master 元数据索引
 
 **插件生态体系**:
 - **标准化架构**: 统一的插件API和生命周期管理

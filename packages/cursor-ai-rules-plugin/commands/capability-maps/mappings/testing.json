@@ -1,0 +1,319 @@
+{
+  "run_tests": {
+    "description": "运行测试",
+    "intents": [
+      "test",
+      "webapp-testing",
+      "unit",
+      "integration"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "运行测试",
+      "执行单元测试",
+      "运行集成测试",
+      "测试覆盖率检查"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "webapp-testing"
+      ],
+      "scripts": [],
+      "workflows": [
+        "unit-tests",
+        "integration-tests",
+        "coverage-report"
+      ],
+      "hooks": [
+        "test-hooks.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "test_type": "all",
+      "coverage_required": true,
+      "parallel_execution": true
+    },
+    "validation_rules": {
+      "min_coverage": 80,
+      "max_test_duration": 300
+    }
+  },
+  "run_unit_tests": {
+    "description": "运行单元测试",
+    "intents": [
+      "unit",
+      "unittest",
+      "单元测试",
+      "单独测试"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "运行单元测试",
+      "执行所有单元测试",
+      "测试单个函数",
+      "运行Jest测试"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "webapp-testing",
+        "test-automation"
+      ],
+      "scripts": [
+        "core/test-runner.sh"
+      ],
+      "workflows": [
+        "unit-test-execution",
+        "test-results-analysis",
+        "coverage-report"
+      ],
+      "hooks": [
+        "test-pre-run.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "test_framework": "auto",
+      "test_pattern": "**/*.test.*",
+      "coverage_enabled": true,
+      "parallel_execution": true
+    },
+    "validation_rules": {
+      "min_coverage": 80,
+      "max_test_duration": 300,
+      "allow_failures": false
+    }
+  },
+  "run_integration_tests": {
+    "description": "运行集成测试",
+    "intents": [
+      "integration",
+      "集成测试",
+      "组件测试",
+      "系统测试"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "运行集成测试",
+      "测试组件间交互",
+      "执行系统集成测试",
+      "验证模块协作"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "integration-testing",
+        "test-automation"
+      ],
+      "scripts": [
+        "core/test-runner.sh"
+      ],
+      "workflows": [
+        "integration-test-setup",
+        "integration-test-execution",
+        "integration-results-analysis"
+      ],
+      "hooks": [
+        "integration-test-setup.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "test_type": "integration",
+      "environment_setup": true,
+      "mock_services": false,
+      "parallel_execution": false
+    },
+    "validation_rules": {
+      "require_environment": true,
+      "max_test_duration": 600,
+      "allow_partial_failures": true
+    }
+  },
+  "run_e2e_tests": {
+    "description": "运行端到端测试",
+    "intents": [
+      "e2e",
+      "end-to-end",
+      "端到端",
+      "用户旅程",
+      "完整流程"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "运行端到端测试",
+      "测试完整用户流程",
+      "执行E2E测试套件",
+      "验证用户体验流程"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "e2e-testing",
+        "browser-automation"
+      ],
+      "scripts": [
+        "core/e2e-runner.sh"
+      ],
+      "workflows": [
+        "e2e-environment-setup",
+        "e2e-test-execution",
+        "e2e-results-analysis",
+        "user-journey-validation"
+      ],
+      "hooks": [
+        "e2e-environment-cleanup.sh"
+      ]
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills",
+      "hooks"
+    ],
+    "parameters": {
+      "browser": "chromium",
+      "headless": true,
+      "record_video": false,
+      "parallel_execution": true
+    },
+    "validation_rules": {
+      "max_test_duration": 1200,
+      "require_screenshots": true,
+      "allow_ui_changes": false
+    }
+  },
+  "run_performance_tests": {
+    "description": "运行性能测试",
+    "intents": [
+      "performance",
+      "perf",
+      "benchmark",
+      "负载测试",
+      "压力测试"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "运行性能测试",
+      "执行负载测试",
+      "性能基准测试",
+      "压力测试分析"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "performance-testing",
+        "load-testing"
+      ],
+      "scripts": [
+        "core/performance-tester.sh"
+      ],
+      "workflows": [
+        "performance-baseline",
+        "load-test-execution",
+        "performance-analysis",
+        "bottleneck-identification"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "test_type": "load",
+      "duration_seconds": 300,
+      "concurrent_users": 100,
+      "ramp_up_time": 60
+    },
+    "validation_rules": {
+      "max_response_time": 2000,
+      "min_throughput": 100,
+      "max_error_rate": 1
+    }
+  },
+  "generate_test_coverage": {
+    "description": "生成测试覆盖率报告",
+    "intents": [
+      "coverage",
+      "覆盖率",
+      "测试覆盖",
+      "代码覆盖"
+    ],
+    "confidence_threshold": 0.7,
+    "user_examples": [
+      "生成测试覆盖率",
+      "查看代码覆盖情况",
+      "分析测试覆盖率报告",
+      "提高测试覆盖率"
+    ],
+    "capabilities": {
+      "rules": [
+        "intelligent_evolution"
+      ],
+      "skills": [
+        "coverage-analysis",
+        "test-reporting"
+      ],
+      "scripts": [
+        "core/coverage-analyzer.sh"
+      ],
+      "workflows": [
+        "coverage-collection",
+        "coverage-analysis",
+        "coverage-report-generation",
+        "coverage-improvement-suggestions"
+      ],
+      "hooks": []
+    },
+    "execution_order": [
+      "rules",
+      "scripts",
+      "workflows",
+      "skills"
+    ],
+    "parameters": {
+      "coverage_tool": "auto",
+      "report_format": "html",
+      "minimum_coverage": 80,
+      "include_uncovered_lines": true
+    },
+    "validation_rules": {
+      "require_minimum_coverage": true,
+      "generate_trends": true,
+      "identify_gaps": true
+    }
+  }
+}

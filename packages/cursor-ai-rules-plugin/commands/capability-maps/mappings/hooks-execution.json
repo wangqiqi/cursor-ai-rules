@@ -1,0 +1,39 @@
+{
+  "hooks_execution": {
+    "description": "执行特定钩子",
+    "intents": [
+      "trigger hook",
+      "run hook",
+      "触发钩子",
+      "执行钩子",
+      "钩子"
+    ],
+    "confidence_threshold": 0.8,
+    "user_examples": [
+      "执行会话开始钩子",
+      "运行代码质量检查",
+      "触发环境感知",
+      "执行Token压缩"
+    ],
+    "capabilities": {
+      "scripts": [
+        "core/hooks-engine.sh"
+      ],
+      "hooks": [
+        "env-perception.sh",
+        "code-quality.sh",
+        "consistency-check.sh",
+        "architecture-check.sh"
+      ]
+    },
+    "execution_order": [
+      "scripts",
+      "hooks"
+    ],
+    "parameters": {
+      "trigger": "onSessionStart",
+      "async": true,
+      "timeout": 10000
+    }
+  }
+}
