@@ -171,7 +171,7 @@ class CommandExecutor {
 
 ## 📁 路径处理 (Path Handling)
 
-详见 @platform_adapter_paths.md
+详见 @platform_adapter_paths
 
 ## 🔧 环境适配 (Environment Adaptation)
 

@@ -12,6 +12,7 @@
 # Hook 运行时监控目录（由 logging-common.sh 自动创建）
 .cursor/monitoring/
 
+plan.md
 CHANGELOG.md
 archive/
 

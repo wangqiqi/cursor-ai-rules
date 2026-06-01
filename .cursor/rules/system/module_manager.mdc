@@ -352,7 +352,7 @@ class FilesystemDiscoverer implements ModuleDiscoverer {
     ],
     "sharing_guidelines": {
       "license_requirement": "MIT or compatible",
-      "documentation_standard": "Include RULE.md and usage examples",
+      "documentation_standard": "Include .mdc rule with description/globs/alwaysApply and usage examples",
       "testing_requirement": "Provide test cases or usage examples"
     }
   }

@@ -7,7 +7,7 @@ priority: 19
 
 # 🚀 模块执行器和监控器 (Module Executor & Monitor)
 
-本文档是从 `module_manager.md` 分割出来的执行和监控部分。
+本文档是从 `@module_manager` 分割出来的执行和监控部分。
 
 ## ⚠️ 执行原则
 

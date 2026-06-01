@@ -250,6 +250,17 @@ else
 fi
 TESTS_TOTAL=$((TESTS_TOTAL + 1))
 
+LEGACY_AT=$(grep -rE '@[a-zA-Z0-9_-]+\.mdc?\b' "$CURSOR_DIR/rules" --include='*.mdc' 2>/dev/null | wc -l)
+LEGACY_RULE_MD=$(grep -r 'RULE\.md' "$CURSOR_DIR/rules" --include='*.mdc' 2>/dev/null | wc -l)
+if [ "$LEGACY_AT" -eq 0 ] && [ "$LEGACY_RULE_MD" -eq 0 ]; then
+    echo "  ✅ 规则 @ 引用符合 Cursor 官方（无 .md/.mdc 后缀）"
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+    echo "  ❌ 规则仍有非官方引用 (@*.md: $LEGACY_AT, RULE.md: $LEGACY_RULE_MD)"
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+fi
+TESTS_TOTAL=$((TESTS_TOTAL + 1))
+
 TEST_INPUT='{"command":"echo hook-test","output":"","duration":50,"cwd":"/tmp","conversation_id":"t1"}'
 HOOK_OUT=$(echo "$TEST_INPUT" | bash "$LOGGING_COMMON" command 2>/dev/null) || true
 LOG_FILE="$CURSOR_DIR/monitoring/logs/hooks/command-execution.log"

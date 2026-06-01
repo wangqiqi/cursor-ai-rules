@@ -37,3 +37,15 @@
 - **2026-06-01 (Phase 3 收尾)**: `README.en.md` → `.cursor/README.en.md`；CI 改 `.cursor/tests/`；`plugins/`、automation 等并入 `.cursor/`；**已删除** `.cursor-extras/`；详见 `archive/20260601_222400_cursor-extras_目录删除说明.md`。
 
 **当前开箱即用方式**：`cp -r .cursor` 与 `cp AGENTS.md` 到目标项目根目录即可。
+
+## 待办任务清单 (Todo List) — Phase 4：规范收尾
+
+- [x] **Task 4.1: 删除与 `.mdc` 重复的 workflow/tech `.md` 规则** [completed]
+- [x] **Task 4.2: 修复 `constitution.mdc` 及全仓 `.mdc` frontmatter 粘连** [completed]
+- [x] **Task 4.3: 迁移高频技能至 `.cursor/skills/<name>/SKILL.md`（10 个含 dispatcher）** [completed]
+- [x] **Task 4.4: `unified-check` 适配 `.mdc` / 标准技能路径** [completed]
+- [x] **Task 4.5: 验证测试与 CHANGELOG `[4.6.3]`** [completed]
+
+### Phase 4 讨论记录
+
+- **2026-06-01**: Phase 2 剩余小尾巴收尾；`.cursor-extras` 运行时引用仅保留于 `CHANGELOG.md` / `plan.md` 历史说明。

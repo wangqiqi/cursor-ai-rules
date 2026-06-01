@@ -7,24 +7,18 @@ priority: 19
 
 # 📊 模块监控和配置管理
 
-        await this.triggerOptimization('cpu');
-      }
-    }, 5000); // 每5秒检查一次
-  }
-}
-```
-
 ## 🔧 配置管理器 (Configuration Manager)
 
 ### 当前配置机制 (Current Configuration Mechanism)
 
 #### 规则级配置 (Rule-level Configuration)
-每个规则通过其`RULE.md`文件顶部的元数据进行配置：
+每个规则通过 `.cursor/rules/**/*.mdc` 文件顶部的 YAML frontmatter 配置（[Cursor 官方 Project Rules](https://cursor.com/docs/context/rules)）：
 
 ```markdown
 ---
 description: "规则描述"
-alwaysApply: true/false  # 是否自动激活
+globs: ["**/*.ts"]
+alwaysApply: false
 ---
 ```
 
@@ -106,13 +100,13 @@ class ConfigurationManager {
 注意：以上是功能分类的逻辑分组，实际文件都位于 .cursor/rules/ 目录下
 ```
 
-**当前状态**: 上述模块功能已通过规则文件实现，但尚未模块化。每个功能都作为独立的RULE.md文件存在。
+**当前状态**: 上述模块功能已通过规则文件实现，但尚未模块化。每个功能都作为独立的 `.mdc` 规则文件存在。
 
 **当前架构状态**:
-1. **规则文件组织**: 所有功能以RULE.md文档形式存在
-   - 每个规则都是独立的文档文件
-   - 通过@引用语法实现规则间协作
-   - 规则可通过文件名激活/停用
+1. **规则文件组织**: 所有功能以 `.mdc` 规则形式存在
+   - 每个规则都是独立的 `.mdc` 文件（可位于子目录）
+   - 通过 `@规则名`（无扩展名）实现规则间协作
+   - 规则通过 `globs` / `alwaysApply` / `description` 由 Cursor 激活
 
 2. **功能完整性**: 核心功能已全部实现
    - 所有标注的功能都已通过现有规则文档实现
@@ -163,70 +157,54 @@ class ConfigurationManager {
 ### 规则系统工作机制 (Rule System Working Mechanism)
 
 #### 规则文件标准 (Rule File Standards)
-每个规则都作为独立的`.cursor/rules/*/RULE.md`文档存在：
+每个规则为 `.cursor/rules/<category>/<name>.mdc`（或扁平 `rules/<name>.mdc`）：
 
 ```markdown
 ---
 description: "规则功能描述"
-alwaysApply: true/false
+globs: ["**/*.tsx"]
+alwaysApply: false
 ---
 
 # 规则标题
 
-*版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
-
 ## 功能描述
 <!-- 规则的详细功能说明 -->
-
-## 使用方法
-<!-- 如何使用该规则 -->
 ```
 
-#### 规则激活机制 (Rule Activation Mechanism)
-- **文件名激活**: 规则通过其所在目录名激活（如`@eslint`激活eslint规则）
-- **条件引用**: 规则可通过`@规则名`语法被其他规则引用
-- **alwaysApply**: 设置为true的规则始终激活，false的规则按需激活
+#### 规则激活机制 (Rule Activation Mechanism)（Cursor 官方）
+- **Always Apply**：`alwaysApply: true` 时始终注入上下文
+- **Apply to Specific Files**：`globs` 匹配当前打开/编辑的文件
+- **Apply Intelligently**：仅 `description` 时由 Agent 按需加载
+- **Manual**：用户在对话中 `@规则名` 显式引用（无 `.md` 后缀）
 
 ### 规则激活控制 (Rule Activation Control)
 
-#### 显式激活 (Explicit Activation)
-- **目录存在**: 规则通过创建对应的`.cursor/rules/规则名/`目录激活
-- **引用语法**: 在其他规则中通过`@规则名`引用来激活依赖规则
-- **alwaysApply**: 在规则元数据中设置为true的规则自动激活
+#### 显式配置 (Explicit Configuration)
+- **frontmatter**：在 `.mdc` 顶部设置 `globs` / `alwaysApply` / `description`
+- **引用语法**：在其他规则或对话中使用 `@规则名`（与文件名一致，不含扩展名）
 
 #### 隐式激活 (Implicit Activation)
-- **按需加载**: 当其他规则引用某个规则时，该规则自动激活
-- **上下文相关**: 根据项目特征和使用场景自动判断是否需要激活特定规则
-- **用户控制**: 用户可以通过创建/删除规则目录来控制规则的启用和禁用
+- **Agent 按需**：依赖 `description` 的智能应用（如 `@master-skill`）
+- **文件上下文**：编辑匹配 `globs` 的文件时自动附加对应规则
 
 ### 规则扩展机制 (Rule Extension Mechanism)
 
 #### 新规则创建 (New Rule Creation)
-创建新的规则只需在`.cursor/rules/`目录下创建新的规则目录和RULE.md文件：
+在 `.cursor/rules/` 下创建 `.mdc` 文件即可（官方推荐）：
 
 ```bash
-# 创建新规则目录
-mkdir .cursor/rules/my_custom_rule
-
-# 创建规则文档
-cat > .cursor/rules/my_custom_rule/RULE.md << 'EOF'
+cat > .cursor/rules/my_custom_rule.mdc << 'EOF'
 ---
 description: "我的自定义规则"
+globs: ["**/*.ts"]
 alwaysApply: false
 ---
 
 # 我的自定义规则
 
-*版本: v4.3.0 | 最后更新: {{GENERATION_TIME}} | 作者: wangqiqi (https://github.com/wangqiqi)*
-
 ## 功能描述
 <!-- 描述规则的功能 -->
-
-## 配置选项
-<!-- 描述规则的配置选项 -->
-
-## 使用方法
-<!-- 描述如何使用该规则 -->
 EOF
 ```
 
@@ -290,15 +268,14 @@ EOF
 
 #### 手动规则管理 (Manual Rule Management)
 ```bash
-# 激活规则：创建规则目录
-mkdir .cursor/rules/my_rule
-echo "# My Rule" > .cursor/rules/my_rule/RULE.md
+# 新增规则文件
+touch .cursor/rules/my_rule.mdc
 
-# 停用规则：删除规则目录
-rm -rf .cursor/rules/my_rule
+# 停用规则：删除或移出 .cursor/rules/
+rm .cursor/rules/my_rule.mdc
 
-# 查看活跃规则：列出规则目录
-ls .cursor/rules/
+# 查看规则列表
+find .cursor/rules -name '*.mdc'
 ```
 
 ---

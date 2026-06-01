@@ -180,7 +180,7 @@ AI的一切输出，必须附带可追溯、可验证、可归因的原始信号
 
 ## 第二章至第三章：架构与协议
 
-详见 @constitution_architecture.md（四层架构、双目录、六维协议、多文件协作）
+详见 @constitution_architecture（四层架构、双目录、六维协议、多文件协作）
 
 ### D6.1 模块同步检测 (Module Synchronization Detection) ⭐
 

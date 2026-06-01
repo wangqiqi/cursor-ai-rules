@@ -4,6 +4,30 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [4.6.3] - 2026-06-01
+
+### Changed
+
+- **规则官方化对齐**：76 个 `.mdc` 交叉引用统一为 `@规则名`（去除 `.md`/`.mdc` 后缀）；`rules-router` 架构图改为 `.mdc`；`module-monitor` / `module_manager` 移除已废弃 `RULE.md` 目录布局说明，改为 Cursor Project Rules 标准；更新 `RULE_ACTIVATION_FLOW.md`。
+
+### Removed
+
+- **冗余规则 `.md`**: 删除与同名 `.mdc` 重复的 `eslint.md`、`vibe-coding.md`、`javascript.md`（Cursor 会忽略无 frontmatter 的 `.md`）。
+
+### Fixed
+
+- **`constitution.mdc` 及全量 `.mdc` frontmatter**: 修复 `priority: N---` 粘连，闭合 `---` 分隔符（共 76 个规则文件）。
+- **`unified-check.sh`**: 规则统计改为 `*.mdc`；技能统计改为 `.cursor/skills/*/SKILL.md`；避免零规则时除零。
+
+### Added
+
+- **Cursor 标准技能包** (`.cursor/skills/`): 新增 9 个目录（`master`、`api-design`、`backend-development`、`webapp-testing`、`mcp-builder`、`security-analysis`、`test-automation`、`fullstack-development`、`code-analysis`），与既有 `skill-dispatcher` 共 **10** 个可发现技能；正文引用 `.cursor/features/skills/skills/*.md`。
+
+### Tests
+
+- `bash .cursor/tests/run-verify-test.sh` — 通过
+- `bash .cursor/tests/test-agent-orchestration.sh` — **33/33** 通过
+
 ## [4.6.2] - 2026-06-01
 
 ### Fixed

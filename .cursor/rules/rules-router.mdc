@@ -36,29 +36,29 @@ graph TD
 ```
 rules/
 ├── core/           # 核心规则 - 始终激活
-│   ├── constitution.md           # AI共生宪法
-│   ├── philosophy.md             # 协作哲学
-│   └── intelligent_evolution.md  # 智能进化系统
+│   ├── constitution.mdc           # AI共生宪法
+│   ├── philosophy.mdc             # 协作哲学
+│   └── intelligent_evolution.mdc  # 智能进化系统
 ├── system/         # 系统规则 - 环境相关
-│   ├── system_info.md            # 系统信息获取
-│   ├── platform_adapter.md       # 跨平台适配
-│   ├── module_manager.md         # 模块管理
-│   └── i18n.md                   # 国际化支持
+│   ├── system_info.mdc            # 系统信息获取
+│   ├── platform_adapter.mdc       # 跨平台适配
+│   ├── module_manager.mdc         # 模块管理
+│   └── i18n.mdc                   # 国际化支持
 ├── workflow/       # 工作流规则 - 开发流程
-│   ├── generator.md              # 项目生成器
-│   ├── templates.md              # 模板管理
-│   ├── eslint.md                 # 代码质量
-│   └── conversation_intent_analyzer.md  # 意图分析
+│   ├── generator.mdc              # 项目生成器
+│   ├── templates.mdc              # 模板管理
+│   ├── eslint.mdc                 # 代码质量
+│   └── conversation_intent_analyzer.mdc  # 意图分析
 ├── evolution/      # 进化规则 - 系统优化
-│   ├── evolution-philosophy.md   # 进化哲学
-│   ├── evolution-manual.md       # 手动进化
-│   ├── evolution-automation.md   # 自动进化
-│   └── evolution-governance.md  # 进化治理
+│   ├── evolution-philosophy.mdc   # 进化哲学
+│   ├── evolution-manual.mdc       # 手动进化
+│   ├── evolution-automation.mdc   # 自动进化
+│   └── evolution-governance.mdc  # 进化治理
 ├── team/           # 团队规则 - 协作相关
-│   └── collaboration.md          # 团队协作
+│   └── collaboration.mdc          # 团队协作
 └── tech/           # 技术栈规则 - 语言特定
-    ├── javascript.md             # JavaScript/TypeScript
-    └── python.md                 # Python开发
+    ├── javascript.mdc             # JavaScript/TypeScript
+    └── python.mdc                 # Python开发
 ```
 
 ## 🎯 智能规则激活引擎

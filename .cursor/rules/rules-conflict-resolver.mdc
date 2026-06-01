@@ -7,7 +7,7 @@ priority: 19
 
 # ⚡ 规则冲突解决和监控 (Rule Conflict Resolver & Monitor)
 
-本文档是从 `rules-router.md` 分割出来的冲突解决和监控部分。
+本文档是从 `@rules-router` 分割出来的冲突解决和监控部分。
 
 ## ⚠️ 解决原则
 
@@ -226,7 +226,7 @@ class RulePerformanceMonitor {
 ### 与Master命令的集成
 
 ```typescript
-// 集成到 master.md 的规则路由接口
+// 集成到 .cursor/commands/master.md 的规则路由接口
 interface RulesRouterIntegration {
   // 规则路由入口
   routeRules(context: RuleActivationContext): Promise<RuleActivationResult>;

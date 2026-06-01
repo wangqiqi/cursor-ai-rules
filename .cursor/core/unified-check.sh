@@ -94,8 +94,8 @@ verify_system() {
     
     local agent_count=$(find "$CURSOR_DIR/agents" -name "*.md" 2>/dev/null | wc -l)
     local command_count=$(find "$CURSOR_DIR/commands" -name "*.md" 2>/dev/null | wc -l)
-    local rule_count=$(find "$CURSOR_DIR/rules" -name "*.md" 2>/dev/null | wc -l)
-    local skill_count=$(find "$CURSOR_DIR/features/skills" -maxdepth 1 -name "*.md" 2>/dev/null | wc -l)
+    local rule_count=$(find "$CURSOR_DIR/rules" -name "*.mdc" 2>/dev/null | wc -l)
+    local skill_count=$(find "$CURSOR_DIR/skills" -mindepth 2 -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l)
     
     echo "  Agents: $agent_count 个"
     echo "  Commands: $command_count 个"
@@ -134,6 +134,7 @@ verify_rules() {
     local with_examples=0
     local command_style=0
     local too_long=0
+    local rule_ref_errors=0
     
     # 遍历规则文件
     while IFS= read -r -d '' file; do
@@ -164,11 +165,25 @@ verify_rules() {
             
             local lines=$(wc -l < "$file")
             [[ $lines -gt 500 ]] && too_long=$((too_long + 1))
+
+            if grep -qE '@[a-zA-Z0-9_-]+\.mdc?\b' "$file" 2>/dev/null; then
+                print_error "规则含非官方 @ 引用（应使用 @规则名 无后缀）: ${file#$PROJECT_ROOT/}"
+                rule_ref_errors=$((rule_ref_errors + 1))
+            fi
+            if grep -q 'RULE\.md' "$file" 2>/dev/null; then
+                print_error "规则仍引用已废弃 RULE.md 布局: ${file#$PROJECT_ROOT/}"
+                rule_ref_errors=$((rule_ref_errors + 1))
+            fi
         fi
-    done < <(find "$RULES_DIR" -type f -name "*.md" -print0)
+    done < <(find "$RULES_DIR" -type f -name "*.mdc" -print0)
     
     # 输出统计
     print_section "合规性统计"
+    
+    if [[ $total -eq 0 ]]; then
+        print_error "未找到 .mdc 规则文件"
+        return 1
+    fi
     
     local percent_globs=$((with_globs_or_always * 100 / total))
     local percent_priority=$((with_priority * 100 / total))
@@ -185,6 +200,11 @@ verify_rules() {
     local compliance_score=$(( (with_globs_or_always + with_priority) * 100 / (total * 2) ))
     echo -e "\n总体合规性: ${compliance_score}%"
     
+    if [[ $rule_ref_errors -gt 0 ]]; then
+        print_error "发现 $rule_ref_errors 处非官方规则引用或 RULE.md 残留"
+        return 1
+    fi
+
     if [[ $compliance_score -eq 100 ]]; then
         print_success "所有规则都符合最佳实践！"
         return 0
